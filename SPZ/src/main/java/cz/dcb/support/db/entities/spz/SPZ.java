@@ -8,9 +8,12 @@ package cz.dcb.support.db.entities.spz;
 import cz.dcb.support.db.entities.usermanagement.User;
 import cz.dcb.support.db.SPZException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  *
@@ -30,11 +33,11 @@ public class SPZ {
     private int estimatedWorkLoad;
     private String additionalInfo;
     private int realWorkLoad;
-    private List<Attachment> attachments;//hodilo by se rozbit zavislost
+    private Set<Long> attachmentsIds;//hodilo by se rozbit zavislost
     private State state;
 
     public SPZ(){
-        attachments = new ArrayList<>();
+        attachmentsIds = new HashSet<>();
     }
     
     public long getId() {
@@ -141,12 +144,12 @@ public class SPZ {
         this.realWorkLoad = realWorkLoad;
     }
 
-    public List<Attachment> getAttachments() {
-        return attachments;
+    public Set<Long> getAttachmentsIds() {
+        return Collections.unmodifiableSet(attachmentsIds);
     }
 
-    public void setAttachments(List<Attachment> attachments) {
-        this.attachments = attachments;
+    public void setAttachments(Set<Long> attachmentsIds) {
+        this.attachmentsIds = attachmentsIds;
     }
 
     public State getState() {
@@ -158,10 +161,10 @@ public class SPZ {
     }
     
     public void addAttachment(Attachment attachmet)throws SPZException{
-        if(this.attachments.size()>=3){
+        if(this.attachmentsIds.size()>=3){
             throw new SPZException("No more attachments allowed.");
         }
-        attachments.add(attachmet);
+        attachmentsIds.add(attachmet.getId());
     }
 
     @Override
