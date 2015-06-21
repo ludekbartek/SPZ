@@ -29,6 +29,9 @@ public class UserAccess {
     }
 
     public void setLogin(String login) {
+        if(login.length()>32){
+            throw new IllegalArgumentException("Login too long.");
+        }
         this.login = login;
     }
 
