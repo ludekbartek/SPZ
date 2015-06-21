@@ -44,6 +44,9 @@ class Attachment {
     }
 
     public void setContent(String content) {
+        if(content.length()>255){
+            throw new IllegalArgumentException("Content is too long.");
+        }
         this.content = content;
     }
 
@@ -52,6 +55,9 @@ class Attachment {
     }
 
     public void setLocation(String location) {
+        if(location.length()>255){
+            throw new IllegalArgumentException("Location is too long.");
+        }
         this.location = location;
     }
 
@@ -60,6 +66,9 @@ class Attachment {
     }
 
     public void setType(String type) {
+        if(type.length()>255){
+            throw new IllegalArgumentException("Type is too long.");
+        }
         this.type = type;
     }
 
