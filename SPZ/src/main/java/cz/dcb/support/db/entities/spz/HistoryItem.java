@@ -48,6 +48,9 @@ public class HistoryItem {
     }
 
     public void setNote(String note) {
+        if(note.length()>255){
+            throw new IllegalArgumentException("Note is too long.");
+        }
         this.note = note;
     }
 
