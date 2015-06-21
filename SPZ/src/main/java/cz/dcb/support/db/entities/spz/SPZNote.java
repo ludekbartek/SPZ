@@ -57,6 +57,9 @@ class SPZNote {
     }
 
     public void setIssuerLogin(String issuerLogin) {
+        if(issuerLogin.length()>32){
+            throw new IllegalArgumentException("Issuer login too long.");
+        }
         this.issuerLogin = issuerLogin;
     }
 
