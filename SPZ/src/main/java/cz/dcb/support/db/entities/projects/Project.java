@@ -27,6 +27,9 @@ public class Project {
     }
 
     public void setName(String name) {
+        if(name.length()>32){
+            throw new IllegalArgumentException("Name is too long.");
+        }
         this.name = name;
     }
 
@@ -35,6 +38,9 @@ public class Project {
     }
 
     public void setDescription(String description) {
+        if(description.length()>255){
+            throw new IllegalArgumentException("Description is too long.");
+        }
         this.description = description;
     }
 
