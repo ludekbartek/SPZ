@@ -52,6 +52,9 @@ public class Configuration {
     }
 
     public void setCode(String code) {
+        if(code.length()>32){
+            throw new IllegalArgumentException("Code is longer then 32 characters.");
+        }
         this.code = code;
     }
 
@@ -60,6 +63,9 @@ public class Configuration {
     }
 
     public void setDescription(String description) {
+        if(description.length()>255){
+            throw new IllegalArgumentException("Description is too long.");
+        }
         this.description = description;
     }
 
@@ -68,6 +74,9 @@ public class Configuration {
     }
 
     public void setProjectCode(String projectCode) {
+        if(projectCode.length()>50){
+            throw new IllegalArgumentException("Project code is too long.");
+        }
         this.projectCode = projectCode;
     }
 
