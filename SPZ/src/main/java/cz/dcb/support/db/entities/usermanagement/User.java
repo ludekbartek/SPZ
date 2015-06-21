@@ -30,6 +30,9 @@ public class User {
     }
 
     public void setLogin(String login) {
+        if(login.length()>32){
+            throw new IllegalArgumentException("Login too long.");
+        }
         this.login = login;
     }
 
@@ -38,6 +41,9 @@ public class User {
     }
 
     public void setPassword(String password) {
+        if(password.length()>50){
+            throw new IllegalArgumentException("Password too long.");
+        }
         this.password = password;
     }
 
@@ -46,6 +52,9 @@ public class User {
     }
 
     public void setName(String name) {
+        if(name.length()>50){
+            throw new IllegalArgumentException("Name too long.");
+        }
         this.name = name;
     }
 
