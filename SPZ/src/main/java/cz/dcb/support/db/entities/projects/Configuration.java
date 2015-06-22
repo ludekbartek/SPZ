@@ -15,7 +15,6 @@ public class Configuration {
     private String description;
     private String projectCode;
     private long sequence;
-    private long ts;
 
     @Override
     public int hashCode() {
@@ -87,14 +86,5 @@ public class Configuration {
     public void setSequence(long sequence) {
         this.sequence = sequence;
     }
-
-    public long getTs() {
-        return ts;
-    }
-
-    public void setTs(long ts) {
-        this.ts = ts;
-    }
-    
-    
+ 
 }

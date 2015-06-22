@@ -18,8 +18,7 @@ class SPZNote {
     private String noteText;
     private String issuerLogin;
     private long stateId;
-    private long ts;
-
+   
     public long getId() {
         return id;
     }
@@ -69,14 +68,6 @@ class SPZNote {
 
     public void setStateId(long stateId) {
         this.stateId = stateId;
-    }
-
-    public long getTs() {
-        return ts;
-    }
-
-    public void setTs(long ts) {
-        this.ts = ts;
     }
 
     @Override
