@@ -16,6 +16,10 @@ public class User {
     private String login;
     private String password;
     private String name;
+    private String email;
+    private String fax;
+    private String company;
+    private String phone;
 
     public long getId() {
         return id;
@@ -56,6 +60,38 @@ public class User {
             throw new IllegalArgumentException("Name too long.");
         }
         this.name = name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getFax() {
+        return fax;
+    }
+
+    public void setFax(String fax) {
+        this.fax = fax;
+    }
+
+    public String getCompany() {
+        return company;
+    }
+
+    public void setCompany(String company) {
+        this.company = company;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     @Override
