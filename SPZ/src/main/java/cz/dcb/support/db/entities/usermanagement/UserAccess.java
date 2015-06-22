@@ -14,8 +14,7 @@ public class UserAccess {
     private String login;
     private long configurationId;
     private Role role;
-    private long ts;
-
+    
     public long getId() {
         return id;
     }
@@ -51,14 +50,7 @@ public class UserAccess {
         this.role = role;
     }
 
-    public long getTs() {
-        return ts;
-    }
-
-    public void setTs(long ts) {
-        this.ts = ts;
-    }
-
+   
     @Override
     public int hashCode() {
         int hash = 5;
