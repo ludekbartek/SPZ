@@ -6,7 +6,7 @@
 package cz.dcb.support.db.entities.spz;
 
 import cz.dcb.support.db.entities.usermanagement.User;
-import cz.dcb.support.db.SPZException;
+import cz.dcb.support.db.exceptions.SPZException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;

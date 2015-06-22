@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package cz.dcb.support.db;
+package cz.dcb.support.db.exceptions;
 
 /**
  *
