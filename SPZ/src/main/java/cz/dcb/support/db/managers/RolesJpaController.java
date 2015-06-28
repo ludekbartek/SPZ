@@ -21,7 +21,7 @@ import javax.persistence.criteria.Root;
  *
  * @author bar
  */
-public class RolesJpaController implements Serializable, RolesManager {
+public class RolesJpaController implements Serializable, RoleManager {
 
     public RolesJpaController(EntityManagerFactory emf) {
         this.emf = emf;
