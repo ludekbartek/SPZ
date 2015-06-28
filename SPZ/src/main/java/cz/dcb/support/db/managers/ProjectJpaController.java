@@ -25,7 +25,7 @@ import javax.persistence.EntityManagerFactory;
  *
  * @author bar
  */
-public class ProjectJpaController implements Serializable {
+public class ProjectJpaController implements Serializable, ProjectManager {
 
     public ProjectJpaController(EntityManagerFactory emf) {
         this.emf = emf;
@@ -36,6 +36,7 @@ public class ProjectJpaController implements Serializable {
         return emf.createEntityManager();
     }
 
+    @Override
     public void create(Project project) throws PreexistingEntityException, Exception {
         if (project.getConfigurationCollection() == null) {
             project.setConfigurationCollection(new ArrayList<Configuration>());
@@ -73,6 +74,7 @@ public class ProjectJpaController implements Serializable {
         }
     }
 
+    @Override
     public void edit(Project project) throws IllegalOrphanException, NonexistentEntityException, Exception {
         EntityManager em = null;
         try {
@@ -129,6 +131,7 @@ public class ProjectJpaController implements Serializable {
         }
     }
 
+    @Override
     public void destroy(String id) throws IllegalOrphanException, NonexistentEntityException {
         EntityManager em = null;
         try {
@@ -161,10 +164,12 @@ public class ProjectJpaController implements Serializable {
         }
     }
 
+    @Override
     public List<Project> findProjectEntities() {
         return findProjectEntities(true, -1, -1);
     }
 
+    @Override
     public List<Project> findProjectEntities(int maxResults, int firstResult) {
         return findProjectEntities(false, maxResults, firstResult);
     }
@@ -185,6 +190,7 @@ public class ProjectJpaController implements Serializable {
         }
     }
 
+    @Override
     public Project findProject(String id) {
         EntityManager em = getEntityManager();
         try {
@@ -194,6 +200,7 @@ public class ProjectJpaController implements Serializable {
         }
     }
 
+    @Override
     public int getProjectCount() {
         EntityManager em = getEntityManager();
         try {
