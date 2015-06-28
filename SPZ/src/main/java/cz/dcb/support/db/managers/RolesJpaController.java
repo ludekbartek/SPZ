@@ -21,7 +21,7 @@ import javax.persistence.criteria.Root;
  *
  * @author bar
  */
-public class RolesJpaController implements Serializable {
+public class RolesJpaController implements Serializable, RolesManager {
 
     public RolesJpaController(EntityManagerFactory emf) {
         this.emf = emf;
@@ -32,6 +32,7 @@ public class RolesJpaController implements Serializable {
         return emf.createEntityManager();
     }
 
+    @Override
     public void create(Roles roles) throws PreexistingEntityException, Exception {
         EntityManager em = null;
         try {
@@ -51,6 +52,7 @@ public class RolesJpaController implements Serializable {
         }
     }
 
+    @Override
     public void edit(Roles roles) throws NonexistentEntityException, Exception {
         EntityManager em = null;
         try {
@@ -74,6 +76,7 @@ public class RolesJpaController implements Serializable {
         }
     }
 
+    @Override
     public void destroy(String id) throws NonexistentEntityException {
         EntityManager em = null;
         try {
@@ -95,10 +98,12 @@ public class RolesJpaController implements Serializable {
         }
     }
 
+    @Override
     public List<Roles> findRolesEntities() {
         return findRolesEntities(true, -1, -1);
     }
 
+    @Override
     public List<Roles> findRolesEntities(int maxResults, int firstResult) {
         return findRolesEntities(false, maxResults, firstResult);
     }
@@ -119,6 +124,7 @@ public class RolesJpaController implements Serializable {
         }
     }
 
+    @Override
     public Roles findRoles(String id) {
         EntityManager em = getEntityManager();
         try {
@@ -128,6 +134,7 @@ public class RolesJpaController implements Serializable {
         }
     }
 
+    @Override
     public int getRolesCount() {
         EntityManager em = getEntityManager();
         try {
