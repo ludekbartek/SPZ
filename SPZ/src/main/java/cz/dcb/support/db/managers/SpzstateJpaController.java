@@ -27,7 +27,7 @@ import javax.persistence.EntityManagerFactory;
  *
  * @author bar
  */
-public class SpzstateJpaController implements Serializable {
+public class SpzstateJpaController implements Serializable, SpzstateManager {
 
     public SpzstateJpaController(EntityManagerFactory emf) {
         this.emf = emf;
@@ -38,6 +38,7 @@ public class SpzstateJpaController implements Serializable {
         return emf.createEntityManager();
     }
 
+    @Override
     public void create(Spzstate spzstate) throws PreexistingEntityException, Exception {
         if (spzstate.getSpznoteCollection() == null) {
             spzstate.setSpznoteCollection(new ArrayList<Spznote>());
@@ -93,6 +94,7 @@ public class SpzstateJpaController implements Serializable {
         }
     }
 
+    @Override
     public void edit(Spzstate spzstate) throws IllegalOrphanException, NonexistentEntityException, Exception {
         EntityManager em = null;
         try {
@@ -177,6 +179,7 @@ public class SpzstateJpaController implements Serializable {
         }
     }
 
+    @Override
     public void destroy(Integer id) throws IllegalOrphanException, NonexistentEntityException {
         EntityManager em = null;
         try {
@@ -219,10 +222,12 @@ public class SpzstateJpaController implements Serializable {
         }
     }
 
+    @Override
     public List<Spzstate> findSpzstateEntities() {
         return findSpzstateEntities(true, -1, -1);
     }
 
+    @Override
     public List<Spzstate> findSpzstateEntities(int maxResults, int firstResult) {
         return findSpzstateEntities(false, maxResults, firstResult);
     }
@@ -243,6 +248,7 @@ public class SpzstateJpaController implements Serializable {
         }
     }
 
+    @Override
     public Spzstate findSpzstate(Integer id) {
         EntityManager em = getEntityManager();
         try {
@@ -252,6 +258,7 @@ public class SpzstateJpaController implements Serializable {
         }
     }
 
+    @Override
     public int getSpzstateCount() {
         EntityManager em = getEntityManager();
         try {
