@@ -21,7 +21,8 @@ public interface AttachmentManager {
      * @param attachment priloha, ktera se ma pridat
      * @throws PreexistingEntityException - v pripade, ze priloha s danym 
      *                                      klicem jiz v DB existuje
-     * @throws Exception - nemela by byt vyhozena.
+     * @throws Exception - propoustena vyjimka z JPA v pripade, ze priloha
+     *                     v DB neexistuje.
      */
     void create(Attachment attachment) throws PreexistingEntityException, Exception;
     
