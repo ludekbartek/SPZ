@@ -27,7 +27,7 @@ import javax.persistence.EntityManagerFactory;
  *
  * @author bar
  */
-public class SpznoteJpaController implements Serializable {
+public class SpznoteJpaController implements Serializable, SpznoteManager {
 
     public SpznoteJpaController(EntityManagerFactory emf) {
         this.emf = emf;
@@ -38,6 +38,7 @@ public class SpznoteJpaController implements Serializable {
         return emf.createEntityManager();
     }
 
+    @Override
     public void create(Spznote spznote) throws PreexistingEntityException, Exception {
         if (spznote.getAttachmentCollection() == null) {
             spznote.setAttachmentCollection(new ArrayList<Attachment>());
@@ -93,6 +94,7 @@ public class SpznoteJpaController implements Serializable {
         }
     }
 
+    @Override
     public void edit(Spznote spznote) throws IllegalOrphanException, NonexistentEntityException, Exception {
         EntityManager em = null;
         try {
@@ -177,6 +179,7 @@ public class SpznoteJpaController implements Serializable {
         }
     }
 
+    @Override
     public void destroy(Integer id) throws IllegalOrphanException, NonexistentEntityException {
         EntityManager em = null;
         try {
@@ -219,10 +222,12 @@ public class SpznoteJpaController implements Serializable {
         }
     }
 
+    @Override
     public List<Spznote> findSpznoteEntities() {
         return findSpznoteEntities(true, -1, -1);
     }
 
+    @Override
     public List<Spznote> findSpznoteEntities(int maxResults, int firstResult) {
         return findSpznoteEntities(false, maxResults, firstResult);
     }
@@ -243,6 +248,7 @@ public class SpznoteJpaController implements Serializable {
         }
     }
 
+    @Override
     public Spznote findSpznote(Integer id) {
         EntityManager em = getEntityManager();
         try {
@@ -252,6 +258,7 @@ public class SpznoteJpaController implements Serializable {
         }
     }
 
+    @Override
     public int getSpznoteCount() {
         EntityManager em = getEntityManager();
         try {
