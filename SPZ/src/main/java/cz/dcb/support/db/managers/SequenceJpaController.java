@@ -21,7 +21,7 @@ import javax.persistence.criteria.Root;
  *
  * @author bar
  */
-public class SequenceJpaController implements Serializable {
+public class SequenceJpaController implements Serializable, SequenceManager {
 
     public SequenceJpaController(EntityManagerFactory emf) {
         this.emf = emf;
@@ -32,6 +32,7 @@ public class SequenceJpaController implements Serializable {
         return emf.createEntityManager();
     }
 
+    @Override
     public void create(Sequence sequence) throws PreexistingEntityException, Exception {
         EntityManager em = null;
         try {
@@ -51,6 +52,7 @@ public class SequenceJpaController implements Serializable {
         }
     }
 
+    @Override
     public void edit(Sequence sequence) throws NonexistentEntityException, Exception {
         EntityManager em = null;
         try {
@@ -74,6 +76,7 @@ public class SequenceJpaController implements Serializable {
         }
     }
 
+    @Override
     public void destroy(String id) throws NonexistentEntityException {
         EntityManager em = null;
         try {
@@ -95,10 +98,12 @@ public class SequenceJpaController implements Serializable {
         }
     }
 
+    @Override
     public List<Sequence> findSequenceEntities() {
         return findSequenceEntities(true, -1, -1);
     }
 
+    @Override
     public List<Sequence> findSequenceEntities(int maxResults, int firstResult) {
         return findSequenceEntities(false, maxResults, firstResult);
     }
@@ -119,6 +124,7 @@ public class SequenceJpaController implements Serializable {
         }
     }
 
+    @Override
     public Sequence findSequence(String id) {
         EntityManager em = getEntityManager();
         try {
@@ -128,6 +134,7 @@ public class SequenceJpaController implements Serializable {
         }
     }
 
+    @Override
     public int getSequenceCount() {
         EntityManager em = getEntityManager();
         try {
