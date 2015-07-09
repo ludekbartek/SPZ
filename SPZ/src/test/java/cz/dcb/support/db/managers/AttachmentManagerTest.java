@@ -6,10 +6,14 @@
 package cz.dcb.support.db.managers;
 
 import cz.dcb.support.db.jpa.Attachment;
+import cz.dcb.support.db.jpa.Spznote;
 import cz.dcb.support.db.managers.exceptions.NonexistentEntityException;
 import cz.dcb.support.db.managers.exceptions.PreexistingEntityException;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.persistence.Cache;
 import javax.persistence.EntityGraph;
 import javax.persistence.EntityManager;
@@ -32,11 +36,10 @@ import static org.junit.Assert.*;
  * @author bar
  */
 public class AttachmentManagerTest {
+    private EntityManagerFactory emf = null;
     
-    private AttachmentManager manager;
     public AttachmentManagerTest() {
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("support_JPA");
-        manager = new AttachmentJpaController(emf);
+        emf = Persistence.createEntityManagerFactory("support_JPA");
     }
     
     @BeforeClass
@@ -62,8 +65,22 @@ public class AttachmentManagerTest {
     public void testCreate() throws Exception {
         System.out.println("create");
         Attachment attachment = null;
-        AttachmentManager instance = new AttachmentManagerImpl();
+        AttachmentManager instance = new AttachmentJpaController(emf);
+        try{
+            instance.create(attachment);
+            fail("Created null Attachment");
+        }catch(NullPointerException ex){
+            Logger.getLogger(AttachmentJpaController.class.getName()).log(Level.INFO,"Creating null attachment ok");
+        }catch(Exception ex1){
+            fail("Wrong exception thrown: "+ ex1);
+        }
+        attachment = new Attachment();
+        attachment.setContent("Some content.");
+        attachment.setDate(new GregorianCalendar().getTime());
+        attachment.setLocation("Some location");
+        attachment.setSpznoteId(new Spznote());
         instance.create(attachment);
+        checkExistance(instance,attachment);
         // TODO review the generated test code and remove the default call to fail.
     //    fail("The test case is a prototype.");
     }
@@ -151,6 +168,11 @@ public class AttachmentManagerTest {
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         //fail("The test case is a prototype.");
+    }
+
+    private void checkExistance(AttachmentManager instance, Attachment expected) {
+        Attachment result = instance.findAttachment(expected.getId());
+        assertEquals("Retrieved data differs.",result,expected);
     }
 
     public class AttachmentManagerImpl implements AttachmentManager {
