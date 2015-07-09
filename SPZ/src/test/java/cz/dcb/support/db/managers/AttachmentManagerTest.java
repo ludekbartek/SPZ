@@ -35,7 +35,7 @@ public class AttachmentManagerTest {
     
     private AttachmentManager manager;
     public AttachmentManagerTest() {
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("org.hibernate.ejb.HibernatePersistence");
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("support_JPA");
         manager = new AttachmentJpaController(emf);
     }
     
