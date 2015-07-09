@@ -35,6 +35,9 @@ public class AttachmentJpaController implements Serializable, AttachmentManager 
 
     @Override
     public void create(Attachment attachment) throws PreexistingEntityException, Exception {
+        if(attachment==null){
+            throw new NullPointerException("parameter is null");
+        }
         EntityManager em = null;
         try {
             em = getEntityManager();
