@@ -4,6 +4,7 @@ package cz.dcb.support.db.jpa;
 import java.io.Serializable;
 import java.lang.Integer;
 import java.lang.String;
+import java.security.InvalidParameterException;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -51,6 +52,9 @@ public class Attachment implements Serializable {
     }
 
     public void setDate(Date date) {
+        if(date==null){
+            throw new NullPointerException("Date is null");
+        }
         this.date = date;
     }
    
@@ -59,6 +63,9 @@ public class Attachment implements Serializable {
     }
 
     public void setLocation(String location) {
+        if(location == null){
+            throw new NullPointerException("Location is null");
+        }
         this.location = location;
     }
    
@@ -67,6 +74,9 @@ public class Attachment implements Serializable {
     }
 
     public void setId(Integer id) {
+        if(id==null){
+            throw new NullPointerException("Id is null");
+        }
         this.id = id;
     }
    
@@ -75,6 +85,9 @@ public class Attachment implements Serializable {
     }
 
     public void setSpznoteId(Spznote spznoteId) {
+        if(spznoteId==null){
+            throw new NullPointerException("Spz note is null");
+        }
         this.spznoteId = spznoteId;
     }
    
@@ -83,6 +96,9 @@ public class Attachment implements Serializable {
     }
 
     public void setType(String type) {
+        if(type==null){
+            throw new NullPointerException("SPZ type is null");
+        }
         this.type = type;
     }
    
@@ -91,6 +107,9 @@ public class Attachment implements Serializable {
     }
 
     public void setContent(String content) {
+        if(content==null){
+            throw new NullPointerException("Spz content is null");
+        }
         this.content = content;
     }
    
@@ -99,6 +118,10 @@ public class Attachment implements Serializable {
     }
 
     public void setTs(int ts) {
+        if(ts<0)
+        {
+            throw new InvalidParameterException("Time stamp is negative number");
+        }
         this.ts = ts;
     }
 }
