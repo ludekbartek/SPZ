@@ -9,21 +9,12 @@ import cz.dcb.support.db.jpa.Attachment;
 import cz.dcb.support.db.jpa.Spznote;
 import cz.dcb.support.db.managers.exceptions.NonexistentEntityException;
 import cz.dcb.support.db.managers.exceptions.PreexistingEntityException;
+import cz.dcb.support.db.managers.utils.DBUtils;
 import java.util.GregorianCalendar;
 import java.util.List;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.persistence.Cache;
-import javax.persistence.EntityGraph;
-import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-import javax.persistence.PersistenceUnitUtil;
-import javax.persistence.Query;
-import javax.persistence.SynchronizationType;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.metamodel.Metamodel;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -39,7 +30,7 @@ public class AttachmentManagerTest {
     private EntityManagerFactory emf = null;
     
     public AttachmentManagerTest() {
-        emf = Persistence.createEntityManagerFactory("support_JPA");
+        emf = DBUtils.getEntityManagerFactory();
     }
     
     @BeforeClass
