@@ -55,25 +55,37 @@ public class AttachmentManagerTest {
     @Test
     public void testCreate() throws Exception {
         System.out.println("create");
-        Attachment attachment = null;
+        testCreateNullAttachment();
+        testValidAttachment();
+        testNullDateAttachment();
+    }
+
+    private void testValidAttachment() throws Exception {
         AttachmentManager instance = new AttachmentJpaController(emf);
+        Attachment attachment = newAttachment();
+        instance.create(attachment);
+        checkExistance(instance,attachment);
+    }
+
+    private Attachment newAttachment() {
+        Attachment attachment = new Attachment();
+        attachment.setContent("Some content.");
+        attachment.setDate(new GregorianCalendar().getTime());
+        attachment.setLocation("Some location");
+        attachment.setSpznoteId(new Spznote());
+        return attachment;
+    }
+
+    private void testCreateNullAttachment() {
+        Attachment attachment = newAttachment();
         try{
-            instance.create(attachment);
-            fail("Created null Attachment");
+            attachment.setDate(null);
+            fail("Created null date Attachment");
         }catch(NullPointerException ex){
             Logger.getLogger(AttachmentJpaController.class.getName()).log(Level.INFO,"Creating null attachment ok");
         }catch(Exception ex1){
             fail("Wrong exception thrown: "+ ex1);
         }
-        attachment = new Attachment();
-        attachment.setContent("Some content.");
-        attachment.setDate(new GregorianCalendar().getTime());
-        attachment.setLocation("Some location");
-        attachment.setSpznoteId(new Spznote());
-        instance.create(attachment);
-        checkExistance(instance,attachment);
-        // TODO review the generated test code and remove the default call to fail.
-    //    fail("The test case is a prototype.");
     }
 
     /**
@@ -164,6 +176,20 @@ public class AttachmentManagerTest {
     private void checkExistance(AttachmentManager instance, Attachment expected) {
         Attachment result = instance.findAttachment(expected.getId());
         assertEquals("Retrieved data differs.",result,expected);
+    }
+
+    private void testNullDateAttachment() {
+        Attachment attachment = null;
+        AttachmentManager instance = new AttachmentJpaController(emf);
+        try{
+            instance.create(attachment);
+            fail("Created null Attachment");
+        }catch(NullPointerException ex){
+            Logger.getLogger(AttachmentJpaController.class.getName()).log(Level.INFO,"Creating null attachment ok");
+        }catch(Exception ex1){
+            fail("Wrong exception thrown: "+ ex1);
+        }
+   
     }
 
     public class AttachmentManagerImpl implements AttachmentManager {
