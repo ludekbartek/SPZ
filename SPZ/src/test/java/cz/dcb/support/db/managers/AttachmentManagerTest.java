@@ -126,6 +126,7 @@ public class AttachmentManagerTest {
         Attachment expResult = null;
         Attachment result = instance.findAttachment(id);
         assertEquals(expResult, result);
+        fail("Dodelat nalezeni (ne)existujicich priloh");
         // TODO review the generated test code and remove the default call to fail.
         //fail("The test case is a prototype.");
     }
@@ -140,6 +141,7 @@ public class AttachmentManagerTest {
         List<Attachment> expResult = null;
         List<Attachment> result = instance.findAttachmentEntities();
         assertEquals(expResult, result);
+        fail("Dodelat nalezeni (ne)existujicich priloh");
         // TODO review the generated test code and remove the default call to fail.
        // fail("The test case is a prototype.");
     }
