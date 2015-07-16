@@ -156,6 +156,7 @@ public class AttachmentManagerTest {
         List<Attachment> expResult = null;
         List<Attachment> result = instance.findAttachmentEntities(maxResults, firstResult);
         assertEquals(expResult, result);
+        fail("Dodelat nalezeni (ne)existujicich priloh");
         // TODO review the generated test code and remove the default call to fail.
         //fail("The test case is a prototype.");
     }
