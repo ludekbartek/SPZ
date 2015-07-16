@@ -12,6 +12,7 @@ import cz.dcb.support.db.managers.exceptions.PreexistingEntityException;
 import cz.dcb.support.db.managers.utils.DBUtils;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.persistence.EntityManagerFactory;
@@ -108,8 +109,8 @@ public class AttachmentManagerTest {
     public void testEdit() throws Exception {
         System.out.println("edit");
         Attachment attachment = null;
-        AttachmentManager instance = new AttachmentManagerImpl();
-        instance.edit(attachment);
+        testIncorrectEdits();
+        testCorrectEdits();
         // TODO review the generated test code and remove the default call to fail.
         //fail("The test case is a prototype.");
     }
@@ -163,12 +164,19 @@ public class AttachmentManagerTest {
      * Test of getAttachmentCount method, of class AttachmentManager.
      */
     @Test
-    public void testGetAttachmentCount() {
+    public void testGetAttachmentCount() throws NonexistentEntityException {
         System.out.println("getAttachmentCount");
-        AttachmentManager instance = new AttachmentManagerImpl();
+        AttachmentManager man = new AttachmentJpaController(emf);
         int expResult = 0;
-        int result = instance.getAttachmentCount();
+        int result = man.getAttachmentCount();
         assertEquals(expResult, result);
+        //AttachmentManager man = new AttachmentJpaController(emf);
+        Attachment attach = addCorrectAttachemnt(man);
+        result = man.getAttachmentCount();
+        assertEquals("Incorrect attachments count. ",1,result);
+        man.destroy(attach.getId());
+        result = man.getAttachmentCount();
+        assertEquals("Incorrect attachments count. ",0,result);
         // TODO review the generated test code and remove the default call to fail.
         //fail("The test case is a prototype.");
     }
@@ -190,6 +198,79 @@ public class AttachmentManagerTest {
             fail("Wrong exception thrown: "+ ex1);
         }
    
+    }
+
+    private void testIncorrectEdits() throws Exception {
+        AttachmentManager man = new AttachmentJpaController(emf);
+        Attachment attachment = addCorrectAttachemnt(man);
+        Attachment newValue = null;
+        try {
+            man.edit(newValue);
+        } catch (NonexistentEntityException ex) {
+            Logger.getLogger(AttachmentManagerTest.class.getName()).log(Level.INFO, "Correct exception while editing null attachment.", ex);
+        } catch (Exception ex1){
+            fail("Incorrect exception thrown while editing null attachment.");
+        }
+        Attachment attachment1 = new Attachment();
+        attachment1.setContent(attachment.getContent());
+        attachment1.setId(-1);
+        attachment1.setDate(attachment.getDate());
+        attachment1.setLocation(attachment.getLocation());
+        attachment1.setSpznoteId(attachment.getSpznoteId());
+        attachment1.setTs(attachment.getTs());
+        attachment1.setType(attachment.getType());
+        
+        try {
+            man.edit(attachment1);
+        } catch (NonexistentEntityException ex) {
+            Logger.getLogger(AttachmentManagerTest.class.getName()).log(Level.SEVERE, "Correct exception has been thrown.", ex);
+        }
+        checkNonExistance(man, newValue);
+        
+    }
+
+    private void testCorrectEdits() throws Exception {
+        AttachmentManager man = new AttachmentJpaController(emf);
+        Attachment attach = addCorrectAttachemnt(man);
+        attach.setContent("Changed content.");
+        man.edit(attach);
+        checkExistance(man, attach);
+        attach.setDate(new GregorianCalendar().getTime());
+        man.edit(attach);
+        checkExistance(man, attach);
+        attach.setLocation("/new/path");
+        man.edit(attach);
+        checkExistance(man, attach);
+        attach.setTs(attach.getTs()+1);
+        man.edit(attach);
+        checkExistance(man, attach);
+        attach.setType("application/x+msword");
+        man.edit(attach);
+        checkExistance(man, attach);
+    }
+
+    private Attachment addCorrectAttachemnt(AttachmentManager man) {
+        Attachment attach = new Attachment();
+        Random rand = new Random();
+        int val = rand.nextInt(100);
+        attach.setContent("Some content " + val );
+        attach.setLocation("/Some/path"+val);
+        attach.setDate(new GregorianCalendar().getTime());
+        attach.setSpznoteId(new Spznote());
+        attach.setTs(val);
+        attach.setType("radna"+val);
+        try {
+            man.create(attach);
+        } catch (Exception ex) {
+            Logger.getLogger(AttachmentManagerTest.class.getName()).log(Level.SEVERE, null, ex);
+            fail("Unable to create correct attachment: "+ex);
+        }
+        return attach;
+    }
+
+    private void checkNonExistance(AttachmentManager man, Attachment newValue) {
+        Attachment res = man.findAttachment(newValue.getId());
+        assertNotSame(newValue, res);
     }
 
     public class AttachmentManagerImpl implements AttachmentManager {
