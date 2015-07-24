@@ -82,7 +82,7 @@ public class AttachmentManagerTest {
         try{
             attachment.setDate(null);
             fail("Created null date Attachment");
-        }catch(NullPointerException ex){
+        }catch(NullPointerException|IllegalArgumentException ex){
             Logger.getLogger(AttachmentJpaController.class.getName()).log(Level.INFO,"Creating null attachment ok");
         }catch(Exception ex1){
             fail("Wrong exception thrown: "+ ex1);
@@ -216,7 +216,7 @@ public class AttachmentManagerTest {
         }
         Attachment attachment1 = new Attachment();
         attachment1.setContent(attachment.getContent());
-        attachment1.setId(-1);
+        //attachment1.setId(-1);
         attachment1.setDate(attachment.getDate());
         attachment1.setLocation(attachment.getLocation());
         attachment1.setSpznoteId(attachment.getSpznoteId());
@@ -256,6 +256,7 @@ public class AttachmentManagerTest {
         Attachment attach = new Attachment();
         Random rand = new Random();
         int val = rand.nextInt(100);
+       // attach.setId(1);
         attach.setContent("Some content " + val );
         attach.setLocation("/Some/path"+val);
         attach.setDate(new GregorianCalendar().getTime());
