@@ -63,22 +63,14 @@ public class AttachmentManagerTest {
 
     private void testValidAttachment() throws Exception {
         AttachmentManager instance = new AttachmentJpaController(emf);
-        Attachment attachment = newAttachment();
+        Attachment attachment = DBUtils.createAttachment();
         instance.create(attachment);
         checkExistance(instance,attachment);
     }
 
-    private Attachment newAttachment() {
-        Attachment attachment = new Attachment();
-        attachment.setContent("Some content.");
-        attachment.setDate(new GregorianCalendar().getTime());
-        attachment.setLocation("Some location");
-        attachment.setSpznoteId(new Spznote());
-        return attachment;
-    }
-
+    
     private void testCreateNullAttachment() {
-        Attachment attachment = newAttachment();
+        Attachment attachment = new Attachment();
         try{
             attachment.setDate(null);
             fail("Created null date Attachment");
