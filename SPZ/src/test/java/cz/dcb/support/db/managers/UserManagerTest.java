@@ -10,6 +10,8 @@ import cz.dcb.support.db.managers.exceptions.IllegalOrphanException;
 import cz.dcb.support.db.managers.exceptions.NonexistentEntityException;
 import cz.dcb.support.db.managers.exceptions.PreexistingEntityException;
 import cz.dcb.support.db.managers.utils.DBUtils;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -181,14 +183,41 @@ public class UserManagerTest {
      */
     @Test
     public void testFindUser() {
-        System.out.println("findUser");
+        Logger logger = Logger.getLogger(UserAccessManagerTest.class.getName());
+        try{
+            User expResult = manager.findUser(null);
+            fail("findUser accepts null parameter");
+        }catch(NullPointerException npe){
+            logger.log(Level.INFO,"findUser(null) je ok",npe);
+        }catch(Exception ex){
+            logger.log(Level.SEVERE,"findUser(null) vyhodilo neocekavanou vyjimku",ex);
+            fail("vyhozena neocekavana vyjimka "+ex);
+        }
+        
         String id = "";
-        UserManager instance = new UserManagerImpl();
+        
         User expResult = null;
-        User result = instance.findUser(id);
+        User result = manager.findUser(id);
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        //fail("The test case is a prototype.");
+    }
+    
+    @Test
+    public void testFindExistingUser(){
+        User user = DBUtils.createUser();
+        try {
+            manager.create(user);
+            User found = manager.findUser(user.getLogin());
+            assertEquals("Login differs", user.getLogin(),found.getLogin());
+            assertEquals("Name differs",user.getName(),found.getName());
+            assertEquals("E-mail differs",user.getEmail(), found.getEmail());
+            assertEquals("Company differs",user.getCompany(), found.getCompany());
+            assertEquals("Password differs",user.getPassword(), found.getPassword());
+        } catch (Exception ex) {
+            Logger.getLogger(UserManagerTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
     }
 
     /**
@@ -225,14 +254,31 @@ public class UserManagerTest {
      * Test of getUserCount method, of class UserManager.
      */
     @Test
-    public void testGetUserCount() {
-        System.out.println("getUserCount");
-        UserManager instance = new UserManagerImpl();
-        int expResult = 0;
-        int result = instance.getUserCount();
-        assertEquals(expResult, result);
+    public void testGetUserCount() throws Exception {
+        int count = manager.getUserCount();
+        assertEquals("User number does not match.",0, count);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        //fail("The test case is a prototype.");
+        User user = DBUtils.createUser();
+        manager.create(user);
+        List<User> users = new ArrayList<>();
+        users.add(user);
+        for(int i=1;i<10;i++){
+            User userNext = DBUtils.createUser();
+            userNext.setLogin(userNext.getLogin()+i);
+        }
+        int pomCount = users.size()-1;
+        for(Iterator<User> it=users.iterator();it.hasNext();){
+            User removeUser = it.next();
+            manager.destroy(removeUser.getLogin());
+            it.remove();
+            assertEquals("User number does not match", users.size(),manager.getUserCount());
+            assertTrue("User is not removed.",!manager.findUserEntities().contains(removeUser));
+            pomCount--;
+            
+        }
+        count = manager.getUserCount();
+        assertEquals("User number does not match.",users.size(), count);
     }
 
     public class UserManagerImpl implements UserManager {
