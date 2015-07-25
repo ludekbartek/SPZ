@@ -109,12 +109,7 @@ public class UserManagerTest {
      */
     @Test
     public void testEdit() throws Exception {
-        try{
-            manager.edit(null);
-            fail("Null user edited");
-        }catch(Exception ex){
-            
-        }
+        testNullEdit();
         User user = DBUtils.createUser();
         String login = user.getLogin();
         manager.create(user);
@@ -126,18 +121,34 @@ public class UserManagerTest {
             Logger.getLogger(UserManagerTest.class.getName()).log(Level.SEVERE,"Setting username to null.",ex);
         }
         user.setLogin(login);
+        testCorrectEdits(user, login);
+    }
+
+    private void testCorrectEdits(User user, String login) {
         StringBuilder name=new StringBuilder(user.getName());
         StringBuilder email = new StringBuilder(user.getEmail());
+        StringBuilder passwd = new StringBuilder(user.getPassword());
         user.setName(name.append(" z Brna").toString());
         user.setEmail(email.append(".cz").toString());
+        user.setPassword(passwd.append("xx").toString());
         try{
             manager.edit(user);
             User returned = manager.findUser(login);
             assertEquals("E-mail does not match:",returned.getEmail(), email.toString());
             assertEquals("Name does not match:",returned.getName(), name.toString());
+            assertEquals("Password does not match:", returned.getPassword(), passwd.toString());
             
         }catch(Exception ex){
             fail("Unexpected exception thrown: "+ex);
+        }
+    }
+
+    private void testNullEdit() {
+        try{
+            manager.edit(null);
+            fail("Null user edited");
+        }catch(Exception ex){
+            Logger.getLogger(UserManagerTest.class.getName()).log(Level.INFO,"Correct exception thrown",ex);
         }
     }
 
