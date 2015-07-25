@@ -9,7 +9,12 @@ import cz.dcb.support.db.jpa.User;
 import cz.dcb.support.db.managers.exceptions.IllegalOrphanException;
 import cz.dcb.support.db.managers.exceptions.NonexistentEntityException;
 import cz.dcb.support.db.managers.exceptions.PreexistingEntityException;
+import cz.dcb.support.db.managers.utils.DBUtils;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -22,12 +27,16 @@ import static org.junit.Assert.*;
  * @author bar
  */
 public class UserManagerTest {
-    
+
+    UserManager manager = null;
     public UserManagerTest() {
+        EntityManagerFactory emf = DBUtils.getEntityManagerFactory();
+        manager = new UserJpaController(emf);
     }
     
     @BeforeClass
     public static void setUpClass() {
+        
     }
     
     @AfterClass
@@ -36,6 +45,13 @@ public class UserManagerTest {
     
     @Before
     public void setUp() {
+        for(User user:manager.findUserEntities()){
+            try {
+                manager.destroy(user.getLogin());
+            } catch (IllegalOrphanException | NonexistentEntityException ex) {
+                Logger.getLogger(UserManagerTest.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }
     
     @After
@@ -49,15 +65,35 @@ public class UserManagerTest {
     public void testCreate() throws Exception {
         System.out.println("create");
         User user = null;
-        UserManager instance = new UserManagerImpl();
-        instance.create(user);
+        try{
+            manager.create(user);
+            fail("Null user created");
+        }catch(Exception ex){
+            
+        }
+        user = DBUtils.createUser();
+        try{
+            manager.create(user);
+            User retValue = manager.findUser(user.getLogin());
+            assertNotNull("User not found",retValue);
+            assertEquals("User login differs.",retValue.getLogin(), user.getLogin());
+        }catch(Exception ex){
+            fail("Unexpected exception thrown: "+ex);
+        }
+        try{
+            manager.create(user);
+            fail("Duplicit user created");
+        }catch(PreexistingEntityException ex){
+            
+        }
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        //fail("The test case is a prototype.");
     }
 
     /**
      * Test of destroy method, of class UserManager.
      */
+    /*
     @Test
     public void testDestroy() throws Exception {
         System.out.println("destroy");
@@ -67,18 +103,42 @@ public class UserManagerTest {
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
-
+    */
     /**
      * Test of edit method, of class UserManager.
      */
     @Test
     public void testEdit() throws Exception {
-        System.out.println("edit");
-        User user = null;
-        UserManager instance = new UserManagerImpl();
-        instance.edit(user);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        try{
+            manager.edit(null);
+            fail("Null user edited");
+        }catch(Exception ex){
+            
+        }
+        User user = DBUtils.createUser();
+        String login = user.getLogin();
+        manager.create(user);
+        user.setLogin(null);
+        try{
+            manager.edit(user);
+            fail("Login changed to null");
+        }catch(Exception ex){
+            Logger.getLogger(UserManagerTest.class.getName()).log(Level.SEVERE,"Setting username to null.",ex);
+        }
+        user.setLogin(login);
+        StringBuilder name=new StringBuilder(user.getName());
+        StringBuilder email = new StringBuilder(user.getEmail());
+        user.setName(name.append(" z Brna").toString());
+        user.setEmail(email.append(".cz").toString());
+        try{
+            manager.edit(user);
+            User returned = manager.findUser(login);
+            assertEquals("E-mail does not match:",returned.getEmail(), email.toString());
+            assertEquals("Name does not match:",returned.getName(), name.toString());
+            
+        }catch(Exception ex){
+            fail("Unexpected exception thrown: "+ex);
+        }
     }
 
     /**
