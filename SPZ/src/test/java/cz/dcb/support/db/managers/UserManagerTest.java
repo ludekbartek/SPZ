@@ -122,7 +122,31 @@ public class UserManagerTest {
         }
         user.setLogin(login);
         testCorrectEdits(user, login);
+        
     }
+    
+    @Test
+    public void testIncorrectEdits(){
+        User user = DBUtils.createUser();
+        try {
+            manager.create(user);
+        } catch (Exception ex) {
+            fail("Unexpected exception: " + ex);
+        }
+        user.setName(null);
+        try{
+            manager.edit(user);
+            User modified =manager.findUser(user.getLogin());
+            
+            assertEquals("Login differs.",user.getLogin(),modified.getLogin());
+            assertEquals("Name differs.", user.getName(),modified.getName());
+            assertNull("Name should be null",modified.getName());
+        }catch(Exception ex){
+            Logger.getLogger(UserAccessManagerTest.class.getName()).log(Level.INFO,"Correct exception",ex);
+        }
+        
+    }
+
 
     private void testCorrectEdits(User user, String login) {
         StringBuilder name=new StringBuilder(user.getName());
