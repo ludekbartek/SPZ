@@ -51,8 +51,10 @@ public class AttachmentJpaController implements Serializable, AttachmentManager 
             if (spznoteId != null) {
                 spznoteId.getAttachmentCollection().add(attachment);
                 spznoteId = em.merge(spznoteId);
+                
             }
             em.getTransaction().commit();
+            em.refresh(spznoteId);
         } catch (Exception ex) {
             if (findAttachment(attachment.getId()) != null) {
                 throw new PreexistingEntityException("Attachment " + attachment + " already exists.", ex);
@@ -160,6 +162,9 @@ public class AttachmentJpaController implements Serializable, AttachmentManager 
     @Override
     public Attachment findAttachment(Integer id) {
         EntityManager em = getEntityManager();
+        if(id==null){
+            return null;
+        }
         try {
             return em.find(Attachment.class, id);
         } finally {
