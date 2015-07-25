@@ -30,7 +30,8 @@ import static org.junit.Assert.*;
  */
 public class UserManagerTest {
 
-    UserManager manager = null;
+    private UserManager manager = null;
+    private static final Logger logger = Logger.getLogger(UserManagerTest.class.getName());
     public UserManagerTest() {
         EntityManagerFactory emf = DBUtils.getEntityManagerFactory();
         manager = new UserJpaController(emf);
@@ -65,7 +66,6 @@ public class UserManagerTest {
      */
     @Test
     public void testCreate() throws Exception {
-        System.out.println("create");
         User user = null;
         try{
             manager.create(user);
@@ -120,7 +120,7 @@ public class UserManagerTest {
             manager.edit(user);
             fail("Login changed to null");
         }catch(Exception ex){
-            Logger.getLogger(UserManagerTest.class.getName()).log(Level.SEVERE,"Setting username to null.",ex);
+            logger.log(Level.SEVERE,"Setting username to null.",ex);
         }
         user.setLogin(login);
         testCorrectEdits(user, login);
@@ -144,7 +144,7 @@ public class UserManagerTest {
             assertEquals("Name differs.", user.getName(),modified.getName());
             assertNull("Name should be null",modified.getName());
         }catch(Exception ex){
-            Logger.getLogger(UserAccessManagerTest.class.getName()).log(Level.INFO,"Correct exception",ex);
+            logger.log(Level.INFO,"Correct exception",ex);
         }
         
     }
@@ -174,7 +174,7 @@ public class UserManagerTest {
             manager.edit(null);
             fail("Null user edited");
         }catch(Exception ex){
-            Logger.getLogger(UserManagerTest.class.getName()).log(Level.INFO,"Correct exception thrown",ex);
+            logger.log(Level.INFO,"Correct exception thrown",ex);
         }
     }
 
@@ -183,7 +183,7 @@ public class UserManagerTest {
      */
     @Test
     public void testFindUser() {
-        Logger logger = Logger.getLogger(UserAccessManagerTest.class.getName());
+        //Logger logger = Logger.getLogger(UserAccessManagerTest.class.getName());
         try{
             User expResult = manager.findUser(null);
             fail("findUser accepts null parameter");
@@ -215,7 +215,7 @@ public class UserManagerTest {
             assertEquals("Company differs",user.getCompany(), found.getCompany());
             assertEquals("Password differs",user.getPassword(), found.getPassword());
         } catch (Exception ex) {
-            Logger.getLogger(UserManagerTest.class.getName()).log(Level.SEVERE, null, ex);
+            logger.log(Level.SEVERE, null, ex);
         }
         
     }
@@ -239,15 +239,22 @@ public class UserManagerTest {
      */
     @Test
     public void testFindUserEntities_int_int() {
-        System.out.println("findUserEntities");
+      //  Logger logger = Logger.getLogger(UserManagerTest.class.getName());
         int maxResults = 0;
         int firstResult = 0;
-        UserManager instance = new UserManagerImpl();
+        //UserManager instance = new UserManagerImpl();
         List<User> expResult = null;
-        List<User> result = instance.findUserEntities(maxResults, firstResult);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        try{
+            List<User> result = manager.findUserEntities(maxResults, firstResult);
+            assertEquals("Result should has 0 elements.",0,result.size());
+        }catch(Exception ex){
+            fail("Vyhozena vyjimka " + ex);
+        }
+    }
+    @Test
+    public void testFindUserEntitiesIntIntNonEmpty(){
+        System.out.println("FindUserEntitiesIntIntNonEmpty");
+        fail("Test prototype");   
     }
 
     /**
