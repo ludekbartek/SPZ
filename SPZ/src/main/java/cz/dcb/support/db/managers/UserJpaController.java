@@ -399,6 +399,9 @@ public class UserJpaController implements Serializable, UserManager {
 
     @Override
     public User findUser(String id) {
+        if(id==null){
+            throw new NullPointerException("Parameter id is null");
+        }
         EntityManager em = getEntityManager();
         try {
             return em.find(User.class, id);
