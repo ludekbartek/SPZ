@@ -11,6 +11,8 @@ import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
@@ -55,6 +57,7 @@ public class Spzstate implements Serializable {
     @Basic
     private String releaseNotes;
     @Column(name="id",table="spzstate",nullable=false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private Integer id;
     @Column(name="current_state",table="spzstate")
