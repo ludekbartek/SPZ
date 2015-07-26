@@ -4,6 +4,7 @@ package cz.dcb.support.db.jpa;
 import java.io.Serializable;
 import java.lang.String;
 import java.util.Collection;
+import java.util.Objects;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -168,4 +169,31 @@ public class User implements Serializable {
     public void setTs(int ts) {
         this.ts = ts;
     }
+    
+    public String toString(){
+        return login+": "+name;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 37 * hash + Objects.hashCode(this.login);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final User other = (User) obj;
+        if (!Objects.equals(this.login, other.login)) {
+            return false;
+        }
+        return true;
+    }
+    
 }
