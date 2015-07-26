@@ -254,7 +254,27 @@ public class UserManagerTest {
     @Test
     public void testFindUserEntitiesIntIntNonEmpty(){
         System.out.println("FindUserEntitiesIntIntNonEmpty");
-        fail("Test prototype");   
+        List<User> users = new ArrayList<>();
+        for(int i=0;i<10;i++){
+            try {
+                User user = DBUtils.createUser();
+                user.setLogin(user.getLogin()+i);
+                manager.create(user);
+                users.add(user);
+            } catch (Exception ex) {
+                logger.log(Level.SEVERE, "Unexpected exception thrown.", ex);
+                fail("Unexpected exception thrown: "+ex);
+            }
+        }
+        int size = users.size();
+        for(int i=0;i<size;i++){
+            List<User> result = manager.findUserEntities(size-i, i);
+            logger.log(Level.INFO, result.toString());
+            assertEquals("Wrong size of result.",users.size()-i,result.size());
+            checkUserPresence(users,result,i);
+        }
+        
+        //fail("Test prototype");   
     }
 
     /**
@@ -286,6 +306,13 @@ public class UserManagerTest {
         }
         count = manager.getUserCount();
         assertEquals("User number does not match.",users.size(), count);
+    }
+
+    private void checkUserPresence(List<User> users, List<User> result,int first) {
+       for(int i=first;i<users.size();i++){
+           User user = users.get(i);
+           assertTrue("user "+user.getLogin()+" is missing.",result.contains(user));
+       }
     }
 
     public class UserManagerImpl implements UserManager {
