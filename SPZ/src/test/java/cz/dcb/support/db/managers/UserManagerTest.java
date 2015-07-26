@@ -224,14 +224,24 @@ public class UserManagerTest {
      * Test of findUserEntities method, of class UserManager.
      */
     @Test
-    public void testFindUserEntities_0args() {
+    public void testFindUserEntities_0args() throws Exception {
         System.out.println("findUserEntities");
-        UserManager instance = new UserManagerImpl();
-        List<User> expResult = null;
-        List<User> result = instance.findUserEntities();
-        assertEquals(expResult, result);
+        //UserManager instance = new UserManagerImpl();
+        List<User> result = manager.findUserEntities();
+        List<User> expResult = new ArrayList<>();
+        assertEquals("List of users should be empty.",expResult, result);
+        for(int i=1;i<=10;i++){
+            User user = DBUtils.createUser();
+            user.setLogin(user.getLogin()+i);
+            expResult.add(user);
+            manager.create(user);
+        }
+        result = manager.findUserEntities();
+        assertEquals("nesouhlasi pocty prvku v kolekcich",expResult.size(), result.size());
+        assertDeepEquals("Nesouhlasi kolekce",result,expResult);
+        //assertEquals("Nesouhlasi zadana a vracena kolekce uzivatel",result,expResult);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        //fail("The test case is a prototype.");
     }
 
     /**
@@ -313,6 +323,12 @@ public class UserManagerTest {
            User user = users.get(i);
            assertTrue("user "+user.getLogin()+" is missing.",result.contains(user));
        }
+    }
+
+    private void assertDeepEquals(String msg, List<User> result, List<User> expResult) {
+        for(User user:result){
+            assertTrue(msg,expResult.contains(user));
+        }
     }
 
     public class UserManagerImpl implements UserManager {
