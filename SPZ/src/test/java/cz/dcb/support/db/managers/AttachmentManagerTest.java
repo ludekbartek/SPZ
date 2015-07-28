@@ -31,10 +31,9 @@ import static org.junit.Assert.*;
  * @author bar
  */
 public class AttachmentManagerTest {
-    private EntityManagerFactory emf = null;
-    private AttachmentManager manager = new AttachmentJpaController(emf);
+    private AttachmentManager manager = new AttachmentJpaController(DBUtils.getEntityManagerFactory());
+   
     public AttachmentManagerTest() {
-        emf = DBUtils.getEntityManagerFactory();
     }
     
     @BeforeClass
@@ -65,10 +64,10 @@ public class AttachmentManagerTest {
     }
 
     private void testValidAttachment() throws Exception {
-        AttachmentManager instance = new AttachmentJpaController(emf);
+//        AttachmentManager instance = new AttachmentJpaController(emf);
         Attachment attachment = DBUtils.createAttachment();
-        instance.create(attachment);
-        checkExistance(instance,attachment);
+        manager.create(attachment);
+        checkExistance(manager,attachment);
     }
 
     
@@ -163,16 +162,16 @@ public class AttachmentManagerTest {
     @Test
     public void testGetAttachmentCount() throws NonexistentEntityException, cz.dcb.support.db.jpa.controllers.exceptions.NonexistentEntityException {
         System.out.println("getAttachmentCount");
-        AttachmentManager man = new AttachmentJpaController(emf);
+//        AttachmentManager man = new AttachmentJpaController(emf);
         int expResult = 0;
-        int result = man.getAttachmentCount();
+        int result = manager.getAttachmentCount();
         assertEquals(expResult, result);
         //AttachmentManager man = new AttachmentJpaController(emf);
-        Attachment attach = addCorrectAttachemnt(man);
-        result = man.getAttachmentCount();
+        Attachment attach = addCorrectAttachemnt(manager);
+        result = manager.getAttachmentCount();
         assertEquals("Incorrect attachments count. ",1,result);
-        man.destroy(attach.getId());
-        result = man.getAttachmentCount();
+        manager.destroy(attach.getId());
+        result = manager.getAttachmentCount();
         assertEquals("Incorrect attachments count. ",0,result);
         // TODO review the generated test code and remove the default call to fail.
         //fail("The test case is a prototype.");
@@ -185,9 +184,9 @@ public class AttachmentManagerTest {
 
     private void testNullDateAttachment() {
         Attachment attachment = null;
-        AttachmentManager instance = new AttachmentJpaController(emf);
+//        AttachmentManager instance = new AttachmentJpaController(emf);
         try{
-            instance.create(attachment);
+            manager.create(attachment);
             fail("Created null Attachment");
         }catch(NullPointerException ex){
             Logger.getLogger(AttachmentJpaController.class.getName()).log(Level.INFO,"Creating null attachment ok");
@@ -198,11 +197,11 @@ public class AttachmentManagerTest {
     }
 
     private void testIncorrectEdits() throws Exception {
-        AttachmentManager man = new AttachmentJpaController(emf);
-        Attachment attachment = addCorrectAttachemnt(man);
+//        AttachmentManager man = new AttachmentJpaController(emf);
+        Attachment attachment = addCorrectAttachemnt(manager);
         Attachment newValue = null;
         try {
-            man.edit(newValue);
+            manager.edit(newValue);
         } catch (NonexistentEntityException ex) {
             Logger.getLogger(AttachmentManagerTest.class.getName()).log(Level.INFO, "Correct exception while editing null attachment.", ex);
         } catch (Exception ex1){
@@ -218,32 +217,32 @@ public class AttachmentManagerTest {
         attachment1.setType(attachment.getType());
         
         try {
-            man.edit(attachment1);
+            manager.edit(attachment1);
         } catch (NonexistentEntityException ex) {
             Logger.getLogger(AttachmentManagerTest.class.getName()).log(Level.SEVERE, "Correct exception has been thrown.", ex);
         }
-        checkNonExistance(man, newValue);
+        checkNonExistance(manager, newValue);
         
     }
 
     private void testCorrectEdits() throws Exception {
-        AttachmentManager man = new AttachmentJpaController(emf);
-        Attachment attach = addCorrectAttachemnt(man);
+        //AttachmentManager man = new AttachmentJpaController(emf);
+        Attachment attach = addCorrectAttachemnt(manager);
         attach.setContent("Changed content.");
-        man.edit(attach);
-        checkExistance(man, attach);
+        manager.edit(attach);
+        checkExistance(manager, attach);
         attach.setDate(new GregorianCalendar().getTime());
-        man.edit(attach);
-        checkExistance(man, attach);
+        manager.edit(attach);
+        checkExistance(manager, attach);
         attach.setLocation("/new/path");
-        man.edit(attach);
-        checkExistance(man, attach);
+        manager.edit(attach);
+        checkExistance(manager, attach);
         attach.setTs(attach.getTs().add(BigInteger.ONE));
-        man.edit(attach);
-        checkExistance(man, attach);
+        manager.edit(attach);
+        checkExistance(manager, attach);
         attach.setType("application/x+msword");
-        man.edit(attach);
-        checkExistance(man, attach);
+        manager.edit(attach);
+        checkExistance(manager, attach);
     }
 
     private Attachment addCorrectAttachemnt(AttachmentManager man) {
