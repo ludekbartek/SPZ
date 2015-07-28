@@ -20,7 +20,7 @@ import javax.persistence.criteria.Root;
  *
  * @author bar
  */
-public class UserAccessJpaController implements Serializable, UserAccesManager {
+public class UserAccessJpaController implements Serializable, UserAccessManager {
 
     public UserAccessJpaController(EntityManagerFactory emf) {
         this.emf = emf;
