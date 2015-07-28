@@ -5,9 +5,12 @@
  */
 package cz.dcb.support.db.managers;
 
-import cz.dcb.support.db.jpa.Useraccess;
+import cz.dcb.support.db.jpa.controllers.UserAccessJpaController;
+import cz.dcb.support.db.jpa.controllers.UserAccessManager;
+import cz.dcb.support.db.jpa.entities.Useraccess;
 import cz.dcb.support.db.managers.exceptions.NonexistentEntityException;
 import cz.dcb.support.db.managers.exceptions.PreexistingEntityException;
+import cz.dcb.support.db.utils.DBUtils;
 import java.util.List;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -22,6 +25,7 @@ import static org.junit.Assert.*;
  */
 public class UserAccessManagerTest {
     
+    private final UserAccessManager manager = new UserAccessJpaController(DBUtils.getEntityManagerFactory());
     public UserAccessManagerTest() {
     }
     
@@ -48,8 +52,9 @@ public class UserAccessManagerTest {
     public void testCreate() throws Exception {
         System.out.println("create");
         Useraccess useraccess = null;
-        UserAccessManager instance = new UserAccessManagerImpl();
-        instance.create(useraccess);
+//        UserAccessManager instance = new UserAccessManagerImpl();
+  
+        manager.create(useraccess);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
@@ -61,8 +66,8 @@ public class UserAccessManagerTest {
     public void testDestroy() throws Exception {
         System.out.println("destroy");
         Integer id = null;
-        UserAccessManager instance = new UserAccessManagerImpl();
-        instance.destroy(id);
+//        UserAccessManager instance = new UserAccessManagerImpl();
+        manager.destroy(id);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
@@ -74,8 +79,8 @@ public class UserAccessManagerTest {
     public void testEdit() throws Exception {
         System.out.println("edit");
         Useraccess useraccess = null;
-        UserAccessManager instance = new UserAccessManagerImpl();
-        instance.edit(useraccess);
+//        UserAccessManager instance = new UserAccessManagerImpl();
+        manager.edit(useraccess);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
@@ -87,9 +92,9 @@ public class UserAccessManagerTest {
     public void testFindUseraccess() {
         System.out.println("findUseraccess");
         Integer id = null;
-        UserAccessManager instance = new UserAccessManagerImpl();
+        //UserAccessManager instance = new UserAccessManagerImpl();
         Useraccess expResult = null;
-        Useraccess result = instance.findUseraccess(id);
+        Useraccess result = manager.findUseraccess(id);
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
@@ -101,9 +106,9 @@ public class UserAccessManagerTest {
     @Test
     public void testFindUseraccessEntities_0args() {
         System.out.println("findUseraccessEntities");
-        UserAccessManager instance = new UserAccessManagerImpl();
+        //UserAccessManager instance = new UserAccessManagerImpl();
         List<Useraccess> expResult = null;
-        List<Useraccess> result = instance.findUseraccessEntities();
+        List<Useraccess> result = manager.findUseraccessEntities();
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
@@ -117,9 +122,9 @@ public class UserAccessManagerTest {
         System.out.println("findUseraccessEntities");
         int maxResults = 0;
         int firstResult = 0;
-        UserAccessManager instance = new UserAccessManagerImpl();
+        //UserAccessManager instance = new UserAccessManagerImpl();
         List<Useraccess> expResult = null;
-        List<Useraccess> result = instance.findUseraccessEntities(maxResults, firstResult);
+        List<Useraccess> result = manager.findUseraccessEntities(maxResults, firstResult);
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
@@ -131,15 +136,15 @@ public class UserAccessManagerTest {
     @Test
     public void testGetUseraccessCount() {
         System.out.println("getUseraccessCount");
-        UserAccessManager instance = new UserAccessManagerImpl();
+       // UserAccessManager instance = new UserAccessManagerImpl();
         int expResult = 0;
-        int result = instance.getUseraccessCount();
+        int result = manager.getUseraccessCount();
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
 
-    public class UserAccessManagerImpl implements UserAccessManager {
+/*    public class UserAccessManagerImpl implements UserAccessManager {
 
         public void create(Useraccess useraccess) throws PreexistingEntityException, Exception {
         }
@@ -166,5 +171,5 @@ public class UserAccessManagerTest {
             return 0;
         }
     }
-    
+  */  
 }

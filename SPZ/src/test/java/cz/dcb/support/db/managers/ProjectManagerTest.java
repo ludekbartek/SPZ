@@ -5,10 +5,13 @@
  */
 package cz.dcb.support.db.managers;
 
-import cz.dcb.support.db.jpa.Project;
+import cz.dcb.support.db.jpa.controllers.ProjectJpaController;
+import cz.dcb.support.db.jpa.controllers.ProjectManager;
+import cz.dcb.support.db.jpa.entities.Project;
 import cz.dcb.support.db.managers.exceptions.IllegalOrphanException;
 import cz.dcb.support.db.managers.exceptions.NonexistentEntityException;
 import cz.dcb.support.db.managers.exceptions.PreexistingEntityException;
+import cz.dcb.support.db.managers.utils.DBUtils;
 import java.util.List;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -22,6 +25,8 @@ import static org.junit.Assert.*;
  * @author bar
  */
 public class ProjectManagerTest {
+    
+    private final ProjectManager manager = new ProjectJpaController(DBUtils.getEntityManagerFactory());
     
     public ProjectManagerTest() {
     }
@@ -49,8 +54,8 @@ public class ProjectManagerTest {
     public void testCreate() throws Exception {
         System.out.println("create");
         Project project = null;
-        ProjectManager instance = new ProjectManagerImpl();
-        instance.create(project);
+       // ProjectManager instance = new ProjectManagerImpl();
+        manager.create(project);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
@@ -62,8 +67,8 @@ public class ProjectManagerTest {
     public void testDestroy() throws Exception {
         System.out.println("destroy");
         String id = "";
-        ProjectManager instance = new ProjectManagerImpl();
-        instance.destroy(id);
+//        ProjectManager instance = new ProjectManagerImpl();
+        manager.destroy(-1);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
@@ -75,8 +80,8 @@ public class ProjectManagerTest {
     public void testEdit() throws Exception {
         System.out.println("edit");
         Project project = null;
-        ProjectManager instance = new ProjectManagerImpl();
-        instance.edit(project);
+//        ProjectManager instance = new ProjectManagerImpl();
+        manager.edit(project);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
@@ -87,10 +92,9 @@ public class ProjectManagerTest {
     @Test
     public void testFindProject() {
         System.out.println("findProject");
-        String id = "";
-        ProjectManager instance = new ProjectManagerImpl();
+        Project project = DBUtils.createProject();
         Project expResult = null;
-        Project result = instance.findProject(id);
+        Project result = manager.findProject(project.getId());
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
@@ -102,9 +106,9 @@ public class ProjectManagerTest {
     @Test
     public void testFindProjectEntities_0args() {
         System.out.println("findProjectEntities");
-        ProjectManager instance = new ProjectManagerImpl();
+//        ProjectManager instance = new ProjectManagerImpl();
         List<Project> expResult = null;
-        List<Project> result = instance.findProjectEntities();
+        List<Project> result = manager.findProjectEntities();
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
@@ -118,9 +122,9 @@ public class ProjectManagerTest {
         System.out.println("findProjectEntities");
         int maxResults = 0;
         int firstResult = 0;
-        ProjectManager instance = new ProjectManagerImpl();
+//        ProjectManager instance = new ProjectManagerImpl();
         List<Project> expResult = null;
-        List<Project> result = instance.findProjectEntities(maxResults, firstResult);
+        List<Project> result = manager.findProjectEntities(maxResults, firstResult);
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
@@ -132,15 +136,15 @@ public class ProjectManagerTest {
     @Test
     public void testGetProjectCount() {
         System.out.println("getProjectCount");
-        ProjectManager instance = new ProjectManagerImpl();
+//        ProjectManager instance = new ProjectManagerImpl();
         int expResult = 0;
-        int result = instance.getProjectCount();
+        int result = manager.getProjectCount();
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
 
-    public class ProjectManagerImpl implements ProjectManager {
+/*    public class ProjectManagerImpl implements ProjectManager {
 
         public void create(Project project) throws PreexistingEntityException, Exception {
         }
@@ -167,5 +171,5 @@ public class ProjectManagerTest {
             return 0;
         }
     }
-    
+  */  
 }

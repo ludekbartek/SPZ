@@ -5,11 +5,14 @@
  */
 package cz.dcb.support.db.managers;
 
-import cz.dcb.support.db.jpa.Attachment;
-import cz.dcb.support.db.jpa.Spznote;
+import cz.dcb.support.db.jpa.controllers.AttachmentJpaController;
+import cz.dcb.support.db.jpa.controllers.AttachmentManager;
+import cz.dcb.support.db.jpa.entities.Attachment;
+import cz.dcb.support.db.jpa.entities.Spznote;
 import cz.dcb.support.db.managers.exceptions.NonexistentEntityException;
 import cz.dcb.support.db.managers.exceptions.PreexistingEntityException;
 import cz.dcb.support.db.managers.utils.DBUtils;
+import java.math.BigInteger;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Random;
@@ -29,7 +32,7 @@ import static org.junit.Assert.*;
  */
 public class AttachmentManagerTest {
     private EntityManagerFactory emf = null;
-    
+    private AttachmentManager manager = new AttachmentJpaController(emf);
     public AttachmentManagerTest() {
         emf = DBUtils.getEntityManagerFactory();
     }
@@ -88,8 +91,8 @@ public class AttachmentManagerTest {
     public void testDestroy() throws Exception {
         System.out.println("destroy");
         Integer id = null;
-        AttachmentManager instance = new AttachmentManagerImpl();
-        instance.destroy(id);
+        //AttachmentManager instance = new AttachmentManagerImpl();
+        manager.destroy(id);
         // TODO review the generated test code and remove the default call to fail.
       //  fail("The test case is a prototype.");
     }
@@ -114,9 +117,8 @@ public class AttachmentManagerTest {
     public void testFindAttachment() {
         System.out.println("findAttachment");
         Integer id = null;
-        AttachmentManager instance = new AttachmentManagerImpl();
         Attachment expResult = null;
-        Attachment result = instance.findAttachment(id);
+        Attachment result = manager.findAttachment(id);
         assertEquals(expResult, result);
         fail("Dodelat nalezeni (ne)existujicich priloh");
         // TODO review the generated test code and remove the default call to fail.
@@ -129,9 +131,9 @@ public class AttachmentManagerTest {
     @Test
     public void testFindAttachmentEntities_0args() {
         System.out.println("findAttachmentEntities");
-        AttachmentManager instance = new AttachmentManagerImpl();
+//        AttachmentManager instance = new AttachmentManagerImpl();
         List<Attachment> expResult = null;
-        List<Attachment> result = instance.findAttachmentEntities();
+        List<Attachment> result = manager.findAttachmentEntities();
         assertEquals(expResult, result);
         fail("Dodelat nalezeni (ne)existujicich priloh");
         // TODO review the generated test code and remove the default call to fail.
@@ -146,9 +148,9 @@ public class AttachmentManagerTest {
         System.out.println("findAttachmentEntities");
         int maxResults = 0;
         int firstResult = 0;
-        AttachmentManager instance = new AttachmentManagerImpl();
+//        AttachmentManager instance = new AttachmentManagerImpl();
         List<Attachment> expResult = null;
-        List<Attachment> result = instance.findAttachmentEntities(maxResults, firstResult);
+        List<Attachment> result = manager.findAttachmentEntities(maxResults, firstResult);
         assertEquals(expResult, result);
         fail("Dodelat nalezeni (ne)existujicich priloh");
         // TODO review the generated test code and remove the default call to fail.
@@ -159,7 +161,7 @@ public class AttachmentManagerTest {
      * Test of getAttachmentCount method, of class AttachmentManager.
      */
     @Test
-    public void testGetAttachmentCount() throws NonexistentEntityException {
+    public void testGetAttachmentCount() throws NonexistentEntityException, cz.dcb.support.db.jpa.controllers.exceptions.NonexistentEntityException {
         System.out.println("getAttachmentCount");
         AttachmentManager man = new AttachmentJpaController(emf);
         int expResult = 0;
@@ -211,7 +213,7 @@ public class AttachmentManagerTest {
         //attachment1.setId(-1);
         attachment1.setDate(attachment.getDate());
         attachment1.setLocation(attachment.getLocation());
-        attachment1.setSpznoteId(attachment.getSpznoteId());
+        
         attachment1.setTs(attachment.getTs());
         attachment1.setType(attachment.getType());
         
@@ -236,7 +238,7 @@ public class AttachmentManagerTest {
         attach.setLocation("/new/path");
         man.edit(attach);
         checkExistance(man, attach);
-        attach.setTs(attach.getTs()+1);
+        attach.setTs(attach.getTs().add(BigInteger.ONE));
         man.edit(attach);
         checkExistance(man, attach);
         attach.setType("application/x+msword");
@@ -252,8 +254,7 @@ public class AttachmentManagerTest {
         attach.setContent("Some content " + val );
         attach.setLocation("/Some/path"+val);
         attach.setDate(new GregorianCalendar().getTime());
-        attach.setSpznoteId(new Spznote());
-        attach.setTs(val);
+        attach.setTs(BigInteger.valueOf(val));
         attach.setType("radna"+val);
         try {
             man.create(attach);
@@ -268,7 +269,7 @@ public class AttachmentManagerTest {
         Attachment res = man.findAttachment(newValue.getId());
         assertNotSame(newValue, res);
     }
-
+/*
     public class AttachmentManagerImpl implements AttachmentManager {
 
         public void create(Attachment attachment) throws PreexistingEntityException, Exception {
@@ -296,5 +297,5 @@ public class AttachmentManagerTest {
             return 0;
         }
     }
-    
+  */  
 }
