@@ -1,0 +1,350 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<jpa:entity-mappings status="GENERATED" jaxb-support="false" id="_143806629529478" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/orm orm_2_1.xsd" xmlns:java="http://jcp.org/en/jsr/detail?id=270" xmlns:jpa="http://java.sun.com/xml/ns/persistence/orm" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <jpa:entity class="Spzstates" jaxb-root-element="false" static-metamodel="false" visibile="true" minimized="false" id="_143806629529481">
+        <jpa:table name="SPZSTATES"/>
+        <jpa:attributes>
+            <jpa:id name="id" attribute-type="java.lang.Integer" visibile="true" id="_143806629543397">
+                <jpa:column name="ID" unique="false" nullable="false" insertable="true" updatable="true" table="SPZSTATES"/>
+                <jpa:generated-value strategy="AUTO"/>
+            </jpa:id>
+            <jpa:basic name="spzid" optional="true" attribute-type="java.lang.Integer" visibile="true" id="_143806629543398">
+                <jpa:column name="SPZID" unique="false" nullable="true" insertable="true" updatable="true" table="SPZSTATES"/>
+            </jpa:basic>
+            <jpa:basic name="stateid" optional="true" attribute-type="java.lang.Integer" visibile="true" id="_143806629543399">
+                <jpa:column name="STATEID" unique="false" nullable="true" insertable="true" updatable="true" table="SPZSTATES"/>
+            </jpa:basic>
+        </jpa:attributes>
+    </jpa:entity>
+    <jpa:entity class="User" jaxb-root-element="false" static-metamodel="false" visibile="true" minimized="false" id="_143806629542882">
+        <jpa:table name="USER_"/>
+        <jpa:attributes>
+            <jpa:id name="id" attribute-type="java.lang.Integer" visibile="true" id="_1438066295433100">
+                <jpa:column name="ID" unique="false" nullable="false" insertable="true" updatable="true" table="USER_"/>
+                <jpa:generated-value strategy="AUTO"/>
+            </jpa:id>
+            <jpa:basic name="login" optional="true" attribute-type="java.lang.String" visibile="true" id="_1438066295433101">
+                <jpa:column name="LOGIN" unique="false" nullable="true" insertable="true" updatable="true" table="USER_" length="32"/>
+            </jpa:basic>
+            <jpa:basic name="name" optional="true" attribute-type="java.lang.String" visibile="true" id="_1438066295433102">
+                <jpa:column name="NAME" unique="false" nullable="true" insertable="true" updatable="true" table="USER_" length="50"/>
+            </jpa:basic>
+            <jpa:basic name="password" optional="true" attribute-type="java.lang.String" visibile="true" id="_1438066295433103">
+                <jpa:column name="PASSWORD" unique="false" nullable="true" insertable="true" updatable="true" table="USER_" length="512"/>
+            </jpa:basic>
+            <jpa:basic name="email" optional="true" attribute-type="java.lang.String" visibile="true" id="_1438066295433104">
+                <jpa:column name="EMAIL" unique="false" nullable="true" insertable="true" updatable="true" table="USER_" length="50"/>
+            </jpa:basic>
+            <jpa:basic name="company" optional="true" attribute-type="java.lang.String" visibile="true" id="_1438066295433105">
+                <jpa:column name="COMPANY" unique="false" nullable="true" insertable="true" updatable="true" table="USER_" length="50"/>
+            </jpa:basic>
+            <jpa:basic name="tel" optional="true" attribute-type="java.lang.String" visibile="true" id="_1438066295433106">
+                <jpa:column name="TEL" unique="false" nullable="true" insertable="true" updatable="true" table="USER_" length="50"/>
+            </jpa:basic>
+            <jpa:basic name="fax" optional="true" attribute-type="java.lang.String" visibile="true" id="_1438066295433107">
+                <jpa:column name="FAX" unique="false" nullable="true" insertable="true" updatable="true" table="USER_" length="50"/>
+            </jpa:basic>
+            <jpa:basic name="classType" optional="true" attribute-type="java.lang.Short" visibile="true" id="_1438066295433108">
+                <jpa:column name="CLASS_TYPE" unique="false" nullable="true" insertable="true" updatable="true" table="USER_"/>
+            </jpa:basic>
+            <jpa:basic name="ts" optional="true" attribute-type="java.math.BigInteger" visibile="true" id="_1438066295433109">
+                <jpa:column name="TS" unique="false" nullable="true" insertable="true" updatable="true" table="USER_"/>
+            </jpa:basic>
+        </jpa:attributes>
+    </jpa:entity>
+    <jpa:entity class="Attachment" jaxb-root-element="false" static-metamodel="false" visibile="true" minimized="false" id="_143806629542883">
+        <jpa:table name="ATTACHMENT"/>
+        <jpa:attributes>
+            <jpa:id name="id" attribute-type="java.lang.Integer" visibile="true" id="_1438066295433110">
+                <jpa:column name="ID" unique="false" nullable="false" insertable="true" updatable="true" table="ATTACHMENT"/>
+                <jpa:generated-value strategy="AUTO"/>
+            </jpa:id>
+            <jpa:basic name="date" optional="true" attribute-type="java.util.Date" visibile="true" id="_1438066295433111">
+                <jpa:column name="DATE" unique="false" nullable="true" insertable="true" updatable="true" table="ATTACHMENT"/>
+                <jpa:temporal>TIMESTAMP</jpa:temporal>
+            </jpa:basic>
+            <jpa:basic name="content" optional="true" attribute-type="java.lang.String" visibile="true" id="_1438066295434112">
+                <jpa:column name="CONTENT" unique="false" nullable="true" insertable="true" updatable="true" table="ATTACHMENT" length="255"/>
+            </jpa:basic>
+            <jpa:basic name="location" optional="true" attribute-type="java.lang.String" visibile="true" id="_1438066295434113">
+                <jpa:column name="LOCATION" unique="false" nullable="true" insertable="true" updatable="true" table="ATTACHMENT" length="255"/>
+            </jpa:basic>
+            <jpa:basic name="type" optional="true" attribute-type="java.lang.String" visibile="true" id="_1438066295434114">
+                <jpa:column name="TYPE" unique="false" nullable="true" insertable="true" updatable="true" table="ATTACHMENT" length="255"/>
+            </jpa:basic>
+            <jpa:basic name="ts" optional="true" attribute-type="java.math.BigInteger" visibile="true" id="_1438066295434115">
+                <jpa:column name="TS" unique="false" nullable="true" insertable="true" updatable="true" table="ATTACHMENT"/>
+            </jpa:basic>
+        </jpa:attributes>
+    </jpa:entity>
+    <jpa:entity class="Project" jaxb-root-element="false" static-metamodel="false" visibile="true" minimized="false" id="_143806629542884">
+        <jpa:table name="PROJECT"/>
+        <jpa:attributes>
+            <jpa:id name="id" attribute-type="java.lang.Integer" visibile="true" id="_1438066295434116">
+                <jpa:column name="ID" unique="false" nullable="false" insertable="true" updatable="true" table="PROJECT"/>
+                <jpa:generated-value strategy="AUTO"/>
+            </jpa:id>
+            <jpa:basic name="name" optional="true" attribute-type="java.lang.String" visibile="true" id="_1438066295434117">
+                <jpa:column name="NAME" unique="false" nullable="true" insertable="true" updatable="true" table="PROJECT" length="32"/>
+            </jpa:basic>
+            <jpa:basic name="description" optional="true" attribute-type="java.lang.String" visibile="true" id="_1438066295434118">
+                <jpa:column name="DESCRIPTION" unique="false" nullable="true" insertable="true" updatable="true" table="PROJECT" length="255"/>
+            </jpa:basic>
+            <jpa:basic name="ts" optional="true" attribute-type="java.math.BigInteger" visibile="true" id="_1438066295434119">
+                <jpa:column name="TS" unique="false" nullable="true" insertable="true" updatable="true" table="PROJECT"/>
+            </jpa:basic>
+        </jpa:attributes>
+    </jpa:entity>
+    <jpa:entity class="Spzanalyst" jaxb-root-element="false" static-metamodel="false" visibile="true" minimized="false" id="_143806629542885">
+        <jpa:table name="SPZANALYST"/>
+        <jpa:attributes>
+            <jpa:id name="id" attribute-type="java.lang.Integer" visibile="true" id="_1438066295434120">
+                <jpa:column name="ID" unique="false" nullable="false" insertable="true" updatable="true" table="SPZANALYST"/>
+                <jpa:generated-value strategy="AUTO"/>
+            </jpa:id>
+            <jpa:basic name="spzid" optional="true" attribute-type="java.lang.Integer" visibile="true" id="_1438066295434121">
+                <jpa:column name="SPZID" unique="false" nullable="true" insertable="true" updatable="true" table="SPZANALYST"/>
+            </jpa:basic>
+            <jpa:basic name="userid" optional="true" attribute-type="java.lang.Integer" visibile="true" id="_1438066295434122">
+                <jpa:column name="USERID" unique="false" nullable="true" insertable="true" updatable="true" table="SPZANALYST"/>
+            </jpa:basic>
+        </jpa:attributes>
+    </jpa:entity>
+    <jpa:entity class="Configuration" jaxb-root-element="false" static-metamodel="false" visibile="true" minimized="false" id="_143806629542886">
+        <jpa:table name="CONFIGURATION"/>
+        <jpa:attributes>
+            <jpa:id name="id" attribute-type="java.lang.Integer" visibile="true" id="_1438066295434123">
+                <jpa:column name="ID" unique="false" nullable="false" insertable="true" updatable="true" table="CONFIGURATION"/>
+                <jpa:generated-value strategy="AUTO"/>
+            </jpa:id>
+            <jpa:basic name="code" optional="true" attribute-type="java.lang.String" visibile="true" id="_1438066295434124">
+                <jpa:column name="CODE" unique="false" nullable="true" insertable="true" updatable="true" table="CONFIGURATION" length="32"/>
+            </jpa:basic>
+            <jpa:basic name="description" optional="true" attribute-type="java.lang.String" visibile="true" id="_1438066295434125">
+                <jpa:column name="DESCRIPTION" unique="false" nullable="true" insertable="true" updatable="true" table="CONFIGURATION" length="255"/>
+            </jpa:basic>
+            <jpa:basic name="seqnumber" optional="true" attribute-type="java.math.BigInteger" visibile="true" id="_1438066295435126">
+                <jpa:column name="SEQNUMBER" unique="false" nullable="true" insertable="true" updatable="true" table="CONFIGURATION"/>
+            </jpa:basic>
+            <jpa:basic name="ts" optional="true" attribute-type="java.math.BigInteger" visibile="true" id="_1438066295435127">
+                <jpa:column name="TS" unique="false" nullable="true" insertable="true" updatable="true" table="CONFIGURATION"/>
+            </jpa:basic>
+        </jpa:attributes>
+    </jpa:entity>
+    <jpa:entity class="Projectconfiguration" jaxb-root-element="false" static-metamodel="false" visibile="true" minimized="false" id="_143806629542887">
+        <jpa:table name="PROJECTCONFIGURATION"/>
+        <jpa:attributes>
+            <jpa:id name="id" attribute-type="java.lang.Integer" visibile="true" id="_1438066295435128">
+                <jpa:column name="ID" unique="false" nullable="false" insertable="true" updatable="true" table="PROJECTCONFIGURATION"/>
+                <jpa:generated-value strategy="AUTO"/>
+            </jpa:id>
+            <jpa:basic name="projectid" optional="true" attribute-type="java.lang.Integer" visibile="true" id="_1438066295435129">
+                <jpa:column name="PROJECTID" unique="false" nullable="true" insertable="true" updatable="true" table="PROJECTCONFIGURATION"/>
+            </jpa:basic>
+            <jpa:basic name="configurationid" optional="true" attribute-type="java.lang.Integer" visibile="true" id="_1438066295435130">
+                <jpa:column name="CONFIGURATIONID" unique="false" nullable="true" insertable="true" updatable="true" table="PROJECTCONFIGURATION"/>
+            </jpa:basic>
+        </jpa:attributes>
+    </jpa:entity>
+    <jpa:entity class="Spznote" jaxb-root-element="false" static-metamodel="false" visibile="true" minimized="false" id="_143806629542888">
+        <jpa:table name="SPZNOTE"/>
+        <jpa:attributes>
+            <jpa:id name="id" attribute-type="java.lang.Integer" visibile="true" id="_1438066295435131">
+                <jpa:column name="ID" unique="false" nullable="false" insertable="true" updatable="true" table="SPZNOTE"/>
+                <jpa:generated-value strategy="AUTO"/>
+            </jpa:id>
+            <jpa:basic name="externalnote" optional="true" attribute-type="java.lang.Short" visibile="true" id="_1438066295435132">
+                <jpa:column name="EXTERNALNOTE" unique="false" nullable="true" insertable="true" updatable="true" table="SPZNOTE"/>
+            </jpa:basic>
+            <jpa:basic name="notedate" optional="true" attribute-type="java.util.Date" visibile="true" id="_1438066295435133">
+                <jpa:column name="NOTEDATE" unique="false" nullable="true" insertable="true" updatable="true" table="SPZNOTE"/>
+                <jpa:temporal>TIMESTAMP</jpa:temporal>
+            </jpa:basic>
+            <jpa:basic name="notetext" optional="true" attribute-type="java.lang.String" visibile="true" id="_1438066295435134">
+                <jpa:column name="NOTETEXT" unique="false" nullable="true" insertable="true" updatable="true" table="SPZNOTE" length="8000"/>
+            </jpa:basic>
+            <jpa:basic name="ts" optional="true" attribute-type="java.math.BigInteger" visibile="true" id="_1438066295435135">
+                <jpa:column name="TS" unique="false" nullable="true" insertable="true" updatable="true" table="SPZNOTE"/>
+            </jpa:basic>
+        </jpa:attributes>
+    </jpa:entity>
+    <jpa:entity class="Noteissuer" jaxb-root-element="false" static-metamodel="false" visibile="true" minimized="false" id="_143806629542889">
+        <jpa:table name="NOTEISSUER"/>
+        <jpa:attributes>
+            <jpa:id name="id" attribute-type="java.lang.Integer" visibile="true" id="_1438066295436136">
+                <jpa:column name="ID" unique="false" nullable="false" insertable="true" updatable="true" table="NOTEISSUER"/>
+                <jpa:generated-value strategy="AUTO"/>
+            </jpa:id>
+            <jpa:basic name="noteid" optional="true" attribute-type="java.lang.Integer" visibile="true" id="_1438066295436137">
+                <jpa:column name="NOTEID" unique="false" nullable="true" insertable="true" updatable="true" table="NOTEISSUER"/>
+            </jpa:basic>
+            <jpa:basic name="userid" optional="true" attribute-type="java.lang.Integer" visibile="true" id="_1438066295436138">
+                <jpa:column name="USERID" unique="false" nullable="true" insertable="true" updatable="true" table="NOTEISSUER"/>
+            </jpa:basic>
+        </jpa:attributes>
+    </jpa:entity>
+    <jpa:entity class="Useraccess" jaxb-root-element="false" static-metamodel="false" visibile="true" minimized="false" id="_143806629542890">
+        <jpa:table name="USERACCESS"/>
+        <jpa:attributes>
+            <jpa:id name="id" attribute-type="java.lang.Integer" visibile="true" id="_1438066295436139">
+                <jpa:column name="ID" unique="false" nullable="false" insertable="true" updatable="true" table="USERACCESS"/>
+                <jpa:generated-value strategy="AUTO"/>
+            </jpa:id>
+            <jpa:basic name="role" optional="true" attribute-type="java.lang.String" visibile="true" id="_1438066295436140">
+                <jpa:column name="ROLE_" unique="false" nullable="true" insertable="true" updatable="true" table="USERACCESS" length="32"/>
+            </jpa:basic>
+            <jpa:basic name="ts" optional="true" attribute-type="java.math.BigInteger" visibile="true" id="_1438066295436141">
+                <jpa:column name="TS" unique="false" nullable="true" insertable="true" updatable="true" table="USERACCESS"/>
+            </jpa:basic>
+            <jpa:basic name="userid" optional="true" attribute-type="java.lang.Integer" visibile="true" id="_1438066295436142">
+                <jpa:column name="USERID" unique="false" nullable="true" insertable="true" updatable="true" table="USERACCESS"/>
+            </jpa:basic>
+            <jpa:basic name="configurationid" optional="true" attribute-type="java.lang.Integer" visibile="true" id="_1438066295436143">
+                <jpa:column name="CONFIGURATIONID" unique="false" nullable="true" insertable="true" updatable="true" table="USERACCESS"/>
+            </jpa:basic>
+        </jpa:attributes>
+    </jpa:entity>
+    <jpa:entity class="Spzstatenote" jaxb-root-element="false" static-metamodel="false" visibile="true" minimized="false" id="_143806629542891">
+        <jpa:table name="SPZSTATENOTE"/>
+        <jpa:attributes>
+            <jpa:id name="id" attribute-type="java.lang.Integer" visibile="true" id="_1438066295436144">
+                <jpa:column name="ID" unique="false" nullable="false" insertable="true" updatable="true" table="SPZSTATENOTE"/>
+                <jpa:generated-value strategy="AUTO"/>
+            </jpa:id>
+            <jpa:basic name="noteid" optional="true" attribute-type="java.lang.Integer" visibile="true" id="_1438066295436145">
+                <jpa:column name="NOTEID" unique="false" nullable="true" insertable="true" updatable="true" table="SPZSTATENOTE"/>
+            </jpa:basic>
+            <jpa:basic name="stateid" optional="true" attribute-type="java.lang.Integer" visibile="true" id="_1438066295436146">
+                <jpa:column name="STATEID" unique="false" nullable="true" insertable="true" updatable="true" table="SPZSTATENOTE"/>
+            </jpa:basic>
+        </jpa:attributes>
+    </jpa:entity>
+    <jpa:entity class="Roles" jaxb-root-element="false" static-metamodel="false" visibile="true" minimized="false" id="_143806629542892">
+        <jpa:table name="ROLES"/>
+        <jpa:attributes>
+            <jpa:id name="id" attribute-type="java.lang.Integer" visibile="true" id="_1438066295436147">
+                <jpa:column name="ID" unique="false" nullable="false" insertable="true" updatable="true" table="ROLES"/>
+                <jpa:generated-value strategy="AUTO"/>
+            </jpa:id>
+            <jpa:basic name="userid" optional="true" attribute-type="java.lang.Integer" visibile="true" id="_1438066295436148">
+                <jpa:column name="USERID" unique="false" nullable="true" insertable="true" updatable="true" table="ROLES"/>
+            </jpa:basic>
+            <jpa:basic name="role" optional="true" attribute-type="java.lang.String" visibile="true" id="_1438066295436149">
+                <jpa:column name="ROLE_" unique="false" nullable="true" insertable="true" updatable="true" table="ROLES" length="32"/>
+            </jpa:basic>
+        </jpa:attributes>
+    </jpa:entity>
+    <jpa:entity class="Spzstate" jaxb-root-element="false" static-metamodel="false" visibile="true" minimized="false" id="_143806629542993">
+        <jpa:table name="SPZSTATE"/>
+        <jpa:attributes>
+            <jpa:id name="id" attribute-type="java.lang.Integer" visibile="true" id="_1438066295436150">
+                <jpa:column name="ID" unique="false" nullable="false" insertable="true" updatable="true" table="SPZSTATE"/>
+                <jpa:generated-value strategy="AUTO"/>
+            </jpa:id>
+            <jpa:basic name="code" optional="true" attribute-type="java.lang.String" visibile="true" id="_1438066295436151">
+                <jpa:column name="CODE" unique="false" nullable="true" insertable="true" updatable="true" table="SPZSTATE" length="50"/>
+            </jpa:basic>
+            <jpa:basic name="ts" optional="true" attribute-type="java.math.BigInteger" visibile="true" id="_1438066295436152">
+                <jpa:column name="TS" unique="false" nullable="true" insertable="true" updatable="true" table="SPZSTATE"/>
+            </jpa:basic>
+            <jpa:basic name="issuerLogin" optional="true" attribute-type="java.lang.String" visibile="true" id="_1438066295436153">
+                <jpa:column name="ISSUER_LOGIN" unique="false" nullable="true" insertable="true" updatable="true" table="SPZSTATE" length="32"/>
+            </jpa:basic>
+            <jpa:basic name="revisedrequestdescription" optional="true" attribute-type="java.lang.String" visibile="true" id="_1438066295436154">
+                <jpa:column name="REVISEDREQUESTDESCRIPTION" unique="false" nullable="true" insertable="true" updatable="true" table="SPZSTATE" length="9000"/>
+            </jpa:basic>
+            <jpa:basic name="solutiondescription" optional="true" attribute-type="java.lang.String" visibile="true" id="_1438066295436155">
+                <jpa:column name="SOLUTIONDESCRIPTION" unique="false" nullable="true" insertable="true" updatable="true" table="SPZSTATE" length="9000"/>
+            </jpa:basic>
+            <jpa:basic name="assumedmandays" optional="true" attribute-type="java.lang.Double" visibile="true" id="_1438066295436156">
+                <jpa:column name="ASSUMEDMANDAYS" unique="false" nullable="true" insertable="true" updatable="true" table="SPZSTATE" precision="52"/>
+            </jpa:basic>
+            <jpa:basic name="mandays" optional="true" attribute-type="java.lang.Double" visibile="true" id="_1438066295437157">
+                <jpa:column name="MANDAYS" unique="false" nullable="true" insertable="true" updatable="true" table="SPZSTATE" precision="52"/>
+            </jpa:basic>
+            <jpa:basic name="releasenotes" optional="true" attribute-type="java.lang.String" visibile="true" id="_1438066295437158">
+                <jpa:column name="RELEASENOTES" unique="false" nullable="true" insertable="true" updatable="true" table="SPZSTATE" length="9000"/>
+            </jpa:basic>
+            <jpa:basic name="classtype" optional="true" attribute-type="java.lang.Short" visibile="true" id="_1438066295437159">
+                <jpa:column name="CLASSTYPE" unique="false" nullable="true" insertable="true" updatable="true" table="SPZSTATE"/>
+            </jpa:basic>
+            <jpa:basic name="idate" optional="true" attribute-type="java.util.Date" visibile="true" id="_1438066295437160">
+                <jpa:column name="IDATE" unique="false" nullable="true" insertable="true" updatable="true" table="SPZSTATE"/>
+                <jpa:temporal>DATE</jpa:temporal>
+            </jpa:basic>
+            <jpa:basic name="currentstate" optional="true" attribute-type="java.lang.Integer" visibile="true" id="_1438066295437161">
+                <jpa:column name="CURRENTSTATE" unique="false" nullable="true" insertable="true" updatable="true" table="SPZSTATE"/>
+            </jpa:basic>
+        </jpa:attributes>
+    </jpa:entity>
+    <jpa:entity class="Spz" jaxb-root-element="false" static-metamodel="false" visibile="true" minimized="false" id="_143806629542994">
+        <jpa:table name="SPZ"/>
+        <jpa:attributes>
+            <jpa:id name="id" attribute-type="java.lang.Integer" visibile="true" id="_1438066295437162">
+                <jpa:column name="ID" unique="false" nullable="false" insertable="true" updatable="true" table="SPZ"/>
+                <jpa:generated-value strategy="AUTO"/>
+            </jpa:id>
+            <jpa:basic name="reqnumber" optional="true" attribute-type="java.lang.String" visibile="true" id="_1438066295437163">
+                <jpa:column name="REQNUMBER" unique="false" nullable="true" insertable="true" updatable="true" table="SPZ" length="10"/>
+            </jpa:basic>
+            <jpa:basic name="priority" optional="true" attribute-type="java.lang.Short" visibile="true" id="_1438066295437164">
+                <jpa:column name="PRIORITY" unique="false" nullable="true" insertable="true" updatable="true" table="SPZ"/>
+            </jpa:basic>
+            <jpa:basic name="issuedate" optional="true" attribute-type="java.util.Date" visibile="true" id="_1438066295437165">
+                <jpa:column name="ISSUEDATE" unique="false" nullable="true" insertable="true" updatable="true" table="SPZ"/>
+                <jpa:temporal>TIMESTAMP</jpa:temporal>
+            </jpa:basic>
+            <jpa:basic name="contactperson" optional="true" attribute-type="java.lang.String" visibile="true" id="_1438066295437166">
+                <jpa:column name="CONTACTPERSON" unique="false" nullable="true" insertable="true" updatable="true" table="SPZ" length="32"/>
+            </jpa:basic>
+            <jpa:basic name="requesttype" optional="true" attribute-type="java.lang.String" visibile="true" id="_1438066295437167">
+                <jpa:column name="REQUESTTYPE" unique="false" nullable="true" insertable="true" updatable="true" table="SPZ" length="32"/>
+            </jpa:basic>
+            <jpa:basic name="shortname" optional="true" attribute-type="java.lang.String" visibile="true" id="_1438066295437168">
+                <jpa:column name="SHORTNAME" unique="false" nullable="true" insertable="true" updatable="true" table="SPZ" length="50"/>
+            </jpa:basic>
+            <jpa:basic name="requestdescription" optional="true" attribute-type="java.lang.String" visibile="true" id="_1438066295437169">
+                <jpa:column name="REQUESTDESCRIPTION" unique="false" nullable="true" insertable="true" updatable="true" table="SPZ" length="9000"/>
+            </jpa:basic>
+            <jpa:basic name="implementationacceptdate" optional="true" attribute-type="java.util.Date" visibile="true" id="_1438066295437170">
+                <jpa:column name="IMPLEMENTATIONACCEPTDATE" unique="false" nullable="true" insertable="true" updatable="true" table="SPZ"/>
+                <jpa:temporal>TIMESTAMP</jpa:temporal>
+            </jpa:basic>
+            <jpa:basic name="ts" optional="true" attribute-type="java.math.BigInteger" visibile="true" id="_1438066295437171">
+                <jpa:column name="TS" unique="false" nullable="true" insertable="true" updatable="true" table="SPZ"/>
+            </jpa:basic>
+        </jpa:attributes>
+    </jpa:entity>
+    <jpa:entity class="Attachmentnote" jaxb-root-element="false" static-metamodel="false" visibile="true" minimized="false" id="_143806629542995">
+        <jpa:table name="ATTACHMENTNOTE"/>
+        <jpa:attributes>
+            <jpa:id name="id" attribute-type="java.lang.Integer" visibile="true" id="_1438066295437172">
+                <jpa:column name="ID" unique="false" nullable="false" insertable="true" updatable="true" table="ATTACHMENTNOTE"/>
+                <jpa:generated-value strategy="AUTO"/>
+            </jpa:id>
+            <jpa:basic name="attachmentid" optional="true" attribute-type="java.lang.Integer" visibile="true" id="_1438066295437173">
+                <jpa:column name="ATTACHMENTID" unique="false" nullable="true" insertable="true" updatable="true" table="ATTACHMENTNOTE"/>
+            </jpa:basic>
+            <jpa:basic name="spznoteid" optional="true" attribute-type="java.lang.Integer" visibile="true" id="_1438066295437174">
+                <jpa:column name="SPZNOTEID" unique="false" nullable="true" insertable="true" updatable="true" table="ATTACHMENTNOTE"/>
+            </jpa:basic>
+        </jpa:attributes>
+    </jpa:entity>
+    <jpa:entity class="Spzissuer" jaxb-root-element="false" static-metamodel="false" visibile="true" minimized="false" id="_143806629542996">
+        <jpa:table name="SPZISSUER"/>
+        <jpa:attributes>
+            <jpa:id name="id" attribute-type="java.lang.Integer" visibile="true" id="_1438066295437175">
+                <jpa:column name="ID" unique="false" nullable="false" insertable="true" updatable="true" table="SPZISSUER"/>
+                <jpa:generated-value strategy="AUTO"/>
+            </jpa:id>
+            <jpa:basic name="spzid" optional="true" attribute-type="java.lang.Integer" visibile="true" id="_1438066295437176">
+                <jpa:column name="SPZID" unique="false" nullable="true" insertable="true" updatable="true" table="SPZISSUER"/>
+            </jpa:basic>
+            <jpa:basic name="userid" optional="true" attribute-type="java.lang.Integer" visibile="true" id="_1438066295437177">
+                <jpa:column name="USERID" unique="false" nullable="true" insertable="true" updatable="true" table="SPZISSUER"/>
+            </jpa:basic>
+        </jpa:attributes>
+    </jpa:entity>
+    <jpa:diagram id="_143806629529479">
+        <plane elementRef="_143806629529478" id="_143806629529480_p"/>
+    </jpa:diagram>
+</jpa:entity-mappings>
