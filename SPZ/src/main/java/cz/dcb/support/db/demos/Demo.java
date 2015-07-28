@@ -4,13 +4,13 @@
  * and open the template in the editor.
  */
 package cz.dcb.support.db.demos;
-import cz.dcb.support.db.jpa.Attachment;
-import cz.dcb.support.db.jpa.Spznote;
-import cz.dcb.support.db.jpa.User;
-import cz.dcb.support.db.managers.AttachmentJpaController;
-import cz.dcb.support.db.managers.AttachmentManager;
-import cz.dcb.support.db.managers.UserJpaController;
-import cz.dcb.support.db.managers.UserManager;
+import cz.dcb.support.db.jpa.controllers.AttachmentJpaController;
+import cz.dcb.support.db.jpa.controllers.AttachmentManager;
+import cz.dcb.support.db.jpa.controllers.UserJpaController;
+import cz.dcb.support.db.jpa.controllers.UserManager;
+import cz.dcb.support.db.jpa.entities.Attachment;
+import cz.dcb.support.db.jpa.entities.Spznote;
+import cz.dcb.support.db.jpa.entities.User;
 import cz.dcb.support.db.utils.DBUtils;
 import java.util.Date;
 
@@ -34,12 +34,10 @@ public class Demo {
         user.setEmail("xnovak@dcb.cz");
         user.setPassword("blabla");
         userMan.create(user);
-        note.setIssuerLogin(user);
         attach.setContent("blabla");
         attach.setLocation("somewhere");
         attach.setDate(new Date());
         attach.setType("application/none");
-        attach.setSpznoteId(note);
         man.create(attach);
     }
 }
