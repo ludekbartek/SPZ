@@ -49,6 +49,9 @@ public class UserJpaController implements Serializable, UserManager {
 
     @Override
     public void edit(User user) throws NonexistentEntityException, Exception {
+        if(user == null || user.getLogin()==null){
+            throw new NullPointerException("User or login is null.");
+        }
         EntityManager em = null;
         try {
             em = getEntityManager();
