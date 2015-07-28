@@ -5,10 +5,13 @@
  */
 package cz.dcb.support.db.managers;
 
-import cz.dcb.support.db.jpa.Spz;
+import cz.dcb.support.db.jpa.controllers.SpzJpaController;
+import cz.dcb.support.db.jpa.controllers.SpzManager;
+import cz.dcb.support.db.jpa.entities.Spz;
 import cz.dcb.support.db.managers.exceptions.IllegalOrphanException;
 import cz.dcb.support.db.managers.exceptions.NonexistentEntityException;
 import cz.dcb.support.db.managers.exceptions.PreexistingEntityException;
+import cz.dcb.support.db.managers.utils.DBUtils;
 import java.util.List;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -22,7 +25,8 @@ import static org.junit.Assert.*;
  * @author bar
  */
 public class SpzManagerTest {
-    
+    private final SpzManager manager = new SpzJpaController(DBUtils.getEntityManagerFactory());
+   
     public SpzManagerTest() {
     }
     
@@ -49,8 +53,8 @@ public class SpzManagerTest {
     public void testCreate() throws Exception {
         System.out.println("create");
         Spz spz = null;
-        SpzManager instance = new SpzManagerImpl();
-        instance.create(spz);
+//        SpzManager instance = new SpzManagerImpl();
+        manager.create(spz);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
@@ -62,8 +66,8 @@ public class SpzManagerTest {
     public void testDestroy() throws Exception {
         System.out.println("destroy");
         Integer id = null;
-        SpzManager instance = new SpzManagerImpl();
-        instance.destroy(id);
+        //SpzManager instance = new SpzManagerImpl();
+        manager.destroy(id);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
@@ -75,8 +79,8 @@ public class SpzManagerTest {
     public void testEdit() throws Exception {
         System.out.println("edit");
         Spz spz = null;
-        SpzManager instance = new SpzManagerImpl();
-        instance.edit(spz);
+        //SpzManager instance = new SpzManagerImpl();
+        manager.edit(spz);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
@@ -88,9 +92,9 @@ public class SpzManagerTest {
     public void testFindSpz() {
         System.out.println("findSpz");
         Integer id = null;
-        SpzManager instance = new SpzManagerImpl();
+        //SpzManager instance = new SpzManagerImpl();
         Spz expResult = null;
-        Spz result = instance.findSpz(id);
+        Spz result = manager.findSpz(id);
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
@@ -102,9 +106,9 @@ public class SpzManagerTest {
     @Test
     public void testFindSpzEntities_0args() {
         System.out.println("findSpzEntities");
-        SpzManager instance = new SpzManagerImpl();
+        //SpzManager instance = new SpzManagerImpl();
         List<Spz> expResult = null;
-        List<Spz> result = instance.findSpzEntities();
+        List<Spz> result = manager.findSpzEntities();
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
@@ -118,9 +122,9 @@ public class SpzManagerTest {
         System.out.println("findSpzEntities");
         int maxResults = 0;
         int firstResult = 0;
-        SpzManager instance = new SpzManagerImpl();
+        //SpzManager instance = new SpzManagerImpl();
         List<Spz> expResult = null;
-        List<Spz> result = instance.findSpzEntities(maxResults, firstResult);
+        List<Spz> result = manager.findSpzEntities(maxResults, firstResult);
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
@@ -132,15 +136,15 @@ public class SpzManagerTest {
     @Test
     public void testGetSpzCount() {
         System.out.println("getSpzCount");
-        SpzManager instance = new SpzManagerImpl();
+       // SpzManager instance = new SpzManagerImpl();
         int expResult = 0;
-        int result = instance.getSpzCount();
+        int result = manager.getSpzCount();
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
 
-    public class SpzManagerImpl implements SpzManager {
+   /* public class SpzManagerImpl implements SpzManager {
 
         public void create(Spz spz) throws PreexistingEntityException, Exception {
         }
@@ -166,6 +170,6 @@ public class SpzManagerTest {
         public int getSpzCount() {
             return 0;
         }
-    }
+    }*/
     
 }
