@@ -6,6 +6,7 @@
 package cz.dcb.support.db.managers.utils;
 
 import cz.dcb.support.db.jpa.entities.Attachment;
+import cz.dcb.support.db.jpa.entities.Project;
 import cz.dcb.support.db.jpa.entities.Spznote;
 import cz.dcb.support.db.jpa.entities.Spzstate;
 import cz.dcb.support.db.jpa.entities.User;
@@ -73,5 +74,13 @@ public class DBUtils {
         user.setTel("123123");
         
         return user;
+    }
+
+    public static Project createProject() {
+        Project project = new Project();
+        project.setDescription("Some project");
+        project.setName("Test project");
+        project.setTs(BigInteger.ONE);
+        return project;
     }
 }
