@@ -6,7 +6,7 @@
 package cz.dcb.support.db.jpa.controllers;
 
 import cz.dcb.support.db.jpa.controllers.exceptions.NonexistentEntityException;
-import cz.dcb.support.db.jpa.entities.Noteissuer;
+import cz.dcb.support.db.jpa.entities.Spzissuer;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -20,23 +20,25 @@ import javax.persistence.criteria.Root;
  *
  * @author bar
  */
-public class NoteissuerJpaController implements Serializable {
+public class SpzIssuerJpaController implements Serializable, SpzIssuerManager {
 
-    public NoteissuerJpaController(EntityManagerFactory emf) {
+    public SpzIssuerJpaController(EntityManagerFactory emf) {
         this.emf = emf;
     }
     private EntityManagerFactory emf = null;
 
+    @Override
     public EntityManager getEntityManager() {
         return emf.createEntityManager();
     }
 
-    public void create(Noteissuer noteissuer) {
+    @Override
+    public void create(Spzissuer spzissuer) {
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            em.persist(noteissuer);
+            em.persist(spzissuer);
             em.getTransaction().commit();
         } finally {
             if (em != null) {
@@ -45,19 +47,20 @@ public class NoteissuerJpaController implements Serializable {
         }
     }
 
-    public void edit(Noteissuer noteissuer) throws NonexistentEntityException, Exception {
+    @Override
+    public void edit(Spzissuer spzissuer) throws NonexistentEntityException, Exception {
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            noteissuer = em.merge(noteissuer);
+            spzissuer = em.merge(spzissuer);
             em.getTransaction().commit();
         } catch (Exception ex) {
             String msg = ex.getLocalizedMessage();
             if (msg == null || msg.length() == 0) {
-                Integer id = noteissuer.getId();
-                if (findNoteissuer(id) == null) {
-                    throw new NonexistentEntityException("The noteissuer with id " + id + " no longer exists.");
+                Integer id = spzissuer.getId();
+                if (findSpzissuer(id) == null) {
+                    throw new NonexistentEntityException("The spzissuer with id " + id + " no longer exists.");
                 }
             }
             throw ex;
@@ -68,19 +71,20 @@ public class NoteissuerJpaController implements Serializable {
         }
     }
 
+    @Override
     public void destroy(Integer id) throws NonexistentEntityException {
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            Noteissuer noteissuer;
+            Spzissuer spzissuer;
             try {
-                noteissuer = em.getReference(Noteissuer.class, id);
-                noteissuer.getId();
+                spzissuer = em.getReference(Spzissuer.class, id);
+                spzissuer.getId();
             } catch (EntityNotFoundException enfe) {
-                throw new NonexistentEntityException("The noteissuer with id " + id + " no longer exists.", enfe);
+                throw new NonexistentEntityException("The spzissuer with id " + id + " no longer exists.", enfe);
             }
-            em.remove(noteissuer);
+            em.remove(spzissuer);
             em.getTransaction().commit();
         } finally {
             if (em != null) {
@@ -89,19 +93,21 @@ public class NoteissuerJpaController implements Serializable {
         }
     }
 
-    public List<Noteissuer> findNoteissuerEntities() {
-        return findNoteissuerEntities(true, -1, -1);
+    @Override
+    public List<Spzissuer> findSpzissuerEntities() {
+        return findSpzissuerEntities(true, -1, -1);
     }
 
-    public List<Noteissuer> findNoteissuerEntities(int maxResults, int firstResult) {
-        return findNoteissuerEntities(false, maxResults, firstResult);
+    @Override
+    public List<Spzissuer> findSpzissuerEntities(int maxResults, int firstResult) {
+        return findSpzissuerEntities(false, maxResults, firstResult);
     }
 
-    private List<Noteissuer> findNoteissuerEntities(boolean all, int maxResults, int firstResult) {
+    private List<Spzissuer> findSpzissuerEntities(boolean all, int maxResults, int firstResult) {
         EntityManager em = getEntityManager();
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            cq.select(cq.from(Noteissuer.class));
+            cq.select(cq.from(Spzissuer.class));
             Query q = em.createQuery(cq);
             if (!all) {
                 q.setMaxResults(maxResults);
@@ -113,20 +119,22 @@ public class NoteissuerJpaController implements Serializable {
         }
     }
 
-    public Noteissuer findNoteissuer(Integer id) {
+    @Override
+    public Spzissuer findSpzissuer(Integer id) {
         EntityManager em = getEntityManager();
         try {
-            return em.find(Noteissuer.class, id);
+            return em.find(Spzissuer.class, id);
         } finally {
             em.close();
         }
     }
 
-    public int getNoteissuerCount() {
+    @Override
+    public int getSpzissuerCount() {
         EntityManager em = getEntityManager();
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            Root<Noteissuer> rt = cq.from(Noteissuer.class);
+            Root<Spzissuer> rt = cq.from(Spzissuer.class);
             cq.select(em.getCriteriaBuilder().count(rt));
             Query q = em.createQuery(cq);
             return ((Long) q.getSingleResult()).intValue();

@@ -20,17 +20,19 @@ import javax.persistence.criteria.Root;
  *
  * @author bar
  */
-public class UseraccessJpaController implements Serializable {
+public class UserAccessJpaController implements Serializable, UserAccesManager {
 
-    public UseraccessJpaController(EntityManagerFactory emf) {
+    public UserAccessJpaController(EntityManagerFactory emf) {
         this.emf = emf;
     }
     private EntityManagerFactory emf = null;
 
+    @Override
     public EntityManager getEntityManager() {
         return emf.createEntityManager();
     }
 
+    @Override
     public void create(Useraccess useraccess) {
         EntityManager em = null;
         try {
@@ -45,6 +47,7 @@ public class UseraccessJpaController implements Serializable {
         }
     }
 
+    @Override
     public void edit(Useraccess useraccess) throws NonexistentEntityException, Exception {
         EntityManager em = null;
         try {
@@ -68,6 +71,7 @@ public class UseraccessJpaController implements Serializable {
         }
     }
 
+    @Override
     public void destroy(Integer id) throws NonexistentEntityException {
         EntityManager em = null;
         try {
@@ -89,10 +93,12 @@ public class UseraccessJpaController implements Serializable {
         }
     }
 
+    @Override
     public List<Useraccess> findUseraccessEntities() {
         return findUseraccessEntities(true, -1, -1);
     }
 
+    @Override
     public List<Useraccess> findUseraccessEntities(int maxResults, int firstResult) {
         return findUseraccessEntities(false, maxResults, firstResult);
     }
@@ -113,6 +119,7 @@ public class UseraccessJpaController implements Serializable {
         }
     }
 
+    @Override
     public Useraccess findUseraccess(Integer id) {
         EntityManager em = getEntityManager();
         try {
@@ -122,6 +129,7 @@ public class UseraccessJpaController implements Serializable {
         }
     }
 
+    @Override
     public int getUseraccessCount() {
         EntityManager em = getEntityManager();
         try {

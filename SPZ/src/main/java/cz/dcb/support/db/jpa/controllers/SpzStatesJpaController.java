@@ -6,7 +6,7 @@
 package cz.dcb.support.db.jpa.controllers;
 
 import cz.dcb.support.db.jpa.controllers.exceptions.NonexistentEntityException;
-import cz.dcb.support.db.jpa.entities.Spzstate;
+import cz.dcb.support.db.jpa.entities.Spzstates;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -20,23 +20,25 @@ import javax.persistence.criteria.Root;
  *
  * @author bar
  */
-public class SpzstateJpaController implements Serializable {
+public class SpzStatesJpaController implements Serializable, SpzStatesManager {
 
-    public SpzstateJpaController(EntityManagerFactory emf) {
+    public SpzStatesJpaController(EntityManagerFactory emf) {
         this.emf = emf;
     }
     private EntityManagerFactory emf = null;
 
+    @Override
     public EntityManager getEntityManager() {
         return emf.createEntityManager();
     }
 
-    public void create(Spzstate spzstate) {
+    @Override
+    public void create(Spzstates spzstates) {
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            em.persist(spzstate);
+            em.persist(spzstates);
             em.getTransaction().commit();
         } finally {
             if (em != null) {
@@ -45,19 +47,20 @@ public class SpzstateJpaController implements Serializable {
         }
     }
 
-    public void edit(Spzstate spzstate) throws NonexistentEntityException, Exception {
+    @Override
+    public void edit(Spzstates spzstates) throws NonexistentEntityException, Exception {
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            spzstate = em.merge(spzstate);
+            spzstates = em.merge(spzstates);
             em.getTransaction().commit();
         } catch (Exception ex) {
             String msg = ex.getLocalizedMessage();
             if (msg == null || msg.length() == 0) {
-                Integer id = spzstate.getId();
-                if (findSpzstate(id) == null) {
-                    throw new NonexistentEntityException("The spzstate with id " + id + " no longer exists.");
+                Integer id = spzstates.getId();
+                if (findSpzstates(id) == null) {
+                    throw new NonexistentEntityException("The spzstates with id " + id + " no longer exists.");
                 }
             }
             throw ex;
@@ -68,19 +71,20 @@ public class SpzstateJpaController implements Serializable {
         }
     }
 
+    @Override
     public void destroy(Integer id) throws NonexistentEntityException {
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            Spzstate spzstate;
+            Spzstates spzstates;
             try {
-                spzstate = em.getReference(Spzstate.class, id);
-                spzstate.getId();
+                spzstates = em.getReference(Spzstates.class, id);
+                spzstates.getId();
             } catch (EntityNotFoundException enfe) {
-                throw new NonexistentEntityException("The spzstate with id " + id + " no longer exists.", enfe);
+                throw new NonexistentEntityException("The spzstates with id " + id + " no longer exists.", enfe);
             }
-            em.remove(spzstate);
+            em.remove(spzstates);
             em.getTransaction().commit();
         } finally {
             if (em != null) {
@@ -89,19 +93,21 @@ public class SpzstateJpaController implements Serializable {
         }
     }
 
-    public List<Spzstate> findSpzstateEntities() {
-        return findSpzstateEntities(true, -1, -1);
+    @Override
+    public List<Spzstates> findSpzstatesEntities() {
+        return findSpzstatesEntities(true, -1, -1);
     }
 
-    public List<Spzstate> findSpzstateEntities(int maxResults, int firstResult) {
-        return findSpzstateEntities(false, maxResults, firstResult);
+    @Override
+    public List<Spzstates> findSpzstatesEntities(int maxResults, int firstResult) {
+        return findSpzstatesEntities(false, maxResults, firstResult);
     }
 
-    private List<Spzstate> findSpzstateEntities(boolean all, int maxResults, int firstResult) {
+    private List<Spzstates> findSpzstatesEntities(boolean all, int maxResults, int firstResult) {
         EntityManager em = getEntityManager();
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            cq.select(cq.from(Spzstate.class));
+            cq.select(cq.from(Spzstates.class));
             Query q = em.createQuery(cq);
             if (!all) {
                 q.setMaxResults(maxResults);
@@ -113,20 +119,22 @@ public class SpzstateJpaController implements Serializable {
         }
     }
 
-    public Spzstate findSpzstate(Integer id) {
+    @Override
+    public Spzstates findSpzstates(Integer id) {
         EntityManager em = getEntityManager();
         try {
-            return em.find(Spzstate.class, id);
+            return em.find(Spzstates.class, id);
         } finally {
             em.close();
         }
     }
 
-    public int getSpzstateCount() {
+    @Override
+    public int getSpzstatesCount() {
         EntityManager em = getEntityManager();
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            Root<Spzstate> rt = cq.from(Spzstate.class);
+            Root<Spzstates> rt = cq.from(Spzstates.class);
             cq.select(em.getCriteriaBuilder().count(rt));
             Query q = em.createQuery(cq);
             return ((Long) q.getSingleResult()).intValue();

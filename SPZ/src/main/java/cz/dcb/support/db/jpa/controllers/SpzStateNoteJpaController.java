@@ -20,17 +20,19 @@ import javax.persistence.criteria.Root;
  *
  * @author bar
  */
-public class SpzstatenoteJpaController implements Serializable {
+public class SpzStateNoteJpaController implements Serializable, SpzStateNoteManager {
 
-    public SpzstatenoteJpaController(EntityManagerFactory emf) {
+    public SpzStateNoteJpaController(EntityManagerFactory emf) {
         this.emf = emf;
     }
     private EntityManagerFactory emf = null;
 
+    @Override
     public EntityManager getEntityManager() {
         return emf.createEntityManager();
     }
 
+    @Override
     public void create(Spzstatenote spzstatenote) {
         EntityManager em = null;
         try {
@@ -45,6 +47,7 @@ public class SpzstatenoteJpaController implements Serializable {
         }
     }
 
+    @Override
     public void edit(Spzstatenote spzstatenote) throws NonexistentEntityException, Exception {
         EntityManager em = null;
         try {
@@ -68,6 +71,7 @@ public class SpzstatenoteJpaController implements Serializable {
         }
     }
 
+    @Override
     public void destroy(Integer id) throws NonexistentEntityException {
         EntityManager em = null;
         try {
@@ -89,10 +93,12 @@ public class SpzstatenoteJpaController implements Serializable {
         }
     }
 
+    @Override
     public List<Spzstatenote> findSpzstatenoteEntities() {
         return findSpzstatenoteEntities(true, -1, -1);
     }
 
+    @Override
     public List<Spzstatenote> findSpzstatenoteEntities(int maxResults, int firstResult) {
         return findSpzstatenoteEntities(false, maxResults, firstResult);
     }
@@ -113,6 +119,7 @@ public class SpzstatenoteJpaController implements Serializable {
         }
     }
 
+    @Override
     public Spzstatenote findSpzstatenote(Integer id) {
         EntityManager em = getEntityManager();
         try {
@@ -122,6 +129,7 @@ public class SpzstatenoteJpaController implements Serializable {
         }
     }
 
+    @Override
     public int getSpzstatenoteCount() {
         EntityManager em = getEntityManager();
         try {

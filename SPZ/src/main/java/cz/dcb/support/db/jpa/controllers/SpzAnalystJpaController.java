@@ -20,17 +20,19 @@ import javax.persistence.criteria.Root;
  *
  * @author bar
  */
-public class SpzanalystJpaController implements Serializable {
+public class SpzAnalystJpaController implements Serializable, SpzAnalystManager {
 
-    public SpzanalystJpaController(EntityManagerFactory emf) {
+    public SpzAnalystJpaController(EntityManagerFactory emf) {
         this.emf = emf;
     }
     private EntityManagerFactory emf = null;
 
+    @Override
     public EntityManager getEntityManager() {
         return emf.createEntityManager();
     }
 
+    @Override
     public void create(Spzanalyst spzanalyst) {
         EntityManager em = null;
         try {
@@ -45,6 +47,7 @@ public class SpzanalystJpaController implements Serializable {
         }
     }
 
+    @Override
     public void edit(Spzanalyst spzanalyst) throws NonexistentEntityException, Exception {
         EntityManager em = null;
         try {
@@ -68,6 +71,7 @@ public class SpzanalystJpaController implements Serializable {
         }
     }
 
+    @Override
     public void destroy(Integer id) throws NonexistentEntityException {
         EntityManager em = null;
         try {
@@ -89,10 +93,12 @@ public class SpzanalystJpaController implements Serializable {
         }
     }
 
+    @Override
     public List<Spzanalyst> findSpzanalystEntities() {
         return findSpzanalystEntities(true, -1, -1);
     }
 
+    @Override
     public List<Spzanalyst> findSpzanalystEntities(int maxResults, int firstResult) {
         return findSpzanalystEntities(false, maxResults, firstResult);
     }
@@ -113,6 +119,7 @@ public class SpzanalystJpaController implements Serializable {
         }
     }
 
+    @Override
     public Spzanalyst findSpzanalyst(Integer id) {
         EntityManager em = getEntityManager();
         try {
@@ -122,6 +129,7 @@ public class SpzanalystJpaController implements Serializable {
         }
     }
 
+    @Override
     public int getSpzanalystCount() {
         EntityManager em = getEntityManager();
         try {

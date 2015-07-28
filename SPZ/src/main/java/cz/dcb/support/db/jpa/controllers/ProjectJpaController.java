@@ -20,17 +20,19 @@ import javax.persistence.criteria.Root;
  *
  * @author bar
  */
-public class ProjectJpaController implements Serializable {
+public class ProjectJpaController implements Serializable, ProjectManager {
 
     public ProjectJpaController(EntityManagerFactory emf) {
         this.emf = emf;
     }
     private EntityManagerFactory emf = null;
 
+    @Override
     public EntityManager getEntityManager() {
         return emf.createEntityManager();
     }
 
+    @Override
     public void create(Project project) {
         EntityManager em = null;
         try {
@@ -45,6 +47,7 @@ public class ProjectJpaController implements Serializable {
         }
     }
 
+    @Override
     public void edit(Project project) throws NonexistentEntityException, Exception {
         EntityManager em = null;
         try {
@@ -68,6 +71,7 @@ public class ProjectJpaController implements Serializable {
         }
     }
 
+    @Override
     public void destroy(Integer id) throws NonexistentEntityException {
         EntityManager em = null;
         try {
@@ -89,10 +93,12 @@ public class ProjectJpaController implements Serializable {
         }
     }
 
+    @Override
     public List<Project> findProjectEntities() {
         return findProjectEntities(true, -1, -1);
     }
 
+    @Override
     public List<Project> findProjectEntities(int maxResults, int firstResult) {
         return findProjectEntities(false, maxResults, firstResult);
     }
@@ -113,6 +119,7 @@ public class ProjectJpaController implements Serializable {
         }
     }
 
+    @Override
     public Project findProject(Integer id) {
         EntityManager em = getEntityManager();
         try {
@@ -122,6 +129,7 @@ public class ProjectJpaController implements Serializable {
         }
     }
 
+    @Override
     public int getProjectCount() {
         EntityManager em = getEntityManager();
         try {

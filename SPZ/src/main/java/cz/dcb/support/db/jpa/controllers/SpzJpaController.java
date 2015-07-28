@@ -20,17 +20,19 @@ import javax.persistence.criteria.Root;
  *
  * @author bar
  */
-public class SpzJpaController implements Serializable {
+public class SpzJpaController implements Serializable, SpzManager {
 
     public SpzJpaController(EntityManagerFactory emf) {
         this.emf = emf;
     }
     private EntityManagerFactory emf = null;
 
+    @Override
     public EntityManager getEntityManager() {
         return emf.createEntityManager();
     }
 
+    @Override
     public void create(Spz spz) {
         EntityManager em = null;
         try {
@@ -45,6 +47,7 @@ public class SpzJpaController implements Serializable {
         }
     }
 
+    @Override
     public void edit(Spz spz) throws NonexistentEntityException, Exception {
         EntityManager em = null;
         try {
@@ -68,6 +71,7 @@ public class SpzJpaController implements Serializable {
         }
     }
 
+    @Override
     public void destroy(Integer id) throws NonexistentEntityException {
         EntityManager em = null;
         try {
@@ -89,10 +93,12 @@ public class SpzJpaController implements Serializable {
         }
     }
 
+    @Override
     public List<Spz> findSpzEntities() {
         return findSpzEntities(true, -1, -1);
     }
 
+    @Override
     public List<Spz> findSpzEntities(int maxResults, int firstResult) {
         return findSpzEntities(false, maxResults, firstResult);
     }
@@ -113,6 +119,7 @@ public class SpzJpaController implements Serializable {
         }
     }
 
+    @Override
     public Spz findSpz(Integer id) {
         EntityManager em = getEntityManager();
         try {
@@ -122,6 +129,7 @@ public class SpzJpaController implements Serializable {
         }
     }
 
+    @Override
     public int getSpzCount() {
         EntityManager em = getEntityManager();
         try {

@@ -6,7 +6,7 @@
 package cz.dcb.support.db.jpa.controllers;
 
 import cz.dcb.support.db.jpa.controllers.exceptions.NonexistentEntityException;
-import cz.dcb.support.db.jpa.entities.Spzissuer;
+import cz.dcb.support.db.jpa.entities.Attachmentnote;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -20,23 +20,25 @@ import javax.persistence.criteria.Root;
  *
  * @author bar
  */
-public class SpzissuerJpaController implements Serializable {
+public class AttachmentNoteJpaController implements Serializable, AttachmentNoteManager {
 
-    public SpzissuerJpaController(EntityManagerFactory emf) {
+    public AttachmentNoteJpaController(EntityManagerFactory emf) {
         this.emf = emf;
     }
     private EntityManagerFactory emf = null;
 
+    @Override
     public EntityManager getEntityManager() {
         return emf.createEntityManager();
     }
 
-    public void create(Spzissuer spzissuer) {
+    @Override
+    public void create(Attachmentnote attachmentnote) {
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            em.persist(spzissuer);
+            em.persist(attachmentnote);
             em.getTransaction().commit();
         } finally {
             if (em != null) {
@@ -45,19 +47,20 @@ public class SpzissuerJpaController implements Serializable {
         }
     }
 
-    public void edit(Spzissuer spzissuer) throws NonexistentEntityException, Exception {
+    @Override
+    public void edit(Attachmentnote attachmentnote) throws NonexistentEntityException, Exception {
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            spzissuer = em.merge(spzissuer);
+            attachmentnote = em.merge(attachmentnote);
             em.getTransaction().commit();
         } catch (Exception ex) {
             String msg = ex.getLocalizedMessage();
             if (msg == null || msg.length() == 0) {
-                Integer id = spzissuer.getId();
-                if (findSpzissuer(id) == null) {
-                    throw new NonexistentEntityException("The spzissuer with id " + id + " no longer exists.");
+                Integer id = attachmentnote.getId();
+                if (findAttachmentnote(id) == null) {
+                    throw new NonexistentEntityException("The attachmentnote with id " + id + " no longer exists.");
                 }
             }
             throw ex;
@@ -68,19 +71,20 @@ public class SpzissuerJpaController implements Serializable {
         }
     }
 
+    @Override
     public void destroy(Integer id) throws NonexistentEntityException {
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            Spzissuer spzissuer;
+            Attachmentnote attachmentnote;
             try {
-                spzissuer = em.getReference(Spzissuer.class, id);
-                spzissuer.getId();
+                attachmentnote = em.getReference(Attachmentnote.class, id);
+                attachmentnote.getId();
             } catch (EntityNotFoundException enfe) {
-                throw new NonexistentEntityException("The spzissuer with id " + id + " no longer exists.", enfe);
+                throw new NonexistentEntityException("The attachmentnote with id " + id + " no longer exists.", enfe);
             }
-            em.remove(spzissuer);
+            em.remove(attachmentnote);
             em.getTransaction().commit();
         } finally {
             if (em != null) {
@@ -89,19 +93,21 @@ public class SpzissuerJpaController implements Serializable {
         }
     }
 
-    public List<Spzissuer> findSpzissuerEntities() {
-        return findSpzissuerEntities(true, -1, -1);
+    @Override
+    public List<Attachmentnote> findAttachmentnoteEntities() {
+        return findAttachmentnoteEntities(true, -1, -1);
     }
 
-    public List<Spzissuer> findSpzissuerEntities(int maxResults, int firstResult) {
-        return findSpzissuerEntities(false, maxResults, firstResult);
+    @Override
+    public List<Attachmentnote> findAttachmentnoteEntities(int maxResults, int firstResult) {
+        return findAttachmentnoteEntities(false, maxResults, firstResult);
     }
 
-    private List<Spzissuer> findSpzissuerEntities(boolean all, int maxResults, int firstResult) {
+    private List<Attachmentnote> findAttachmentnoteEntities(boolean all, int maxResults, int firstResult) {
         EntityManager em = getEntityManager();
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            cq.select(cq.from(Spzissuer.class));
+            cq.select(cq.from(Attachmentnote.class));
             Query q = em.createQuery(cq);
             if (!all) {
                 q.setMaxResults(maxResults);
@@ -113,20 +119,22 @@ public class SpzissuerJpaController implements Serializable {
         }
     }
 
-    public Spzissuer findSpzissuer(Integer id) {
+    @Override
+    public Attachmentnote findAttachmentnote(Integer id) {
         EntityManager em = getEntityManager();
         try {
-            return em.find(Spzissuer.class, id);
+            return em.find(Attachmentnote.class, id);
         } finally {
             em.close();
         }
     }
 
-    public int getSpzissuerCount() {
+    @Override
+    public int getAttachmentnoteCount() {
         EntityManager em = getEntityManager();
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            Root<Spzissuer> rt = cq.from(Spzissuer.class);
+            Root<Attachmentnote> rt = cq.from(Attachmentnote.class);
             cq.select(em.getCriteriaBuilder().count(rt));
             Query q = em.createQuery(cq);
             return ((Long) q.getSingleResult()).intValue();

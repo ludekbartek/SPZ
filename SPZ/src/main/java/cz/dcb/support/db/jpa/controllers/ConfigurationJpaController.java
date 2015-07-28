@@ -20,17 +20,19 @@ import javax.persistence.criteria.Root;
  *
  * @author bar
  */
-public class ConfigurationJpaController implements Serializable {
+public class ConfigurationJpaController implements Serializable, ConfigurationManager {
 
     public ConfigurationJpaController(EntityManagerFactory emf) {
         this.emf = emf;
     }
     private EntityManagerFactory emf = null;
 
+    @Override
     public EntityManager getEntityManager() {
         return emf.createEntityManager();
     }
 
+    @Override
     public void create(Configuration configuration) {
         EntityManager em = null;
         try {
@@ -45,6 +47,7 @@ public class ConfigurationJpaController implements Serializable {
         }
     }
 
+    @Override
     public void edit(Configuration configuration) throws NonexistentEntityException, Exception {
         EntityManager em = null;
         try {
@@ -68,6 +71,7 @@ public class ConfigurationJpaController implements Serializable {
         }
     }
 
+    @Override
     public void destroy(Integer id) throws NonexistentEntityException {
         EntityManager em = null;
         try {
@@ -89,10 +93,12 @@ public class ConfigurationJpaController implements Serializable {
         }
     }
 
+    @Override
     public List<Configuration> findConfigurationEntities() {
         return findConfigurationEntities(true, -1, -1);
     }
 
+    @Override
     public List<Configuration> findConfigurationEntities(int maxResults, int firstResult) {
         return findConfigurationEntities(false, maxResults, firstResult);
     }
@@ -113,6 +119,7 @@ public class ConfigurationJpaController implements Serializable {
         }
     }
 
+    @Override
     public Configuration findConfiguration(Integer id) {
         EntityManager em = getEntityManager();
         try {
@@ -122,6 +129,7 @@ public class ConfigurationJpaController implements Serializable {
         }
     }
 
+    @Override
     public int getConfigurationCount() {
         EntityManager em = getEntityManager();
         try {

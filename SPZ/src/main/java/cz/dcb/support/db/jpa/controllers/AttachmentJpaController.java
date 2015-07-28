@@ -20,17 +20,19 @@ import javax.persistence.criteria.Root;
  *
  * @author bar
  */
-public class AttachmentJpaController implements Serializable {
+public class AttachmentJpaController implements Serializable, AttachmentManager {
 
     public AttachmentJpaController(EntityManagerFactory emf) {
         this.emf = emf;
     }
     private EntityManagerFactory emf = null;
 
+    @Override
     public EntityManager getEntityManager() {
         return emf.createEntityManager();
     }
 
+    @Override
     public void create(Attachment attachment) {
         EntityManager em = null;
         try {
@@ -45,6 +47,7 @@ public class AttachmentJpaController implements Serializable {
         }
     }
 
+    @Override
     public void edit(Attachment attachment) throws NonexistentEntityException, Exception {
         EntityManager em = null;
         try {
@@ -68,6 +71,7 @@ public class AttachmentJpaController implements Serializable {
         }
     }
 
+    @Override
     public void destroy(Integer id) throws NonexistentEntityException {
         EntityManager em = null;
         try {
@@ -89,10 +93,12 @@ public class AttachmentJpaController implements Serializable {
         }
     }
 
+    @Override
     public List<Attachment> findAttachmentEntities() {
         return findAttachmentEntities(true, -1, -1);
     }
 
+    @Override
     public List<Attachment> findAttachmentEntities(int maxResults, int firstResult) {
         return findAttachmentEntities(false, maxResults, firstResult);
     }
@@ -113,6 +119,7 @@ public class AttachmentJpaController implements Serializable {
         }
     }
 
+    @Override
     public Attachment findAttachment(Integer id) {
         EntityManager em = getEntityManager();
         try {
@@ -122,6 +129,7 @@ public class AttachmentJpaController implements Serializable {
         }
     }
 
+    @Override
     public int getAttachmentCount() {
         EntityManager em = getEntityManager();
         try {

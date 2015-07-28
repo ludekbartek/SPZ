@@ -6,7 +6,7 @@
 package cz.dcb.support.db.jpa.controllers;
 
 import cz.dcb.support.db.jpa.controllers.exceptions.NonexistentEntityException;
-import cz.dcb.support.db.jpa.entities.Attachmentnote;
+import cz.dcb.support.db.jpa.entities.Projectconfiguration;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -20,23 +20,25 @@ import javax.persistence.criteria.Root;
  *
  * @author bar
  */
-public class AttachmentnoteJpaController implements Serializable {
+public class ProjectConfigurationJpaController implements Serializable, ProjectConfigurationManager {
 
-    public AttachmentnoteJpaController(EntityManagerFactory emf) {
+    public ProjectConfigurationJpaController(EntityManagerFactory emf) {
         this.emf = emf;
     }
     private EntityManagerFactory emf = null;
 
+    @Override
     public EntityManager getEntityManager() {
         return emf.createEntityManager();
     }
 
-    public void create(Attachmentnote attachmentnote) {
+    @Override
+    public void create(Projectconfiguration projectconfiguration) {
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            em.persist(attachmentnote);
+            em.persist(projectconfiguration);
             em.getTransaction().commit();
         } finally {
             if (em != null) {
@@ -45,19 +47,20 @@ public class AttachmentnoteJpaController implements Serializable {
         }
     }
 
-    public void edit(Attachmentnote attachmentnote) throws NonexistentEntityException, Exception {
+    @Override
+    public void edit(Projectconfiguration projectconfiguration) throws NonexistentEntityException, Exception {
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            attachmentnote = em.merge(attachmentnote);
+            projectconfiguration = em.merge(projectconfiguration);
             em.getTransaction().commit();
         } catch (Exception ex) {
             String msg = ex.getLocalizedMessage();
             if (msg == null || msg.length() == 0) {
-                Integer id = attachmentnote.getId();
-                if (findAttachmentnote(id) == null) {
-                    throw new NonexistentEntityException("The attachmentnote with id " + id + " no longer exists.");
+                Integer id = projectconfiguration.getId();
+                if (findProjectconfiguration(id) == null) {
+                    throw new NonexistentEntityException("The projectconfiguration with id " + id + " no longer exists.");
                 }
             }
             throw ex;
@@ -68,19 +71,20 @@ public class AttachmentnoteJpaController implements Serializable {
         }
     }
 
+    @Override
     public void destroy(Integer id) throws NonexistentEntityException {
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            Attachmentnote attachmentnote;
+            Projectconfiguration projectconfiguration;
             try {
-                attachmentnote = em.getReference(Attachmentnote.class, id);
-                attachmentnote.getId();
+                projectconfiguration = em.getReference(Projectconfiguration.class, id);
+                projectconfiguration.getId();
             } catch (EntityNotFoundException enfe) {
-                throw new NonexistentEntityException("The attachmentnote with id " + id + " no longer exists.", enfe);
+                throw new NonexistentEntityException("The projectconfiguration with id " + id + " no longer exists.", enfe);
             }
-            em.remove(attachmentnote);
+            em.remove(projectconfiguration);
             em.getTransaction().commit();
         } finally {
             if (em != null) {
@@ -89,19 +93,21 @@ public class AttachmentnoteJpaController implements Serializable {
         }
     }
 
-    public List<Attachmentnote> findAttachmentnoteEntities() {
-        return findAttachmentnoteEntities(true, -1, -1);
+    @Override
+    public List<Projectconfiguration> findProjectconfigurationEntities() {
+        return findProjectconfigurationEntities(true, -1, -1);
     }
 
-    public List<Attachmentnote> findAttachmentnoteEntities(int maxResults, int firstResult) {
-        return findAttachmentnoteEntities(false, maxResults, firstResult);
+    @Override
+    public List<Projectconfiguration> findProjectconfigurationEntities(int maxResults, int firstResult) {
+        return findProjectconfigurationEntities(false, maxResults, firstResult);
     }
 
-    private List<Attachmentnote> findAttachmentnoteEntities(boolean all, int maxResults, int firstResult) {
+    private List<Projectconfiguration> findProjectconfigurationEntities(boolean all, int maxResults, int firstResult) {
         EntityManager em = getEntityManager();
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            cq.select(cq.from(Attachmentnote.class));
+            cq.select(cq.from(Projectconfiguration.class));
             Query q = em.createQuery(cq);
             if (!all) {
                 q.setMaxResults(maxResults);
@@ -113,20 +119,22 @@ public class AttachmentnoteJpaController implements Serializable {
         }
     }
 
-    public Attachmentnote findAttachmentnote(Integer id) {
+    @Override
+    public Projectconfiguration findProjectconfiguration(Integer id) {
         EntityManager em = getEntityManager();
         try {
-            return em.find(Attachmentnote.class, id);
+            return em.find(Projectconfiguration.class, id);
         } finally {
             em.close();
         }
     }
 
-    public int getAttachmentnoteCount() {
+    @Override
+    public int getProjectconfigurationCount() {
         EntityManager em = getEntityManager();
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            Root<Attachmentnote> rt = cq.from(Attachmentnote.class);
+            Root<Projectconfiguration> rt = cq.from(Projectconfiguration.class);
             cq.select(em.getCriteriaBuilder().count(rt));
             Query q = em.createQuery(cq);
             return ((Long) q.getSingleResult()).intValue();

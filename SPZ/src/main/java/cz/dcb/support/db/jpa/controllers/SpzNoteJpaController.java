@@ -20,17 +20,19 @@ import javax.persistence.criteria.Root;
  *
  * @author bar
  */
-public class SpznoteJpaController implements Serializable {
+public class SpzNoteJpaController implements Serializable, SpzNoteManager {
 
-    public SpznoteJpaController(EntityManagerFactory emf) {
+    public SpzNoteJpaController(EntityManagerFactory emf) {
         this.emf = emf;
     }
     private EntityManagerFactory emf = null;
 
+    @Override
     public EntityManager getEntityManager() {
         return emf.createEntityManager();
     }
 
+    @Override
     public void create(Spznote spznote) {
         EntityManager em = null;
         try {
@@ -45,6 +47,7 @@ public class SpznoteJpaController implements Serializable {
         }
     }
 
+    @Override
     public void edit(Spznote spznote) throws NonexistentEntityException, Exception {
         EntityManager em = null;
         try {
@@ -68,6 +71,7 @@ public class SpznoteJpaController implements Serializable {
         }
     }
 
+    @Override
     public void destroy(Integer id) throws NonexistentEntityException {
         EntityManager em = null;
         try {
@@ -89,10 +93,12 @@ public class SpznoteJpaController implements Serializable {
         }
     }
 
+    @Override
     public List<Spznote> findSpznoteEntities() {
         return findSpznoteEntities(true, -1, -1);
     }
 
+    @Override
     public List<Spznote> findSpznoteEntities(int maxResults, int firstResult) {
         return findSpznoteEntities(false, maxResults, firstResult);
     }
@@ -113,6 +119,7 @@ public class SpznoteJpaController implements Serializable {
         }
     }
 
+    @Override
     public Spznote findSpznote(Integer id) {
         EntityManager em = getEntityManager();
         try {
@@ -122,6 +129,7 @@ public class SpznoteJpaController implements Serializable {
         }
     }
 
+    @Override
     public int getSpznoteCount() {
         EntityManager em = getEntityManager();
         try {
