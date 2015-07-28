@@ -41,6 +41,7 @@ public class Configuration implements Serializable {
     @Id
     private Integer id;
     @Column(name="ts",table="configuration",nullable=false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic
     private int ts;
 
