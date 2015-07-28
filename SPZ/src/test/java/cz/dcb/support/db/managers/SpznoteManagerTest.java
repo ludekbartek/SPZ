@@ -5,10 +5,13 @@
  */
 package cz.dcb.support.db.managers;
 
-import cz.dcb.support.db.jpa.Spznote;
+import cz.dcb.support.db.jpa.controllers.SpzNoteJpaController;
+import cz.dcb.support.db.jpa.controllers.SpzNoteManager;
+import cz.dcb.support.db.jpa.entities.Spznote;
 import cz.dcb.support.db.managers.exceptions.IllegalOrphanException;
 import cz.dcb.support.db.managers.exceptions.NonexistentEntityException;
 import cz.dcb.support.db.managers.exceptions.PreexistingEntityException;
+import cz.dcb.support.db.managers.utils.DBUtils;
 import java.util.List;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -22,8 +25,9 @@ import static org.junit.Assert.*;
  * @author bar
  */
 public class SpznoteManagerTest {
-    
+    private final SpzNoteManager manager = new SpzNoteJpaController(DBUtils.getEntityManagerFactory());
     public SpznoteManagerTest() {
+        
     }
     
     @BeforeClass
@@ -49,8 +53,7 @@ public class SpznoteManagerTest {
     public void testCreate() throws Exception {
         System.out.println("create");
         Spznote spznote = null;
-        SpznoteManager instance = new SpznoteManagerImpl();
-        instance.create(spznote);
+        manager.create(spznote);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
@@ -62,8 +65,6 @@ public class SpznoteManagerTest {
     public void testDestroy() throws Exception {
         System.out.println("destroy");
         Integer id = null;
-        SpznoteManager instance = new SpznoteManagerImpl();
-        instance.destroy(id);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
@@ -75,8 +76,7 @@ public class SpznoteManagerTest {
     public void testEdit() throws Exception {
         System.out.println("edit");
         Spznote spznote = null;
-        SpznoteManager instance = new SpznoteManagerImpl();
-        instance.edit(spznote);
+        manager.edit(spznote);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
@@ -88,9 +88,8 @@ public class SpznoteManagerTest {
     public void testFindSpznote() {
         System.out.println("findSpznote");
         Integer id = null;
-        SpznoteManager instance = new SpznoteManagerImpl();
         Spznote expResult = null;
-        Spznote result = instance.findSpznote(id);
+        Spznote result = manager.findSpznote(id);
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
@@ -102,9 +101,8 @@ public class SpznoteManagerTest {
     @Test
     public void testFindSpznoteEntities_0args() {
         System.out.println("findSpznoteEntities");
-        SpznoteManager instance = new SpznoteManagerImpl();
         List<Spznote> expResult = null;
-        List<Spznote> result = instance.findSpznoteEntities();
+        List<Spznote> result = manager.findSpznoteEntities();
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
@@ -118,9 +116,8 @@ public class SpznoteManagerTest {
         System.out.println("findSpznoteEntities");
         int maxResults = 0;
         int firstResult = 0;
-        SpznoteManager instance = new SpznoteManagerImpl();
         List<Spznote> expResult = null;
-        List<Spznote> result = instance.findSpznoteEntities(maxResults, firstResult);
+        List<Spznote> result = manager.findSpznoteEntities(maxResults, firstResult);
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
@@ -132,15 +129,14 @@ public class SpznoteManagerTest {
     @Test
     public void testGetSpznoteCount() {
         System.out.println("getSpznoteCount");
-        SpznoteManager instance = new SpznoteManagerImpl();
         int expResult = 0;
-        int result = instance.getSpznoteCount();
+        int result = manager.getSpznoteCount();
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
 
-    public class SpznoteManagerImpl implements SpznoteManager {
+    /*public class SpznoteManagerImpl implements SpznoteManager {
 
         public void create(Spznote spznote) throws PreexistingEntityException, Exception {
         }
@@ -166,6 +162,6 @@ public class SpznoteManagerTest {
         public int getSpznoteCount() {
             return 0;
         }
-    }
+    }*/
     
 }
