@@ -13,6 +13,7 @@ import cz.dcb.support.db.managers.exceptions.NonexistentEntityException;
 import cz.dcb.support.db.managers.exceptions.PreexistingEntityException;
 import cz.dcb.support.db.managers.utils.DBUtils;
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Random;
@@ -49,7 +50,10 @@ public class AttachmentManagerTest {
     }
     
     @After
-    public void tearDown() {
+    public void tearDown() throws cz.dcb.support.db.jpa.controllers.exceptions.NonexistentEntityException {
+        for(Attachment attach:manager.findAttachmentEntities()){
+            manager.destroy(attach.getId());
+        }
     }
 
     /**
@@ -60,7 +64,6 @@ public class AttachmentManagerTest {
         System.out.println("create");
         testCreateNullAttachment();
         testValidAttachment();
-        testNullDateAttachment();
     }
 
     private void testValidAttachment() throws Exception {
@@ -72,10 +75,10 @@ public class AttachmentManagerTest {
 
     
     private void testCreateNullAttachment() {
-        Attachment attachment = new Attachment();
+        Attachment attachment = null;
         try{
-            attachment.setDate(null);
-            fail("Created null date Attachment");
+            manager.create(attachment);
+            fail("Created null Attachment");
         }catch(NullPointerException|IllegalArgumentException ex){
             Logger.getLogger(AttachmentJpaController.class.getName()).log(Level.INFO,"Creating null attachment ok");
         }catch(Exception ex1){
@@ -83,18 +86,6 @@ public class AttachmentManagerTest {
         }
     }
 
-    /**
-     * Test of destroy method, of class AttachmentManager.
-     */
-    @Test
-    public void testDestroy() throws Exception {
-        System.out.println("destroy");
-        Integer id = null;
-        //AttachmentManager instance = new AttachmentManagerImpl();
-        manager.destroy(id);
-        // TODO review the generated test code and remove the default call to fail.
-      //  fail("The test case is a prototype.");
-    }
 
     /**
      * Test of edit method, of class AttachmentManager.
@@ -113,17 +104,37 @@ public class AttachmentManagerTest {
      * Test of findAttachment method, of class AttachmentManager.
      */
     @Test
-    public void testFindAttachment() {
+    public void testFindNullIdAttachment() {
         System.out.println("findAttachment");
         Integer id = null;
         Attachment expResult = null;
-        Attachment result = manager.findAttachment(id);
+        Attachment result = null;
+        try{
+            result = manager.findAttachment(id);
+            fail("Lze vyhledat prilohu s id null.");
+        }catch(IllegalArgumentException iae){
+            
+        }
         assertEquals(expResult, result);
-        fail("Dodelat nalezeni (ne)existujicich priloh");
+        
         // TODO review the generated test code and remove the default call to fail.
         //fail("The test case is a prototype.");
     }
 
+    @Test
+    public void testFindAttachment(){
+        List<Attachment> data = createCorrectData();
+        int maxId = data.get(1).getId();
+        for(Attachment attach:data){
+            Attachment result = manager.findAttachment(attach.getId());
+            if(attach.getId()>maxId){
+                maxId=attach.getId();
+            }
+            assertEquals(attach + "not found.", attach,result);
+        }
+        Attachment result = manager.findAttachment(maxId+10);
+        assertNull("Result should be null.", result);
+    }
     /**
      * Test of findAttachmentEntities method, of class AttachmentManager.
      */
@@ -131,10 +142,10 @@ public class AttachmentManagerTest {
     public void testFindAttachmentEntities_0args() {
         System.out.println("findAttachmentEntities");
 //        AttachmentManager instance = new AttachmentManagerImpl();
-        List<Attachment> expResult = null;
+        List<Attachment> expResult = createCorrectData();
         List<Attachment> result = manager.findAttachmentEntities();
-        assertEquals(expResult, result);
-        fail("Dodelat nalezeni (ne)existujicich priloh");
+        assertDeepEquals(expResult, result);
+        
         // TODO review the generated test code and remove the default call to fail.
        // fail("The test case is a prototype.");
     }
@@ -145,17 +156,57 @@ public class AttachmentManagerTest {
     @Test
     public void testFindAttachmentEntities_int_int() {
         System.out.println("findAttachmentEntities");
-        int maxResults = 0;
+        List<Attachment> attachments = createCorrectData();
+        int maxResults = 5;
         int firstResult = 0;
 //        AttachmentManager instance = new AttachmentManagerImpl();
-        List<Attachment> expResult = null;
+        List<Attachment> expResult = attachments.subList(firstResult, firstResult+maxResults);
         List<Attachment> result = manager.findAttachmentEntities(maxResults, firstResult);
-        assertEquals(expResult, result);
-        fail("Dodelat nalezeni (ne)existujicich priloh");
+        assertDeepEquals(expResult, result);
+//        fail("Dodelat nalezeni (ne)existujicich priloh");
         // TODO review the generated test code and remove the default call to fail.
         //fail("The test case is a prototype.");
     }
 
+    private List<Attachment> createCorrectData() {
+        List<Attachment> attachments = new ArrayList<>();
+        Attachment attach = DBUtils.createAttachment();
+        String name = attach.getContent();
+        for(int i=0;i<20;i++){
+            String newName = name + i;
+            attach = DBUtils.createAttachment();
+            attach.setContent(name);
+            manager.create(attach);
+            attachments.add(attach);
+        }
+        return attachments;
+    }
+
+    @Test
+    public void testFindAttachmentEntities_int_intIncorrectParameters(){
+        createCorrectData();
+        List<Attachment> result = null;
+        try{
+            result = manager.findAttachmentEntities(-1, 1);
+            fail("Lze vyhledavat zaporny pocet priloh.");
+        }catch(IllegalArgumentException iae){
+            assertNull("Result should be null.",result);
+        }
+       
+        try{
+            result = manager.findAttachmentEntities(1, -1);
+            fail("Lze vyhledavat od zaporneho indexu");
+        }catch(IllegalArgumentException iae){
+            assertNull("Result should be null.",result);
+        }
+        
+        try{
+            result = manager.findAttachmentEntities(1, 30);
+            assertEquals("Result should be empty.",0, result.size());
+        }catch(IllegalArgumentException iae){
+            fail("Unexpected exception has been thrown.");
+        }
+    }
     /**
      * Test of getAttachmentCount method, of class AttachmentManager.
      */
@@ -180,20 +231,6 @@ public class AttachmentManagerTest {
     private void checkExistance(AttachmentManager instance, Attachment expected) {
         Attachment result = instance.findAttachment(expected.getId());
         assertEquals("Retrieved data differs.",result,expected);
-    }
-
-    private void testNullDateAttachment() {
-        Attachment attachment = null;
-//        AttachmentManager instance = new AttachmentJpaController(emf);
-        try{
-            manager.create(attachment);
-            fail("Created null Attachment");
-        }catch(NullPointerException ex){
-            Logger.getLogger(AttachmentJpaController.class.getName()).log(Level.INFO,"Creating null attachment ok");
-        }catch(Exception ex1){
-            fail("Wrong exception thrown: "+ ex1);
-        }
-   
     }
 
     private void testIncorrectEdits() throws Exception {
@@ -297,4 +334,11 @@ public class AttachmentManagerTest {
         }
     }
   */  
+
+    private void assertDeepEquals(List<Attachment> expResult, List<Attachment> result) {
+       assertEquals("Nesouhlasi velikost",expResult.size(),result.size());
+       for(Attachment attach:expResult){
+           assertTrue(attach+" not found in result.",result.contains(attach));
+       }
+    }
 }
