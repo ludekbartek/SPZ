@@ -136,7 +136,7 @@ public class Attachment implements Serializable {
 
     @Override
     public String toString() {
-        return "cz.dcb.support.db.jpa.entities.Attachment[ id=" + id + " ]";
+        return "Attachment[ id=" + id + ", content="+content +"]";
     }
     
 }
