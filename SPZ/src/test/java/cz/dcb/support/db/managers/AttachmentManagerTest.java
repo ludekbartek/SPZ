@@ -47,6 +47,13 @@ public class AttachmentManagerTest {
     
     @Before
     public void setUp() {
+        for(Attachment attach:manager.findAttachmentEntities()){
+            try {
+                manager.destroy(attach.getId());
+            } catch (cz.dcb.support.db.jpa.controllers.exceptions.NonexistentEntityException ex) {
+                Logger.getLogger(AttachmentManagerTest.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }
     
     @After
@@ -239,7 +246,7 @@ public class AttachmentManagerTest {
         Attachment newValue = null;
         try {
             manager.edit(newValue);
-        } catch (NonexistentEntityException ex) {
+        } catch (NonexistentEntityException|IllegalArgumentException ex) {
             Logger.getLogger(AttachmentManagerTest.class.getName()).log(Level.INFO, "Correct exception while editing null attachment.", ex);
         } catch (Exception ex1){
             fail("Incorrect exception thrown while editing null attachment.");
@@ -252,12 +259,14 @@ public class AttachmentManagerTest {
         
         attachment1.setTs(attachment.getTs());
         attachment1.setType(attachment.getType());
+        attachment1.setId(attachment.getId());
         
         try {
             manager.edit(attachment1);
         } catch (NonexistentEntityException ex) {
             Logger.getLogger(AttachmentManagerTest.class.getName()).log(Level.SEVERE, "Correct exception has been thrown.", ex);
         }
+        newValue = manager.findAttachment(attachment1.getId());
         checkNonExistance(manager, newValue);
         
     }
