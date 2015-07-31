@@ -49,6 +49,9 @@ public class AttachmentJpaController implements Serializable, AttachmentManager 
 
     @Override
     public void edit(Attachment attachment) throws NonexistentEntityException, Exception {
+        if(attachment==null){
+            throw new IllegalArgumentException("Attachment is null.");
+        }
         EntityManager em = null;
         try {
             em = getEntityManager();
