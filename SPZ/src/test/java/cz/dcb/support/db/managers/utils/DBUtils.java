@@ -6,6 +6,7 @@
 package cz.dcb.support.db.managers.utils;
 
 import cz.dcb.support.db.jpa.entities.Attachment;
+import cz.dcb.support.db.jpa.entities.Attachmentnote;
 import cz.dcb.support.db.jpa.entities.Project;
 import cz.dcb.support.db.jpa.entities.Spznote;
 import cz.dcb.support.db.jpa.entities.Spzstate;
@@ -82,5 +83,16 @@ public class DBUtils {
         project.setName("Test project");
         project.setTs(BigInteger.ONE);
         return project;
+    }
+
+    public static Attachmentnote createAttachmentNote() {
+        Attachmentnote note = new Attachmentnote();
+        Spzstate state = createSpzState();
+        Spznote spzNote = createSpznote(state);
+        Attachment attach = createAttachment();
+        
+        note.setSpznoteid(spzNote.getId());
+        note.setAttachmentid(attach.getId());
+        return note;
     }
 }
