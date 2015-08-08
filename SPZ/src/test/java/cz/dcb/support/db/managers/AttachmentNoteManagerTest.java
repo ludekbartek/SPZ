@@ -5,10 +5,18 @@
  */
 package cz.dcb.support.db.managers;
 
+import cz.dcb.support.db.jpa.controllers.AttachmentNoteJpaController;
 import cz.dcb.support.db.jpa.controllers.AttachmentNoteManager;
 import cz.dcb.support.db.jpa.controllers.exceptions.NonexistentEntityException;
 import cz.dcb.support.db.jpa.entities.Attachmentnote;
+import cz.dcb.support.db.managers.utils.DBUtils;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Random;
+import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -23,11 +31,15 @@ import static org.junit.Assert.*;
  */
 public class AttachmentNoteManagerTest {
     
+    private final AttachmentNoteManager manager;
+    
     public AttachmentNoteManagerTest() {
+        manager = new AttachmentNoteJpaController(DBUtils.getEntityManagerFactory());
     }
     
     @BeforeClass
     public static void setUpClass() {
+       
     }
     
     @AfterClass
@@ -36,6 +48,13 @@ public class AttachmentNoteManagerTest {
     
     @Before
     public void setUp() {
+         for(Attachmentnote note:manager.findAttachmentnoteEntities()){
+             try {
+                 manager.destroy(note.getId());
+             } catch (NonexistentEntityException ex) {
+                 Logger.getLogger(AttachmentNoteManagerTest.class.getName()).log(Level.SEVERE, "No such id note.", ex);
+             }
+        }
     }
     
     @After
@@ -48,24 +67,19 @@ public class AttachmentNoteManagerTest {
     @Test
     public void testCreate() {
         System.out.println("create");
-        Attachmentnote attachmentnote = null;
-        AttachmentNoteManager instance = new AttachmentNoteManagerImpl();
-        instance.create(attachmentnote);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        Attachmentnote note = DBUtils.createAttachmentNote();
+        manager.create(note);
+        assertNotNull("Attachment note id is null.",note.getId());
+        Attachmentnote dbNote = manager.findAttachmentnote(note.getId());
+        assertEquals("Object in db doesn't match.",dbNote, note);
+        
     }
-
+    
     /**
      * Test of destroy method, of class AttachmentNoteManager.
      */
     @Test
     public void testDestroy() throws Exception {
-        System.out.println("destroy");
-        Integer id = null;
-        AttachmentNoteManager instance = new AttachmentNoteManagerImpl();
-        instance.destroy(id);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
 
     /**
@@ -73,12 +87,6 @@ public class AttachmentNoteManagerTest {
      */
     @Test
     public void testEdit() throws Exception {
-        System.out.println("edit");
-        Attachmentnote attachmentnote = null;
-        AttachmentNoteManager instance = new AttachmentNoteManagerImpl();
-        instance.edit(attachmentnote);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
 
     /**
@@ -88,12 +96,25 @@ public class AttachmentNoteManagerTest {
     public void testFindAttachmentnote() {
         System.out.println("findAttachmentnote");
         Integer id = null;
-        AttachmentNoteManager instance = new AttachmentNoteManagerImpl();
+       // AttachmentNoteManager instance = new AttachmentNoteManagerImpl();
         Attachmentnote expResult = null;
-        Attachmentnote result = instance.findAttachmentnote(id);
-        assertEquals(expResult, result);
+        Attachmentnote result = null;
+        try{
+            result = manager.findAttachmentnote(id);
+            fail("Exception should be thrown.");
+        }catch(IllegalArgumentException iae){
+            assertEquals("Result doesn't match.",expResult, result);
+        }catch(Exception ex){
+            fail("Wrong exception has been thrown: "+ ex);
+        }
+        
+        //assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        //fail("The test case is a prototype.");
+        expResult = DBUtils.createAttachmentNote();
+        manager.create(expResult);
+        result = manager.findAttachmentnote(expResult.getId());
+        assertEquals("Return entity doesn't match.",expResult, result);
     }
 
     /**
@@ -102,9 +123,9 @@ public class AttachmentNoteManagerTest {
     @Test
     public void testFindAttachmentnoteEntities_0args() {
         System.out.println("findAttachmentnoteEntities");
-        AttachmentNoteManager instance = new AttachmentNoteManagerImpl();
-        List<Attachmentnote> expResult = null;
-        List<Attachmentnote> result = instance.findAttachmentnoteEntities();
+     //   AttachmentNoteManager instance = new AttachmentNoteManagerImpl();
+        List<Attachmentnote> expResult = new ArrayList<>();
+        List<Attachmentnote> result = manager.findAttachmentnoteEntities();
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
@@ -132,12 +153,24 @@ public class AttachmentNoteManagerTest {
     @Test
     public void testGetAttachmentnoteCount() {
         System.out.println("getAttachmentnoteCount");
-        AttachmentNoteManager instance = new AttachmentNoteManagerImpl();
-        int expResult = 0;
-        int result = instance.getAttachmentnoteCount();
-        assertEquals(expResult, result);
+        int result = manager.getAttachmentnoteCount();
+        assertEquals("Database should be emtpy",0, result);
+        Random rand = new Random();
+        int count = rand.nextInt(100)+1;
+        Set<Attachmentnote> notes=createAttachmentNotes(count);
+        result = manager.getAttachmentnoteCount();
+        assertEquals("Count doesn't match.",count, result);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+    }
+
+    private Set<Attachmentnote> createAttachmentNotes(int count) {
+        Set<Attachmentnote> notes = new HashSet<>();
+        for(int i=0;i<count;i++){
+            Attachmentnote  note = DBUtils.createAttachmentNote();
+            notes.add(note);
+            manager.create(note);
+        }
+        return  notes;
     }
 
     /**
@@ -145,13 +178,13 @@ public class AttachmentNoteManagerTest {
      */
     @Test
     public void testGetEntityManager() {
-        System.out.println("getEntityManager");
+/*        System.out.println("getEntityManager");
         AttachmentNoteManager instance = new AttachmentNoteManagerImpl();
         EntityManager expResult = null;
         EntityManager result = instance.getEntityManager();
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        fail("The test case is a prototype.");*/
     }
 
     public class AttachmentNoteManagerImpl implements AttachmentNoteManager {
