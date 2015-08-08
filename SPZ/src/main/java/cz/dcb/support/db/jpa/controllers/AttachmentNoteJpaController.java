@@ -40,6 +40,7 @@ public class AttachmentNoteJpaController implements Serializable, AttachmentNote
             em.getTransaction().begin();
             em.persist(attachmentnote);
             em.getTransaction().commit();
+            em.refresh(attachmentnote);
         } finally {
             if (em != null) {
                 em.close();
