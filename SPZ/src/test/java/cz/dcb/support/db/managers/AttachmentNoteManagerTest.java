@@ -124,11 +124,18 @@ public class AttachmentNoteManagerTest {
     public void testFindAttachmentnoteEntities_0args() {
         System.out.println("findAttachmentnoteEntities");
      //   AttachmentNoteManager instance = new AttachmentNoteManagerImpl();
-        List<Attachmentnote> expResult = new ArrayList<>();
         List<Attachmentnote> result = manager.findAttachmentnoteEntities();
-        assertEquals(expResult, result);
+        List<Attachmentnote> expResult = new ArrayList<>();
+        assertEquals("Function should return empty list.",expResult, result);
+        Random rand = new Random();
+        int count = rand.nextInt(100)+1;
+        expResult = new ArrayList<>(createAttachmentNotes(count));
+        result = null;
+        result = manager.findAttachmentnoteEntities();
+        assertEquals("Size doesn't match",expResult.size(), result.size());
+        testElements(expResult,result);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        //fail("The test case is a prototype.");
     }
 
     /**
@@ -185,6 +192,12 @@ public class AttachmentNoteManagerTest {
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");*/
+    }
+
+    private void testElements(List<Attachmentnote> expResult, List<Attachmentnote> result) {
+        for(Attachmentnote note:expResult){
+            assertTrue("Element not found: "+note,result.contains(note));
+        }
     }
 
     public class AttachmentNoteManagerImpl implements AttachmentNoteManager {
