@@ -11,6 +11,7 @@ import cz.dcb.support.db.jpa.entities.Configuration;
 import cz.dcb.support.db.managers.utils.DBUtils;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.junit.After;
@@ -98,9 +99,30 @@ public class ConfigurationManagerTest {
         System.out.println("edit");
         Configuration configuration = null;
         //ConfigurationManager instance = new ConfigurationManagerImpl();
-        manager.edit(configuration);
+        try{
+            manager.edit(configuration);
+            fail("Exception should be thrown.");
+        }catch(IllegalArgumentException iae){
+            logger.log(Level.INFO, "Correct exception thrown.", iae);
+        }catch(Exception ex){
+            fail("Incorrect exception thrown: "+ex);
+        }
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        //fail("The test case is a prototype.");
+    }
+    @Test()
+    public void testNullIdConfigurationEdit(){
+        Configuration config = DBUtils.createConfiguration();
+        config.setId(null);
+        try {
+            manager.edit(config);
+        }catch(IllegalArgumentException iae){
+            logger.log(Level.INFO,"Correct exception thrown.",iae);
+            return;
+        } catch (Exception ex) {
+            Logger.getLogger(ConfigurationManagerTest.class.getName()).log(Level.SEVERE, null, ex);
+            fail("Wrong exception thrown.");
+        }
     }
 
     /**
