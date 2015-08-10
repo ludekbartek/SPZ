@@ -48,17 +48,22 @@ public class AttachmentNoteManagerTest {
     
     @Before
     public void setUp() {
-         for(Attachmentnote note:manager.findAttachmentnoteEntities()){
-             try {
-                 manager.destroy(note.getId());
-             } catch (NonexistentEntityException ex) {
-                 Logger.getLogger(AttachmentNoteManagerTest.class.getName()).log(Level.SEVERE, "No such id note.", ex);
-             }
+        cleanDB();
+    }
+
+    private void cleanDB() {
+        for(Attachmentnote note:manager.findAttachmentnoteEntities()){
+            try {
+                manager.destroy(note.getId());
+            } catch (NonexistentEntityException ex) {
+                Logger.getLogger(AttachmentNoteManagerTest.class.getName()).log(Level.SEVERE, "No such id note.", ex);
+            }
         }
     }
     
     @After
     public void tearDown() {
+      // cleanDB();
     }
 
     /**
@@ -146,13 +151,27 @@ public class AttachmentNoteManagerTest {
         System.out.println("findAttachmentnoteEntities");
         int maxResults = 0;
         int firstResult = 0;
-        AttachmentNoteManager instance = new AttachmentNoteManagerImpl();
-        List<Attachmentnote> expResult = null;
-        List<Attachmentnote> result = instance.findAttachmentnoteEntities(maxResults, firstResult);
+        
+        List<Attachmentnote> expResult = new ArrayList<>();
+        List<Attachmentnote> result = manager.findAttachmentnoteEntities(maxResults, firstResult);
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
+        Random rand = new Random();
+        maxResults = 10;
+        expResult = new ArrayList<>(createAttachmentNotes(maxResults*2));
+       /* for(Attachmentnote note:expResult){
+            manager.create(note);
+        }*/
+        Logger.getAnonymousLogger().log(Level.INFO,"Velikost:"+maxResults+"\nVytvorene:\n"+expResult.toString());
+        for(firstResult=0;firstResult<maxResults;firstResult++){
+            List<Attachmentnote> testResult = expResult.subList(firstResult, firstResult+maxResults);
+            
+            result = manager.findAttachmentnoteEntities(maxResults, firstResult);
+            assertEquals("Elements count doesn't match. First Result="+firstResult,testResult.size(), result.size());
+            Logger.getAnonymousLogger().log(Level.INFO,"Ziskane:\n"+result.toString());
+            testElements(testResult,result);
+        }
+    }   
 
     /**
      * Test of getAttachmentnoteCount method, of class AttachmentNoteManager.
@@ -164,14 +183,14 @@ public class AttachmentNoteManagerTest {
         assertEquals("Database should be emtpy",0, result);
         Random rand = new Random();
         int count = rand.nextInt(100)+1;
-        Set<Attachmentnote> notes=createAttachmentNotes(count);
+        List<Attachmentnote> notes=createAttachmentNotes(count);
         result = manager.getAttachmentnoteCount();
         assertEquals("Count doesn't match.",count, result);
         // TODO review the generated test code and remove the default call to fail.
     }
 
-    private Set<Attachmentnote> createAttachmentNotes(int count) {
-        Set<Attachmentnote> notes = new HashSet<>();
+    private List<Attachmentnote> createAttachmentNotes(int count) {
+        List<Attachmentnote> notes = new ArrayList<>();
         for(int i=0;i<count;i++){
             Attachmentnote  note = DBUtils.createAttachmentNote();
             notes.add(note);
