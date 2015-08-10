@@ -34,6 +34,9 @@ public class ConfigurationJpaController implements Serializable, ConfigurationMa
 
     @Override
     public void create(Configuration configuration) {
+        if(configuration == null){
+            throw new IllegalArgumentException("Configuration is null.");
+        }
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -49,6 +52,12 @@ public class ConfigurationJpaController implements Serializable, ConfigurationMa
 
     @Override
     public void edit(Configuration configuration) throws NonexistentEntityException, Exception {
+        if(configuration == null){
+            throw new IllegalArgumentException("Parameter configuration is null.");
+        }
+        if(configuration.getId()==null){
+            throw new IllegalArgumentException("Parameter ID is null");
+        }
         EntityManager em = null;
         try {
             em = getEntityManager();
