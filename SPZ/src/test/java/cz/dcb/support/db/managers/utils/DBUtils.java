@@ -5,8 +5,11 @@
  */
 package cz.dcb.support.db.managers.utils;
 
+import cz.dcb.support.db.jpa.controllers.ConfigurationJpaController;
+import cz.dcb.support.db.jpa.controllers.ConfigurationManager;
 import cz.dcb.support.db.jpa.entities.Attachment;
 import cz.dcb.support.db.jpa.entities.Attachmentnote;
+import cz.dcb.support.db.jpa.entities.Configuration;
 import cz.dcb.support.db.jpa.entities.Project;
 import cz.dcb.support.db.jpa.entities.Spznote;
 import cz.dcb.support.db.jpa.entities.Spzstate;
@@ -94,5 +97,17 @@ public class DBUtils {
         note.setSpznoteid(spzNote.getId());
         note.setAttachmentid(attach.getId());
         return note;
+    }
+    
+    public static Configuration createConfiguration(){
+        ConfigurationManager manager = new ConfigurationJpaController(DBUtils.getEntityManagerFactory());
+        Configuration config = new Configuration();
+        config.setCode("Some configuration");
+        config.setDescription("Some description");
+        config.setSeqnumber(BigInteger.ONE);
+        config.setTs(BigInteger.ONE);
+        manager.create(config);
+        
+        return config;
     }
 }
