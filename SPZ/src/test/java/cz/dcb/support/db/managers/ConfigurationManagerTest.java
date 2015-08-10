@@ -8,11 +8,11 @@ package cz.dcb.support.db.managers;
 import cz.dcb.support.db.jpa.controllers.ConfigurationJpaController;
 import cz.dcb.support.db.jpa.controllers.ConfigurationManager;
 import cz.dcb.support.db.jpa.entities.Configuration;
-import cz.dcb.support.db.managers.exceptions.IllegalOrphanException;
-import cz.dcb.support.db.managers.exceptions.NonexistentEntityException;
-import cz.dcb.support.db.managers.exceptions.PreexistingEntityException;
-import cz.dcb.support.db.utils.DBUtils;
+import cz.dcb.support.db.managers.utils.DBUtils;
+
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -27,7 +27,7 @@ import static org.junit.Assert.*;
 public class ConfigurationManagerTest {
     
     private final ConfigurationManager manager = new ConfigurationJpaController(DBUtils.getEntityManagerFactory());
-    
+    private final Logger logger = Logger.getLogger(ConfigurationManagerTest.class.getName());
     public ConfigurationManagerTest() {
     }
     
@@ -55,9 +55,25 @@ public class ConfigurationManagerTest {
         System.out.println("create");
         Configuration configuration = null;
 //        ConfigurationManager instance = new ConfigurationManagerImpl();
-        manager.create(configuration);
+        try{
+            manager.create(configuration);
+            fail("Exception should be thrown.");
+        }catch(IllegalArgumentException iae){
+            logger.log(Level.INFO, "Correct exception thrown.",iae);
+        }catch(Exception ex){
+            fail("Wrong exception is thrown: "+ex);
+        }
+        configuration = DBUtils.createConfiguration();
+        try{
+            manager.create(configuration);
+        }catch(Exception ex){
+            fail("Wrong exception thrown "+ex);
+        }
+        if(configuration.getId()==null){
+            fail("ID not set.");
+        }
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        //fail("The test case is a prototype.");
     }
 
     /**
@@ -65,12 +81,13 @@ public class ConfigurationManagerTest {
      */
     @Test
     public void testDestroy() throws Exception {
-        System.out.println("destroy");
+        /*System.out.println("destroy");
         Integer id = null;
  //       ConfigurationManager instance = new ConfigurationManagerImpl();
-        manager.destroy(id);
+        //manager.destroy(id);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        //fail("The test case is a prototype.");
+        */
     }
 
     /**
