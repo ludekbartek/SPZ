@@ -120,7 +120,7 @@ public class Configuration implements Serializable {
 
     @Override
     public String toString() {
-        return "cz.dcb.support.db.jpa.entities.Configuration[ id=" + id + " ]";
+        return "cz.dcb.support.db.jpa.entities.Configuration[ id=" + id + ", " + description + " ]";
     }
     
 }
