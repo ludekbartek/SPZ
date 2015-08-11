@@ -145,18 +145,36 @@ public class ConfigurationManagerTest {
      * Test of findConfiguration method, of class ConfigurationManager.
      */
     @Test
-    public void testFindConfiguration() {
+    public void testFindNullConfiguration() {
         System.out.println("findConfiguration");
         Integer id = null;
 //        ConfigurationManager instance = new ConfigurationManagerImpl();
         Configuration expResult = null;
-        Configuration result = manager.findConfiguration(id);
+        Configuration result = null;
+        try{
+            result = manager.findConfiguration(id);
+            fail("Exception should be thrown.");
+        }catch(IllegalArgumentException iae){
+            logger.log(Level.INFO,"",iae);
+        }catch(Exception ex){
+            fail("Incorrect exception thrown.");
+        }
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        //fail("The test case is a prototype.");
     }
 
-    
+    @Test
+    public void testFindConfiguration(){
+        Random rand = new Random();
+        int count = rand.nextInt(5)+5;
+        List<Configuration> configs = createConfigurations(count);
+        for(Configuration config:configs)
+        {
+            Configuration conf=manager.findConfiguration(config.getId());
+            assertEquals("Nesouhlasi configurace: ",config,conf);
+        }
+    }
     /**
      * Test of findConfigurationEntities method, of class ConfigurationManager.
      */
@@ -164,11 +182,16 @@ public class ConfigurationManagerTest {
     public void testFindConfigurationEntities_0args() {
         System.out.println("findConfigurationEntities");
 //        ConfigurationManager instance = new ConfigurationManagerImpl();
-        List<Configuration> expResult = null;
+        List<Configuration> expResult = new ArrayList<>();
         List<Configuration> result = manager.findConfigurationEntities();
+        assertEquals("Empty db contains elements.",expResult, result);
+        Random rand = new Random();
+        int count = rand.nextInt(5)+5;
+        expResult = createConfigurations(count);
+        result = manager.findConfigurationEntities();
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        
     }
 
     /**
@@ -180,11 +203,22 @@ public class ConfigurationManagerTest {
         int maxResults = 0;
         int firstResult = 0;
 //        ConfigurationManager instance = new ConfigurationManagerImpl();
-        List<Configuration> expResult = null;
+        List<Configuration> expResult = new ArrayList<>();
         List<Configuration> result = manager.findConfigurationEntities(maxResults, firstResult);
         assertEquals(expResult, result);
+        Random rand = new Random();
+        int count = rand.nextInt(10)+10;
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        List<Configuration> values = createConfigurations(count);
+        for(int first=0;first<count-1;first++){
+            for(maxResults=1;maxResults<count-first;maxResults++){
+                result = manager.findConfigurationEntities(maxResults, first);
+                expResult = values.subList(first,first+maxResults);
+                
+                assertEquals("Result size doesn't match.",expResult.size(), result.size());
+                assertArrayEquals("Result doesn't match the expectation.",expResult.toArray(new Configuration[1]), result.toArray(new Configuration[1]));
+            }
+        }
     }
 
     /**
@@ -198,7 +232,11 @@ public class ConfigurationManagerTest {
         int result = manager.getConfigurationCount();
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        Random rand =  new Random();
+        int count = rand.nextInt(10)+5;
+        List<Configuration> configs = createConfigurations(count);
+        result = manager.getConfigurationCount();
+        assertEquals("Pocet prvku nesouhlasi.",count, result);
     }
 
 /*    public class ConfigurationManagerImpl implements ConfigurationManager {
