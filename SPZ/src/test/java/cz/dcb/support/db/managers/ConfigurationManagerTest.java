@@ -7,11 +7,14 @@ package cz.dcb.support.db.managers;
 
 import cz.dcb.support.db.jpa.controllers.ConfigurationJpaController;
 import cz.dcb.support.db.jpa.controllers.ConfigurationManager;
+import cz.dcb.support.db.jpa.controllers.exceptions.NonexistentEntityException;
 import cz.dcb.support.db.jpa.entities.Configuration;
 import cz.dcb.support.db.managers.utils.DBUtils;
+import java.util.ArrayList;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.junit.After;
@@ -42,6 +45,7 @@ public class ConfigurationManagerTest {
     
     @Before
     public void setUp() {
+        cleanDB();
     }
     
     @After
@@ -109,6 +113,18 @@ public class ConfigurationManagerTest {
         }
         // TODO review the generated test code and remove the default call to fail.
         //fail("The test case is a prototype.");
+        Random rand = new Random();
+        int count = rand.nextInt(5);
+        List<Configuration> configs=createConfigurations(count+5);
+        int i=0;
+        for(Configuration conf:configs){
+            conf.setDescription(conf.getDescription()+i);
+            i++;
+            manager.edit(conf);
+        }
+        List<Configuration> changed = manager.findConfigurationEntities();
+        assertListEquals(configs,changed);
+        logger.log(Level.INFO, changed.toString());
     }
     @Test()
     public void testNullIdConfigurationEdit(){
@@ -124,7 +140,7 @@ public class ConfigurationManagerTest {
             fail("Wrong exception thrown.");
         }
     }
-
+    
     /**
      * Test of findConfiguration method, of class ConfigurationManager.
      */
@@ -140,6 +156,7 @@ public class ConfigurationManagerTest {
         fail("The test case is a prototype.");
     }
 
+    
     /**
      * Test of findConfigurationEntities method, of class ConfigurationManager.
      */
@@ -212,4 +229,31 @@ public class ConfigurationManagerTest {
         }
     }
   */  
+
+    private void cleanDB() {
+        for(Configuration config:manager.findConfigurationEntities()){
+            try {
+                manager.destroy(config.getId());
+            } catch (NonexistentEntityException ex) {
+                Logger.getLogger(ConfigurationManagerTest.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+
+    private List<Configuration> createConfigurations(int count) {
+        List<Configuration> configs = new ArrayList<>();
+        for(int i=0;i<count;i++){
+            Configuration conf = DBUtils.createConfiguration();
+            manager.create(conf);
+            configs.add(conf);
+        }
+        return configs;
+    }
+
+    private void assertListEquals(List<Configuration> configs, List<Configuration> changed) {
+        assertEquals("Number of elements differs.",configs.size(),changed.size());
+        for(Configuration config:configs){
+            assertTrue("Configuration "+config+" not found in changed list.",changed.contains(config));
+        }
+    }
 }
