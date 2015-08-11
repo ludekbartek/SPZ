@@ -5,6 +5,7 @@
  */
 package cz.dcb.support.db.utils;
 
+import cz.dcb.support.db.jpa.entities.Configuration;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
