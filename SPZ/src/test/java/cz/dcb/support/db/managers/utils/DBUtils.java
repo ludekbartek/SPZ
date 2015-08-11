@@ -106,7 +106,7 @@ public class DBUtils {
         config.setDescription("Some description");
         config.setSeqnumber(BigInteger.ONE);
         config.setTs(BigInteger.ONE);
-        manager.create(config);
+        //manager.create(config);
         
         return config;
     }
