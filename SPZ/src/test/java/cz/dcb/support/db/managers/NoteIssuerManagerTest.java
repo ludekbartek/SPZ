@@ -19,7 +19,9 @@ import cz.dcb.support.db.jpa.entities.Spznote;
 import cz.dcb.support.db.jpa.entities.Spzstate;
 import cz.dcb.support.db.jpa.entities.User;
 import cz.dcb.support.db.managers.utils.DBUtils;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.persistence.EntityManager;
@@ -166,12 +168,15 @@ public class NoteIssuerManagerTest {
     @Test
     public void testGetNoteissuerCount() {
         System.out.println("getNoteissuerCount");
-        NoteIssuerManager instance = new NoteIssuerManagerImpl();
         int expResult = 0;
-        int result = instance.getNoteissuerCount();
+        int result = manager.getNoteissuerCount();
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        Random rand = new Random();
+        
+        expResult = rand.nextInt(15)+5;
+        createNoteIssuers(expResult);
+        result = manager.getNoteissuerCount();
+        assertEquals("The counts do not match",expResult, result);
     }
 
     private void clearDB() {
@@ -209,6 +214,16 @@ public class NoteIssuerManagerTest {
             }
         }
         
+    }
+
+    private List<Noteissuer> createNoteIssuers(int count) {
+        List<Noteissuer> result = new ArrayList<>();
+        for(int i=0;i<count;i++){
+            Noteissuer noteIssuer = DBUtils.createNoteIssuer(DBUtils.getEntityManagerFactory());
+            manager.create(noteIssuer);
+            result.add(noteIssuer);
+        }
+        return result;
     }
 
     public class NoteIssuerManagerImpl implements NoteIssuerManager {
