@@ -134,6 +134,8 @@ public class NoteIssuerManagerTest {
             result = manager.findNoteissuer(expResult.getId());
             assertEquals(expResult, result);
         }
+        result = manager.findNoteissuer(-1);
+        assertNull(result);
     }
 
     @Test
@@ -155,12 +157,16 @@ public class NoteIssuerManagerTest {
     @Test
     public void testFindNoteissuerEntities_0args() {
         System.out.println("findNoteissuerEntities");
-        NoteIssuerManager instance = new NoteIssuerManagerImpl();
-        List<Noteissuer> expResult = null;
-        List<Noteissuer> result = instance.findNoteissuerEntities();
+        List<Noteissuer> expResult = new ArrayList<>();
+        List<Noteissuer> result = manager.findNoteissuerEntities();
         assertEquals(expResult, result);
+        Random rand = new Random();
+        int count = rand.nextInt(25)+5;
+        expResult = createNoteIssuers(count);
+        result = manager.findNoteissuerEntities();
+        assertArrayEquals(expResult.toArray(new Noteissuer[0]), result.toArray(new Noteissuer[0]));
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+       // fail("The test case is a prototype.");
     }
 
     /**
@@ -171,28 +177,54 @@ public class NoteIssuerManagerTest {
         System.out.println("findNoteissuerEntities");
         int maxResults = 0;
         int firstResult = 0;
-        NoteIssuerManager instance = new NoteIssuerManagerImpl();
-        List<Noteissuer> expResult = null;
-        List<Noteissuer> result = instance.findNoteissuerEntities(maxResults, firstResult);
+       // NoteIssuerManager instance = new NoteIssuerManagerImpl();
+        List<Noteissuer> expResult = new ArrayList<>();
+        List<Noteissuer> result = manager.findNoteissuerEntities(maxResults, firstResult);
         assertEquals(expResult, result);
+        Random rand = new Random();
+        int count = rand.nextInt(20)+10;
+        expResult = createNoteIssuers(count);
+        for(int i=0;i<expResult.size()-10;i++){
+            for(maxResults=1;maxResults<=10;maxResults++){
+                List<Noteissuer> values = expResult.subList(i, i+maxResults);
+                result = manager.findNoteissuerEntities(maxResults, i);
+                assertArrayEquals(values.toArray(new Noteissuer[0]), result.toArray(new Noteissuer[0]));
+            }
+        }
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        //fail("The test case is a prototype.");
     }
-
-    /**
-     * Test of getEntityManager method, of class NoteIssuerManager.
-     */
+    
     @Test
-    public void testGetEntityManager() {
-        System.out.println("getEntityManager");
-        NoteIssuerManager instance = new NoteIssuerManagerImpl();
-        EntityManager expResult = null;
-        EntityManager result = instance.getEntityManager();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+    public void testFindNoteissuerEntities_int_int_invalidParams() {
+        Random rand = new Random();
+        int count = rand.nextInt(20)+10;
+        List<Noteissuer> expResult;
+        List<Noteissuer> result = null;
+        try{
+            result = manager.findNoteissuerEntities(-1, 0);
+            fail("Invalid maxresults value (-1)");
+        }catch(IllegalArgumentException iae){
+            logger.log(Level.INFO, "Exception thrown: ",iae);
+        }catch(Exception ex){
+            fail("Wrong exception has been thrown: "+ex);
+        }
+        try{
+            result = manager.findNoteissuerEntities(0, -1);
+            fail("Invalid first value(-1)");
+        }catch(IllegalArgumentException iae){
+            logger.log(Level.INFO,"Exception thrown: ",iae);
+        }catch(Exception ex){
+            fail("Wrong exception has been thrown "+ex);
+        }
+        expResult = createNoteIssuers(count);
+        try{
+            result = manager.findNoteissuerEntities(1, count+1);
+            assertEquals(result.size(),0);
+        }catch(Exception ex){
+            fail("Wrong exception thrown "+ex);
+        }
     }
-
     /**
      * Test of getNoteissuerCount method, of class NoteIssuerManager.
      */
@@ -256,37 +288,4 @@ public class NoteIssuerManagerTest {
         }
         return result;
     }
-
-    public class NoteIssuerManagerImpl implements NoteIssuerManager {
-
-        public void create(Noteissuer noteissuer) {
-        }
-
-        public void destroy(Integer id) throws NonexistentEntityException {
-        }
-
-        public void edit(Noteissuer noteissuer) throws NonexistentEntityException, Exception {
-        }
-
-        public Noteissuer findNoteissuer(Integer id) {
-            return null;
-        }
-
-        public List<Noteissuer> findNoteissuerEntities() {
-            return null;
-        }
-
-        public List<Noteissuer> findNoteissuerEntities(int maxResults, int firstResult) {
-            return null;
-        }
-
-        public EntityManager getEntityManager() {
-            return null;
-        }
-
-        public int getNoteissuerCount() {
-            return 0;
-        }
-    }
-    
 }
