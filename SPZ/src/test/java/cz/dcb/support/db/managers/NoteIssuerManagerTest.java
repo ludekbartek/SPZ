@@ -59,6 +59,7 @@ public class NoteIssuerManagerTest {
     
     @After
     public void tearDown() {
+        clearDB();
     }
 
     /**
