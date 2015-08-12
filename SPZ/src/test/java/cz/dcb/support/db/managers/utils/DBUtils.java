@@ -7,9 +7,16 @@ package cz.dcb.support.db.managers.utils;
 
 import cz.dcb.support.db.jpa.controllers.ConfigurationJpaController;
 import cz.dcb.support.db.jpa.controllers.ConfigurationManager;
+import cz.dcb.support.db.jpa.controllers.SpzNoteJpaController;
+import cz.dcb.support.db.jpa.controllers.SpzNoteManager;
+import cz.dcb.support.db.jpa.controllers.SpzStateJpaController;
+import cz.dcb.support.db.jpa.controllers.SpzStateManager;
+import cz.dcb.support.db.jpa.controllers.UserJpaController;
+import cz.dcb.support.db.jpa.controllers.UserManager;
 import cz.dcb.support.db.jpa.entities.Attachment;
 import cz.dcb.support.db.jpa.entities.Attachmentnote;
 import cz.dcb.support.db.jpa.entities.Configuration;
+import cz.dcb.support.db.jpa.entities.Noteissuer;
 import cz.dcb.support.db.jpa.entities.Project;
 import cz.dcb.support.db.jpa.entities.Spznote;
 import cz.dcb.support.db.jpa.entities.Spzstate;
@@ -109,5 +116,21 @@ public class DBUtils {
         //manager.create(config);
         
         return config;
+    }
+
+    public static Noteissuer createNoteIssuer(EntityManagerFactory emf) {
+        UserManager userMan = new UserJpaController(emf);
+        SpzStateManager stateManager = new SpzStateJpaController(emf);
+        SpzNoteManager noteManager = new SpzNoteJpaController(emf);
+        User issuer = createUser();
+        Spzstate state = createSpzState();
+        userMan.create(issuer);
+        stateManager.create(state);
+        Spznote note= createSpznote(state);
+        noteManager.create(note);
+        Noteissuer noteIssuer =  new Noteissuer();
+        noteIssuer.setNoteid(note.getId());
+        noteIssuer.setUserid(issuer.getId());
+        return noteIssuer;
     }
 }
