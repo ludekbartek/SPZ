@@ -97,10 +97,26 @@ public class NoteIssuerManagerTest {
     public void testEdit() throws Exception {
         System.out.println("edit");
         Noteissuer noteissuer = null;
-        NoteIssuerManager instance = new NoteIssuerManagerImpl();
-        instance.edit(noteissuer);
+        try{
+            manager.edit(noteissuer);
+            fail("Exception should be thrown.");
+        }catch(IllegalArgumentException iae){
+            logger.log(Level.INFO,"Correct exception thrown.",iae);
+        }catch(Exception ex){
+            fail("Incorrect exception thrown.");
+        }
+        noteissuer = DBUtils.createNoteIssuer(DBUtils.getEntityManagerFactory());
+        manager.create(noteissuer);
+        noteissuer.setNoteid(noteissuer.getNoteid()+10);
+        manager.edit(noteissuer);
+        Noteissuer result = manager.findNoteissuer(noteissuer.getId());
+        assertEquals(noteissuer, result);
+        noteissuer.setUserid(noteissuer.getUserid()+100);
+        manager.edit(noteissuer);
+        result = manager.findNoteissuer(noteissuer.getId());
+        assertEquals(noteissuer, result);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        
     }
 
     /**
@@ -109,15 +125,30 @@ public class NoteIssuerManagerTest {
     @Test
     public void testFindNoteissuer() {
         System.out.println("findNoteissuer");
-        Integer id = null;
-        NoteIssuerManager instance = new NoteIssuerManagerImpl();
-        Noteissuer expResult = null;
-        Noteissuer result = instance.findNoteissuer(id);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        Noteissuer result;
+        Random rand = new Random();
+        int count = rand.nextInt(15)+5;
+        List<Noteissuer> noteIssusers = createNoteIssuers(count);
+        for(Noteissuer expResult:noteIssusers){
+            manager.create(expResult);
+            result = manager.findNoteissuer(expResult.getId());
+            assertEquals(expResult, result);
+        }
     }
 
+    @Test
+    public void testFindNullNoteissuer(){
+        System.out.println("findNoteissuer with null parameter");
+        Noteissuer expResult = null;
+        try{
+            Noteissuer result = manager.findNoteissuer(null);
+            fail("Exception should be thrown.");
+        }catch(IllegalArgumentException iae){
+            logger.log(Level.INFO,"Exception correctly thrown.",iae);
+        }catch(Exception ex){
+            fail("Wrong exception thrown "+ex);
+        }
+    }
     /**
      * Test of findNoteissuerEntities method, of class NoteIssuerManager.
      */
