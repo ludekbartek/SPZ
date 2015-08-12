@@ -5,11 +5,26 @@
  */
 package cz.dcb.support.db.managers;
 
+import cz.dcb.support.db.jpa.controllers.NoteIssuerJpaController;
 import cz.dcb.support.db.jpa.controllers.NoteIssuerManager;
+import cz.dcb.support.db.jpa.controllers.SpzNoteJpaController;
+import cz.dcb.support.db.jpa.controllers.SpzNoteManager;
+import cz.dcb.support.db.jpa.controllers.SpzStateJpaController;
+import cz.dcb.support.db.jpa.controllers.SpzStateManager;
+import cz.dcb.support.db.jpa.controllers.UserJpaController;
+import cz.dcb.support.db.jpa.controllers.UserManager;
 import cz.dcb.support.db.jpa.controllers.exceptions.NonexistentEntityException;
 import cz.dcb.support.db.jpa.entities.Noteissuer;
+import cz.dcb.support.db.jpa.entities.Spznote;
+import cz.dcb.support.db.jpa.entities.Spzstate;
+import cz.dcb.support.db.jpa.entities.User;
+import cz.dcb.support.db.managers.utils.DBUtils;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.PersistenceException;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -22,7 +37,8 @@ import static org.junit.Assert.*;
  * @author bar
  */
 public class NoteIssuerManagerTest {
-    
+    private NoteIssuerManager manager = new NoteIssuerJpaController(DBUtils.getEntityManagerFactory());
+    private final Logger logger = Logger.getLogger(NoteIssuerManager.class.getName());
     public NoteIssuerManagerTest() {
     }
     
@@ -36,6 +52,7 @@ public class NoteIssuerManagerTest {
     
     @Before
     public void setUp() {
+        clearDB();
     }
     
     @After
@@ -48,11 +65,20 @@ public class NoteIssuerManagerTest {
     @Test
     public void testCreate() {
         System.out.println("create");
-        Noteissuer noteissuer = null;
-        NoteIssuerManager instance = new NoteIssuerManagerImpl();
-        instance.create(noteissuer);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        Noteissuer noteIssuer = null;
+        try{
+            manager.create(noteIssuer);
+            fail("Exception should be thrown");
+        }catch(IllegalArgumentException pe){
+            logger.log(Level.INFO,"Correct exception.",pe);
+        }catch(Exception ex){
+            fail("Wrong exception thrown:"+ex);
+        }
+        noteIssuer = DBUtils.createNoteIssuer(DBUtils.getEntityManagerFactory());
+        manager.create(noteIssuer);
+        assertNotNull(noteIssuer.getId());
+        Noteissuer result = manager.findNoteissuer(noteIssuer.getId());
+        assertEquals(noteIssuer, result);
     }
 
     /**
@@ -60,12 +86,6 @@ public class NoteIssuerManagerTest {
      */
     @Test
     public void testDestroy() throws Exception {
-        System.out.println("destroy");
-        Integer id = null;
-        NoteIssuerManager instance = new NoteIssuerManagerImpl();
-        instance.destroy(id);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
 
     /**
@@ -152,6 +172,43 @@ public class NoteIssuerManagerTest {
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
+    }
+
+    private void clearDB() {
+        EntityManagerFactory emf = DBUtils.getEntityManagerFactory();
+        UserManager userMan = new UserJpaController(emf);
+        SpzStateManager spzStateManager = new SpzStateJpaController(emf);
+        NoteIssuerManager niMananager = new NoteIssuerJpaController(emf);
+        SpzNoteManager spzNoteManager = new SpzNoteJpaController(emf);
+        for(User user:userMan.findUserEntities()){
+            try {
+                userMan.destroy(user.getId());
+            } catch (NonexistentEntityException ex) {
+                logger.log(Level.SEVERE, null, ex);
+            }
+        }
+        for(Spzstate state:spzStateManager.findSpzstateEntities()){
+            try {
+                spzStateManager.destroy(state.getId());
+            } catch (NonexistentEntityException ex) {
+                logger.log(Level.SEVERE, null, ex);
+            }
+        }
+        for(Noteissuer noteIssuer:niMananager.findNoteissuerEntities()){
+            try {
+                niMananager.destroy(noteIssuer.getId());
+            } catch (NonexistentEntityException ex) {
+                Logger.getLogger(NoteIssuerManagerTest.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        for(Spznote note:spzNoteManager.findSpznoteEntities()){
+            try {
+                spzNoteManager.destroy(note.getId());
+            } catch (NonexistentEntityException ex) {
+                Logger.getLogger(NoteIssuerManagerTest.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        
     }
 
     public class NoteIssuerManagerImpl implements NoteIssuerManager {
