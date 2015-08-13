@@ -13,6 +13,8 @@ import cz.dcb.support.db.managers.exceptions.NonexistentEntityException;
 import cz.dcb.support.db.managers.exceptions.PreexistingEntityException;
 import cz.dcb.support.db.managers.utils.DBUtils;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -27,6 +29,7 @@ import static org.junit.Assert.*;
 public class ProjectManagerTest {
     
     private final ProjectManager manager = new ProjectJpaController(DBUtils.getEntityManagerFactory());
+    private final Logger logger = Logger.getLogger(ProjectManagerTest.class.getName());
     
     public ProjectManagerTest() {
     }
@@ -41,10 +44,12 @@ public class ProjectManagerTest {
     
     @Before
     public void setUp() {
+        clearDB();
     }
     
     @After
     public void tearDown() {
+        clearDB();
     }
 
     /**
@@ -55,15 +60,26 @@ public class ProjectManagerTest {
         System.out.println("create");
         Project project = null;
        // ProjectManager instance = new ProjectManagerImpl();
+        try{
+            manager.create(project);
+            fail("Exception should be thrown.");
+        }catch(IllegalArgumentException iae){
+            logger.log(Level.INFO,"Exception ", iae);
+        }catch(Exception ex){
+            fail("Wrong exception thrown: "+ex);
+        }
+        
+        project = DBUtils.createProject();
         manager.create(project);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        assertNotNull(project.getId());
+        Project result = manager.findProject(project.getId());
+        assertEquals(project,result);
     }
 
     /**
      * Test of destroy method, of class ProjectManager.
      */
-    @Test
+    /*@Test
     public void testDestroy() throws Exception {
         System.out.println("destroy");
         String id = "";
@@ -71,7 +87,7 @@ public class ProjectManagerTest {
         manager.destroy(-1);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
-    }
+    }*/
 
     /**
      * Test of edit method, of class ProjectManager.
@@ -172,4 +188,14 @@ public class ProjectManagerTest {
         }
     }
   */  
+
+    private void clearDB() {
+        for(Project project:manager.findProjectEntities()){
+            try {
+                manager.destroy(project.getId());
+            } catch (cz.dcb.support.db.jpa.controllers.exceptions.NonexistentEntityException ex) {
+                Logger.getLogger(ProjectManagerTest.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
 }
