@@ -7,6 +7,10 @@ package cz.dcb.support.db.managers.utils;
 
 import cz.dcb.support.db.jpa.controllers.ConfigurationJpaController;
 import cz.dcb.support.db.jpa.controllers.ConfigurationManager;
+import cz.dcb.support.db.jpa.controllers.ProjectConfigurationJpaController;
+import cz.dcb.support.db.jpa.controllers.ProjectConfigurationManager;
+import cz.dcb.support.db.jpa.controllers.ProjectJpaController;
+import cz.dcb.support.db.jpa.controllers.ProjectManager;
 import cz.dcb.support.db.jpa.controllers.SpzNoteJpaController;
 import cz.dcb.support.db.jpa.controllers.SpzNoteManager;
 import cz.dcb.support.db.jpa.controllers.SpzStateJpaController;
@@ -18,6 +22,7 @@ import cz.dcb.support.db.jpa.entities.Attachmentnote;
 import cz.dcb.support.db.jpa.entities.Configuration;
 import cz.dcb.support.db.jpa.entities.Noteissuer;
 import cz.dcb.support.db.jpa.entities.Project;
+import cz.dcb.support.db.jpa.entities.Projectconfiguration;
 import cz.dcb.support.db.jpa.entities.Spznote;
 import cz.dcb.support.db.jpa.entities.Spzstate;
 import cz.dcb.support.db.jpa.entities.User;
@@ -132,5 +137,16 @@ public class DBUtils {
         noteIssuer.setNoteid(note.getId());
         noteIssuer.setUserid(issuer.getId());
         return noteIssuer;
+    }
+
+    public static Projectconfiguration createProjectConfiguration(EntityManagerFactory entityManagerFactory) {
+        ProjectConfigurationManager manager = new ProjectConfigurationJpaController(entityManagerFactory);
+        Project proj = createProject();
+        Configuration config = createConfiguration();
+        Projectconfiguration projConf = new Projectconfiguration();
+        projConf.setConfigurationid(config.getId());
+        projConf.setProjectid(proj.getId());
+        
+        return projConf;
     }
 }
