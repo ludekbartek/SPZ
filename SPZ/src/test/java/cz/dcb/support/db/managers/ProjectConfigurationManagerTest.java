@@ -5,11 +5,22 @@
  */
 package cz.dcb.support.db.managers;
 
+import cz.dcb.support.db.jpa.controllers.ConfigurationJpaController;
+import cz.dcb.support.db.jpa.controllers.ConfigurationManager;
+import cz.dcb.support.db.jpa.controllers.ProjectConfigurationJpaController;
 import cz.dcb.support.db.jpa.controllers.ProjectConfigurationManager;
+import cz.dcb.support.db.jpa.controllers.ProjectJpaController;
+import cz.dcb.support.db.jpa.controllers.ProjectManager;
 import cz.dcb.support.db.jpa.controllers.exceptions.NonexistentEntityException;
+import cz.dcb.support.db.jpa.entities.Configuration;
+import cz.dcb.support.db.jpa.entities.Project;
 import cz.dcb.support.db.jpa.entities.Projectconfiguration;
+import cz.dcb.support.db.managers.utils.DBUtils;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -22,6 +33,9 @@ import static org.junit.Assert.*;
  * @author bar
  */
 public class ProjectConfigurationManagerTest {
+    
+    private ProjectConfigurationManager manager = new ProjectConfigurationJpaController(DBUtils.getEntityManagerFactory());
+    private final Logger logger = Logger.getLogger(ProjectConfigurationManagerTest.class.getName());
     
     public ProjectConfigurationManagerTest() {
     }
@@ -36,10 +50,12 @@ public class ProjectConfigurationManagerTest {
     
     @Before
     public void setUp() {
+        clearDB();
     }
     
     @After
     public void tearDown() {
+        clearDB();
     }
 
     /**
@@ -48,11 +64,20 @@ public class ProjectConfigurationManagerTest {
     @Test
     public void testCreate() {
         System.out.println("create");
-        Projectconfiguration projectconfiguration = null;
-        ProjectConfigurationManager instance = new ProjectConfigurationManagerImpl();
-        instance.create(projectconfiguration);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        Projectconfiguration projectConfiguration = null;
+        try{
+            manager.create(projectConfiguration);
+            fail("Exception should be thrown.");
+        }catch(IllegalArgumentException iae){
+            logger.log(Level.INFO,"Exception ", iae);
+        }catch(Exception ex){
+            fail("Wrong exception thrown.");
+        }
+        projectConfiguration = DBUtils.createProjectConfiguration(DBUtils.getEntityManagerFactory());
+        manager.create(projectConfiguration);
+        assertNotNull("ID should be set.",projectConfiguration.getId());
+        Projectconfiguration result = manager.findProjectconfiguration(projectConfiguration.getId());
+        assertEquals(projectConfiguration, result);
     }
 
     /**
@@ -60,12 +85,12 @@ public class ProjectConfigurationManagerTest {
      */
     @Test
     public void testDestroy() throws Exception {
-        System.out.println("destroy");
+        /*System.out.println("destroy");
         Integer id = null;
         ProjectConfigurationManager instance = new ProjectConfigurationManagerImpl();
         instance.destroy(id);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        fail("The test case is a prototype.");*/
     }
 
     /**
@@ -152,6 +177,36 @@ public class ProjectConfigurationManagerTest {
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
+    }
+
+    private void clearDB() {
+        EntityManagerFactory emf = DBUtils.getEntityManagerFactory();
+        ProjectManager projManager = new ProjectJpaController(emf);
+        ConfigurationManager confManager = new ConfigurationJpaController(emf);
+        
+        for(Project proj:projManager.findProjectEntities()){
+            try {
+                projManager.destroy(proj.getId());
+            } catch (NonexistentEntityException ex) {
+                Logger.getLogger(ProjectConfigurationManagerTest.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        
+        for(Configuration conf:confManager.findConfigurationEntities()){
+            try {
+                confManager.destroy(conf.getId());
+            } catch (NonexistentEntityException ex) {
+                Logger.getLogger(ProjectConfigurationManagerTest.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        
+        for(Projectconfiguration projConf:manager.findProjectconfigurationEntities()){
+            try {
+                manager.destroy(projConf.getId());
+            } catch (NonexistentEntityException ex) {
+                Logger.getLogger(ProjectConfigurationManagerTest.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }
 
     public class ProjectConfigurationManagerImpl implements ProjectConfigurationManager {
