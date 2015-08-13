@@ -132,13 +132,24 @@ public class ProjectConfigurationManagerTest {
     @Test
     public void testFindProjectconfiguration() {
         System.out.println("findProjectconfiguration");
-        Integer id = null;
-        ProjectConfigurationManager instance = new ProjectConfigurationManagerImpl();
+        Random rand = new Random();
+        int count = rand.nextInt(20)+10;
+        List<Projectconfiguration> values = createProjectConfigurations(count);
+        
         Projectconfiguration expResult = null;
-        Projectconfiguration result = instance.findProjectconfiguration(id);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        Projectconfiguration result =  null;
+        try{
+            result = manager.findProjectconfiguration(null);
+            fail("Exception should be thrown.");
+        }catch(IllegalArgumentException iae){
+            logger.log(Level.INFO,"Exception ",iae);
+        }catch(Exception ex){
+            fail("Invalid exception thrown "+ex);
+        }
+        for(Projectconfiguration conf:values){
+            Projectconfiguration val = manager.findProjectconfiguration(conf.getId());
+            assertEquals(conf, val);
+        }
     }
 
     /**
@@ -147,12 +158,15 @@ public class ProjectConfigurationManagerTest {
     @Test
     public void testFindProjectconfigurationEntities_0args() {
         System.out.println("findProjectconfigurationEntities");
-        ProjectConfigurationManager instance = new ProjectConfigurationManagerImpl();
-        List<Projectconfiguration> expResult = null;
-        List<Projectconfiguration> result = instance.findProjectconfigurationEntities();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        Random rand = new Random();
+        int count = rand.nextInt(MAX_VALUES)+10;
+        List<Projectconfiguration> empty = new ArrayList<>(),
+                                   result = manager.findProjectconfigurationEntities();
+        assertArrayEquals(result.toArray(),empty.toArray());
+        List<Projectconfiguration> values = createProjectConfigurations(count);
+        result = manager.findProjectconfigurationEntities();
+        assertArrayEquals(values.toArray(), result.toArray());
+        
     }
 
     /**
@@ -160,30 +174,53 @@ public class ProjectConfigurationManagerTest {
      */
     @Test
     public void testFindProjectconfigurationEntities_int_int() {
-        System.out.println("findProjectconfigurationEntities");
-        int maxResults = 0;
-        int firstResult = 0;
-        ProjectConfigurationManager instance = new ProjectConfigurationManagerImpl();
-        List<Projectconfiguration> expResult = null;
-        List<Projectconfiguration> result = instance.findProjectconfigurationEntities(maxResults, firstResult);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        Random rand = new Random();
+        int count = rand.nextInt(MAX_VALUES)+10;
+        logger.log(Level.INFO,"Count = "+count);
+        List<Projectconfiguration> values = createProjectConfigurations(count);
+        for(int first=0;first<values.size()-1;first++){
+            for(int maxResults = 1;maxResults < values.size()-1 - first;maxResults++){
+                List<Projectconfiguration> exp = values.subList(first, first + maxResults);
+                List<Projectconfiguration> result = manager.findProjectconfigurationEntities(maxResults, first);
+                assertArrayEquals(exp.toArray(), result.toArray());
+            }
+        }
+        List<Projectconfiguration> result = null;
+        try{
+            result = manager.findProjectconfigurationEntities(-1, 1);
+            fail("Exception should be thrown");
+        }catch(IllegalArgumentException iae){
+            logger.log(Level.INFO,"Exception ", iae);
+            assertNull(result);
+        }catch(Exception ex){
+            fail("IllegalArgumentException should be thrown.");
+        }
+        
+        result = null;
+        try{
+            result = manager.findProjectconfigurationEntities(1, -1);
+            fail("Exception should be thrown.");
+        }catch(IllegalArgumentException iae){
+            logger.log(Level.INFO,"Exception ",iae);
+            assertNull(result);
+        }catch(Exception ex){
+            fail("IllegalArgumentException should be thrown.");
+        }
     }
 
     /**
      * Test of getEntityManager method, of class ProjectConfigurationManager.
      */
-    @Test
-    public void testGetEntityManager() {
-        System.out.println("getEntityManager");
-        ProjectConfigurationManager instance = new ProjectConfigurationManagerImpl();
-        EntityManager expResult = null;
-        EntityManager result = instance.getEntityManager();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
+//    @Test
+//    public void testGetEntityManager() {
+//        System.out.println("getEntityManager");
+//        ProjectConfigurationManager instance = new ProjectConfigurationManagerImpl();
+//        EntityManager expResult = null;
+//        EntityManager result = instance.getEntityManager();
+//        assertEquals(expResult, result);
+//        // TODO review the generated test code and remove the default call to fail.
+//        fail("The test case is a prototype.");
+//    }
 
     /**
      * Test of getProjectconfigurationCount method, of class ProjectConfigurationManager.
@@ -191,12 +228,16 @@ public class ProjectConfigurationManagerTest {
     @Test
     public void testGetProjectconfigurationCount() {
         System.out.println("getProjectconfigurationCount");
-        ProjectConfigurationManager instance = new ProjectConfigurationManagerImpl();
         int expResult = 0;
-        int result = instance.getProjectconfigurationCount();
+        int result = manager.getProjectconfigurationCount();
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        Random rand = new Random();
+        int count = rand.nextInt(MAX_VALUES)+10;
+        List<Projectconfiguration> values = createProjectConfigurations(count);
+        result = manager.getProjectconfigurationCount();
+        assertEquals(values.size(), result);
+        
     }
 
     private void clearDB() {
