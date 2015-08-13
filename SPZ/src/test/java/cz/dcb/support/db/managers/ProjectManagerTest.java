@@ -12,7 +12,9 @@ import cz.dcb.support.db.managers.exceptions.IllegalOrphanException;
 import cz.dcb.support.db.managers.exceptions.NonexistentEntityException;
 import cz.dcb.support.db.managers.exceptions.PreexistingEntityException;
 import cz.dcb.support.db.managers.utils.DBUtils;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.junit.After;
@@ -30,6 +32,7 @@ public class ProjectManagerTest {
     
     private final ProjectManager manager = new ProjectJpaController(DBUtils.getEntityManagerFactory());
     private final Logger logger = Logger.getLogger(ProjectManagerTest.class.getName());
+    private final int MAX_COUNT=90;
     
     public ProjectManagerTest() {
     }
@@ -97,9 +100,29 @@ public class ProjectManagerTest {
         System.out.println("edit");
         Project project = null;
 //        ProjectManager instance = new ProjectManagerImpl();
-        manager.edit(project);
+        try{
+            manager.edit(project);
+            fail("Exception should be thrown.");
+        }catch(IllegalArgumentException iae){
+            logger.log(Level.INFO,"Exception ",iae);
+        }catch(Exception ex){
+            fail("Wrong exception thrown "+ex);
+        }
+        Random rand = new Random();
+        int count = rand.nextInt(MAX_COUNT)+10;
+        List<Project> projects = createProjects(count);
+        
+        for(int idx=0;idx<projects.size();idx++){
+            if(rand.nextBoolean()){
+                project = projects.get(idx);
+                project.setName("Jmeno "+idx);
+                manager.edit(project);
+                Project result = manager.findProject(project.getId());
+                assertEquals(project,result);
+            }
+         }
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        //fail("The test case is a prototype.");
     }
 
     /**
@@ -197,5 +220,17 @@ public class ProjectManagerTest {
                 Logger.getLogger(ProjectManagerTest.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+    }
+
+    private List<Project> createProjects(int count) {
+        List<Project> projects = new ArrayList<>();
+        for(int i=0;i<count;i++){
+            Project proj =  DBUtils.createProject();
+            proj.setName(proj.getName()+i);
+            proj.setDescription(proj.getDescription()+i);
+            manager.create(proj);
+            projects.add(proj);
+        }
+        return projects;
     }
 }
