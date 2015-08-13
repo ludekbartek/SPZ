@@ -16,7 +16,9 @@ import cz.dcb.support.db.jpa.entities.Configuration;
 import cz.dcb.support.db.jpa.entities.Project;
 import cz.dcb.support.db.jpa.entities.Projectconfiguration;
 import cz.dcb.support.db.managers.utils.DBUtils;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.persistence.EntityManager;
@@ -36,6 +38,7 @@ public class ProjectConfigurationManagerTest {
     
     private ProjectConfigurationManager manager = new ProjectConfigurationJpaController(DBUtils.getEntityManagerFactory());
     private final Logger logger = Logger.getLogger(ProjectConfigurationManagerTest.class.getName());
+    private final int MAX_VALUES = 100;
     
     public ProjectConfigurationManagerTest() {
     }
@@ -100,10 +103,27 @@ public class ProjectConfigurationManagerTest {
     public void testEdit() throws Exception {
         System.out.println("edit");
         Projectconfiguration projectconfiguration = null;
-        ProjectConfigurationManager instance = new ProjectConfigurationManagerImpl();
-        instance.edit(projectconfiguration);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        try{
+            manager.edit(projectconfiguration);
+            fail("Exception should be thrown.");
+        }catch(IllegalArgumentException iae){
+            logger.log(Level.INFO,"Exception ",iae);
+        }catch(Exception ex){
+            fail("Invalid exception thrown.");
+        }
+        Random rand = new Random();
+        int count = rand.nextInt(MAX_VALUES);
+        List<Projectconfiguration> values = createProjectConfigurations(count);
+        int idx = rand.nextInt(count);
+        Projectconfiguration testVal= values.get(idx);
+        testVal.setConfigurationid(testVal.getConfigurationid()+10);
+        manager.edit(testVal);
+        List<Projectconfiguration> realVals = manager.findProjectconfigurationEntities();
+        assertArrayEquals("Values do not agree.", values.toArray(), realVals.toArray());
+        testVal.setProjectid(testVal.getProjectid()+10);
+        realVals = manager.findProjectconfigurationEntities();
+        assertArrayEquals("Values do not agree.", values.toArray(), realVals.toArray());
+        
     }
 
     /**
@@ -207,6 +227,24 @@ public class ProjectConfigurationManagerTest {
                 Logger.getLogger(ProjectConfigurationManagerTest.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+    }
+
+    private List<Projectconfiguration> createProjectConfigurations(int count) {
+        ProjectManager projMan = new ProjectJpaController(DBUtils.getEntityManagerFactory());
+        ConfigurationManager confMan = new ConfigurationJpaController(DBUtils.getEntityManagerFactory());
+        List<Projectconfiguration> values = new ArrayList<>();
+        for(int i=0;i<count;i++){
+            Project proj = DBUtils.createProject();
+            Configuration config = DBUtils.createConfiguration();
+            Projectconfiguration projConfig = new Projectconfiguration();
+            projMan.create(proj);
+            confMan.create(config);
+            projConfig.setConfigurationid(config.getId());
+            projConfig.setProjectid(proj.getId());
+            manager.create(projConfig);
+            values.add(projConfig);
+        }
+        return values;
     }
 
     public class ProjectConfigurationManagerImpl implements ProjectConfigurationManager {
