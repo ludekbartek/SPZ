@@ -13,7 +13,9 @@ import cz.dcb.support.db.managers.exceptions.PreexistingEntityException;
 import cz.dcb.support.db.managers.utils.DBUtils;
 import java.math.BigInteger;
 import java.security.InvalidParameterException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.junit.After;
@@ -31,6 +33,7 @@ public class RoleManagerTest {
     
     private final RolesManager manager = new RolesJpaController(DBUtils.getEntityManagerFactory());
     private final Logger logger = Logger.getLogger(RoleManagerTest.class.getName());
+    private static final int MAX_COUNT=15;
     
     public RoleManagerTest() {
     }
@@ -45,6 +48,13 @@ public class RoleManagerTest {
     
     @Before
     public void setUp() {
+        for(Roles role:manager.findRolesEntities()){
+            try {
+                manager.destroy(role.getId());
+            } catch (cz.dcb.support.db.jpa.controllers.exceptions.NonexistentEntityException ex) {
+                Logger.getLogger(RoleManagerTest.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }
     
     @After
@@ -105,11 +115,45 @@ public class RoleManagerTest {
         System.out.println("edit");
         Roles role = null;
       //  RoleManager instance = new RoleManagerImpl();
-        manager.edit(role);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        try{
+            manager.edit(role);
+        }catch(IllegalArgumentException iae){
+            logger.log(Level.INFO,"Exception ",iae);
+        }catch(Exception ex){
+            fail("Wrong exception thrown.");
+        }
+        Random rand = new Random();
+        int count = rand.nextInt(MAX_COUNT)+10;
+        List<Roles> roles = createRoles(count);
+        for(int i=0;i<count;i++){
+            Roles testRole = roles.get(i);
+            testRole.setUserid(i+100);
+            manager.edit(testRole);
+        }
+        List<Roles> result = manager.findRolesEntities();
+        assertArrayEquals(roles.toArray(), result.toArray());
     }
 
+    @Test
+    public void testEditUserIdNull()throws Exception{
+        System.out.println("edit incorrect user id");
+        Random rand = new Random();
+        int count = rand.nextInt(MAX_COUNT)+10;
+        List<Roles> roles = createRoles(count);
+        
+        int idx=rand.nextInt(count);
+        logger.log(Level.INFO,"Generated idx: " + idx);
+        Roles testRole = roles.get(idx);
+        testRole.setUserid(null);
+        try{
+            manager.edit(testRole);
+            fail("User id cannot be null.");
+        }catch(IllegalArgumentException iae){
+            logger.log(Level.INFO,"Exception ",iae);
+        }catch(Exception ex){
+            fail("Unexpected exception thrown.");
+        }
+    }
     /**
      * Test of findRoles method, of class RoleManager.
      */
@@ -165,8 +209,10 @@ public class RoleManagerTest {
         int expResult = 0;
         int result = manager.getRolesCount();
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        Random rand = new Random();
+        int count = rand.nextInt(MAX_COUNT)+10;
+        List<Roles> roles = createRoles(count);
+        assertEquals(roles.size(), manager.getRolesCount());
     }
 /*
     public class RoleManagerImpl implements RoleManager {
@@ -197,4 +243,15 @@ public class RoleManagerTest {
         }
     }
   */  
+
+    private List<Roles> createRoles(int count) {
+        List<Roles> roles = new ArrayList<>();
+        for(int i=0;i<count;i++){
+            Roles role = DBUtils.createRole();
+            role.setUserid(i);
+            roles.add(role);
+            manager.create(role);
+        }
+        return roles;
+    }
 }
