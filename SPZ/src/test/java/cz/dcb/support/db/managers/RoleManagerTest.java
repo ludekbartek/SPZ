@@ -165,8 +165,15 @@ public class RoleManagerTest {
         Roles expResult = null;
         Roles result = manager.findRoles(-1);
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        Random rand = new Random();
+        int count = rand.nextInt(MAX_COUNT)+10;
+        List<Roles> roles = createRoles(count);
+        for(int i=0;i<roles.size();i++){
+            result = manager.findRoles(roles.get(i).getId());
+            assertEquals(result, roles.get(i));
+        }
+        result = manager.findRoles(count+10);
+        assertNull(result);
     }
 
     /**
@@ -175,12 +182,15 @@ public class RoleManagerTest {
     @Test
     public void testFindRolesEntities_0args() {
         System.out.println("findRolesEntities");
-      //  RoleManager instance = new RoleManagerImpl();
-        List<Roles> expResult = null;
+        
+        List<Roles> expResult = new ArrayList<>();
         List<Roles> result = manager.findRolesEntities();
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        Random rand = new Random();
+        int count = rand.nextInt(MAX_COUNT)+5;
+        expResult = createRoles(count);
+        result = manager.findRolesEntities();
+        assertArrayEquals(expResult.toArray(), result.toArray());
     }
 
     /**
@@ -192,13 +202,41 @@ public class RoleManagerTest {
         int maxResults = 0;
         int firstResult = 0;
         //RoleManager instance = new RoleManagerImpl();
-        List<Roles> expResult = null;
+        List<Roles> expResult = new ArrayList<>();
         List<Roles> result = manager.findRolesEntities(maxResults, firstResult);
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        //fail("The test case is
+        Random rand = new Random();
+        int count = rand.nextInt(MAX_COUNT)+10;
+        maxResults=rand.nextInt(count/3)+1;
+        List<Roles> values = createRoles(count);
+        for(firstResult=0;firstResult<=count-maxResults;firstResult++){
+            expResult = values.subList(firstResult, firstResult+maxResults);
+            result = manager.findRolesEntities(maxResults, firstResult);
+            assertArrayEquals(expResult.toArray(), result.toArray());
+        }
     }
 
+    @Test
+    public void testFindRolesEntitities_int_intIncorrectParameters(){
+        System.out.println("findRoleEntities_int_intIncorrectParameters");
+        Random rand = new Random();
+        int count = rand.nextInt(MAX_COUNT);
+        List<Roles> values = createRoles(count);
+        List<Roles> result = null;
+        try{
+            result = manager.findRolesEntities(count/2,-1);
+            fail("Exception should be thrown.");
+        }catch(IllegalArgumentException iae){
+            logger.log(Level.INFO,"Exception ",iae);
+        }catch(Exception ex){
+            fail("Invalid exception thrown.");
+        }
+        result = manager.findRolesEntities(10, count+1);
+        List<Roles> expResult = new ArrayList<>();
+        assertEquals(expResult, result);
+    }
     /**
      * Test of getRolesCount method, of class RoleManager.
      */
