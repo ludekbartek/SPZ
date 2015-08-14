@@ -23,6 +23,7 @@ import cz.dcb.support.db.jpa.entities.Configuration;
 import cz.dcb.support.db.jpa.entities.Noteissuer;
 import cz.dcb.support.db.jpa.entities.Project;
 import cz.dcb.support.db.jpa.entities.Projectconfiguration;
+import cz.dcb.support.db.jpa.entities.Roles;
 import cz.dcb.support.db.jpa.entities.Spznote;
 import cz.dcb.support.db.jpa.entities.Spzstate;
 import cz.dcb.support.db.jpa.entities.User;
@@ -148,5 +149,12 @@ public class DBUtils {
         projConf.setProjectid(proj.getId());
         
         return projConf;
+    }
+
+    public static Roles createRole() {
+        Roles role = new Roles();
+        role.setRole("administrator");
+        role.setUserid(1);
+        return role;
     }
 }
