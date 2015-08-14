@@ -56,6 +56,12 @@ public class RolesJpaController implements Serializable, RolesManager {
 
     @Override
     public void edit(Roles roles) throws NonexistentEntityException, Exception {
+        if(roles == null){
+            throw new IllegalArgumentException("Parameter roles is null");
+        }
+        if(roles.getUserid()==null){
+            throw new IllegalArgumentException("Parameter user id is null");
+        }
         EntityManager em = null;
         try {
             em = getEntityManager();
