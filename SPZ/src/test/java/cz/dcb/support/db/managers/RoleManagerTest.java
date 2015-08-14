@@ -13,6 +13,8 @@ import cz.dcb.support.db.managers.exceptions.PreexistingEntityException;
 import cz.dcb.support.db.managers.utils.DBUtils;
 import java.math.BigInteger;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -27,6 +29,7 @@ import static org.junit.Assert.*;
 public class RoleManagerTest {
     
     private final RolesManager manager = new RolesJpaController(DBUtils.getEntityManagerFactory());
+    private final Logger logger = Logger.getLogger(RoleManagerTest.class.getName());
     
     public RoleManagerTest() {
     }
@@ -54,11 +57,30 @@ public class RoleManagerTest {
     public void testCreate() throws Exception {
         System.out.println("create");
         Roles role = null;
-        manager.create(role);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        try{
+            manager.create(role);
+            fail("Exception should be thrown.");
+        }catch(IllegalArgumentException iae){
+            logger.log(Level.INFO,"Exception ",iae);
+            assertNull(role);
+        }catch(Exception ex){
+            fail("Invalid exception thrown "+ex);
+        }
+        role = DBUtils.createRole();
+        try{
+            manager.create(role);
+            assertNotNull(role.getId());
+            Roles result = manager.findRoles(role.getId());
+            assertEquals("Created item not found.",role,result);
+        }catch(Exception ex){
+            fail("Unexpected exception thrown."+ex);
+        }
     }
 
+    @Test 
+    public void testCreateNullId() throws Exception{
+        fail("Prototype");
+    }
     /**
      * Test of destroy method, of class RoleManager.
      */
