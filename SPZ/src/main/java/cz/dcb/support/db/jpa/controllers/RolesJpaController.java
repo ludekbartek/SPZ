@@ -8,6 +8,7 @@ package cz.dcb.support.db.jpa.controllers;
 import cz.dcb.support.db.jpa.controllers.exceptions.NonexistentEntityException;
 import cz.dcb.support.db.jpa.entities.Roles;
 import java.io.Serializable;
+import java.security.InvalidParameterException;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -34,6 +35,12 @@ public class RolesJpaController implements Serializable, RolesManager {
 
     @Override
     public void create(Roles roles) {
+        if(roles == null){
+            throw new IllegalArgumentException("roles is null.");
+        }
+        if(roles.getUserid()==null){
+            throw new IllegalArgumentException("Attribut userId is null.");
+        }
         EntityManager em = null;
         try {
             em = getEntityManager();
