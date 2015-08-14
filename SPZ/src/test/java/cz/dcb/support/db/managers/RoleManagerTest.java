@@ -12,6 +12,7 @@ import cz.dcb.support.db.managers.exceptions.NonexistentEntityException;
 import cz.dcb.support.db.managers.exceptions.PreexistingEntityException;
 import cz.dcb.support.db.managers.utils.DBUtils;
 import java.math.BigInteger;
+import java.security.InvalidParameterException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -79,21 +80,23 @@ public class RoleManagerTest {
 
     @Test 
     public void testCreateNullId() throws Exception{
-        fail("Prototype");
+        System.out.println("create user with null id");
+        Roles role = DBUtils.createRole();
+        role.setUserid(null);
+        try{
+            manager.create(role);
+            fail("Exception should be thrown");
+        }catch(IllegalArgumentException iae){
+            
+        }catch(Exception ex){
+            fail("Invalid exception thrown "+ex);
+        }
+        
     }
     /**
      * Test of destroy method, of class RoleManager.
      */
-    @Test
-    public void testDestroy() throws Exception {
-        System.out.println("destroy");
-        String id = "";
- //       RoleManager instance = new RoleManagerImpl();
-        manager.destroy(-1);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
+    
     /**
      * Test of edit method, of class RoleManager.
      */
