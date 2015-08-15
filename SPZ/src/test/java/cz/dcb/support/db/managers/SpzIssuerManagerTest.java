@@ -16,8 +16,10 @@ import cz.dcb.support.db.jpa.entities.Spz;
 import cz.dcb.support.db.jpa.entities.Spzissuer;
 import cz.dcb.support.db.jpa.entities.User;
 import cz.dcb.support.db.managers.utils.DBUtils;
+import java.util.ArrayList;
 
 import java.util.List;
+import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.persistence.EntityManager;
@@ -37,6 +39,7 @@ public class SpzIssuerManagerTest {
 
     private final SpzIssuerManager manager = new SpzIssuerJpaController(DBUtils.getEntityManagerFactory());
     private static final Logger logger = Logger.getLogger(SpzIssuerManagerTest.class.getName());
+    private static final int MAX_ISSUERS=90;
     
     public SpzIssuerManagerTest() {
     }
@@ -91,14 +94,42 @@ public class SpzIssuerManagerTest {
      */
     @Test
     public void testEdit() throws Exception {
+        EntityManagerFactory emf = DBUtils.getEntityManagerFactory();
+        UserManager userMan = new UserJpaController(emf);
+        SpzManager spzMan = new SpzJpaController(emf);
+        
         System.out.println("edit");
-        Spzissuer spzissuer = null;
-        SpzIssuerManager instance = new SpzIssuerManagerImpl();
-        instance.edit(spzissuer);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        Random rand = new Random();
+        int count = rand.nextInt(MAX_ISSUERS)+5;
+        List<Spzissuer> issuers = createSpzIssuers(count);
+        int idx=rand.nextInt(count);
+        Spzissuer toChange = issuers.get(idx);
+        
+        Spz spz=DBUtils.createSpz();
+        spzMan.create(spz);
+        User user=DBUtils.createUser();
+        userMan.create(user);
+        
+        toChange.setSpzid(spz.getId());
+        toChange.setUserid(user.getId());
+        
+        List<Spzissuer> result = manager.findSpzissuerEntities();
+        
+        assertArrayEquals(issuers.toArray(), result.toArray());
+        
     }
 
+    @Test
+    public void testEditNull() throws Exception {
+        try{
+            manager.edit(null);
+            fail("Exception should be thrown.");
+        }catch(IllegalArgumentException iae){
+            logger.log(Level.INFO,"Exception ",iae);
+        }catch(Exception ex){
+            fail("Unexpected exception thrown "+ex);
+        }
+    }
     /**
      * Test of findSpzissuer method, of class SpzIssuerManager.
      */
@@ -199,6 +230,16 @@ public class SpzIssuerManagerTest {
             }
         }
         
+    }
+
+    private List<Spzissuer> createSpzIssuers(int count) {
+        List<Spzissuer> issuers = new ArrayList<>();
+        for(int i=0;i<count;i++){
+            Spzissuer issuer = DBUtils.createSpzIssuer();
+            manager.create(issuer);
+            issuers.add(issuer);
+        }
+        return issuers;
     }
 
     public class SpzIssuerManagerImpl implements SpzIssuerManager {
