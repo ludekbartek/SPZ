@@ -13,7 +13,6 @@
     <class>cz.dcb.support.db.jpa.Attachment</class>
     <class>cz.dcb.support.db.jpa.User</class>
     <class>cz.dcb.support.db.jpa.entities.Spzanalyst</class>
-    <class>cz.dcb.support.db.jpa.entities.Projectconfiguration</class>
     <class>cz.dcb.support.db.jpa.entities.Attachmentnote</class>
     <class>cz.dcb.support.db.jpa.entities.Spzissuer</class>
     <class>cz.dcb.support.db.jpa.entities.User</class>
@@ -28,6 +27,7 @@
     <class>cz.dcb.support.db.jpa.entities.Spz</class>
     <class>cz.dcb.support.db.jpa.entities.Noteissuer</class>
     <class>cz.dcb.support.db.jpa.entities.Useraccess</class>
+    <class>cz.dcb.support.db.jpa.entities.Projectconfiguration</class>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:derby://localhost:1527/support"/>
