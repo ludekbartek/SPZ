@@ -11,12 +11,17 @@ import cz.dcb.support.db.jpa.controllers.ProjectConfigurationJpaController;
 import cz.dcb.support.db.jpa.controllers.ProjectConfigurationManager;
 import cz.dcb.support.db.jpa.controllers.ProjectJpaController;
 import cz.dcb.support.db.jpa.controllers.ProjectManager;
+import cz.dcb.support.db.jpa.controllers.SpzAnalystJpaController;
+import cz.dcb.support.db.jpa.controllers.SpzAnalystManager;
+import cz.dcb.support.db.jpa.controllers.SpzJpaController;
+import cz.dcb.support.db.jpa.controllers.SpzManager;
 import cz.dcb.support.db.jpa.controllers.SpzNoteJpaController;
 import cz.dcb.support.db.jpa.controllers.SpzNoteManager;
 import cz.dcb.support.db.jpa.controllers.SpzStateJpaController;
 import cz.dcb.support.db.jpa.controllers.SpzStateManager;
 import cz.dcb.support.db.jpa.controllers.UserJpaController;
 import cz.dcb.support.db.jpa.controllers.UserManager;
+import cz.dcb.support.db.jpa.controllers.exceptions.NonexistentEntityException;
 import cz.dcb.support.db.jpa.entities.Attachment;
 import cz.dcb.support.db.jpa.entities.Attachmentnote;
 import cz.dcb.support.db.jpa.entities.Configuration;
@@ -24,10 +29,13 @@ import cz.dcb.support.db.jpa.entities.Noteissuer;
 import cz.dcb.support.db.jpa.entities.Project;
 import cz.dcb.support.db.jpa.entities.Projectconfiguration;
 import cz.dcb.support.db.jpa.entities.Roles;
+import cz.dcb.support.db.jpa.entities.Spz;
+import cz.dcb.support.db.jpa.entities.Spzanalyst;
 import cz.dcb.support.db.jpa.entities.Spznote;
 import cz.dcb.support.db.jpa.entities.Spzstate;
 import cz.dcb.support.db.jpa.entities.User;
 import java.math.BigInteger;
+import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.HashSet;
 import java.util.Random;
@@ -156,5 +164,50 @@ public class DBUtils {
         role.setRole("administrator");
         role.setUserid(1);
         return role;
+    }
+
+    public static void deleteSpzAnalyst(Spzanalyst analyst) throws NonexistentEntityException {
+        EntityManagerFactory emf = DBUtils.getEntityManagerFactory();
+        SpzAnalystManager manager = new SpzAnalystJpaController(emf);
+        SpzManager spzManager = new SpzJpaController(emf);
+        UserManager userManager = new UserJpaController(emf);
+        for(User user:userManager.findUserEntities()){
+            userManager.destroy(user.getId());
+        }
+        for(Spz spz:spzManager.findSpzEntities()){
+            spzManager.destroy(spz.getId());
+        }
+        for(Spzanalyst spzAnalyst:manager.findSpzanalystEntities()){
+            manager.destroy(spzAnalyst.getId());
+        }
+    }
+
+    public static Spzanalyst createSpzAnalyst() {
+        Spzanalyst analyst = new Spzanalyst();
+        Spz spz=createSpz();
+        User user = createUser();
+        EntityManagerFactory emf = DBUtils.getEntityManagerFactory();
+        SpzManager spzManager = new SpzJpaController(emf);
+        UserManager userManager = new UserJpaController(emf);
+        spzManager.create(spz);
+        userManager.create(user);
+        analyst.setSpzid(spz.getId());
+        analyst.setUserid(user.getId());
+        return analyst;
+    }
+
+    public static Spz createSpz() {
+        Spz spz = new Spz();
+        Calendar cal = new GregorianCalendar();
+        spz.setContactperson("Jan Novak");
+        spz.setImplementationacceptdate(cal.getTime());
+        spz.setIssuedate(cal.getTime());
+        spz.setPriority(Short.MIN_VALUE);
+        spz.setReqnumber("One");
+        spz.setRequestdescription("Testik");
+        spz.setRequesttype("nejaky");
+        spz.setShortname("short");
+        spz.setTs(BigInteger.ONE);
+        return spz;
     }
 }
