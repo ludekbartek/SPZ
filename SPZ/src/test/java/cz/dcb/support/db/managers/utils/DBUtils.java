@@ -31,6 +31,7 @@ import cz.dcb.support.db.jpa.entities.Projectconfiguration;
 import cz.dcb.support.db.jpa.entities.Roles;
 import cz.dcb.support.db.jpa.entities.Spz;
 import cz.dcb.support.db.jpa.entities.Spzanalyst;
+import cz.dcb.support.db.jpa.entities.Spzissuer;
 import cz.dcb.support.db.jpa.entities.Spznote;
 import cz.dcb.support.db.jpa.entities.Spzstate;
 import cz.dcb.support.db.jpa.entities.User;
@@ -209,5 +210,22 @@ public class DBUtils {
         spz.setShortname("short");
         spz.setTs(BigInteger.ONE);
         return spz;
+    }
+
+    public static Spzissuer createSpzIssuer() {
+        EntityManagerFactory emf=DBUtils.getEntityManagerFactory();
+        SpzManager spzManager = new SpzJpaController(emf);
+        UserManager userManager = new UserJpaController(emf);
+        Spzissuer issuer = new Spzissuer();
+        
+        Spz spz = createSpz();
+        spzManager.create(spz);
+        issuer.setSpzid(spz.getId());
+        
+        User user = createUser();
+        userManager.create(user);
+        issuer.setUserid(user.getId());
+        
+        return issuer;
     }
 }
