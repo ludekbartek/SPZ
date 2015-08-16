@@ -17,6 +17,8 @@ import cz.dcb.support.db.jpa.entities.Spzissuer;
 import cz.dcb.support.db.jpa.entities.User;
 import cz.dcb.support.db.managers.utils.DBUtils;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 import java.util.List;
 import java.util.Random;
@@ -136,13 +138,43 @@ public class SpzIssuerManagerTest {
     @Test
     public void testFindSpzissuer() {
         System.out.println("findSpzissuer");
-        Integer id = null;
-        SpzIssuerManager instance = new SpzIssuerManagerImpl();
-        Spzissuer expResult = null;
-        Spzissuer result = instance.findSpzissuer(id);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        Random rand = new Random();
+        int count = rand.nextInt(MAX_ISSUERS)+10;
+        List<Spzissuer> issuers = createSpzIssuers(count);
+        for(Spzissuer issuer:issuers){
+            Spzissuer result = manager.findSpzissuer(issuer.getId());
+            assertEquals(issuer, result);
+        }
+        
+    }
+    
+    @Test
+    public void testFindSpzissuerWrongId(){
+        System.out.println("findSpzissuerWrongId");
+        Random rand = new Random();
+        int count = rand.nextInt(MAX_ISSUERS)+5;
+        
+        Spzissuer result = null;
+        try{
+            result = manager.findSpzissuer(-1);
+            assertNull(result);
+        }catch(IllegalArgumentException iae){
+            logger.log(Level.INFO,"Eception ",iae);
+        }catch(Exception ex){
+            fail("Wrong exception has been thrown "+ex);
+        }
+        createSpzIssuers(count);
+        List<Spzissuer> issuers = manager.findSpzissuerEntities();
+        int maxId = Collections.max(issuers, new Comparator<Spzissuer>(){
+
+            @Override
+            public int compare(Spzissuer o1, Spzissuer o2) {
+                return o1.getId()-o2.getId();
+            }
+        
+        }).getId();
+        result = manager.findSpzissuer(maxId+10);
+        assertNull(result);
     }
 
     /**
@@ -151,12 +183,15 @@ public class SpzIssuerManagerTest {
     @Test
     public void testFindSpzissuerEntities_0args() {
         System.out.println("findSpzissuerEntities");
-        SpzIssuerManager instance = new SpzIssuerManagerImpl();
-        List<Spzissuer> expResult = null;
-        List<Spzissuer> result = instance.findSpzissuerEntities();
+        List<Spzissuer> expResult = new ArrayList<>();
+        List<Spzissuer> result = manager.findSpzissuerEntities();
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        
+        Random rand = new Random();
+        int count = rand.nextInt(MAX_ISSUERS)+3;
+        expResult = createSpzIssuers(count);
+        result = manager.findSpzissuerEntities();
+        assertArrayEquals(expResult.toArray(), result.toArray());
     }
 
     /**
@@ -168,25 +203,52 @@ public class SpzIssuerManagerTest {
         int maxResults = 0;
         int firstResult = 0;
         SpzIssuerManager instance = new SpzIssuerManagerImpl();
-        List<Spzissuer> expResult = null;
+        List<Spzissuer> expResult = null, values = null;
         List<Spzissuer> result = instance.findSpzissuerEntities(maxResults, firstResult);
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        
+        Random rand = new Random();
+        int count = rand.nextInt(MAX_ISSUERS)+5;
+        values = createSpzIssuers(count);
+        for(firstResult=0;firstResult < count -3;firstResult++)
+        {
+            for(maxResults=1;maxResults < count - firstResult;maxResults++){
+                expResult = values.subList(firstResult, firstResult+maxResults);
+                result = manager.findSpzissuerEntities(maxResults, firstResult);
+                assertArrayEquals(expResult.toArray(), result.toArray());
+            }
+        }
     }
-
-    /**
-     * Test of getEntityManager method, of class SpzIssuerManager.
-     */
+    
     @Test
-    public void testGetEntityManager() {
-        System.out.println("getEntityManager");
-        SpzIssuerManager instance = new SpzIssuerManagerImpl();
-        EntityManager expResult = null;
-        EntityManager result = instance.getEntityManager();
+    public void testFindSpzissuerEntities_int_intWrongParams() {
+        System.out.println("findSpzissuerEntitiesWrongParams");
+        Random rand = new Random();
+        int count = rand.nextInt(MAX_ISSUERS)+5;
+        List<Spzissuer> values = createSpzIssuers(count);
+        List<Spzissuer> expResult = null;
+        List<Spzissuer> result = null;
+        try{
+            result = manager.findSpzissuerEntities(-1, 1);
+            fail("Exception should be thrown.");
+        }catch(IllegalArgumentException iae){
+            logger.log(Level.INFO,"Exception ",iae);
+        }catch(Exception ex){
+            fail("Invalid excepiton thrown "+ex);
+        }
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        try{
+            result = manager.findSpzissuerEntities(1, -1);
+            fail("Exception should be thrown.");
+        }catch(IllegalArgumentException iae){
+            logger.log(Level.INFO,"Exception should be thrown.",iae);
+        }catch(Exception ex){
+            fail("Wrong exception thrown "+ex);
+        }
+        assertEquals(expResult, result);
+        expResult = new ArrayList<>();
+        result = manager.findSpzissuerEntities(1, count+1);
+        assertEquals(expResult, result);
     }
 
     /**
@@ -195,12 +257,16 @@ public class SpzIssuerManagerTest {
     @Test
     public void testGetSpzissuerCount() {
         System.out.println("getSpzissuerCount");
-        SpzIssuerManager instance = new SpzIssuerManagerImpl();
+        
         int expResult = 0;
-        int result = instance.getSpzissuerCount();
+        int result = manager.getSpzissuerCount();
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        
+        Random rand = new Random();
+        expResult = rand.nextInt(MAX_ISSUERS)+5;
+        createSpzIssuers(expResult);
+        result = manager.getSpzissuerCount();
+        assertEquals(expResult, result);
     }
 
     private void clearDB() {
