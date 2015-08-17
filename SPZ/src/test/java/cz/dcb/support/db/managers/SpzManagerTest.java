@@ -13,6 +13,7 @@ import cz.dcb.support.db.managers.exceptions.NonexistentEntityException;
 import cz.dcb.support.db.managers.exceptions.PreexistingEntityException;
 import cz.dcb.support.db.managers.utils.DBUtils;
 import java.math.BigInteger;
+import java.sql.SQLDataException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -20,6 +21,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.persistence.RollbackException;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -143,9 +145,60 @@ public class SpzManagerTest {
         checkResult(spz);
     }
 
-    @Test
-    public void testInvalidEdits() throws Exception{
-        fail("Test case prototype");
+    @Test(expected = RollbackException.class)
+    public void testContactPerson() throws Exception{
+        Spz spz = DBUtils.createSpz();
+        String validName = createString(32);
+        spz.setContactperson(validName);
+        manager.create(spz);
+        String invalidName = createString(34);
+        spz.setContactperson(invalidName);
+        manager.edit(spz);
+        fail("Exception should be thrown.");
+    }
+    
+    @Test(expected = RollbackException.class) 
+    public void testRequestType()throws Exception{
+        Spz spz = DBUtils.createSpz();
+        spz.setReqnumber(createNumber(10));
+        manager.create(spz);
+        spz.setReqnumber(createNumber(11));
+        manager.edit(spz);
+        fail("Invalid request number accepted."+spz.getReqnumber());
+        
+    }
+    
+    @Test(expected = RollbackException.class)
+    public void testInvalidShortName()throws Exception{
+        Spz spz = DBUtils.createSpz();
+        spz.setShortname(createString(50));
+        manager.create(spz);
+        spz.setShortname(createString(51));
+        manager.edit(spz);
+        fail("Invalid short name accepted "+spz.getShortname());    
+        
+    }
+    
+    @Test(expected = RollbackException.class)
+    public void testInvalidRequestDescription()throws Exception{
+        Spz spz = DBUtils.createSpz();
+        spz.setRequestdescription(createString(9000));
+        manager.create(spz);
+        spz.setRequestdescription(createString(9001));
+        manager.edit(spz);
+        fail("Invalid short name accepted "+spz.getShortname());    
+        
+    }
+    
+    @Test(expected = RollbackException.class)
+    public void testInvalidRequestNumber()throws Exception{
+        Spz spz = DBUtils.createSpz();
+        spz.setReqnumber(createNumber(10));
+        manager.create(spz);
+        spz.setReqnumber(createNumber(11));
+        manager.edit(spz);
+        fail("Invalid short name accepted "+spz.getShortname());    
+        
     }
     private void checkResult(Spz spz) throws Exception {
         manager.edit(spz);
@@ -257,6 +310,27 @@ public class SpzManagerTest {
             values.add(spz);
         }
         return values;
+    }
+
+    private String createString(int length) {
+        String alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz";
+        StringBuilder result = new StringBuilder();
+        Random rand = new Random();
+        for(int i=0;i<length;i++){
+            result.append(alphabet.charAt(rand.nextInt(alphabet.length())));
+        }
+        return result.toString();
+        
+    }
+
+    private String createNumber(int length) {
+        String alphabet="0123456789";
+        StringBuilder result = new StringBuilder();
+        Random rand = new Random();
+        for(int i=0;i<length;i++){
+            result.append(alphabet.charAt(rand.nextInt(alphabet.length())));
+        }
+        return result.toString();
     }
     
 }
