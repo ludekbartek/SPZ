@@ -213,11 +213,23 @@ public class SpzManagerTest {
         System.out.println("findSpz");
         Integer id = null;
         //SpzManager instance = new SpzManagerImpl();
-        Spz expResult = null;
-        Spz result = manager.findSpz(id);
+        Spz expResult = null,result=null;
+        try{
+            result = manager.findSpz(id);
+            fail("Exception should be thrown.");
+        }catch(IllegalArgumentException iae){
+            LOGGER.log(Level.INFO,"Exception ",iae);
+        }catch(Exception ex){
+            fail("Unexpected exception "+ex);
+        }
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        Random rand = new Random();
+        int count = rand.nextInt(MAX_SPZS)+5;
+        List<Spz> spzs = createSpzs(count);
+        for(Spz spz:manager.findSpzEntities()){
+            result = manager.findSpz(spz.getId());
+            assertEquals(spz, result);
+        }
     }
 
     /**
@@ -227,11 +239,16 @@ public class SpzManagerTest {
     public void testFindSpzEntities_0args() {
         System.out.println("findSpzEntities");
         //SpzManager instance = new SpzManagerImpl();
-        List<Spz> expResult = null;
+        List<Spz> expResult = new ArrayList<>();
         List<Spz> result = manager.findSpzEntities();
         assertEquals(expResult, result);
+        Random rand = new Random();
+        int count=rand.nextInt(MAX_SPZS);
+        expResult = createSpzs(count);
+        result = manager.findSpzEntities();
+        assertArrayEquals(expResult.toArray(), result.toArray());
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        //fail("The test case is a prototype.");
     }
 
     /**
@@ -243,11 +260,48 @@ public class SpzManagerTest {
         int maxResults = 0;
         int firstResult = 0;
         //SpzManager instance = new SpzManagerImpl();
-        List<Spz> expResult = null;
-        List<Spz> result = manager.findSpzEntities(maxResults, firstResult);
+        Random rand = new Random();
+        int count = rand.nextInt(MAX_SPZS)+10;
+        List<Spz> expResult = new ArrayList<>(),
+                values = createSpzs(count),
+                result = null;
+                
+        for(firstResult = 0;firstResult<count - 3;firstResult++){
+            for(maxResults = 1;maxResults< count - firstResult;maxResults++){
+                expResult = values.subList(firstResult, firstResult + maxResults);
+                result = manager.findSpzEntities(maxResults, firstResult);
+                assertArrayEquals(expResult.toArray(), result.toArray());
+            }
+        }
+    }
+
+    @Test
+    public void testFindSpzEntities_int_intInvalidParams() {
+        System.out.println("findSpzEntities_int_intInvalidParams");
+        Random rand = new Random();
+        int count = rand.nextInt(MAX_SPZS)+10;
+        List<Spz> values= createSpzs(count);
+        try{
+            manager.findSpzEntities(-1, 0);
+            fail("Exception should be thrown.");
+        }catch(IllegalArgumentException iae){
+            LOGGER.log(Level.INFO,"Exception ", iae);
+        }catch(Exception ex){
+            fail("Unexpected exception thrown "+ex);
+        }
+        
+        try{
+            manager.findSpzEntities(1, -1);
+            fail("Exception should be thrown.");
+        }catch(IllegalArgumentException iae){
+            LOGGER.log(Level.INFO,"Exception ",iae);
+        }catch(Exception ex){
+            fail("Unexpected exception thrown " + ex);
+        }
+        
+        List<Spz> result = manager.findSpzEntities(1, count+1),
+                expResult = new ArrayList<>();
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
 
     /**
@@ -257,11 +311,15 @@ public class SpzManagerTest {
     public void testGetSpzCount() {
         System.out.println("getSpzCount");
        // SpzManager instance = new SpzManagerImpl();
+        Random rand = new Random();
         int expResult = 0;
         int result = manager.getSpzCount();
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        expResult = rand.nextInt(MAX_SPZS)+10;
+        createSpzs(expResult);
+        result = manager.getSpzCount();
+        assertEquals(expResult, result);
     }
 
    /* public class SpzManagerImpl implements SpzManager {
