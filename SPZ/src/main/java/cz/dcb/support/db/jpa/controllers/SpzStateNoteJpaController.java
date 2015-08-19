@@ -34,6 +34,9 @@ public class SpzStateNoteJpaController implements Serializable, SpzStateNoteMana
 
     @Override
     public void create(Spzstatenote spzstatenote) {
+        if(spzstatenote == null){
+            throw new IllegalArgumentException("Parameter spzstatenote is null.");
+        }
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -50,6 +53,12 @@ public class SpzStateNoteJpaController implements Serializable, SpzStateNoteMana
     @Override
     public void edit(Spzstatenote spzstatenote) throws NonexistentEntityException, Exception {
         EntityManager em = null;
+        if(spzstatenote == null ){
+            throw new IllegalArgumentException("Parameter spzstate note is null.");
+        }
+        if(spzstatenote.getId()==null){
+            throw new IllegalArgumentException("Spzstatenote attribute id is null.");
+        }
         try {
             em = getEntityManager();
             em.getTransaction().begin();
