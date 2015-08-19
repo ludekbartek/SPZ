@@ -23,6 +23,8 @@ import cz.dcb.support.db.jpa.entities.Spzstatenote;
 import cz.dcb.support.db.jpa.entities.User;
 import cz.dcb.support.db.managers.utils.DBUtils;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
 import java.util.logging.Level;
@@ -105,7 +107,11 @@ public class SpzStateNoteManagerTest {
     @Test
     public void testEdit() throws Exception {
         System.out.println("edit");
+        
         Spzstatenote spzstatenote = null;
+        EntityManagerFactory emf = DBUtils.getEntityManagerFactory();
+        SpzNoteManager noteManager = new SpzNoteJpaController(emf);
+        SpzStateManager stateManager = new SpzStateJpaController(emf);
         try{
             manager.edit(spzstatenote);
             fail("Exception should be thrown.");
@@ -117,6 +123,22 @@ public class SpzStateNoteManagerTest {
         Random rand = new Random();
         int count = rand.nextInt(MAX_SPZ_STATE_NOTES);
         List<Spzstatenote> spzStateNotes = createSpzStateNotes(count);
+        for(int i=0;i<spzStateNotes.size();i++){
+            Spzstatenote item = spzStateNotes.get(i);
+            Spznote noteNew = DBUtils.createSpznote(stateManager.findSpzstate(item.getStateid()));
+            noteManager.create(noteNew);
+            item.setNoteid(noteNew.getId());
+            manager.edit(item);
+            Spzstatenote newItem = manager.findSpzstatenote(item.getId());
+            assertEquals(item, newItem);
+            Spzstate state = DBUtils.createSpzState();
+            stateManager.create(state);
+            item.setStateid(state.getId());
+            manager.edit(item);
+            newItem = manager.findSpzstatenote(item.getId());
+            assertEquals(item, newItem);
+            
+        }
     }
 
     /**
@@ -126,12 +148,36 @@ public class SpzStateNoteManagerTest {
     public void testFindSpzstatenote() {
         System.out.println("findSpzstatenote");
         Integer id = null;
-        SpzStateNoteManager instance = new SpzStateNoteManagerImpl();
+        //SpzStateNoteManager instance = new SpzStateNoteManagerImpl();
         Spzstatenote expResult = null;
-        Spzstatenote result = instance.findSpzstatenote(id);
+        Spzstatenote result = null;
+        try{
+            manager.findSpzstatenote(id);
+            fail("Exception should be trhown.");
+        }catch(IllegalArgumentException ex){
+            LOGGER.log(Level.INFO,"Exception: ",ex);
+        }catch(Exception ex){
+            fail("Unexpected exception thrown "+ex);
+        }
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        Random rand = new Random();
+        int count = rand.nextInt(MAX_SPZ_STATE_NOTES)+10;
+        List<Spzstatenote> notes = createSpzStateNotes(count);
+        for(Spzstatenote note:notes){
+            Spzstatenote found = manager.findSpzstatenote(note.getId());
+            assertEquals(note, found);
+        }
+        Spzstatenote note = manager.findSpzstatenote(-1);
+        assertNull(note);
+        int maxId = Collections.max(notes,new Comparator<Spzstatenote>() {
+
+            @Override
+            public int compare(Spzstatenote o1, Spzstatenote o2) {
+                return o1.getId()-o2.getId(); //To change body of generated methods, choose Tools | Templates.
+            }
+        }).getId()+1;
+        note = manager.findSpzstatenote(maxId);
+        assertNull(note);
     }
 
     /**
@@ -140,12 +186,15 @@ public class SpzStateNoteManagerTest {
     @Test
     public void testFindSpzstatenoteEntities_0args() {
         System.out.println("findSpzstatenoteEntities");
-        SpzStateNoteManager instance = new SpzStateNoteManagerImpl();
-        List<Spzstatenote> expResult = null;
-        List<Spzstatenote> result = instance.findSpzstatenoteEntities();
+        //SpzStateNoteManager instance = new SpzStateNoteManagerImpl();
+        List<Spzstatenote> expResult = new ArrayList<>();
+        List<Spzstatenote> result = manager.findSpzstatenoteEntities();
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        Random rand = new Random();
+        int count = rand.nextInt(MAX_SPZ_STATE_NOTES)+10;
+        expResult = createSpzStateNotes(count);
+        result = manager.findSpzstatenoteEntities();
+        assertArrayEquals(expResult.toArray(), result.toArray());
     }
 
     /**
@@ -156,18 +205,51 @@ public class SpzStateNoteManagerTest {
         System.out.println("findSpzstatenoteEntities");
         int maxResults = 0;
         int firstResult = 0;
-        SpzStateNoteManager instance = new SpzStateNoteManagerImpl();
-        List<Spzstatenote> expResult = null;
-        List<Spzstatenote> result = instance.findSpzstatenoteEntities(maxResults, firstResult);
+        List<Spzstatenote> expResult = new ArrayList<>();
+        List<Spzstatenote> result = manager.findSpzstatenoteEntities(maxResults, firstResult);
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        
+        Random rand = new Random();
+        int count = rand.nextInt(MAX_SPZ_STATE_NOTES)+10;
+        List<Spzstatenote> values = createSpzStateNotes(count);
+        for(maxResults = 1;maxResults<count*2/3; maxResults++){
+            for(firstResult=0;firstResult<count-maxResults;firstResult++){
+                expResult = values.subList(firstResult, firstResult+maxResults);
+                result = manager.findSpzstatenoteEntities(maxResults, firstResult);
+                assertArrayEquals(expResult.toArray(), result.toArray());
+            }
+        }
     }
 
+    @Test
+    public void testFindSpzstatenoteEntities_int_intInvalidIndices() {
+        Random rand = new Random();
+        int count = rand.nextInt(MAX_SPZ_STATE_NOTES)+10;
+        List<Spzstatenote> values = createSpzStateNotes(count);
+        List<Spzstatenote> expResult = null;
+        List<Spzstatenote> result = null;
+        try{
+            result = manager.findSpzstatenoteEntities(-1, 1);
+            fail("Exception should be thrown.");
+        }catch(IllegalArgumentException iae){
+            LOGGER.log(Level.INFO,"Exception ",iae);
+        }catch(Exception ex){
+            fail("Unexpected exception thrown "+ex);
+        }
+        assertEquals(expResult, result);
+        try{
+            result = manager.findSpzstatenoteEntities(1, -1);
+            fail("Exception should be thrown");
+        }catch(IllegalArgumentException iae){
+            LOGGER.log(Level.INFO,"Exception ",iae);
+        }catch(Exception ex){
+            fail("Unexpected exception thrown "+ex);
+        }
+    }
     /**
      * Test of getEntityManager method, of class SpzStateNoteManager.
      */
-    @Test
+  /*  @Test
     public void testGetEntityManager() {
         System.out.println("getEntityManager");
         SpzStateNoteManager instance = new SpzStateNoteManagerImpl();
@@ -177,7 +259,7 @@ public class SpzStateNoteManagerTest {
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
-
+*/
     /**
      * Test of getSpzstatenoteCount method, of class SpzStateNoteManager.
      */
