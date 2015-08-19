@@ -82,6 +82,7 @@ public class SpzManagerTest {
         manager.create(spz);
         assertNotNull(spz.getId());
         Spz result = manager.findSpz(spz.getId());
+        assertEquals(spz, result);
     }
 
     
