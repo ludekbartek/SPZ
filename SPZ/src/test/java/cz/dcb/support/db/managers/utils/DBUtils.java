@@ -34,6 +34,7 @@ import cz.dcb.support.db.jpa.entities.Spzanalyst;
 import cz.dcb.support.db.jpa.entities.Spzissuer;
 import cz.dcb.support.db.jpa.entities.Spznote;
 import cz.dcb.support.db.jpa.entities.Spzstate;
+import cz.dcb.support.db.jpa.entities.Spzstatenote;
 import cz.dcb.support.db.jpa.entities.User;
 import java.math.BigInteger;
 import java.util.Calendar;
@@ -227,5 +228,20 @@ public class DBUtils {
         issuer.setUserid(user.getId());
         
         return issuer;
+    }
+
+    public static Spzstatenote createSpzStateNote() {
+        EntityManagerFactory emf = DBUtils.getEntityManagerFactory();
+        Spzstatenote value = new Spzstatenote();
+        SpzStateManager spzStateManager = new SpzStateJpaController(emf);
+        SpzNoteManager spzNoteManger = new SpzNoteJpaController(emf);
+        
+        Spzstate spzstate = createSpzState();
+        spzStateManager.create(spzstate);
+        Spznote note = createSpznote(spzstate);
+        spzNoteManger.create(note);
+        value.setNoteid(note.getId());
+        value.setStateid(spzstate.getId());
+        return value;
     }
 }
