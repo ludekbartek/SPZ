@@ -158,11 +158,44 @@ public class SpznoteManagerTest {
     public void testFindSpznote() {
         System.out.println("findSpznote");
         Integer id = null;
-        Spznote expResult = null;
-        Spznote result = manager.findSpznote(id);
+        Spznote expResult = null, result = null;
+        try{
+            result = manager.findSpznote(id);
+            fail("Exception should be thrown.");
+        }catch(IllegalArgumentException ex){
+            LOGGER.log(Level.INFO,"Exception ",ex);
+        }catch(Exception ex){
+            fail("Unexpected exception thrown: "+ex);
+        }
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        Random rand = new Random();
+        int count = rand.nextInt(MAX_SPZ_NOTES)+10;
+        List<Spznote> notes = createSpzNotes(count);
+        for(Spznote note:notes){
+            result = manager.findSpznote(note.getId());
+            assertEquals(note, result);
+        }
+    }
+    
+    @Test
+    public void testFindNonExistingSpznote(){
+        Comparator<Spznote> noteComparator = new Comparator<Spznote>() {
+
+            @Override
+            public int compare(Spznote o1, Spznote o2) {
+                return o1.getId()-o2.getId();
+            }
+        };
+        System.out.println("findnonExistingSpznote");
+        Random rand = new Random();
+        int count = rand.nextInt(MAX_SPZ_NOTES)+10;
+        List<Spznote> values = createSpzNotes(count);
+        int min = Collections.min(values,noteComparator).getId(),
+            max = Collections.max(values,noteComparator).getId();
+        Spznote result = manager.findSpznote(min-1);
+        assertNull(result);
+        result = manager.findSpznote(max+1);
+        assertNull(result);
     }
 
     /**
@@ -171,11 +204,14 @@ public class SpznoteManagerTest {
     @Test
     public void testFindSpznoteEntities_0args() {
         System.out.println("findSpznoteEntities");
-        List<Spznote> expResult = null;
+        Random rand = new Random();
+        int count = rand.nextInt(MAX_SPZ_NOTES)+10;
+        List<Spznote> expResult = new ArrayList<>();
         List<Spznote> result = manager.findSpznoteEntities();
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        expResult = createSpzNotes(count);
+        result = manager.findSpznoteEntities();
+        assertArrayEquals(expResult.toArray(), result.toArray());
     }
 
     /**
@@ -186,11 +222,19 @@ public class SpznoteManagerTest {
         System.out.println("findSpznoteEntities");
         int maxResults = 0;
         int firstResult = 0;
-        List<Spznote> expResult = null;
+        List<Spznote> expResult = new ArrayList<>();
         List<Spznote> result = manager.findSpznoteEntities(maxResults, firstResult);
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        Random rand = new Random();
+        int count = rand.nextInt(MAX_SPZ_NOTES)+10;
+        List<Spznote> values = createSpzNotes(count);
+        for(firstResult=1;firstResult<count;firstResult++){
+            for(maxResults=1;maxResults<=count - firstResult;maxResults++){
+                expResult = values.subList(firstResult, firstResult+maxResults);
+                result = manager.findSpznoteEntities(maxResults, firstResult);
+                assertArrayEquals(expResult.toArray(), result.toArray());
+            }
+        }
     }
 
     /**
@@ -202,8 +246,13 @@ public class SpznoteManagerTest {
         int expResult = 0;
         int result = manager.getSpznoteCount();
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        int count;
+        Random rand = new Random();
+        count = rand.nextInt(MAX_SPZ_NOTES)+10;
+        List<Spznote> notes = createSpzNotes(count);
+        expResult = notes.size();
+        result = manager.getSpznoteCount();
+        assertEquals(expResult, result);
     }
 
     /*public class SpznoteManagerImpl implements SpznoteManager {
