@@ -13,6 +13,8 @@ import cz.dcb.support.db.managers.exceptions.NonexistentEntityException;
 import cz.dcb.support.db.managers.exceptions.PreexistingEntityException;
 import cz.dcb.support.db.managers.utils.DBUtils;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
 import java.util.logging.Level;
@@ -131,12 +133,39 @@ public class ProjectManagerTest {
     @Test
     public void testFindProject() {
         System.out.println("findProject");
-        Project project = DBUtils.createProject();
-        Project expResult = null;
-        Project result = manager.findProject(project.getId());
+        Random rand = new Random();
+        int count = rand.nextInt(MAX_COUNT)+10;
+        Project expResult  = null;
+        Project result = null;
+        try{
+            manager.findProject(null);
+            fail("Exception should be thrown.");
+        }catch(IllegalArgumentException ex){
+            logger.log(Level.INFO,ex.toString());
+        }catch(Exception ex){
+            fail("Invalid exception thrown "+ex);
+        }
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        
+        List<Project> projects = createProjects(count);
+        for(Project project:projects){
+            result = manager.findProject(project.getId());
+            assertEquals(result, project);
+        }
+        Comparator<Project> projectComparator = new Comparator<Project>() {
+
+            @Override
+            public int compare(Project o1, Project o2) {
+                
+                return o1.getId() - o2.getId();
+            }
+        };
+        int minId = Collections.min(projects,projectComparator).getId()-1;
+        int maxId = Collections.max(projects, projectComparator).getId()+1;
+        result = manager.findProject(minId);
+        assertNull(result);
+        result = manager.findProject(maxId);
+        assertNull(result);
     }
 
     /**
@@ -146,11 +175,15 @@ public class ProjectManagerTest {
     public void testFindProjectEntities_0args() {
         System.out.println("findProjectEntities");
 //        ProjectManager instance = new ProjectManagerImpl();
-        List<Project> expResult = null;
+        List<Project> expResult = new ArrayList<>();
         List<Project> result = manager.findProjectEntities();
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        Random rand = new Random();
+        int count = rand.nextInt(MAX_COUNT)+10;
+        expResult = createProjects(count);
+        result = manager.findProjectEntities();
+        assertArrayEquals(expResult.toArray(), result.toArray());
     }
 
     /**
@@ -162,11 +195,49 @@ public class ProjectManagerTest {
         int maxResults = 0;
         int firstResult = 0;
 //        ProjectManager instance = new ProjectManagerImpl();
-        List<Project> expResult = null;
+        List<Project> expResult = new ArrayList<>();
         List<Project> result = manager.findProjectEntities(maxResults, firstResult);
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        Random rand = new Random();
+        int count = rand.nextInt(MAX_COUNT);
+        List<Project> values = createProjects(count);
+        for(firstResult=1;firstResult<count - 2;firstResult++){
+            for(maxResults=1;maxResults< count - firstResult;maxResults++){
+                expResult = values.subList(firstResult, firstResult+maxResults);
+                result = manager.findProjectEntities(maxResults, firstResult);
+                assertArrayEquals(expResult.toArray(), result.toArray());
+            }
+        }
+    }
+    
+    @Test
+    public void testFindProjectEntities_int_intInvalidIndeces() {
+        System.out.println("findProjectEntities");
+        List<Project> result = null;
+        Random rand = new Random();
+        int count = rand.nextInt(MAX_COUNT)+10;
+        List<Project> values = createProjects(count);
+        try{
+            result = manager.findProjectEntities(-1, 1);
+            fail("Exception should be thrown.");
+        }catch(IllegalArgumentException ex){
+            logger.log(Level.INFO,ex.toString());
+        }catch(Exception ex){
+            fail(ex.toString());
+        }
+        assertNull(result);
+        
+        try{
+            result = manager.findProjectEntities(1, -1);
+            fail("Exception should be thrown.");
+        }catch(IllegalArgumentException ex){
+            logger.log(Level.INFO,ex.toString());
+        }catch(Exception ex){
+            fail(ex.toString());
+        }
+        assertNull(result);
+        
+        
     }
 
     /**
@@ -180,7 +251,10 @@ public class ProjectManagerTest {
         int result = manager.getProjectCount();
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        Random rand = new Random();
+        int count = rand.nextInt(MAX_COUNT);
+        List<Project> projects = createProjects(result);
+        assertEquals(projects.size(), manager.getProjectCount());
     }
 
 /*    public class ProjectManagerImpl implements ProjectManager {
