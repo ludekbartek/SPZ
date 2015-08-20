@@ -36,6 +36,7 @@ import cz.dcb.support.db.jpa.entities.Spznote;
 import cz.dcb.support.db.jpa.entities.Spzstate;
 import cz.dcb.support.db.jpa.entities.Spzstatenote;
 import cz.dcb.support.db.jpa.entities.User;
+import cz.dcb.support.db.jpa.entities.Useraccess;
 import java.math.BigInteger;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -243,5 +244,21 @@ public class DBUtils {
         value.setNoteid(note.getId());
         value.setStateid(spzstate.getId());
         return value;
+    }
+
+    public static Useraccess createUserAccess() {
+        EntityManagerFactory emf = DBUtils.getEntityManagerFactory();
+        UserManager userManager = new UserJpaController(emf);
+        ConfigurationManager confManager = new ConfigurationJpaController(emf);
+        Useraccess access = new Useraccess();
+        User user = createUser();
+        userManager.create(user);
+        Configuration conf = createConfiguration();
+        confManager.create(conf);
+        access.setRole("administrator");
+        access.setUserid(user.getId());
+        access.setConfigurationid(conf.getId());
+        access.setTs(BigInteger.ONE);
+        return access;
     }
 }
