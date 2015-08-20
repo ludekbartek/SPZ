@@ -261,4 +261,23 @@ public class DBUtils {
         access.setTs(BigInteger.ONE);
         return access;
     }
+
+    public static Spzstate createSpzstate() {
+        Spzstate state = new Spzstate();
+        Calendar cal = new GregorianCalendar();
+        
+        state.setAssumedmandays(2.0);
+        state.setClasstype((short)1);
+        state.setCode("Some code");
+        state.setCurrentstate(0);
+        state.setIdate(cal.getTime());
+        state.setIssuerLogin("someLogin");
+        state.setMandays(2.0);
+        state.setReleasenotes("Some notes");
+        state.setRevisedrequestdescription("some text");
+        state.setSolutiondescription("Short solution");
+        state.setTs(BigInteger.ONE);
+        
+        return state;
+    }
 }
