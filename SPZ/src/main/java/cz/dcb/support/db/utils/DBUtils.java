@@ -7,6 +7,7 @@ package cz.dcb.support.db.utils;
 
 import cz.dcb.support.db.jpa.entities.Configuration;
 import cz.dcb.support.db.jpa.entities.Spzissuer;
+import cz.dcb.support.db.jpa.entities.Useraccess;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
@@ -18,9 +19,5 @@ public class DBUtils {
     public static EntityManagerFactory getEntityManagerFactory()
     {
         return Persistence.createEntityManagerFactory("support_JPA");
-    }
-
-    public static Spzissuer createSpzIssuer() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }
