@@ -35,6 +35,7 @@ import cz.dcb.support.db.jpa.entities.Spzissuer;
 import cz.dcb.support.db.jpa.entities.Spznote;
 import cz.dcb.support.db.jpa.entities.Spzstate;
 import cz.dcb.support.db.jpa.entities.Spzstatenote;
+import cz.dcb.support.db.jpa.entities.Spzstates;
 import cz.dcb.support.db.jpa.entities.User;
 import cz.dcb.support.db.jpa.entities.Useraccess;
 import java.math.BigInteger;
@@ -279,5 +280,22 @@ public class DBUtils {
         state.setTs(BigInteger.ONE);
         
         return state;
+    }
+
+    public static Spzstates createSpzStates() {
+        EntityManagerFactory emf= DBUtils.getEntityManagerFactory();
+        SpzManager spzManager = new SpzJpaController(emf);
+        Spz spz = createSpz();
+        spzManager.create(spz);
+        
+        SpzStateManager stateManager = new SpzStateJpaController(emf);
+        Spzstate state = createSpzState();
+        stateManager.create(state);
+        
+        Spzstates value = new Spzstates();
+        value.setSpzid(spz.getId());
+        value.setStateid(state.getId());
+       
+        return value;
     }
 }
