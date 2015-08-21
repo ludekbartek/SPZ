@@ -5,7 +5,7 @@
  */
 package cz.dcb.support.db.managers;
 
-import com.sun.istack.internal.logging.Logger;
+import java.util.logging.Logger;
 import cz.dcb.support.db.jpa.controllers.SpzJpaController;
 import cz.dcb.support.db.jpa.controllers.SpzManager;
 import cz.dcb.support.db.jpa.controllers.SpzStateJpaController;
@@ -39,7 +39,7 @@ import static org.junit.Assert.*;
 public class SpzStatesManagerTest {
     
     private final SpzStatesManager manager = new SpzStatesJpaController(DBUtils.getEntityManagerFactory());
-    private static final Logger LOGGER = Logger.getLogger(SpzStatesManagerTest.class);
+    private static final Logger LOGGER = Logger.getLogger(SpzStatesManagerTest.class.getName());
     private static final int MAX_VALUES = 90;
     
     public SpzStatesManagerTest() {
