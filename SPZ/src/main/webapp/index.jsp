@@ -9,6 +9,7 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <link rel="stylesheet" type="text/css" href="style/dcb.css">
         <c:if test="empty ${user}">
             <meta http-equiv="Refresh" content="0; URL=login.jsp">
         </c:if>        
@@ -16,6 +17,6 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <h1>Hello World!</h1>
+        <h1>SPZ</h1>
     </body>
 </html>
