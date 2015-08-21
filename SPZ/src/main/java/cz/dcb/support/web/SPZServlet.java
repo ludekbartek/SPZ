@@ -17,7 +17,8 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author bar
  */
-@WebServlet(name = "SPZServlet", urlPatterns = {"/SPZServlet"})
+@WebServlet(name = "SPZServlet", urlPatterns = {"/SPZServlet/*"})
+
 public class SPZServlet extends HttpServlet {
 
     /**
