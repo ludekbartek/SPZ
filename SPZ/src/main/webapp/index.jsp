@@ -9,10 +9,10 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <link rel="stylesheet" type="text/css" href="style/dcb.css">
-        <c:if test="empty ${user}">
+        <c:if test="${empty user}">
             <meta http-equiv="Refresh" content="0; URL=login.jsp">
         </c:if>        
+        <link rel="stylesheet" type="text/css" href="style/dcb.css">
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
     </head>
