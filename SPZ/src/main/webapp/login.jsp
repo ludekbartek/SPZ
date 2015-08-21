@@ -13,6 +13,14 @@
         <title>Login</title>
     </head>
     <body>
-        
+        <form action="${pageContext.request.contextPath}/SPZServlet" method="post">
+            <label for="login">Uživatelské jméno:</label>
+            <input type="text" width="8" name="login"/>
+            <br/>
+            <label for="passwd">Heslo:</label>
+            <input type="password" width="10" name="passwd"/>
+            <br/>
+            <input type="submit" value="Přihlásit"/>
+        </form>
     </body>
 </html>
