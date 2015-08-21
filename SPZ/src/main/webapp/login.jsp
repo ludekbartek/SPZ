@@ -13,7 +13,7 @@
         <title>Login</title>
     </head>
     <body>
-        <form action="${pageContext.request.contextPath}/SPZServlet" method="post">
+        <form action="j_security_check" method="post">
             <label for="login">Uživatelské jméno:</label>
             <input type="text" width="8" name="login"/>
             <br/>
