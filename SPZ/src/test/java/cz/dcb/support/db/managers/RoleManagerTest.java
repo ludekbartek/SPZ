@@ -48,6 +48,10 @@ public class RoleManagerTest {
     
     @Before
     public void setUp() {
+        clearDB();
+    }
+
+    private void clearDB() {
         for(Roles role:manager.findRolesEntities()){
             try {
                 manager.destroy(role.getId());
@@ -59,6 +63,7 @@ public class RoleManagerTest {
     
     @After
     public void tearDown() {
+        clearDB();
     }
 
     /**
