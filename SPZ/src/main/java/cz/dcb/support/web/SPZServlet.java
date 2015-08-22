@@ -23,8 +23,8 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet(name = "SPZServlet", urlPatterns = {"/SPZServlet/*"})
 @ServletSecurity(
  @HttpConstraint(transportGuarantee = ServletSecurity.TransportGuarantee.CONFIDENTIAL,
-         rolesAllowed = {"USER"}))
-@DeclareRoles("USER")
+         rolesAllowed = {"user"}))
+@DeclareRoles({"admin","user"})
 public class SPZServlet extends HttpServlet {
 
     /**
