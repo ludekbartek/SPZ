@@ -15,10 +15,10 @@
     <body>
         <form action="j_security_check" method="post">
             <label for="login">Uživatelské jméno:</label>
-            <input type="text" width="8" name="login"/>
+            <input type="text" width="15" name="j_username"/>
             <br/>
             <label for="passwd">Heslo:</label>
-            <input type="password" width="10" name="passwd"/>
+            <input type="password" width="20" name="j_password"/>
             <br/>
             <input type="submit" value="Přihlásit"/>
         </form>
