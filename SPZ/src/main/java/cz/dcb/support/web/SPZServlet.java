@@ -7,6 +7,8 @@ package cz.dcb.support.web;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.security.DeclareRoles;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.HttpConstraint;
@@ -15,6 +17,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.apache.derby.drda.NetworkServerControl;
 
 /**
  *
@@ -27,6 +30,16 @@ import javax.servlet.http.HttpServletResponse;
 @DeclareRoles({"admin","user"})
 public class SPZServlet extends HttpServlet {
 
+    @Override
+    public void init(){
+        try {
+            NetworkServerControl serverControl = new NetworkServerControl();
+            PrintWriter log = new PrintWriter("suppport-derby.log");
+            serverControl.start(log);
+        } catch (Exception ex) {
+            Logger.getLogger(SPZServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
