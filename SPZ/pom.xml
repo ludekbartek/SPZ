@@ -63,6 +63,19 @@
             <version>1.2</version>
         </dependency>
         <dependency>
+            <groupId>org.apache.derby</groupId>
+            <artifactId>derbynet</artifactId>
+            <version>10.11.1.1</version>
+            <type>jar</type>
+        </dependency>
+        <dependency>
+            <groupId>javadb</groupId>
+            <artifactId>javadb</artifactId>
+            <version>10.10.2.0</version>
+            <scope>test</scope>
+            <type>zip</type>
+        </dependency>
+        <dependency>
             <groupId>javax</groupId>
             <artifactId>javaee-web-api</artifactId>
             <version>7.0</version>
