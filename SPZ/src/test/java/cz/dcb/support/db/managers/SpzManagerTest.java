@@ -44,12 +44,10 @@ public class SpzManagerTest {
     
     @BeforeClass
     public static void setUpClass() {
-        
     }
     
     @AfterClass
     public static void tearDownClass() {
-        
     }
     
     @Before

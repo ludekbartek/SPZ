@@ -39,7 +39,6 @@ public class AttachmentNoteManagerTest {
     
     @BeforeClass
     public static void setUpClass() {
-       
     }
     
     @AfterClass

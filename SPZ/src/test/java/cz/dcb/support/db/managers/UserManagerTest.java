@@ -41,7 +41,6 @@ public class UserManagerTest {
     
     @BeforeClass
     public static void setUpClass() {
-        
     }
     
     @AfterClass
