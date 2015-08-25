@@ -81,9 +81,29 @@ public class SPZServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+            String action = request.getPathInfo();
+            switch(action){
+                case "login":authenticate(request,response);
+                            break;
+                case "addspz":addSpz(request,response);
+                            break;
+                case "editspz":editSpz(request,response);
+                            break;
+                case "adduser":addUser(request,response);
+                            break;
+                case "edituser":editUser(request,response);
+                            break;
+                case "addattachment":addAttachment(request,response);
+                            break;
+                case "editattachment":editAttachment(request,response);
+                            break;
+                case "addproject":addProject(request,response);
+                            break;
+                case "editproject":editProject(request,response);
+                            break;
+                default:break;
+            }
     }
-
     /**
      * Returns a short description of the servlet.
      *
@@ -91,7 +111,43 @@ public class SPZServlet extends HttpServlet {
      */
     @Override
     public String getServletInfo() {
-        return "Short description";
+        return "System podpory zakazniku";
     }// </editor-fold>
+
+    private void authenticate(HttpServletRequest request, HttpServletResponse response) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    private void addSpz(HttpServletRequest request, HttpServletResponse response) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    private void editSpz(HttpServletRequest request, HttpServletResponse response) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    private void addUser(HttpServletRequest request, HttpServletResponse response) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    private void editUser(HttpServletRequest request, HttpServletResponse response) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    private void addAttachment(HttpServletRequest request, HttpServletResponse response) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    private void editAttachment(HttpServletRequest request, HttpServletResponse response) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    private void addProject(HttpServletRequest request, HttpServletResponse response) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    private void editProject(HttpServletRequest request, HttpServletResponse response) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 
 }
