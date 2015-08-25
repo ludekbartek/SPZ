@@ -34,8 +34,14 @@ public class SPZServlet extends HttpServlet {
     public void init(){
         try {
             NetworkServerControl serverControl = new NetworkServerControl();
-            PrintWriter log = new PrintWriter("suppport-derby.log");
-            serverControl.start(log);
+            try{
+                serverControl.ping();
+                Logger.getLogger(SPZServlet.class.getName()).log(Level.INFO,"Derby was running.");
+            }catch(Exception ex){
+                Logger.getLogger(SPZServlet.class.getName()).log(Level.INFO,"Starting derby");
+                PrintWriter log = new PrintWriter("suppport-derby.log");
+                serverControl.start(log);
+            }
         } catch (Exception ex) {
             Logger.getLogger(SPZServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
