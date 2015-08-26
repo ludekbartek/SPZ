@@ -5,11 +5,17 @@
  */
 package cz.dcb.support.web;
 
+import cz.dcb.support.db.jpa.controllers.SpzJpaController;
+import cz.dcb.support.db.jpa.controllers.SpzManager;
+import cz.dcb.support.db.jpa.entities.Spz;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.security.DeclareRoles;
+import javax.persistence.Persistence;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.HttpConstraint;
 import javax.servlet.annotation.ServletSecurity;
@@ -23,11 +29,12 @@ import org.apache.derby.drda.NetworkServerControl;
  *
  * @author bar
  */
-@WebServlet(name = "SPZServlet", urlPatterns = {"/SPZServlet/*"})
-@ServletSecurity(
+@WebServlet(urlPatterns = {"/SPZServlet","/SPZServlet/*"})
+//@WebServlet(name = "SPZServlet", urlPatterns = {"/SPZServlet/*"})
+/*@ServletSecurity(
  @HttpConstraint(transportGuarantee = ServletSecurity.TransportGuarantee.CONFIDENTIAL,
          rolesAllowed = {"user"}))
-@DeclareRoles({"admin","user"})
+@DeclareRoles({"admin","user"})*/
 public class SPZServlet extends HttpServlet {
 
     @Override
@@ -87,27 +94,35 @@ public class SPZServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+            
+            Map<String,String[]> params = request.getParameterMap();
+            for(String key:params.keySet()){
+                System.out.println(key+": "+params.get(key)[0]);
+            }
+            System.out.println("Action: " + request.getParameter("action"));
             String action = request.getPathInfo();
+            //String action = request.getParameter("action");
             switch(action){
-                case "login":authenticate(request,response);
+                case "/login"://authenticate(request,response);
+                              listSpz(request, response);
                             break;
-                case "addspz":addSpz(request,response);
+                case "/addspz":addSpz(request,response);
                             break;
-                case "listSPZ":listSpz(request,response);
+                case "/listSPZ":listSpz(request,response);
                             break;
-                case "editspz":editSpz(request,response);
+                case "/editspz":editSpz(request,response);
                             break;
-                case "adduser":addUser(request,response);
+                case "/adduser":addUser(request,response);
                             break;
-                case "edituser":editUser(request,response);
+                case "/edituser":editUser(request,response);
                             break;
-                case "addattachment":addAttachment(request,response);
+                case "/addattachment":addAttachment(request,response);
                             break;
-                case "editattachment":editAttachment(request,response);
+                case "/editattachment":editAttachment(request,response);
                             break;
-                case "addproject":addProject(request,response);
+                case "/addproject":addProject(request,response);
                             break;
-                case "editproject":editProject(request,response);
+                case "/editproject":editProject(request,response);
                             break;
                 default:break;
             }
@@ -158,8 +173,11 @@ public class SPZServlet extends HttpServlet {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    private void listSpz(HttpServletRequest request, HttpServletResponse response) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    private void listSpz(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        SpzManager manager = new SpzJpaController(Persistence.createEntityManagerFactory("support_JPA"));
+        List<Spz> spzs = manager.findSpzEntities();
+        request.setAttribute("spzs", spzs);
+        request.getRequestDispatcher("/listSPZ.jsp").forward(request, response);
     }
 
 }
