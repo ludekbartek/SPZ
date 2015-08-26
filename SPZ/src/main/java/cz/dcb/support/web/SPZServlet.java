@@ -93,6 +93,8 @@ public class SPZServlet extends HttpServlet {
                             break;
                 case "addspz":addSpz(request,response);
                             break;
+                case "listSPZ":listSpz(request,response);
+                            break;
                 case "editspz":editSpz(request,response);
                             break;
                 case "adduser":addUser(request,response);
@@ -153,6 +155,10 @@ public class SPZServlet extends HttpServlet {
     }
 
     private void editProject(HttpServletRequest request, HttpServletResponse response) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    private void listSpz(HttpServletRequest request, HttpServletResponse response) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
