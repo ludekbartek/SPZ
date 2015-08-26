@@ -10,6 +10,10 @@
     <head>
         <link rel="stylesheet" type="text/css" href="style/dcb.css">
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        
+        <!-- Pouze pro testovaci ucely. V budoucnu odstranit.-->
+        <meta http-equiv="Refresh" content="0; URL=/SPZ/SPZservlet/listSPZ">
+        
         <title>Login</title>
     </head>
     <body>
