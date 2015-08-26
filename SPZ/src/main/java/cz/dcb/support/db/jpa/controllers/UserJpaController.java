@@ -145,5 +145,35 @@ public class UserJpaController implements Serializable, UserManager {
             em.close();
         }
     }
+
+    /**
+     * Tries to find user with given login
+     * @param login login of user to find
+     * @return  Corresponding user if the user with particular login is found
+     *  null otherwise.
+     */
+    @Override
+    public User findUserByLogin(String login) {
+        if(login == null){
+            throw new IllegalArgumentException("Parameter login is null.");
+        }
+        if(login.length()==0){
+            throw new IllegalArgumentException("Parameter login is empty.");
+        }
+        
+        int usersCount = getUserCount(),loaded = 0;
+        User user;
+        List<User> users;
+        for(int processed =0;processed < usersCount;){
+            users = findUserEntities(1000, processed);
+            processed += users.size();
+            for(User toProces:users){
+                if(login.equalsIgnoreCase(toProces.getLogin())){
+                    return toProces;
+                }
+            }
+        }
+        return null;
+    }
     
 }
