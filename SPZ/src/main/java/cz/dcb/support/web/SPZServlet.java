@@ -10,11 +10,21 @@ import cz.dcb.support.db.jpa.controllers.SpzManager;
 import cz.dcb.support.db.jpa.entities.Spz;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.math.BigInteger;
+import java.text.DateFormat;
+import java.text.FieldPosition;
+import java.text.ParseException;
+import java.text.ParsePosition;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.security.DeclareRoles;
+import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.HttpConstraint;
@@ -37,6 +47,7 @@ import org.apache.derby.drda.NetworkServerControl;
 @DeclareRoles({"admin","user"})*/
 public class SPZServlet extends HttpServlet {
 
+    private EntityManagerFactory emf = Persistence.createEntityManagerFactory("support_JPA");
     @Override
     public void init(){
         try {
@@ -102,13 +113,13 @@ public class SPZServlet extends HttpServlet {
             System.out.println("Action: " + request.getParameter("action"));
             String action = request.getPathInfo();
             //String action = request.getParameter("action");
-            switch(action){
+            switch(action.toLowerCase()){
                 case "/login"://authenticate(request,response);
                               listSpz(request, response);
                             break;
                 case "/addspz":addSpz(request,response);
                             break;
-                case "/listSPZ":listSpz(request,response);
+                case "/listspz":listSpz(request,response);
                             break;
                 case "/editspz":editSpz(request,response);
                             break;
@@ -141,8 +152,15 @@ public class SPZServlet extends HttpServlet {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    private void addSpz(HttpServletRequest request, HttpServletResponse response) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    private void addSpz(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        if(checkSpzParams(request.getParameterMap())){
+            Spz spz = requestParamsToSpz(request.getParameterMap());
+            SpzManager manager= new SpzJpaController(emf);
+            manager.create(spz);
+            List<Spz> spzs = manager.findSpzEntities();
+            request.setAttribute("invspz", spzs);
+            request.getRequestDispatcher("/listSPZ.jsp").forward(request, response);
+        }
     }
 
     private void editSpz(HttpServletRequest request, HttpServletResponse response) {
@@ -174,10 +192,97 @@ public class SPZServlet extends HttpServlet {
     }
 
     private void listSpz(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        SpzManager manager = new SpzJpaController(Persistence.createEntityManagerFactory("support_JPA"));
+        SpzManager manager = new SpzJpaController(emf);
         List<Spz> spzs = manager.findSpzEntities();
         request.setAttribute("spzs", spzs);
         request.getRequestDispatcher("/listSPZ.jsp").forward(request, response);
+    }
+
+    private boolean checkSpzParams(Map<String, String[]> parameterMap) {
+        if(!checkReqNumber(parameterMap)){
+            return false;
+        }
+
+        if(!checkIssueDate(parameterMap)){
+            return false;
+        }
+        
+        if(!checkContactPerson(parameterMap)){
+            return false;
+        }
+        
+        if(!checkShortName(parameterMap)){
+            return false;
+        }
+        
+        if(!checkRequestDescription(parameterMap)){
+            return false;
+        }
+        
+        if(!checkImplementationAcceptanceDate(parameterMap)){
+            return false;
+        }
+
+        return true;
+    }
+
+    private Spz requestParamsToSpz(Map<String, String[]> parameterMap) {
+        Spz spz = new Spz();
+        spz.setReqnumber(parameterMap.get("requestenumber")[0]);
+        spz.setRequestdescription(parameterMap.get("requestdescription")[0]);
+        spz.setContactperson(parameterMap.get("contactperson")[0]);
+        spz.setShortname(parameterMap.get("shortname")[0]);
+        String issueDateString = parameterMap.get("issuedate")[0];
+        Date issueDate = stringToDate(issueDateString);
+        if (issueDate == null) {
+            return null;
+        }
+        spz.setIssuedate(issueDate);
+        if(checkImplementationAcceptanceDate(parameterMap)){
+        
+            String implDateStr = parameterMap.get("implementationacceptancedate")[0];
+            Date implDate = stringToDate(implDateStr);
+            spz.setImplementationacceptdate(implDate);
+        }
+        long ts = (new GregorianCalendar()).getTimeInMillis();
+        spz.setTs(BigInteger.valueOf(ts));
+        return spz;
+    }
+
+    private Date stringToDate(String strVal) {
+        DateFormat formater = new SimpleDateFormat();
+        Date value = null;
+        try {
+            value = formater.parse(strVal);
+        } catch (ParseException ex) {
+            Logger.getLogger(SPZServlet.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+        return value;
+    }
+
+    private boolean checkReqNumber(Map<String, String[]> parameterMap) {
+        return parameterMap.containsKey("reqnumber") && !parameterMap.get("reqnumber")[0].isEmpty();
+    }
+
+    private boolean checkIssueDate(Map<String, String[]> parameterMap) {
+        return parameterMap.containsKey("issuedate") && !parameterMap.get("issuedate")[0].isEmpty();
+    }
+
+    private boolean checkContactPerson(Map<String, String[]> parameterMap) {
+        return parameterMap.containsKey("contactperson") && !parameterMap.get("contactperson")[0].isEmpty();
+    }
+
+    private boolean checkShortName(Map<String, String[]> parameterMap) {
+        return parameterMap.containsKey("shortname") && !parameterMap.get("shortname")[0].isEmpty();
+    }
+
+    private boolean checkRequestDescription(Map<String, String[]> parameterMap) {
+        return parameterMap.containsKey("requestdescritpion") && !parameterMap.get("requestdecription")[0].isEmpty();
+    }
+
+    private boolean checkImplementationAcceptanceDate(Map<String, String[]> parameterMap) {
+        return parameterMap.containsKey("implementationacceptancedate") && !parameterMap.get("implementationacceptancedate")[0].isEmpty();
     }
 
 }
