@@ -160,8 +160,16 @@ public class SPZServlet extends HttpServlet {
         }
     }
 
-    private void editSpz(HttpServletRequest request, HttpServletResponse response) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    private void editSpz(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        Spz spz = requestParamsToSpz(request.getParameterMap());
+        SpzManager manager = new SpzJpaController(emf);
+        try {
+            manager.edit(spz);
+        } catch (Exception ex) {
+            Logger.getLogger(SPZServlet.class.getName()).log(Level.SEVERE, "Error editing spz: ", ex);
+            throw new ServletException("Error editing spz",ex);
+        }
+        listSpz(request, response);
     }
 
     private void addUser(HttpServletRequest request, HttpServletResponse response) {
