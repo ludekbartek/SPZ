@@ -161,7 +161,13 @@ public class SPZServlet extends HttpServlet {
     }
 
     private void editSpz(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        
         Spz spz = requestParamsToSpz(request.getParameterMap());
+        if(request.getParameterMap().containsKey("id")){
+            String strId = request.getParameter("id");
+            int id=Integer.parseInt(strId);
+            spz.setId(id);
+        }
         SpzManager manager = new SpzJpaController(emf);
         try {
             manager.edit(spz);
