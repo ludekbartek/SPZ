@@ -55,7 +55,7 @@
                         <!--<c:out value="${item.contactperson}"/>-->
                     </td>
                     <td>
-                        <select> 
+                        <select name="reqtype"> 
                             <option <c:if test="${item.requesttype}=='radna'">selected="true"</c:if>>radna</option>
                             <option <c:if test="${item.requesttype}=='mimoradna'">selected="true"</c:if>>mimoradna</option>
                         </select>
