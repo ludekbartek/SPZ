@@ -20,6 +20,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -52,14 +53,9 @@ public class SPZServlet extends HttpServlet {
     public void init(){
         try {
             NetworkServerControl serverControl = new NetworkServerControl();
-            try{
-                serverControl.ping();
-                Logger.getLogger(SPZServlet.class.getName()).log(Level.INFO,"Derby was running.");
-            }catch(Exception ex){
                 Logger.getLogger(SPZServlet.class.getName()).log(Level.INFO,"Starting derby");
                 PrintWriter log = new PrintWriter("suppport-derby.log");
                 serverControl.start(log);
-            }
         } catch (Exception ex) {
             Logger.getLogger(SPZServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -158,7 +154,8 @@ public class SPZServlet extends HttpServlet {
             SpzManager manager= new SpzJpaController(emf);
             manager.create(spz);
             List<Spz> spzs = manager.findSpzEntities();
-            request.setAttribute("invspz", spzs);
+            request.setAttribute("invspz", spz);
+            request.setAttribute("spzs", spzs);
             request.getRequestDispatcher("/listSPZ.jsp").forward(request, response);
         }
     }
@@ -203,6 +200,9 @@ public class SPZServlet extends HttpServlet {
             return false;
         }
 
+        if(!checkReqType(parameterMap)){
+            return false;
+        }
         if(!checkIssueDate(parameterMap)){
             return false;
         }
@@ -228,7 +228,7 @@ public class SPZServlet extends HttpServlet {
 
     private Spz requestParamsToSpz(Map<String, String[]> parameterMap) {
         Spz spz = new Spz();
-        spz.setReqnumber(parameterMap.get("requestenumber")[0]);
+        spz.setReqnumber(parameterMap.get("reqnumber")[0]);
         spz.setRequestdescription(parameterMap.get("requestdescription")[0]);
         spz.setContactperson(parameterMap.get("contactperson")[0]);
         spz.setShortname(parameterMap.get("shortname")[0]);
@@ -246,11 +246,16 @@ public class SPZServlet extends HttpServlet {
         }
         long ts = (new GregorianCalendar()).getTimeInMillis();
         spz.setTs(BigInteger.valueOf(ts));
+        String strPriority = parameterMap.get("priority")[0];
+        short priority = Short.parseShort(strPriority);
+        spz.setPriority(priority);
+        
+        spz.setRequesttype(parameterMap.get("reqtype")[0]);
         return spz;
     }
 
     private Date stringToDate(String strVal) {
-        DateFormat formater = new SimpleDateFormat();
+        DateFormat formater = DateFormat.getDateInstance(DateFormat.SHORT, new Locale("cs"));
         Date value = null;
         try {
             value = formater.parse(strVal);
@@ -278,11 +283,17 @@ public class SPZServlet extends HttpServlet {
     }
 
     private boolean checkRequestDescription(Map<String, String[]> parameterMap) {
-        return parameterMap.containsKey("requestdescritpion") && !parameterMap.get("requestdecription")[0].isEmpty();
+        boolean result = parameterMap.containsKey("requestdescription");
+        result = result && !(parameterMap.get("requestdescription")[0].isEmpty());
+        return result;
     }
 
     private boolean checkImplementationAcceptanceDate(Map<String, String[]> parameterMap) {
         return parameterMap.containsKey("implementationacceptancedate") && !parameterMap.get("implementationacceptancedate")[0].isEmpty();
+    }
+
+    private boolean checkReqType(Map<String, String[]> parameterMap) {
+        return parameterMap.containsKey("reqtype") && !parameterMap.get("reqtype")[0].isEmpty();
     }
 
 }
