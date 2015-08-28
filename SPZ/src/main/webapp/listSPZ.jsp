@@ -31,9 +31,10 @@
             </thead>
             <c:forEach items="${spzs}" var="item">
                 <tr>
-                <form action="${pageContext.request.contextPath}/SPZServlet/editSPZ" method="post">
+                <form action="${pageContext.request.contextPath}/SPZServlet/editspz" method="post">
                     <td>
                         <c:out value="${item.id}"/>
+                        <input type="hidden" name="id" value="${item.id}"/>
                     </td>
                     <td>
                         <input type="text" name="reqnumber" value="${item.reqnumber}"/>
