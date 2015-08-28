@@ -6,6 +6,7 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="f" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -14,7 +15,7 @@
     </head>
     <body>
         <h1>Tady bude seznam SPZ s moznymi akcemi.</h1>
-        <table>
+        <table border="1">
             <form action="${pageContext.request.contextPath}/SPZServlet/addSPZ" method="post">
             <thead>
                 <th>ID</th>
@@ -40,7 +41,7 @@
                         <c:out value="${item.priority}"/>
                     </td>
                     <td>
-                        <c:out value="${item.issuedate}"/>
+                        <f:formatDate value="${item.issuedate}" pattern="dd.MM.yyyy"/>
                     </td>
                     <td>
                         <c:out value="${item.contactperson}"/>
@@ -55,7 +56,8 @@
                         <c:out value="${item.requestdescription}"/>
                     </td>
                     <td>
-                        <c:out value="${item.implementationacceptacedate}"/>
+                        <f:formatDate value="${item.implementationacceptdate}" pattern="dd.MM.yyyy"/>
+                        <!--<c:out value="${item.implementationacceptdate}"/>-->
                     </td>
                     <td>
                         Uprava
@@ -109,13 +111,15 @@
                     <td><c:choose>
                             <c:when test="exist $invspz">
                             <select name="reqtype">
-                                <option <c:if test="${invspz.reqtype eq 'radna'}">selected="true"</c:if>>radna</option>
-                                <option <c:if test="${invspz.reqtype eq 'mimoradna'}">selected="true"</c:if>>mimoradna</option>
+                                <option <c:if test="${invspz.reqtype == 'radna'}">selected="true"</c:if>>radna</option>
+                                <option <c:if test="${invspz.reqtype = 'mimoradna'}">selected="true"</c:if>>mimoradna</option>
                             </select>
                             </c:when>
                             <c:otherwise>
-                                <option selected="true">radna</option>
-                                <option>mimoradna</option>
+                                <select name="reqtype">
+                                    <option selected="true">radna</option>
+                                    <option>mimoradna</option>
+                                </select>
                             </c:otherwise>
                         </c:choose>
                     </td>
