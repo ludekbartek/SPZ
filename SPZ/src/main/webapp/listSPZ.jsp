@@ -16,7 +16,7 @@
     <body>
         <h1>Tady bude seznam SPZ s moznymi akcemi.</h1>
         <table border="1">
-            <form action="${pageContext.request.contextPath}/SPZServlet/addSPZ" method="post">
+            
             <thead>
                 <th>ID</th>
                 <th>Cislo pozadavku</th>
@@ -31,41 +31,59 @@
             </thead>
             <c:forEach items="${spzs}" var="item">
                 <tr>
+                <form action="${pageContext.request.contextPath}/SPZServlet/editSPZ" method="post">
                     <td>
                         <c:out value="${item.id}"/>
                     </td>
                     <td>
-                        <c:out value="${item.reqnumber}"/>
+                        <input type="text" name="reqnumber" value="${item.reqnumber}"/>
                     </td>
                     <td>
-                        <c:out value="${item.priority}"/>
+                        <select name="priority">
+                            <option <c:if test="${item.priority}=='1'">selected="true"</c:if>>1</option>
+                            <option <c:if test="${item.priority}=='2'">selected="true"</c:if>>2</option>
+                            <option <c:if test="${item.priority}=='3'">selected="true"</c:if>>3</option>
+                        </select>
+                        <!--<c:out value="${item.priority}"/>-->
                     </td>
                     <td>
-                        <f:formatDate value="${item.issuedate}" pattern="dd.MM.yyyy"/>
+                        <input name="issuedate" type="date" value="<f:formatDate value='${item.issuedate}' pattern='dd.MM.yyyy'/>"/>
+                        <!--<f:formatDate value="${item.issuedate}" pattern="dd.MM.yyyy"/>-->
                     </td>
                     <td>
-                        <c:out value="${item.contactperson}"/>
+                        <input name="contactperson" type="text" value="${item.contactperson}"/>
+                        <!--<c:out value="${item.contactperson}"/>-->
                     </td>
                     <td>
-                        <c:out value="${item.requesttype}"/>
+                        <select> 
+                            <option <c:if test="${item.requesttype}=='radna'">selected="true"</c:if>>radna</option>
+                            <option <c:if test="${item.requesttype}=='mimoradna'">selected="true"</c:if>>mimoradna</option>
+                        </select>
+                        <!--<c:out value="${item.requesttype}"/>-->
                     </td>
                     <td>
-                        <c:out value="${item.shortname}"/>
+                        <!--<c:out value="${item.shortname}"/>-->
+                        <input name="shortname" type="text" value="${item.shortname}"/>
+                        
                     </td>
                     <td>
-                        <c:out value="${item.requestdescription}"/>
+                        <textarea name="requestdescription" rows="3" cols="40">
+                            <c:out value="${item.requestdescription}"/>
+                        </textarea>
                     </td>
                     <td>
-                        <f:formatDate value="${item.implementationacceptdate}" pattern="dd.MM.yyyy"/>
+                        <input name="implementationacceptdate" type="date" value="<f:formatDate value='${item.implementationacceptdate}' pattern='dd.MM.yyyy'/>"/>
                         <!--<c:out value="${item.implementationacceptdate}"/>-->
                     </td>
                     <td>
-                        Uprava
+                        <input type="submit" value="Uprava"/>
                     </td>
+                    </form>
                 </tr>
+                
             </c:forEach>
                 <tr>
-                
+                <form action="${pageContext.request.contextPath}/SPZServlet/addSPZ" method="post">
                     <td>
                         
                     </td>
@@ -83,9 +101,9 @@
                         <select name="priority">
                         <c:choose>
                             <c:when test="exist $invspz">
-                                <option <c:if test="${invspz.priority} eq '1'">selected="true"</c:if>>1</option>
-                                <option <c:if test="${invspz.priority} eq '2'">selected="true"</c:if>>2</option>
-                                <option <c:if test="${invspz.priority} eq '3'">selected="true"</c:if>>3</option>
+                                <option <c:if test="${invspz.priority}=='1'">selected="true"</c:if>>1</option>
+                                <option <c:if test="${invspz.priority}=='2'">selected="true"</c:if>>2</option>
+                                <option <c:if test="${invspz.priority}=='3'">selected="true"</c:if>>3</option>
                             </c:when>
                             <c:otherwise>
                                 <option selected="true">1</option>
@@ -153,9 +171,9 @@
                     <td>
                         <input type="submit" value="Pridat"/>
                     </td>
-                
-                </tr>
                 </form>
+                </tr>
+                
         </table>
     </body>
 </html>
