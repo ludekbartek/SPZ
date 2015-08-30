@@ -40,10 +40,11 @@
                         <input type="text" name="reqnumber" value="${item.reqnumber}"/>
                     </td>
                     <td>
+                        <c:out value="${item.priority}"/>
                         <select name="priority">
-                            <option <c:if test="${item.priority}=='1'">selected="true"</c:if>>1</option>
-                            <option <c:if test="${item.priority}=='2'">selected="true"</c:if>>2</option>
-                            <option <c:if test="${item.priority}=='3'">selected="true"</c:if>>3</option>
+                            <option <c:if test="${item.priority == 1}">selected="true"</c:if>>1</option>
+                            <option <c:if test="${item.priority == 2}">selected="true"</c:if>>2</option>
+                            <option <c:if test="${item.priority == 3}">selected="true"</c:if>>3</option>
                         </select>
                         <!--<c:out value="${item.priority}"/>-->
                     </td>
@@ -56,9 +57,10 @@
                         <!--<c:out value="${item.contactperson}"/>-->
                     </td>
                     <td>
+                        <c:out value="${item.requesttype}"/>
                         <select name="reqtype"> 
-                            <option <c:if test="${item.requesttype}=='radna'">selected="true"</c:if>>radna</option>
-                            <option <c:if test="${item.requesttype}=='mimoradna'">selected="true"</c:if>>mimoradna</option>
+                            <option <c:if test="${item.requesttype == 'radna'}">selected="true"</c:if>>radna</option>
+                            <option <c:if test="${item.requesttype == 'mimoradna'}">selected="true"</c:if>>mimoradna</option>
                         </select>
                         <!--<c:out value="${item.requesttype}"/>-->
                     </td>
@@ -68,16 +70,14 @@
                         
                     </td>
                     <td>
-                        <textarea name="requestdescription" rows="3" cols="40">
-                            <c:out value="${item.requestdescription}"/>
-                        </textarea>
+                        <textarea name="requestdescription" rows="3" cols="40"><c:out value="${item.requestdescription}"/></textarea>
                     </td>
                     <td>
                         <input name="implementationacceptdate" type="date" value="<f:formatDate value='${item.implementationacceptdate}' pattern='dd.MM.yyyy'/>"/>
                         <!--<c:out value="${item.implementationacceptdate}"/>-->
                     </td>
                     <td>
-                        <input type="submit" value="Uprava"/>
+                        <input type="submit" value="Upravit"/>
                     </td>
                     </form>
                 </tr>
@@ -101,15 +101,15 @@
                     <td>
                         <select name="priority">
                         <c:choose>
-                            <c:when test="exist $invspz">
-                                <option <c:if test="${invspz.priority}=='1'">selected="true"</c:if>>1</option>
-                                <option <c:if test="${invspz.priority}=='2'">selected="true"</c:if>>2</option>
-                                <option <c:if test="${invspz.priority}=='3'">selected="true"</c:if>>3</option>
+                            <c:when test="not empty $invspz">
+                                <option value="1" <c:if test="${invspz.priority}==1">selected="true"</c:if>>1</option>
+                                <option value="2" <c:if test="${invspz.priority}==2">selected="true"</c:if>>2</option>
+                                <option value="3" <c:if test="${invspz.priority}==3">selected="true"</c:if>>3</option>
                             </c:when>
                             <c:otherwise>
-                                <option selected="true">1</option>
-                                <option>2</option>
-                                <option>3</option>
+                                <option value="1" selected="true">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
                             </c:otherwise>
                         </c:choose>
                        </select>
@@ -130,14 +130,14 @@
                     <td><c:choose>
                             <c:when test="exist $invspz">
                             <select name="reqtype">
-                                <option <c:if test="${invspz.reqtype == 'radna'}">selected="true"</c:if>>radna</option>
-                                <option <c:if test="${invspz.reqtype = 'mimoradna'}">selected="true"</c:if>>mimoradna</option>
+                                <option value="radna"<c:if test="${invspz.reqtype == 'radna'}">selected="true"</c:if>>radna</option>
+                                <option value="mimoradna"<c:if test="${invspz.reqtype = 'mimoradna'}">selected="true"</c:if>>mimoradna</option>
                             </select>
                             </c:when>
                             <c:otherwise>
                                 <select name="reqtype">
-                                    <option selected="true">radna</option>
-                                    <option>mimoradna</option>
+                                    <option value="radna" selected="true">radna</option>
+                                    <option value="mimoradna">mimoradna</option>
                                 </select>
                             </c:otherwise>
                         </c:choose>
