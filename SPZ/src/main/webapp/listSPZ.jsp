@@ -14,7 +14,7 @@
         <title>Servisni pozadavky zakazniku</title>
     </head>
     <body>
-        <h1>Tady bude seznam SPZ s moznymi akcemi.</h1>
+        <h1>Servisni požadavky zakazniku</h1>
         <table border="1">
             
             <thead>
