@@ -40,41 +40,33 @@
                         <input type="text" name="reqnumber" value="${item.reqnumber}"/>
                     </td>
                     <td>
-                        <c:out value="${item.priority}"/>
                         <select name="priority">
                             <option <c:if test="${item.priority == 1}">selected="true"</c:if>>1</option>
                             <option <c:if test="${item.priority == 2}">selected="true"</c:if>>2</option>
                             <option <c:if test="${item.priority == 3}">selected="true"</c:if>>3</option>
                         </select>
-                        <!--<c:out value="${item.priority}"/>-->
+                        
                     </td>
                     <td>
                         <input name="issuedate" type="date" value="<f:formatDate value='${item.issuedate}' pattern='dd.MM.yyyy'/>"/>
-                        <!--<f:formatDate value="${item.issuedate}" pattern="dd.MM.yyyy"/>-->
                     </td>
                     <td>
                         <input name="contactperson" type="text" value="${item.contactperson}"/>
-                        <!--<c:out value="${item.contactperson}"/>-->
                     </td>
                     <td>
-                        <c:out value="${item.requesttype}"/>
                         <select name="reqtype"> 
                             <option <c:if test="${item.requesttype == 'radna'}">selected="true"</c:if>>radna</option>
                             <option <c:if test="${item.requesttype == 'mimoradna'}">selected="true"</c:if>>mimoradna</option>
                         </select>
-                        <!--<c:out value="${item.requesttype}"/>-->
                     </td>
                     <td>
-                        <!--<c:out value="${item.shortname}"/>-->
                         <input name="shortname" type="text" value="${item.shortname}"/>
-                        
                     </td>
                     <td>
                         <textarea name="requestdescription" rows="3" cols="40"><c:out value="${item.requestdescription}"/></textarea>
                     </td>
                     <td>
-                        <input name="implementationacceptdate" type="date" value="<f:formatDate value='${item.implementationacceptdate}' pattern='dd.MM.yyyy'/>"/>
-                        <!--<c:out value="${item.implementationacceptdate}"/>-->
+                        <input name="implementationacceptancedate" type="date" value="<f:formatDate value='${item.implementationacceptdate}' pattern='dd.MM.yyyy'/>"/>
                     </td>
                     <td>
                         <input type="submit" value="Upravit"/>
@@ -174,7 +166,6 @@
                     </td>
                 </form>
                 </tr>
-                
         </table>
     </body>
 </html>
