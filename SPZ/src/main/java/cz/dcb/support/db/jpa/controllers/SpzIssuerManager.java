@@ -23,6 +23,8 @@ public interface SpzIssuerManager {
     void edit(Spzissuer spzissuer) throws NonexistentEntityException, Exception;
 
     Spzissuer findSpzissuer(Integer id);
+    
+    Integer findSpzIssuerIdBySpzId(Integer spzId);
 
     List<Spzissuer> findSpzissuerEntities();
 
