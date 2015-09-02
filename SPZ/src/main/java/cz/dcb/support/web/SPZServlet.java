@@ -5,9 +5,14 @@
  */
 package cz.dcb.support.web;
 
+import cz.dcb.support.db.jpa.controllers.SpzIssuerJpaController;
+import cz.dcb.support.db.jpa.controllers.SpzIssuerManager;
 import cz.dcb.support.db.jpa.controllers.SpzJpaController;
 import cz.dcb.support.db.jpa.controllers.SpzManager;
+import cz.dcb.support.db.jpa.controllers.UserJpaController;
+import cz.dcb.support.db.jpa.controllers.UserManager;
 import cz.dcb.support.db.jpa.entities.Spz;
+import cz.dcb.support.web.entities.SPZWebEntity;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.math.BigInteger;
@@ -16,6 +21,7 @@ import java.text.FieldPosition;
 import java.text.ParseException;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -155,6 +161,7 @@ public class SPZServlet extends HttpServlet {
             manager.create(spz);
             List<Spz> spzs = manager.findSpzEntities();
             request.setAttribute("invspz", spz);
+            request.setAttribute("action", "add");
             request.setAttribute("spzs", spzs);
             request.getRequestDispatcher("/listSPZ.jsp").forward(request, response);
         }
@@ -203,9 +210,10 @@ public class SPZServlet extends HttpServlet {
     }
 
     private void listSpz(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        SpzManager manager = new SpzJpaController(emf);
-        List<Spz> spzs = manager.findSpzEntities();
-        request.setAttribute("spzs", spzs);
+        SpzManager spzManager = new SpzJpaController(emf);
+        List<Spz> spzs = spzManager.findSpzEntities();
+        List<SPZWebEntity> entities = spzToEntities(spzs);
+        request.setAttribute("spzs", entities);
         request.getRequestDispatcher("/listSPZ.jsp").forward(request, response);
     }
 
@@ -308,6 +316,26 @@ public class SPZServlet extends HttpServlet {
 
     private boolean checkReqType(Map<String, String[]> parameterMap) {
         return parameterMap.containsKey("reqtype") && !parameterMap.get("reqtype")[0].isEmpty();
+    }
+
+    private List<SPZWebEntity> spzToEntities(List<Spz> spzs) {
+        List<SPZWebEntity> entities = new ArrayList<>();
+        SpzIssuerManager issuerManager = new SpzIssuerJpaController(emf);
+        
+        UserManager userManger = new UserJpaController(emf);
+        for(Spz spz:spzs){
+            SPZWebEntity entity = new SPZWebEntity();
+            entity.setId(spz.getId());
+            entity.setNumber(spz.getReqnumber());
+            entity.setIssueDate(spz.getIssuedate());
+            entity.setContact(spz.getContactperson());
+            Integer spzIssuerId = issuerManager.findSpzIssuerIdBySpzId(spz.getId());
+            String issuerName = userManger.findUser(spzIssuerId).getName();
+            entity.setIssuer(issuerName);
+            entity.setDescription(spz.getRequestdescription());
+            entity.setKind(spz.getRequesttype());
+        }
+        return entities;
     }
 
 }
