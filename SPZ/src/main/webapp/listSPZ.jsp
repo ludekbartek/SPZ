@@ -11,71 +11,67 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Servisni pozadavky zakazniku</title>
+        <title>System servisni podpory</title>
     </head>
     <body>
-        <h1>Servisni požadavky zakazniku</h1>
-        <table border="1">
-            
-            <thead>
-                <th>ID</th>
+        <h1>System servisni podpory</h1>
+        <table>
+            <thead style="border-bottom: black solid">
                 <th>Cislo pozadavku</th>
-                <th>Priorita</th>
-                <th>Datum nahlaseni</th>
-                <th>Kontaktni osoba</th>
+                <th>Pri.</th>
                 <th>Typ pozadavku</th>
-                <th>Kratky popis</th>
-                <th>Popis pozadavku</th>
-                <th>Datum akceptace implementace</th>
-                <th>Akce</th>
+                <th>Zadal</th>
+                <th>Kontaktni osoba</th>
+                <th>Dne</th>
+                <th>Zadani</th>
+                <th>Specs dne</th>
+                <th>Odhad. prac.</th>
+                <th>Instalace</th>
+                <th>Skut. prac.</th>
+                <th>Stav SPZ</th>
+                <th>Ze dne</th>
             </thead>
             <c:forEach items="${spzs}" var="item">
                 <tr>
-                <form action="${pageContext.request.contextPath}/SPZServlet/editspz" method="post">
-                    <td>
+                <!--    <td>
                         <c:out value="${item.id}"/>
                         <input type="hidden" name="id" value="${item.id}"/>
-                    </td>
+                    </td>-->
                     <td>
-                        <input type="text" name="reqnumber" value="${item.reqnumber}"/>
+                        <a href="${pageContext.request.contextPath}/SPZServlet/edit?id=${item.id}"><c:out  value="${item.reqnumber}"/>
                     </td>
+                    <c:out value="${item.prioity}"/>
                     <td>
-                        <select name="priority">
+                   <!--     <select name="priority">
                             <option <c:if test="${item.priority == 1}">selected="true"</c:if>>1</option>
                             <option <c:if test="${item.priority == 2}">selected="true"</c:if>>2</option>
                             <option <c:if test="${item.priority == 3}">selected="true"</c:if>>3</option>
-                        </select>
+                        </select>-->
                         
                     </td>
                     <td>
-                        <input name="issuedate" type="date" value="<f:formatDate value='${item.issuedate}' pattern='dd.MM.yyyy'/>"/>
+                        <c:out value="${item.requesttype}"/>
                     </td>
                     <td>
-                        <input name="contactperson" type="text" value="${item.contactperson}"/>
+                        zde bude zadavatel
                     </td>
                     <td>
-                        <select name="reqtype"> 
-                            <option <c:if test="${item.requesttype == 'radna'}">selected="true"</c:if>>radna</option>
-                            <option <c:if test="${item.requesttype == 'mimoradna'}">selected="true"</c:if>>mimoradna</option>
-                        </select>
+                        <c:out value="${item.contactperson}"/>
                     </td>
                     <td>
-                        <input name="shortname" type="text" value="${item.shortname}"/>
+                        <f:formatDate dateStyle="dd.mm.yy" value="${item.issuedate}"/> 
                     </td>
                     <td>
-                        <textarea name="requestdescription" rows="3" cols="40"><c:out value="${item.requestdescription}"/></textarea>
+                        <c:out value="${item.requestdescription}"/>
                     </td>
                     <td>
-                        <input name="implementationacceptancedate" type="date" value="<f:formatDate value='${item.implementationacceptdate}' pattern='dd.MM.yyyy'/>"/>
+                        <f:formatDate value='${item.implementationacceptdate}' pattern='dd.MM.yyyy'/>
                     </td>
-                    <td>
-                        <input type="submit" value="Upravit"/>
-                    </td>
-                    </form>
+                    
                 </tr>
                 
             </c:forEach>
-                <tr>
+              <!--  <tr>
                 <form action="${pageContext.request.contextPath}/SPZServlet/addSPZ" method="post">
                     <td>
                         
@@ -165,7 +161,7 @@
                         <input type="submit" value="Pridat"/>
                     </td>
                 </form>
-                </tr>
+                </tr>-->
         </table>
     </body>
 </html>
