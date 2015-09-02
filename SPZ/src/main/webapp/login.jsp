@@ -17,7 +17,6 @@
         <title>Login</title>
     </head>
     <body>
-        <p>Context path:<c:out value="${pageContext.request.contextPath}"/></p>
         <form action="${pageContext.request.contextPath}/SPZServlet/login" method="post">
             <label for="login">Uživatelské jméno:</label>
             <input type="hidden" name="action" value="login"/>
@@ -28,5 +27,6 @@
             <br/>
             <input type="submit" value="Přihlásit"/>
         </form>
+        <p/>
     </body>
 </html>
