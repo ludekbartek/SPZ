@@ -202,9 +202,9 @@ public class SpzIssuerManagerTest {
         System.out.println("findSpzissuerEntities");
         int maxResults = 0;
         int firstResult = 0;
-        SpzIssuerManager instance = new SpzIssuerManagerImpl();
+        //SpzIssuerManager instance = manager;
         List<Spzissuer> expResult = null, values = null;
-        List<Spzissuer> result = instance.findSpzissuerEntities(maxResults, firstResult);
+        List<Spzissuer> result = manager.findSpzissuerEntities(maxResults, firstResult);
         assertEquals(expResult, result);
         
         Random rand = new Random();
@@ -307,37 +307,4 @@ public class SpzIssuerManagerTest {
         }
         return issuers;
     }
-
-    public class SpzIssuerManagerImpl implements SpzIssuerManager {
-
-        public void create(Spzissuer spzissuer) {
-        }
-
-        public void destroy(Integer id) throws NonexistentEntityException {
-        }
-
-        public void edit(Spzissuer spzissuer) throws NonexistentEntityException, Exception {
-        }
-
-        public Spzissuer findSpzissuer(Integer id) {
-            return null;
-        }
-
-        public List<Spzissuer> findSpzissuerEntities() {
-            return null;
-        }
-
-        public List<Spzissuer> findSpzissuerEntities(int maxResults, int firstResult) {
-            return null;
-        }
-
-        public EntityManager getEntityManager() {
-            return null;
-        }
-
-        public int getSpzissuerCount() {
-            return 0;
-        }
-    }
-    
 }
