@@ -15,7 +15,7 @@ import java.util.Objects;
 public class SPZWebEntity {
      private Integer id;
      private String number;
-     private int kind;
+     private String kind;
      private String issuer;
      private String contact;
      private Date issueDate;
@@ -43,11 +43,11 @@ public class SPZWebEntity {
         this.number = number;
     }
 
-    public int getKind() {
+    public String getKind() {
         return kind;
     }
 
-    public void setKind(int kind) {
+    public void setKind(String kind) {
         this.kind = kind;
     }
 
