@@ -38,22 +38,57 @@ import cz.dcb.support.db.jpa.entities.Spzstatenote;
 import cz.dcb.support.db.jpa.entities.Spzstates;
 import cz.dcb.support.db.jpa.entities.User;
 import cz.dcb.support.db.jpa.entities.Useraccess;
+import java.io.File;
+import java.io.PrintWriter;
 import java.math.BigInteger;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import org.apache.derby.drda.NetworkServerControl;
 
 /**
  *
  * @author bar
  */
 public class DBUtils {
+    private static NetworkServerControl dbControl = null;
+    public static void serverStart(){
+        if(dbControl == null){
+            try {
+                dbControl = new NetworkServerControl();
+                dbControl.start(new PrintWriter(new File("derby.log")));
+            } catch (Exception ex) {
+                Logger.getLogger(DBUtils.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+    
+    public static void serverStop() throws Exception{
+        if(dbControl!=null){
+            dbControl.shutdown();
+        }    
+    }
+    
     public static EntityManagerFactory getEntityManagerFactory()
     {
+//        if(dbControl==null){
+//            try {
+//                dbControl = new NetworkServerControl();
+//                dbControl.start(new PrintWriter(new File("derby.log")));
+//                        
+//            } catch (Exception ex) {
+//                Logger.getLogger(DBUtils.class.getName()).log(Level.SEVERE, null, ex);
+//                System.exit(-1);
+//            }
+//                    
+//        }
+        
         return Persistence.createEntityManagerFactory("support_JPA");
     }
     

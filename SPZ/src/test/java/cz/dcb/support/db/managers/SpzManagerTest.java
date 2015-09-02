@@ -44,12 +44,10 @@ public class SpzManagerTest {
     
     @BeforeClass
     public static void setUpClass() {
-        
     }
     
     @AfterClass
     public static void tearDownClass() {
-        
     }
     
     @Before
@@ -180,7 +178,7 @@ public class SpzManagerTest {
         
     }
     
-    @Test(expected = RollbackException.class)
+   /* @Test(expected = RollbackException.class)
     public void testInvalidRequestDescription()throws Exception{
         Spz spz = DBUtils.createSpz();
         spz.setRequestdescription(createString(9000));
@@ -189,7 +187,7 @@ public class SpzManagerTest {
         manager.edit(spz);
         fail("Invalid short name accepted "+spz.getShortname());    
         
-    }
+    }*/
     
     @Test(expected = RollbackException.class)
     public void testInvalidRequestNumber()throws Exception{

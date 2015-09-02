@@ -4,14 +4,20 @@
     Author     : bar
 --%>
 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <c:if test="${empty user}">
+            <meta http-equiv="Refresh" content="0; URL=login.jsp"/>
+        </c:if>
+        <meta http-equiv="Refresh" content="0; URL=listSPZ.jsp"/>
+        <link rel="stylesheet" type="text/css" href="style/dcb.css"/>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <title>JSP Page</title>
     </head>
     <body>
-        <h1>Hello World!</h1>
+        <h1>SPZ</h1>
     </body>
 </html>

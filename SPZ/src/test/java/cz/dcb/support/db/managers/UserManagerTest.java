@@ -8,14 +8,12 @@ package cz.dcb.support.db.managers;
 import cz.dcb.support.db.jpa.entities.User;
 import cz.dcb.support.db.jpa.controllers.UserJpaController;
 import cz.dcb.support.db.jpa.controllers.UserManager;
-import cz.dcb.support.db.jpa.controllers.exceptions.PreexistingEntityException;
-import cz.dcb.support.db.managers.exceptions.IllegalOrphanException;
-import cz.dcb.support.db.managers.exceptions.NonexistentEntityException;
 
 import cz.dcb.support.db.managers.utils.DBUtils;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.persistence.EntityManagerFactory;
@@ -34,6 +32,7 @@ public class UserManagerTest {
 
     private UserManager manager = null;
     private static final Logger logger = Logger.getLogger(UserManagerTest.class.getName());
+    private static final int MAX_USERS=95;
     public UserManagerTest() {
         EntityManagerFactory emf = DBUtils.getEntityManagerFactory();
         manager = new UserJpaController(emf);
@@ -41,7 +40,6 @@ public class UserManagerTest {
     
     @BeforeClass
     public static void setUpClass() {
-        
     }
     
     @AfterClass
@@ -214,28 +212,65 @@ public class UserManagerTest {
         
     }
 
+    @Test
+    public void testFindUserByLogin()throws Exception{
+        Random rand = new Random();
+        int count = rand.nextInt(MAX_USERS)+5;
+        try{
+            manager.findUserByLogin(null);
+            fail("Exception should be thrown.");
+        }catch(IllegalArgumentException iae){
+            logger.log(Level.INFO,"",iae);
+            
+        }
+        String login = new String();
+        try{
+                User result = manager.findUserByLogin(login);
+                fail("Exceptin should be thrown - login is empty: "+login);
+        }catch(IllegalArgumentException iae){
+            logger.log(Level.INFO,"",iae);
+        }
+        
+        List<User> users = createUsers(count);
+        for(User user:users){
+            User result = manager.findUserByLogin(user.getLogin());
+            assertEquals(result, user);
+        }
+        User missed = DBUtils.createUser();
+        missed.setLogin(missed.getLogin()+(count+3));
+        User result = manager.findUserByLogin(missed.getLogin());
+        assertNull(result);
+    }
     /**
      * Test of findUserEntities method, of class UserManager.
      */
     @Test
     public void testFindUserEntities_0args() throws Exception {
         System.out.println("findUserEntities");
+        Random rand = new Random();
+        int count = rand.nextInt(MAX_USERS)+5;
         //UserManager instance = new UserManagerImpl();
         List<User> result = manager.findUserEntities();
         List<User> expResult = new ArrayList<>();
         assertEquals("List of users should be empty.",expResult, result);
-        for(int i=1;i<=10;i++){
-            User user = DBUtils.createUser();
-            user.setLogin(user.getLogin()+i);
-            expResult.add(user);
-            manager.create(user);
-        }
+        expResult = createUsers(count);
         result = manager.findUserEntities();
         assertEquals("nesouhlasi pocty prvku v kolekcich",expResult.size(), result.size());
         assertDeepEquals("Nesouhlasi kolekce",result,expResult);
         //assertEquals("Nesouhlasi zadana a vracena kolekce uzivatel",result,expResult);
         // TODO review the generated test code and remove the default call to fail.
         //fail("The test case is a prototype.");
+    }
+
+    private List<User> createUsers(int count) {
+        List<User> users = new ArrayList<>();
+        for(int i=1;i<=10;i++){
+            User user = DBUtils.createUser();
+            user.setLogin(user.getLogin()+i);
+            users.add(user);
+            manager.create(user);
+        }
+        return users;
     }
 
     /**

@@ -60,6 +60,7 @@ public class SpzStatesManagerTest {
     
     @After
     public void tearDown() {
+        clearDB();
     }
 
     /**

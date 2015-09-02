@@ -24,6 +24,8 @@ public interface UserManager {
 
     User findUser(Integer id);
 
+    User findUserByLogin(String login);
+    
     List<User> findUserEntities();
 
     List<User> findUserEntities(int maxResults, int firstResult);
