@@ -5,7 +5,7 @@
             30
         </session-timeout>
     </session-config>
-   <!--<security-constraint>
+    <!--<security-constraint>
        <web-resource-collection>
            <description>
                DCB Support application
@@ -29,4 +29,8 @@
             <transport-guarantee>NONE</transport-guarantee>
         </user-data-constraint>
    </security-constraint>-->
+    <login-config>
+        <auth-method>BASIC</auth-method>
+        <realm-name>MemoryRealm</realm-name>
+    </login-config>
 </web-app>
