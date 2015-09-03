@@ -1,0 +1,144 @@
+TABLE functions {
+	MARGIN: 0px; WIDTH: 255px
+}
+TABLE functions TD {
+	MARGIN: 5px; PADDING-BOTTOM: 1px; PADDING-LEFT: 1px; PADDING-RIGHT: 1px; PADDING-TOP: 1px
+}
+.functions INPUT {
+	WIDTH: 255px
+}
+TABLE.admin {
+	BORDER-BOTTOM: 0px; BORDER-LEFT: 0px; BORDER-RIGHT: 0px; BORDER-TOP: 0px; HEIGHT: 100%; PADDING-BOTTOM: 3px; PADDING-LEFT: 3px; PADDING-RIGHT: 3px; PADDING-TOP: 3px; WIDTH: 100%
+}
+TABLE.admin TD {
+	PADDING-BOTTOM: 0px; PADDING-LEFT: 0px; PADDING-RIGHT: 0px; PADDING-TOP: 0px
+}
+TABLE.printspz {
+	BORDER-BOTTOM: 2px solid; BORDER-LEFT: 2px solid; BORDER-RIGHT: 2px solid; BORDER-TOP: 2px solid; TEXT-ALIGN: left
+}
+TABLE.printspz TD {
+	BORDER-BOTTOM: 1px solid; BORDER-LEFT: 1px solid; BORDER-RIGHT: 1px solid; BORDER-TOP: 1px solid; FONT-FAMILY: "Times New Roman"; FONT-SIZE: 11pt; PADDING-BOTTOM: 4px; PADDING-LEFT: 4px; PADDING-RIGHT: 4px; PADDING-TOP: 4px
+}
+TABLE.reportlist TH {
+	BACKGROUND: #d3d3d3; FONT-SIZE: 12px; FONT-STYLE: italic; FONT-VARIANT: normal; FONT-WEIGHT: normal; LINE-HEIGHT: 20px
+}
+TABLE.reportlist {
+	FONT-SIZE: 12px; WIDTH: 100%
+}
+TABLE.report {
+	BORDER-BOTTOM: thin outset; BORDER-LEFT: thin outset; BORDER-RIGHT: thin outset; BORDER-TOP: thin outset; WIDTH: 100%
+}
+TABLE.report TD {
+	BORDER-BOTTOM: 1px solid; FONT-SIZE: 12px; FONT-STYLE: normal; FONT-VARIANT: normal; FONT-WEIGHT: normal; LINE-HEIGHT: normal; PADDING-BOTTOM: 3px; PADDING-LEFT: 3px; PADDING-RIGHT: 3px; PADDING-TOP: 3px
+}
+TABLE.report TH {
+	BACKGROUND: #d3d3d3; BORDER-BOTTOM: 2px solid; BORDER-LEFT: 0px solid; BORDER-RIGHT: 0px solid; BORDER-TOP: 2px solid; FONT-SIZE: 12px; FONT-STYLE: italic; FONT-VARIANT: normal; FONT-WEIGHT: normal; LINE-HEIGHT: normal; PADDING-BOTTOM: 5px; PADDING-LEFT: 5px; PADDING-RIGHT: 5px; PADDING-TOP: 5px
+}
+BODY {
+	MARGIN: 0px
+}
+TABLE {
+	FONT: 10px sans-serif
+}
+TABLE.spzdetail {
+	WIDTH: 100%
+}
+TABLE.spzdetail TD {
+	BORDER-BOTTOM: 1px groove; BORDER-LEFT: 1px groove; BORDER-RIGHT: 1px groove; BORDER-TOP: 1px groove; VERTICAL-ALIGN: top
+}
+TABLE.infospz {
+	BORDER-BOTTOM: 2px groove; BORDER-LEFT: 2px groove; BORDER-RIGHT: 2px groove; BORDER-TOP: 2px groove; FONT-SIZE: 11px; FONT-STYLE: normal; FONT-VARIANT: normal; FONT-WEIGHT: normal; LINE-HEIGHT: normal; WIDTH: 100%
+}
+TABLE.infospz TD {
+	BORDER-BOTTOM: 1px groove; BORDER-LEFT: 1px groove; BORDER-RIGHT: 1px groove; BORDER-TOP: 1px groove; PADDING-BOTTOM: 2px; PADDING-LEFT: 2px; PADDING-RIGHT: 2px; PADDING-TOP: 2px; VERTICAL-ALIGN: top
+}
+TABLE.novaspz {
+	WIDTH: 100%
+}
+TABLE.titlehead {
+	WIDTH: 100%
+}
+TABLE.searchfilter {
+	MARGIN: 0px; WIDTH: 100%
+}
+TABLE.searchfilter TD {
+	TEXT-ALIGN: center
+}
+TABLE.spzhistory {
+	WIDTH: 100%
+}
+TH {
+	BACKGROUND: #d3d3d3; FONT-SIZE: larger; FONT-STYLE: italic; FONT-VARIANT: normal; FONT-WEIGHT: bold; LINE-HEIGHT: normal
+}
+TABLE.list {
+	WIDTH: 100%
+}
+TABLE.list TD {
+	BORDER-BOTTOM: 1px solid
+}
+TD .username {
+	COLOR: green; TEXT-ALIGN: right; VERTICAL-ALIGN: top
+}
+TD.title {
+	COLOR: gray; FONT: 900 italic 24px fantasy; TEXT-ALIGN: center
+}
+.error {
+	COLOR: red; FONT-SIZE: 20px; FONT-STYLE: normal; FONT-VARIANT: normal; FONT-WEIGHT: normal; LINE-HEIGHT: normal
+}
+TD.navigace {
+	COLOR: blue; FONT-SIZE: 10px; FONT-STYLE: normal; FONT-VARIANT: normal; FONT-WEIGHT: normal; LINE-HEIGHT: normal; TEXT-ALIGN: center
+}
+TD.stateheader {
+	BORDER-TOP: 1px solid; COLOR: green; FONT-SIZE: larger; FONT-STYLE: italic; FONT-VARIANT: normal; FONT-WEIGHT: bold; LINE-HEIGHT: normal
+}
+H1 {
+	FONT-SIZE: 14px; FONT-STYLE: normal; FONT-VARIANT: normal; FONT-WEIGHT: bold; LINE-HEIGHT: normal; MARGIN-TOP: 6px; TEXT-ALIGN: center
+}
+H2 {
+	FONT-SIZE: 12px; FONT-STYLE: italic; FONT-VARIANT: normal; FONT-WEIGHT: bold; LINE-HEIGHT: normal; MARGIN-TOP: 6px
+}
+.statetrans {
+	BACKGROUND-COLOR: #bdd4ed; BORDER-BOTTOM: 1px solid; BORDER-LEFT: 1px solid; BORDER-RIGHT: 1px solid; BORDER-TOP: 1px solid; FONT-SIZE: 16px; FONT-STYLE: italic; FONT-VARIANT: normal; FONT-WEIGHT: bold; LINE-HEIGHT: 26px; MARGIN-TOP: 4px; TEXT-ALIGN: center
+}
+.hlavicka {
+	FONT-STYLE: italic
+}
+.telo {
+	PADDING-LEFT: 30px
+}
+.novaspz TEXTAREA {
+	HEIGHT: 156px; WIDTH: 100%
+}
+.novaspz TD {
+	VERTICAL-ALIGN: top
+}
+.novaspz INPUT {
+	WIDTH: 100%
+}
+TEXTAREA.desc {
+	HEIGHT: 156px; WIDTH: 100%
+}
+TEXTAREA.smalldesc {
+	HEIGHT: 40px; WIDTH: 100%
+}
+.prompt {
+	VERTICAL-ALIGN: top; WIDTH: 20%
+}
+.del {
+	CURSOR: hand; VERTICAL-ALIGN: middle
+}
+PRE {
+	FONT: 11px sans-serif; MARGIN: 0px
+}
+.preformated {
+	FONT: 11px sans-serif; MARGIN: 0px
+}
+.novyradek {
+	MARGIN: 5px 0px 2px
+}
+.cekanamne {
+	COLOR: green; FONT-SIZE: 11px; FONT-STYLE: normal; FONT-VARIANT: normal; FONT-WEIGHT: normal; LINE-HEIGHT: normal
+}
+UL {
+	LIST-STYLE: disc
+}
