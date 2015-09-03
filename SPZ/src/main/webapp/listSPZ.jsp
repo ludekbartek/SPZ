@@ -15,8 +15,35 @@
     </head>
     <body>
         <h1>System servisni podpory</h1>
+        <div id="heading" style="width: 100%">
+            <span class="filter" style="text-align: center;width:10%;">
+                <div class="title">Filtr:</div>
+                <div class="selector">
+                    <select name="filter">
+                        <option></option>
+                    </select>
+                </div>
+            </span>
+            <span class="search" style="text-align: center;width:30%">
+                <div>Hledany text:</div>
+                <div><input type="text" width="15" name="searched"/></div>
+            </span>
+            <span class="where">
+                <div>V polich:</div>
+                <div>
+                    <select name="fields">
+                        <option></option>
+                    </select>
+                </div>
+            </span>
+            <span class="actions">
+                <input type="submit" value="Hledej"/>
+                <input type="submit" value="Nova SPZ"/>
+                <input type="submit" value="Sestavy"/>
+            </span>
+        </div>
         <table>
-            <thead style="border-bottom: black solid">
+            <thead style="border-bottom: black solid;background-color: #cccccc">
                 <th>Cislo pozadavku</th>
                 <th>Pri.</th>
                 <th>Typ pozadavku</th>
