@@ -23,11 +23,11 @@
     <class>cz.dcb.support.db.jpa.entities.Spznote</class>
     <class>cz.dcb.support.db.jpa.entities.Spzstates</class>
     <class>cz.dcb.support.db.jpa.entities.Project</class>
-    <class>cz.dcb.support.db.jpa.entities.Spzstate</class>
     <class>cz.dcb.support.db.jpa.entities.Spz</class>
     <class>cz.dcb.support.db.jpa.entities.Noteissuer</class>
     <class>cz.dcb.support.db.jpa.entities.Useraccess</class>
     <class>cz.dcb.support.db.jpa.entities.Projectconfiguration</class>
+    <class>cz.dcb.support.db.jpa.entities.Spzstate</class>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:derby://localhost:1527/support"/>
