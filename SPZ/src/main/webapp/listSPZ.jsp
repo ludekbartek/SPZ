@@ -12,30 +12,23 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>System servisni podpory</title>
-        <script type="text/javascript">
-            copyValue(from, to)
-            {
-                document.write(from);
-                to.value = from.value;
-            }
-        </script>
     </head>
     <body>
         <h1>System servisni podpory</h1>
         <div id="heading" style="width: 100%">
-            <span class="filter" style="text-align: center;width:10%;float:left;">
+            <span class="filter" style="text-align: center;width:10%;">
                 <div class="title">Filtr:</div>
                 <div class="selector">
-                    <select id="filter" name="filter">
+                    <select name="filter">
                         <option></option>
                     </select>
                 </div>
             </span>
-            <span class="search" style="text-align: center;width:30%;float:left;">
+            <span class="search" style="text-align: center;width:30%">
                 <div>Hledany text:</div>
-                <div><input type="text" width="15" name="searched" id="searched" onchange="copy(searched,value);"/></div>
+                <div><input type="text" width="15" name="searched"/></div>
             </span>
-            <span class="where" style="text-align: center;width:20%;float:left;">
+            <span class="where">
                 <div>V polich:</div>
                 <div>
                     <select name="fields">
@@ -43,41 +36,26 @@
                     </select>
                 </div>
             </span>
-            <span class="actions" style="text-align: left;float: left;">
-                <span class="action" style="text-align: left;float: left;">
-                <form action="${pageContext.request.contextPath}/SPZServlet/listspz" method="post">
-                    <input id="value" type="hidden" name="value"/>
-                    <input type="submit" value="Hledej"/>
-                </form>
-                </span>
-                <span class="action" style="text-align: left;float: left;">
-                <form action="${pageContext.request.contextPath}/SPZServlet/addspz" method="post">
-                    <input type="submit" value="Nova SPZ"/>
-                </form>
-                </span>
-                <span class="action" style="text-align: left;float:left;">
-                <form action="${pageContext.request.contextPath}/SPZServlet/reports" method="post">
-                    <input type="submit" value="Sestavy"/>
-                </form>
-                </span>
+            <span class="actions">
+                <input type="submit" value="Hledej"/>
+                <input type="submit" value="Nova SPZ"/>
+                <input type="submit" value="Sestavy"/>
             </span>
         </div>
-        <p/>
-        <div id="table" style="width:100%;float:left;">
         <table>
             <thead style="border-bottom: black solid;background-color: #cccccc">
-                <th style="width:9%">Cislo <br/>pozadavku</th>
-                <th style="width:5%">Pri.</th>
-                <th>Typ <br/>pozadavku</th>
+                <th>Cislo pozadavku</th>
+                <th>Pri.</th>
+                <th>Typ pozadavku</th>
                 <th>Zadal</th>
-                <th>Kontaktni<br/> osoba</th>
+                <th>Kontaktni osoba</th>
                 <th>Dne</th>
                 <th>Zadani</th>
-                <th>Specs<br/> dne</th>
-                <th>Odhad.<br/> prac.</th>
+                <th>Specs dne</th>
+                <th>Odhad. prac.</th>
                 <th>Instalace</th>
                 <th>Skut. prac.</th>
-                <th>Stav<br/> SPZ</th>
+                <th>Stav SPZ</th>
                 <th>Ze dne</th>
             </thead>
             <c:forEach items="${spzs}" var="item">
@@ -212,6 +190,5 @@
                 </form>
                 </tr>-->
         </table>
-        </div>
     </body>
 </html>
