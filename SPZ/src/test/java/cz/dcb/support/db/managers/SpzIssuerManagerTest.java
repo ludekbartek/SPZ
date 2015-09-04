@@ -203,7 +203,7 @@ public class SpzIssuerManagerTest {
         int maxResults = 0;
         int firstResult = 0;
         //SpzIssuerManager instance = manager;
-        List<Spzissuer> expResult = null, values = null;
+        List<Spzissuer> expResult = new ArrayList<>(), values = null;
         List<Spzissuer> result = manager.findSpzissuerEntities(maxResults, firstResult);
         assertEquals(expResult, result);
         
