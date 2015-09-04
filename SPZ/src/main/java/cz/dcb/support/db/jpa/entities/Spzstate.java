@@ -45,38 +45,48 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Spzstate.findByCurrentstate", query = "SELECT s FROM Spzstate s WHERE s.currentstate = :currentstate")})
 public class Spzstate implements Serializable {
     private static final long serialVersionUID = 1L;
+    /** Interní identifikátor stavu SPZ. Primární klíč. */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "ID", nullable = false)
     private Integer id;
+    /** Kód stavu. Např. ANALYSIS, POST, ...*/
     @Size(max = 50)
     @Column(name = "CODE", length = 50)
     private String code;
     @Column(name = "TS")
     private BigInteger ts;
+    /** Uzivatelske jmeno osoby, ktera SPZ zadala*/
     @Size(max = 32)
     @Column(name = "ISSUER_LOGIN", length = 32)
     private String issuerLogin;
+    /** Revidovany popis pozadavku*/
     @Size(max = 9000)
     @Column(name = "REVISEDREQUESTDESCRIPTION", length = 9000)
     private String revisedrequestdescription;
+    /** Popis reseni */
     @Size(max = 9000)
     @Column(name = "SOLUTIONDESCRIPTION", length = 9000)
     private String solutiondescription;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+    /** Predpokladana pracnost (clovekohodin)*/
     @Column(name = "ASSUMEDMANDAYS", precision = 52)
     private Double assumedmandays;
+    /** Skutecna pracnost (clovekohodin) */
     @Column(name = "MANDAYS", precision = 52)
     private Double mandays;
     @Size(max = 9000)
+    /** Poznamka k vydani */
     @Column(name = "RELEASENOTES", length = 9000)
     private String releasenotes;
     @Column(name = "CLASSTYPE")
     private Short classtype;
+    /** Datum, kdy byla SPZ převedena do tohto stavu. */
     @Column(name = "IDATE")
     @Temporal(TemporalType.DATE)
     private Date idate;
+    /** Aktualni stav */
     @Column(name = "CURRENTSTATE")
     private Integer currentstate;
 
