@@ -8,6 +8,7 @@ package cz.dcb.support.db.jpa.controllers;
 import cz.dcb.support.db.jpa.controllers.exceptions.NonexistentEntityException;
 import cz.dcb.support.db.jpa.entities.Spzstate;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -141,6 +142,21 @@ public class SpzStateJpaController implements Serializable, SpzStateManager {
         } finally {
             em.close();
         }
+    }
+
+    @Override
+    public Date getLastChange(Integer id) {
+        EntityManager em = getEntityManager();
+        Date date = null;
+        try{
+            CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+            Query query= em.createQuery("select max(state.idate) from Spzstate state where state.id=:stateid");
+            query.setParameter("stateid", id);
+            date = (Date)query.getSingleResult();
+        }finally{
+            em.close();
+        }
+        return date;
     }
     
 }
