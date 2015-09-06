@@ -149,7 +149,7 @@ public class SpzIssuerJpaController implements Serializable, SpzIssuerManager {
         EntityManager em = getEntityManager();
         try{
             Query select = em.createQuery("select spzis.userid from Spzissuer spzis where spzis.spzid = :spzId");
-            select.setParameter("userId", spzId);
+            select.setParameter("spzId", spzId);
             return (Integer)select.getSingleResult();
         }finally{
             em.close();
