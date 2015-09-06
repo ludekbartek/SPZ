@@ -44,12 +44,13 @@
             </span>
             
             <span class="actions" style="float:right;">
-                <form action="${pageContext.request.contextPath}/SPZServlet/add">
+                <form action="${pageContext.request.contextPath}/SPZServlet/addspz" method="post">
+                    <!--<input type="hidden" name="action" value="/addspz"/>-->
                     <input type="submit" value="Nova SPZ"/>
                 </form>
             </span>
             <span class="actions" style="float:right">
-                <form action="${pageContext.request.contextPath}/SPZServlet/reports">    
+                <form action="${pageContext.request.contextPath}/SPZServlet/reports" method="post">    
                     <input type="submit" value="Sestavy"/>
                 </form>
             </span>
