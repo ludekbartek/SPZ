@@ -16,33 +16,47 @@
     <body>
         <h1>System servisni podpory</h1>
         <div id="heading" style="width: 100%">
-            <span class="filter" style="text-align: center;width:10%;">
-                <div class="title">Filtr:</div>
-                <div class="selector">
+            <span class="actions" style="float:left;">
+           
+            <form action="${pageContext.request.contextPath}/listspz">
+            <span class="filter" style="text-align: center;width:10%;float:left;">
+                <span class="title">Filtr:</span>
+                <span class="selector">
                     <select name="filter">
                         <option></option>
                     </select>
-                </div>
+                </span>
             </span>
-            <span class="search" style="text-align: center;width:30%">
-                <div>Hledany text:</div>
-                <div><input type="text" width="15" name="searched"/></div>
+            <span class="search" style="text-align: center;width:30%;float:left;">
+                <span>Hledany text:</span>
+                <span><input type="text" width="15" name="searched"/></span>
             </span>
-            <span class="where">
-                <div>V polich:</div>
-                <div>
+            <span class="where" style="float:left;">
+                <span>V polich:</span>
+                <span>
                     <select name="fields">
                         <option></option>
                     </select>
-                </div>
+                </span>
             </span>
-            <span class="actions">
                 <input type="submit" value="Hledej"/>
-                <input type="submit" value="Nova SPZ"/>
-                <input type="submit" value="Sestavy"/>
+            </form>
+            </span>
+            
+            <span class="actions" style="float:right;">
+                <form action="${pageContext.request.contextPath}/SPZServlet/add">
+                    <input type="submit" value="Nova SPZ"/>
+                </form>
+            </span>
+            <span class="actions" style="float:right">
+                <form action="${pageContext.request.contextPath}/SPZServlet/reports">    
+                    <input type="submit" value="Sestavy"/>
+                </form>
             </span>
         </div>
-        <table>
+                    <br/>
+        <div id="table">
+        <table style="float:left;">
             <thead style="border-bottom: black solid;background-color: #cccccc">
                 <th>Cislo pozadavku</th>
                 <th>Pri.</th>
@@ -190,5 +204,6 @@
                 </form>
                 </tr>-->
         </table>
+        </div>
     </body>
 </html>
