@@ -12,7 +12,7 @@
         <c:if test="${empty user}">
             <meta http-equiv="Refresh" content="0; URL=login.jsp"/>
         </c:if>
-        <meta http-equiv="Refresh" content="0; URL=listSPZ.jsp"/>
+            <meta http-equiv="Refresh" content="0; URL=${pageContext.request.contextPath}/SPZServlet/listSPZ"/>
         <link rel="stylesheet" type="text/css" href="style/dcb.css"/>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <title>JSP Page</title>

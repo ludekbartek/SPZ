@@ -14,18 +14,45 @@ import java.util.Objects;
  */
 public class SPZWebEntity {
      private Integer id;
-     private String number;
+     private String reqnumber;
      private String kind;
      private String issuer;
-     private String contact;
-     private Date issueDate;
-     private String description;
+     private String contactperson;
+     private Date issuedate;
+     private String requestdescription;
      private Date specDate;
      private double workLoadEstimation;
      private Date installDate;
      private double workLoadReal;
      private int spzState;
      private Date date;
+     private Short priority;
+     private String requesttype;
+     private Date implementationacceptdate;
+
+    public Date getImplementationacceptdate() {
+        return implementationacceptdate;
+    }
+
+    public void setImplementationacceptdate(Date implementationacceptdate) {
+        this.implementationacceptdate = implementationacceptdate;
+    }
+
+    public String getRequesttype() {
+        return requesttype;
+    }
+
+    public void setRequesttype(String requesttype) {
+        this.requesttype = requesttype;
+    }
+     
+    public Short getPriority() {
+        return priority;
+    }
+
+    public void setPriority(Short priority) {
+        this.priority = priority;
+    }
 
     public Integer getId() {
         return id;
@@ -35,12 +62,12 @@ public class SPZWebEntity {
         this.id = id;
     }
 
-    public String getNumber() {
-        return number;
+    public String getReqnumber() {
+        return reqnumber;
     }
 
-    public void setNumber(String number) {
-        this.number = number;
+    public void setReqnumber(String number) {
+        this.reqnumber = number;
     }
 
     public String getKind() {
@@ -59,28 +86,28 @@ public class SPZWebEntity {
         this.issuer = issuer;
     }
 
-    public String getContact() {
-        return contact;
+    public String getContactperson() {
+        return contactperson;
     }
 
-    public void setContact(String contact) {
-        this.contact = contact;
+    public void setContactperson(String contact) {
+        this.contactperson = contact;
     }
 
-    public Date getIssueDate() {
-        return issueDate;
+    public Date getIssuedate() {
+        return issuedate;
     }
 
-    public void setIssueDate(Date issueDate) {
-        this.issueDate = issueDate;
+    public void setIssuedate(Date issueDate) {
+        this.issuedate = issueDate;
     }
 
-    public String getDescription() {
-        return description;
+    public String getRequestdescription() {
+        return requestdescription;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setRequestdescription(String description) {
+        this.requestdescription = description;
     }
 
     public Date getSpecDate() {

@@ -75,41 +75,44 @@
             </thead>
             <c:forEach items="${spzs}" var="item">
                 <tr>
-                <!--    <td>
+                <form action="${pageContext.request.contextPath}/SPZServlet/edit" method="POST">
+                    <td>
                         <c:out value="${item.id}"/>
                         <input type="hidden" name="id" value="${item.id}"/>
-                    </td>-->
-                    <td>
-                        <a href="${pageContext.request.contextPath}/SPZServlet/edit?id=${item.id}"><c:out  value="${item.reqnumber}"/>
                     </td>
-                    <c:out value="${item.prioity}"/>
                     <td>
-                   <!--     <select name="priority">
-                            <option <c:if test="${item.priority == 1}">selected="true"</c:if>>1</option>
-                            <option <c:if test="${item.priority == 2}">selected="true"</c:if>>2</option>
-                            <option <c:if test="${item.priority == 3}">selected="true"</c:if>>3</option>
-                        </select>-->
-                        
+                        <!--<a href="${pageContext.request.contextPath}/SPZServlet/edit?id=${item.id}"><c:out  value="${item.reqnumber}"/>-->
+                        <input type="submit" value="${item.reqnumber}"/>
+                    </td>
+                   <!-- <c:out value="${item.priority}"/>-->
+                    <td>
+                        <c:out value="${itemi.priority}"/>
+                        <input type="hidden" name="priority" value="${item.priority}"/>
                     </td>
                     <td>
                         <c:out value="${item.requesttype}"/>
+                        <input type="hidden" name="requesttype" value="${item.requesttype}"/>
                     </td>
                     <td>
                         zde bude zadavatel
                     </td>
                     <td>
                         <c:out value="${item.contactperson}"/>
+                        <input type="hidden" name="contactperson" value="${item.contactperson}"/>
                     </td>
                     <td>
-                        <f:formatDate dateStyle="dd.mm.yy" value="${item.issuedate}"/> 
+                        <f:formatDate pattern="dd.MM.yy" value="${item.issuedate}"/> 
+                        <input type="hidden" name="issuedate" value="${item.issuedate}"/>
                     </td>
                     <td>
                         <c:out value="${item.requestdescription}"/>
+                        <input type="hidden" name="requestdescription" value="${requestdescription}"/>
                     </td>
                     <td>
-                        <f:formatDate value='${item.implementationacceptdate}' pattern='dd.MM.yyyy'/>
+                        <f:formatDate value="${item.implementationacceptdate}" pattern="dd.MM.yyyy"/>
+                        <input type="hidden" name="implementationacceptdate" value="${item.implementationacceptdate}"/>
                     </td>
-                    
+                </form>        
                 </tr>
                 
             </c:forEach>

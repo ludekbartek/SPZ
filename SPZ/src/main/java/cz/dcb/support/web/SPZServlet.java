@@ -94,8 +94,10 @@ public class SPZServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        //request.setAttribute("message", "Use ");
-        //request.getRequestDispatcher("/error.jsp").forward(request, response);
+        String action = request.getPathInfo();
+        if(action.compareToIgnoreCase("/listSPZ")==0){
+            listSpz(request, response);
+        }
     }
 
     /**
@@ -180,18 +182,20 @@ public class SPZServlet extends HttpServlet {
     private void editSpz(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         
         Spz spz = requestParamsToSpz(request.getParameterMap());
+        SpzManager manager = new SpzJpaController(emf);
         if(request.getParameterMap().containsKey("id")){
             String strId = request.getParameter("id");
             int id=Integer.parseInt(strId);
             spz.setId(id);
+            try {
+                manager.edit(spz);
+            } catch (Exception ex) {
+                Logger.getLogger(SPZServlet.class.getName()).log(Level.SEVERE, "Unable to edit SPZ.", ex);
+            }
+        }else{
+            manager.create(spz);
         }
-        SpzManager manager = new SpzJpaController(emf);
-        try {
-            manager.edit(spz);
-        } catch (Exception ex) {
-            Logger.getLogger(SPZServlet.class.getName()).log(Level.SEVERE, "Error editing spz: ", ex);
-            throw new ServletException("Error editing spz",ex);
-        }
+        
         listSpz(request, response);
     }
 
@@ -263,12 +267,19 @@ public class SPZServlet extends HttpServlet {
         spz.setReqnumber(parameterMap.get("reqnumber")[0]);
         spz.setRequestdescription(parameterMap.get("requestdescription")[0]);
         spz.setContactperson(parameterMap.get("contactperson")[0]);
-        spz.setShortname(parameterMap.get("shortname")[0]);
-        String issueDateString = parameterMap.get("issuedate")[0];
-        Date issueDate = stringToDate(issueDateString);
-        if (issueDate == null) {
-            return null;
+        if(parameterMap.containsKey("shortname")) spz.setShortname(parameterMap.get("shortname")[0]);
+        Date issueDate = null;
+        if(parameterMap.containsKey("issuedate")){
+            String issueDateString = parameterMap.get("issuedate")[0];
+            issueDate = stringToDate(issueDateString);
+        }else{
+            Calendar cal = new GregorianCalendar();
+            
+            issueDate = cal.getTime();
         }
+        /*if (issueDate == null) {
+            return null;
+        }*/
         spz.setIssuedate(issueDate);
         if(checkImplementationAcceptanceDate(parameterMap)){
         
@@ -340,17 +351,23 @@ public class SPZServlet extends HttpServlet {
         UserManager userManger = new UserJpaController(emf);
         
         for(Spz spz:spzs){
-            SPZWebEntity entity = new SPZWebEntity();
+            SPZWebEntity entity;
+            entity = new SPZWebEntity();
             entity.setId(spz.getId());
-            entity.setNumber(spz.getReqnumber());
-            entity.setIssueDate(spz.getIssuedate());
-            entity.setContact(spz.getContactperson());
+            entity.setReqnumber(spz.getReqnumber());
+            entity.setIssuedate(spz.getIssuedate());
+            entity.setContactperson(spz.getContactperson());
+            entity.setReqnumber(spz.getReqnumber());
+            entity.setRequesttype(spz.getRequesttype());
             Integer spzIssuerId = issuerManager.findSpzIssuerIdBySpzId(spz.getId());
-            String issuerName = userManger.findUser(spzIssuerId).getName();
-            entity.setIssuer(issuerName);
-            entity.setDescription(spz.getRequestdescription());
+            if(spzIssuerId > -1){
+                String issuerName = userManger.findUser(spzIssuerId).getName();
+                entity.setIssuer(issuerName);
+            }
+            entity.setRequestdescription(spz.getRequestdescription());
             entity.setKind(spz.getRequesttype());
             entity.setDate(getLastChangeDate(spz.getId(),stateManager));
+            entities.add(entity);
         }
         return entities;
     }
