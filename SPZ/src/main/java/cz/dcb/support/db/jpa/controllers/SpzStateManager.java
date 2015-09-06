@@ -7,6 +7,7 @@ package cz.dcb.support.db.jpa.controllers;
 
 import cz.dcb.support.db.jpa.controllers.exceptions.NonexistentEntityException;
 import cz.dcb.support.db.jpa.entities.Spzstate;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.EntityManager;
 
@@ -31,5 +32,7 @@ public interface SpzStateManager {
     EntityManager getEntityManager();
 
     int getSpzstateCount();
+
+    public Date getLastChange(Integer id);
     
 }
