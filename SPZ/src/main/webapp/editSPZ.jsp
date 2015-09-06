@@ -40,26 +40,25 @@
             </c:choose>
         </h1>
         <div id="form" style="width: 100%;">
-            <form action="${pageContext.request.contextPath}/SPZServlet/add" method="post">
+            <form <c:choose><c:when test="action=='add'">action="${pageContext.request.contextPath}/SPZServlet/addspz"</c:when><c:otherwise>action="${pageContext.request.contextPath}/SPZServlet/editspz"</c:otherwise></c:choose> method="post">
                 <div class="formItem">
-                    <span class="label"><label class="label" for="spzName">Nazev</label></span>
-                    <span class="input"><input type="text" name="name" value="<c:if test="!empty ${spz.name}">${spz.name}</c:if>"></span>
+                    <span class="label"><label class="label" for="reqnumber">Nazev</label></span>
+                    <span class="input"><input type="text" name="reqnumber" value="<c:if test="!empty ${spz.name}">${spz.name}</c:if>"></span>
                 </div>
                 <div class="formItem">
-                    <span class="label"><label for="contact">Kontakt</label></span>
-                    <span class="input"><input type="text" name="contact" value="<c:if test="!empty ${spz.contact}">${spz.contact}</c:if>"/></span>
+                    <span class="label"><label for="contactperson">Kontakt</label></span>
+                    <span class="input"><input type="text" name="contactperson" value="<c:if test="!empty ${spz.contact}">${spz.contact}</c:if>"/></span>
                 </div>
                 <div class="formItem">
-                    <span class="label"><label class="label" for="description">Zadani</label></span>
-                    <span class="input"><textarea name="description" rows="5" cols="80"></textarea></span>
+                    <span class="label"><label class="label" for="requestdescription">Zadani</label></span>
+                    <span class="input"><textarea name="requestdescription" rows="5" cols="80"></textarea></span>
                 </div>
                 <div class="formItem">
-                    <span class="label"><label for="type">Typ:</label></span>
+                    <span class="label"><label for="reqtype">Typ:</label></span>
                     <span class="input">
-                        <select name="type">
-                            <option selected="true" value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
+                        <select name="reqtype">
+                            <option value="placeny">Placeny</option>
+                            <option value="neplaceny">Neplaceny</option>
                         </select>
                     </span>
                 </div>
