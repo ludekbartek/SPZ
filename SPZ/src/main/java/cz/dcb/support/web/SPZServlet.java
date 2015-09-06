@@ -9,6 +9,8 @@ import cz.dcb.support.db.jpa.controllers.SpzIssuerJpaController;
 import cz.dcb.support.db.jpa.controllers.SpzIssuerManager;
 import cz.dcb.support.db.jpa.controllers.SpzJpaController;
 import cz.dcb.support.db.jpa.controllers.SpzManager;
+import cz.dcb.support.db.jpa.controllers.SpzStateJpaController;
+import cz.dcb.support.db.jpa.controllers.SpzStateManager;
 import cz.dcb.support.db.jpa.controllers.UserJpaController;
 import cz.dcb.support.db.jpa.controllers.UserManager;
 import cz.dcb.support.db.jpa.entities.Spz;
@@ -112,7 +114,7 @@ public class SPZServlet extends HttpServlet {
             for(String key:params.keySet()){
                 System.out.println(key+": "+params.get(key)[0]);
             }
-            System.out.println("Action: " + request.getParameter("action"));
+//            System.out.println("Action: " + request.getParameter("action"));
             String action = request.getPathInfo();
             //String action = request.getParameter("action");
             switch(action.toLowerCase()){
@@ -156,14 +158,22 @@ public class SPZServlet extends HttpServlet {
 
     private void addSpz(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         if(checkSpzParams(request.getParameterMap())){
-            Spz spz = requestParamsToSpz(request.getParameterMap());
             SpzManager manager= new SpzJpaController(emf);
+            Spz spz = requestParamsToSpz(request.getParameterMap());
+            
             manager.create(spz);
-            List<Spz> spzs = manager.findSpzEntities();
-            request.setAttribute("invspz", spz);
-            request.setAttribute("action", "add");
-            request.setAttribute("spzs", spzs);
-            request.getRequestDispatcher("/listSPZ.jsp").forward(request, response);
+            /*request.setAttribute(null, spz);
+            request.getRequestDispatcher("/listSPZ.jsp").forward(request,response);
+            */
+            listSpz(request, response);
+            //request.setAttribute("invspz", spz);
+            //request.setAttribute("action", "add");
+            //request.setAttribute("spzs", spzs);
+            //request.getRequestDispatcher("/editSPZ.jsp").forward(request, response);
+        }else{
+            request.setAttribute("action","add");
+            request.getRequestDispatcher("/editSPZ.jsp").forward(request,response);
+                   
         }
     }
 
@@ -279,6 +289,11 @@ public class SPZServlet extends HttpServlet {
     private Date stringToDate(String strVal) {
         DateFormat formater = DateFormat.getDateInstance(DateFormat.SHORT, new Locale("cs"));
         Date value = null;
+        if(strVal == null){
+            Calendar cal = new GregorianCalendar();
+            value = cal.getTime();
+            return value;
+        }
         try {
             value = formater.parse(strVal);
         } catch (ParseException ex) {
@@ -321,8 +336,9 @@ public class SPZServlet extends HttpServlet {
     private List<SPZWebEntity> spzToEntities(List<Spz> spzs) {
         List<SPZWebEntity> entities = new ArrayList<>();
         SpzIssuerManager issuerManager = new SpzIssuerJpaController(emf);
-        
+        SpzStateManager stateManager = new SpzStateJpaController(emf);
         UserManager userManger = new UserJpaController(emf);
+        
         for(Spz spz:spzs){
             SPZWebEntity entity = new SPZWebEntity();
             entity.setId(spz.getId());
@@ -334,8 +350,14 @@ public class SPZServlet extends HttpServlet {
             entity.setIssuer(issuerName);
             entity.setDescription(spz.getRequestdescription());
             entity.setKind(spz.getRequesttype());
+            entity.setDate(getLastChangeDate(spz.getId(),stateManager));
         }
         return entities;
+    }
+
+    private Date getLastChangeDate(Integer id,SpzStateManager manager) {
+        return manager.getLastChange(id);
+        
     }
 
 }
