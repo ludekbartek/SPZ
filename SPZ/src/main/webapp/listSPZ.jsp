@@ -75,18 +75,14 @@
             </thead>
             <c:forEach items="${spzs}" var="item">
                 <tr>
-                <form action="${pageContext.request.contextPath}/SPZServlet/edit" method="POST">
+                <form action="${pageContext.request.contextPath}/SPZServlet/editspz" method="POST">
                     <td>
-                        <c:out value="${item.id}"/>
                         <input type="hidden" name="id" value="${item.id}"/>
-                    </td>
-                    <td>
-                        <!--<a href="${pageContext.request.contextPath}/SPZServlet/edit?id=${item.id}"><c:out  value="${item.reqnumber}"/>-->
+                        <input type="hidden" name="reqnumber" value="${item.reqnumber}"/>
                         <input type="submit" value="${item.reqnumber}"/>
                     </td>
-                   <!-- <c:out value="${item.priority}"/>-->
-                    <td>
-                        <c:out value="${itemi.priority}"/>
+                   <td>
+                        <c:out value="${item.priority}"/>
                         <input type="hidden" name="priority" value="${item.priority}"/>
                     </td>
                     <td>
@@ -135,9 +131,9 @@
                         <select name="priority">
                         <c:choose>
                             <c:when test="not empty $invspz">
-                                <option value="1" <c:if test="${invspz.priority}==1">selected="true"</c:if>>1</option>
-                                <option value="2" <c:if test="${invspz.priority}==2">selected="true"</c:if>>2</option>
-                                <option value="3" <c:if test="${invspz.priority}==3">selected="true"</c:if>>3</option>
+                                <option value="1" <c:if test="${invspz.priority}==1">selected="true"</c:if>1</option>
+                                <option value="2" <c:if test="${invspz.priority}==2">selected="true"</c:if>2</option>
+                                <option value="3" <c:if test="${invspz.priority}==3">selected="true"</c:if>3</option>
                             </c:when>
                             <c:otherwise>
                                 <option value="1" selected="true">1</option>

@@ -3,7 +3,10 @@
     Created on : Sep 1, 2015, 3:12:20 PM
     Author     : bar
 --%>
-
+<!--
+Pridat zadani typu radna/mimoradna, rozhodit editaci/vytvareni, 
+pri editaci pouze popisy (viz stara verze).
+-->
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
@@ -43,7 +46,7 @@
             <form <c:choose><c:when test="action=='add'">action="${pageContext.request.contextPath}/SPZServlet/addspz"</c:when><c:otherwise>action="${pageContext.request.contextPath}/SPZServlet/editspz"</c:otherwise></c:choose> method="post">
                 <div class="formItem">
                     <span class="label"><label class="label" for="reqnumber">Nazev</label></span>
-                    <span class="input"><input type="text" name="reqnumber" value="<c:if test="!empty ${spz.name}">${spz.name}</c:if>"></span>
+                    <span class="input"><input type="text" name="reqnumber" value="<c:if test="!empty ${spz.reqnumber}">${spz.reqnumber}</c:if>"></span>
                 </div>
                 <div class="formItem">
                     <span class="label"><label for="contactperson">Kontakt</label></span>
