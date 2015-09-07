@@ -181,9 +181,15 @@ public class SPZServlet extends HttpServlet {
 
     private void editSpz(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         
-        Spz spz = requestParamsToSpz(request.getParameterMap());
+        Spz spz = null;
         SpzManager manager = new SpzJpaController(emf);
         if(request.getParameterMap().containsKey("id")){
+            spz = requestParamsToSpz(request.getParameterMap());
+            if(spz==null){
+                request.setAttribute("action","add");
+                request.getRequestDispatcher("/editSPZ.jsp").forward(request, response);
+                return;
+            }
             String strId = request.getParameter("id");
             int id=Integer.parseInt(strId);
             spz.setId(id);
@@ -193,6 +199,9 @@ public class SPZServlet extends HttpServlet {
                 Logger.getLogger(SPZServlet.class.getName()).log(Level.SEVERE, "Unable to edit SPZ.", ex);
             }
         }else{
+            spz=requestParamsToSpz(request.getParameterMap());
+            if(spz==null)
+                request.getRequestDispatcher("/editSPZ.jsp").forward(request, response);
             manager.create(spz);
         }
         
@@ -264,6 +273,9 @@ public class SPZServlet extends HttpServlet {
 
     private Spz requestParamsToSpz(Map<String, String[]> parameterMap) {
         Spz spz = new Spz();
+        if(!parameterMap.containsKey("reqnumber")){
+            return null;
+        }
         spz.setReqnumber(parameterMap.get("reqnumber")[0]);
         spz.setRequestdescription(parameterMap.get("requestdescription")[0]);
         spz.setContactperson(parameterMap.get("contactperson")[0]);
@@ -290,6 +302,8 @@ public class SPZServlet extends HttpServlet {
         long ts = (new GregorianCalendar()).getTimeInMillis();
         spz.setTs(BigInteger.valueOf(ts));
         String strPriority = parameterMap.get("priority")[0];
+        String reqType=parameterMap.get("reqtype")[0];
+        spz.setRequesttype(reqType);
         short priority = Short.parseShort(strPriority);
         spz.setPriority(priority);
         
