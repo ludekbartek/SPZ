@@ -32,29 +32,22 @@ pri editaci pouze popisy (viz stara verze).
     </head>
     
     <body>
-        <h1>
-            <c:choose>
-                    <c:when test="${action=='add'}">
-                        Nova SPZ
-                    </c:when>
-                    <c:otherwise>
-                        Uprava SPZ
-                    </c:otherwise>
-            </c:choose>
-        </h1>
+        <h1>Uprava SPZ</h1>
         <div id="form" style="width: 100%;">
-            <form <c:choose><c:when test="action=='add'">action="${pageContext.request.contextPath}/SPZServlet/addspz"</c:when><c:otherwise>action="${pageContext.request.contextPath}/SPZServlet/editspz"</c:otherwise></c:choose> method="post">
+            <form action="${pageContext.request.contextPath}/SPZServlet/editspz" method="post">
                 <div class="formItem">
                     <span class="label"><label class="label" for="reqnumber">Nazev</label></span>
-                    <span class="input"><input type="text" name="reqnumber" value="<c:if test="!empty ${spz.reqnumber}">${spz.reqnumber}</c:if>"></span>
+                    <span class="input"><input type="text" name="reqnumber" value="<c:if test='${not empty spz.reqnumber}'><c:out value='${spz.reqnumber}'/></c:if>"></span>
+                    <c:out value="${spz.reqnumber}"/>
                 </div>
                 <div class="formItem">
                     <span class="label"><label for="contactperson">Kontakt</label></span>
-                    <span class="input"><input type="text" name="contactperson" value="<c:if test="!empty ${spz.contact}">${spz.contact}</c:if>"/></span>
+                    <span class="input"><input type="text" name="contactperson" value="<c:if test='${!empty spz.contactperson}'><c:out value='${spz.contactperson}'/></c:if>"/></span>
                 </div>
                 <div class="formItem">
                     <span class="label"><label class="label" for="requestdescription">Zadani</label></span>
-                    <span class="input"><textarea name="requestdescription" rows="5" cols="80"></textarea></span>
+                    <span class="input"><textarea name="requestdescription" rows="5" cols="80">
+                        <c:if test="${!empty requestdescription}"><c:out value="${requestdescription}"/></c:if></textarea></span>
                 </div>
                 <div class="formItem">
                     <span class="label"><label for="reqtype">Typ:</label></span>
@@ -78,7 +71,7 @@ pri editaci pouze popisy (viz stara verze).
                 <div class="formItem">
                     <span class="label"><label for="desc">Poznamka</label></span>
                     <span class="input">
-                        <textarea name="desc" cols="80" rows="5">
+                        <textarea name="desc" cols="80" rows="5"><c:out value="${desc}"/>
                             
                         </textarea>
                     </span>
