@@ -164,48 +164,37 @@ public class SPZServlet extends HttpServlet {
             Spz spz = requestParamsToSpz(request.getParameterMap());
             
             manager.create(spz);
+            List<Spz> spzs = manager.findSpzEntities();
+            request.setAttribute("spzs", spzs);
             /*request.setAttribute(null, spz);
             request.getRequestDispatcher("/listSPZ.jsp").forward(request,response);
             */
-            listSpz(request, response);
             //request.setAttribute("invspz", spz);
             //request.setAttribute("action", "add");
             //request.setAttribute("spzs", spzs);
             //request.getRequestDispatcher("/editSPZ.jsp").forward(request, response);
         }else{
             request.setAttribute("action","add");
-            request.getRequestDispatcher("/editSPZ.jsp").forward(request,response);
-                   
+            Spz spz = requestParamsToSpz(request.getParameterMap());
+            if(spz!=null){
+                request.setAttribute("spz", spz);
+                request.setAttribute("error", "Nektera polozka chybi nebo ma neplatnou hodnotu" );
+            }
+            request.getRequestDispatcher("/addSPZ.jsp").forward(request,response);
+            return;
         }
+        listSpz(request, response);
     }
 
     private void editSpz(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         
         Spz spz = null;
         SpzManager manager = new SpzJpaController(emf);
-        if(request.getParameterMap().containsKey("id")){
-            spz = requestParamsToSpz(request.getParameterMap());
-            if(spz==null){
-                request.setAttribute("action","add");
-                request.getRequestDispatcher("/editSPZ.jsp").forward(request, response);
-                return;
-            }
-            String strId = request.getParameter("id");
-            int id=Integer.parseInt(strId);
-            spz.setId(id);
-            try {
-                manager.edit(spz);
-            } catch (Exception ex) {
-                Logger.getLogger(SPZServlet.class.getName()).log(Level.SEVERE, "Unable to edit SPZ.", ex);
-            }
-        }else{
-            spz=requestParamsToSpz(request.getParameterMap());
-            if(spz==null)
-                request.getRequestDispatcher("/editSPZ.jsp").forward(request, response);
-            manager.create(spz);
-        }
-        
-        listSpz(request, response);
+        Integer id= getSpzId(request.getParameterMap());
+        spz=manager.findSpz(id);
+        request.setAttribute("spz", spz);
+        request.getRequestDispatcher("/editSPZ.jsp").forward(request, response);
+       // listSpz(request, response);
     }
 
     private void addUser(HttpServletRequest request, HttpServletResponse response) {
@@ -214,6 +203,7 @@ public class SPZServlet extends HttpServlet {
 
     private void editUser(HttpServletRequest request, HttpServletResponse response) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
     }
 
     private void addAttachment(HttpServletRequest request, HttpServletResponse response) {
@@ -389,6 +379,20 @@ public class SPZServlet extends HttpServlet {
     private Date getLastChangeDate(Integer id,SpzStateManager manager) {
         return manager.getLastChange(id);
         
+    }
+
+    private Integer getSpzId(Map<String, String[]> parameterMap) {
+        if(!parameterMap.containsKey("id")){
+            return null;
+        }
+        String strId = parameterMap.get("id")[0];
+        Integer id;
+        try{
+            id = Integer.parseInt(strId);
+        }catch(NumberFormatException nfe){
+            return null;
+        }
+        return id;
     }
 
 }
