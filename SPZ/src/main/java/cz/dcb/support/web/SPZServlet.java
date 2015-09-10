@@ -14,6 +14,8 @@ import cz.dcb.support.db.jpa.controllers.SpzStateManager;
 import cz.dcb.support.db.jpa.controllers.UserJpaController;
 import cz.dcb.support.db.jpa.controllers.UserManager;
 import cz.dcb.support.db.jpa.entities.Spz;
+import cz.dcb.support.db.jpa.entities.SpzStates;
+import cz.dcb.support.db.jpa.entities.Spzstate;
 import cz.dcb.support.web.entities.SPZWebEntity;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -188,12 +190,62 @@ public class SPZServlet extends HttpServlet {
 
     private void editSpz(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         
+        String jspName;
         Spz spz = null;
         SpzManager manager = new SpzJpaController(emf);
-        Integer id= getSpzId(request.getParameterMap());
+        SpzStateManager stateManager = new SpzStateJpaController(emf);
+        Integer id = getSpzId(request.getParameterMap());
         spz=manager.findSpz(id);
         request.setAttribute("spz", spz);
-        request.getRequestDispatcher("/editSPZ.jsp").forward(request, response);
+        
+        switch(getCurrentState(spz)){
+            case POSTED:
+                jspName="/editPost.jsp";
+                break;
+            case NEW:
+                jspName="/editNew.jsp";
+            case ANALYLIS:
+                jspName="/editAnal.jsp";
+                break;
+            case REFINE:
+                jspName = "/editRef.jsp";
+                break;
+            case SPECIFIED:
+                jspName = "/editSpec.jsp";
+                break;
+            case IMPLEMENTATION:
+                jspName = "/editImpl.jsp";
+                break;
+            case DCB_ACCEPTED:
+                jspName = "/editDCBAcc.jsp";
+                break;
+            case RELEASED:
+                jspName="/editRel.jsp";
+                break;
+            case IMPLEMENTATION_REFINE:
+                jspName = "/editImplRef.jsp";
+                break;
+            case RE_IMPLEMENTATION:
+                jspName ="/reImpl.jsp";
+                break;
+            case RE_ANALYSIS:
+                jspName = "/reAnal.jsp";
+                break;
+            case RECLAIMED:
+                jspName = "/reclaimed.jsp";
+                break;
+            case CONFIRMED:
+                jspName = "/confirmed.jsp";
+                break;
+            case CANCELED:
+                jspName = "/canceled.jsp";
+                break;
+            case INVOICED:
+                jspName = "/invoiced.jsp";
+            default:return;
+              
+        }
+        request.getRequestDispatcher(jspName).forward(request, response);
        // listSpz(request, response);
     }
 
@@ -393,6 +445,10 @@ public class SPZServlet extends HttpServlet {
             return null;
         }
         return id;
+    }
+
+    private SpzStates getCurrentState(Spz spz) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }
