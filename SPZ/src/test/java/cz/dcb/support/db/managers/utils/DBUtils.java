@@ -30,6 +30,7 @@ import cz.dcb.support.db.jpa.entities.Project;
 import cz.dcb.support.db.jpa.entities.Projectconfiguration;
 import cz.dcb.support.db.jpa.entities.Roles;
 import cz.dcb.support.db.jpa.entities.Spz;
+import cz.dcb.support.db.jpa.entities.SpzStates;
 import cz.dcb.support.db.jpa.entities.Spzanalyst;
 import cz.dcb.support.db.jpa.entities.Spzissuer;
 import cz.dcb.support.db.jpa.entities.Spznote;
@@ -331,6 +332,16 @@ public class DBUtils {
         value.setSpzid(spz.getId());
         value.setStateid(state.getId());
        
+        return value;
+    }
+
+    public static Spzstates createSpzStates(Spz spz) {
+        Spzstate state = DBUtils.createSpzState();
+        Spzstates value = new Spzstates();
+        SpzStateManager stateManager = new SpzStateJpaController(DBUtils.getEntityManagerFactory());
+        stateManager.create(state);
+        value.setSpzid(spz.getId());
+        value.setStateid(state.getId());
         return value;
     }
 }
