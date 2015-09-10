@@ -9,6 +9,7 @@ import cz.dcb.support.db.jpa.controllers.SpzJpaController;
 import cz.dcb.support.db.jpa.controllers.SpzManager;
 import cz.dcb.support.db.jpa.controllers.SpzStateJpaController;
 import cz.dcb.support.db.jpa.controllers.SpzStateManager;
+import cz.dcb.support.db.jpa.entities.Spz;
 import cz.dcb.support.db.jpa.entities.Spzstate;
 import cz.dcb.support.db.managers.exceptions.IllegalOrphanException;
 import cz.dcb.support.db.managers.exceptions.NonexistentEntityException;
