@@ -165,7 +165,10 @@ public class SPZServlet extends HttpServlet {
             SpzManager manager= new SpzJpaController(emf);
             Spz spz = requestParamsToSpz(request.getParameterMap());
             
+            spz.setIssuedate(new GregorianCalendar().getTime());
+            spz.setShortname(spz.getReqnumber());
             manager.create(spz);
+            
             List<Spz> spzs = manager.findSpzEntities();
             request.setAttribute("spzs", spzs);
             /*request.setAttribute(null, spz);
@@ -290,26 +293,26 @@ public class SPZServlet extends HttpServlet {
         if(!checkReqType(parameterMap)){
             return false;
         }
-        if(!checkIssueDate(parameterMap)){
+       /* if(!checkIssueDate(parameterMap)){
             return false;
         }
-        
+        */
         if(!checkContactPerson(parameterMap)){
             return false;
         }
         
-        if(!checkShortName(parameterMap)){
+        /*if(!checkShortName(parameterMap)){
             return false;
-        }
+        }*/
         
         if(!checkRequestDescription(parameterMap)){
             return false;
         }
-        
+        /*
         if(!checkImplementationAcceptanceDate(parameterMap)){
             return false;
-        }
-
+        }   
+        */
         return true;
     }
 
@@ -371,7 +374,10 @@ public class SPZServlet extends HttpServlet {
     }
 
     private boolean checkReqNumber(Map<String, String[]> parameterMap) {
-        return parameterMap.containsKey("reqnumber") && !parameterMap.get("reqnumber")[0].isEmpty();
+        boolean result = parameterMap.containsKey("reqnumber");
+        if(!result)return false;
+        String reqNumber = parameterMap.get("reqnumber")[0];
+        return !reqNumber.isEmpty();
     }
 
     private boolean checkIssueDate(Map<String, String[]> parameterMap) {
@@ -383,7 +389,12 @@ public class SPZServlet extends HttpServlet {
     }
 
     private boolean checkShortName(Map<String, String[]> parameterMap) {
-        return parameterMap.containsKey("shortname") && !parameterMap.get("shortname")[0].isEmpty();
+        boolean result = parameterMap.containsKey("shortname");
+        if(!result){
+            return false;
+        }
+        String shortName = parameterMap.get("shortname")[0];
+        return !shortName.isEmpty();
     }
 
     private boolean checkRequestDescription(Map<String, String[]> parameterMap) {

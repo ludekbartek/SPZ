@@ -1,0 +1,409 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+
+	
+	
+	
+	
+	
+		
+		
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+
+<html>
+	<head>
+		<META HTTP-EQUIV="Cache-Control" CONTENT="no-cache">
+<META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+<META HTTP-EQUIV="max-age" CONTENT="0">
+<META HTTP-EQUIV="Expires" CONTENT="0">
+
+		<title>Zmìna stavu SPZ 00001 (bar)</title>
+		<link rel="stylesheet" href="/style.css" type="text/css">
+	</head>
+	<body>
+		<table class="titlehead">
+			<tr>
+				<td>
+					<table class="titlehead">
+						<tr>
+							<td><img src="/images/logo.gif"/></td>
+							<td><table class="titlehead">
+								<tr><td class="title">Systém servisní podpory</td></tr>
+								<tr><td class="navigace">
+									<a href="/projects/">Projects</a>
+									
+										&gt;&gt;<a href="/projects/BT/">BT</a>
+										
+											&gt;&gt;<a href="/projects/BT/cfg1/">cfg1</a>
+											
+												&gt;&gt;<a href="/projects/BT/cfg1/00001/">00001</a>
+											
+										
+									
+								</td></tr>
+							</table></td>	
+							<td class="username"><a href="/user/">bar (Ludek Bartek)</a></td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+			<tr>
+				<td class="error">
+					
+				</td>
+			</tr>
+			<tr>
+				<td>
+				
+
+
+
+
+
+<h1>Zmìna stavu SPZ</h1>
+
+
+
+
+	
+		
+			
+				<p class="statetrans">Požadujete 'Zrušit' na SPZ:</p>
+				<table CELLSPACING=0px class="infospz">    
+	<tr>
+		<td WIDTH="15%" Style="font-weight: bold">Èíslo</td><td WIDTH="35%" Style="font-weight: bold">00001</td>
+		<td WIDTH="15%" Style="font-weight: bold">Priorita</td><td WIDTH="35%">3</td></tr>
+	<tr><td Style="font-weight: bold">Název</td><td Style="font-weight: bold">Testovaci SPZ</td>
+		<td Style="font-weight: bold">Typ</td><td>Placený požadavek</td></tr>
+	<tr><td Style="font-weight: bold">Zadal</td><td>Ludek Bartek 10.09.2015 13:49</td>
+		<td Style="font-weight: bold">Kontakt</td><td>Ludek Bartek</td></tr>
+	<tr><td Style="font-weight: bold">Zadání</td><td COLSPAN=3><span class="preformated">Otestovani pruchodu vsemi stavy SPZ
+</span></td></tr>
+	
+		<tr><td Style="font-weight: bold">Analytik</td><td COLSPAN=3>Ludek Bartek</td></tr>
+		<tr><td Style="font-weight: bold">Vývojáø</td><td COLSPAN=3>Nepøidìlen</td></tr>
+	
+	
+	 	
+</table>
+
+				<h2>Informace pro stav 'Zrušit':</h2>
+				<form name=gotostate action=savestate.jsp method=post>
+					<input type=hidden name=state value="36">
+					<table class="titlehead">
+<tr>
+<td class="prompt">Poznámka</td>
+<td><textarea name=desc class="desc"></textarea></td><td width=4>
+
+<table border="0" cellpadding="0" CELLSPACING=1px align="center">
+<tr><td><img alt="Náhled" src="/images/preview.gif" onClick="PREVIEWX(gotostate,desc)"></td></tr>
+<tr><td><img alt="Center" src="/images/center.jpg" onClick="CENTER(gotostate,desc );desc.focus()"></td></tr>
+<tr><td><img alt="Linka" src="/images/line.gif" onClick="HR(gotostate,desc );desc.focus()"></td></tr>
+<tr><td><img alt="Bold" src="/images/bold.jpg" onClick="B(gotostate,desc );desc.focus()"></td></tr>
+<tr><td><img alt="Italika" src="/images/italika.jpg" onClick="I(gotostate,desc );desc.focus()"></td></tr>
+<tr><td><img alt="Podtr?ení" src="/images/underline.jpg" onClick="U(gotostate,desc );desc.focus()"></td></tr>
+<tr><td><img alt="Tabulka" src="/images/tabulka.jpg" onClick="TABLE2x2(gotostate,desc );desc.focus()"></td></tr>
+<tr><td><img alt="Odrá?ky" src="/images/body.jpg" onClick="UL(gotostate,desc );desc.focus()"></td></tr>
+<tr><td><img alt="?íslovaný seznam" src="/images/cisla.jpg" onClick="OL(gotostate,desc );desc.focus()"></td></tr>
+</table>
+</td>
+</tr>
+</table>
+
+					
+						<input type=checkbox name=external id="ext"><label for="ext">Poznámka viditelná i pro zákazníka?</label><br>
+					
+					<input type=submit value="Odeslat!">
+				</form>
+				<script language="JavaScript">
+<!-- 
+function NOTEXT(formular, pole)
+{
+pole.value += ("")
+}
+// -->
+</script>
+<form name=frmpreview action="preview.jsp" target=_blank method=post><input name=preview type=hidden></form>
+<script language="JavaScript">
+<!-- 
+/*
+  Advanced HTML Hot Pro was written by Patrick
+  Clinger. 
+  Patrick Clinger
+  21532 Calle Otono
+  Lake Forest, CA
+  92630
+*/
+
+function PREVIEWX(formular, pole)
+{
+document.frmpreview.preview.value=pole.value;
+document.frmpreview.submit();
+}
+
+function PREVIEWY(formular, pole)
+{
+preview=open("preview.jsp?preview="+pole.value,"_blank","toolbar=no,directories=no,menubar=no,location=no,directories=no");
+}
+
+
+function PREVIEW(formular, pole)
+{
+preview=open("","DisplayWindow","toolbar=no,directories=no,menubar=no,location=no,directories=no");
+preview.document.write('<HTML>\n');
+preview.document.write('<HEAD>\n');
+preview.document.write('<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=windows-1250">\n');
+preview.document.write('<link rel="stylesheet" href="/style.css" type="text/css">\n');
+preview.document.write('<HEAD>\n');
+preview.document.write('<BODY>\n');
+preview.document.write('<span class=\"preformated\">\n');
+preview.document.write(pole.value);
+preview.document.write('\n</span>\n');
+preview.document.write('</BODY>\n');
+preview.document.write('</HTML>\n');
+}
+
+// centrovaný text
+
+function CENTER(formular, pole)
+{
+pole.value += ("<CENTER></CENTER>\n")
+}
+
+// nový øádek
+               
+function BR(formular, pole)
+{
+pole.value += ("<BR>\n")
+}
+
+// èára
+
+function HR(formular, pole)
+{
+pole.value += ("<HR>\n")
+}
+
+// bold
+
+function B(formular, pole)
+{
+pole.value += ("<B></B>")
+}
+
+//italika
+
+function I(formular, pole)
+{
+pole.value += ("<I></I>")
+}
+
+
+//podtržení
+
+function U(formular, pole)
+{
+pole.value += ("<U></U>")
+}
+
+//tabulka 2x2
+
+function TABLE2x2(formular, pole)
+{
+pole.value += ("<table BORDER CELLSPACING=0px CELLPADDING=2px>\n<TR>\n<TD></TD>\n<TD></TD></TR>\n<TR>\n<TD></TD>\n<TD></TD></TR></table>\n")
+}
+
+// nastavení fontu
+function FONT(formular, pole)
+{
+var FONT = window.prompt("What would you like to put in the font tag?","")
+    if(FONT =='')
+	{
+NOTEXT(formular, pole)
+	}
+    else
+	{
+pole.value += ("<FONT " + FONT + ">\n")
+	}
+}
+
+//velikost fontu
+
+function FONTSIZE(formular, pole)
+{
+var SIZE = window.prompt("Velikost fontu 1-5","")
+    if(SIZE =='')
+	{
+NOTEXT(formular, pole)
+	}
+    else
+	{
+pole.value += ("<FONT SIZE=" + SIZE + "></font>\n")
+	}
+}
+
+// puntíkový seznam
+
+function UL(formular, pole)
+{
+pole.value += ("<UL><LI></LI>\n<LI></LI>\n<LI></LI></UL>\n")
+}
+
+// èíslovaný seznam
+
+function OL(formular, pole)
+{
+pole.value += ("<OL><LI></LI>\n<LI></LI>\n<LI></LI></OL>\n")
+}
+
+// -->
+</script>
+
+				<h2>Historie SPZ</h2>
+<table class="spzhistory">
+	
+		<tr>
+			<td class="stateheader">
+				Èeká na upøesnìní 10.09.2015 13:58 Ludek Bartek
+			</td>
+		</tr>
+		<tr>
+			<td class="statenote">
+				
+					<span class="hlavicka">Ludek Bartek(10.09.2015 13:58)
+						
+							</span><br>
+					<div class="telo"><span class="preformated">Neco chybi
+</span></div>
+				
+			</td>
+		</tr>
+		<tr>
+			<td>
+				
+				
+			</td>
+		</tr>
+	
+		<tr>
+			<td class="stateheader">
+				Probíhá analýza 10.09.2015 13:57 Ludek Bartek
+			</td>
+		</tr>
+		<tr>
+			<td class="statenote">
+				
+			</td>
+		</tr>
+		<tr>
+			<td>
+				
+				
+			</td>
+		</tr>
+	
+		<tr>
+			<td class="stateheader">
+				Probíhá analýza 10.09.2015 13:54 Ludek Bartek
+			</td>
+		</tr>
+		<tr>
+			<td class="statenote">
+				
+			</td>
+		</tr>
+		<tr>
+			<td>
+				
+				
+			</td>
+		</tr>
+	
+		<tr>
+			<td class="stateheader">
+				Registrován 10.09.2015 13:49 Ludek Bartek
+			</td>
+		</tr>
+		<tr>
+			<td class="statenote">
+				
+			</td>
+		</tr>
+		<tr>
+			<td>
+				
+				
+			</td>
+		</tr>
+	
+</table>
+
+			
+		
+	
+
+
+
+
+				</td>
+			</tr>
+			<tr>
+				<td class="error">
+					
+				</td>
+			</tr>
+		</table>
+	</body>
+</html>
+
+
+

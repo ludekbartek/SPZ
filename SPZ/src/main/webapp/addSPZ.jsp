@@ -14,6 +14,12 @@ pri editaci pouze popisy (viz stara verze).
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
        <title>Nova SPZ</title>
+       <script>
+           procedure copy()
+           {
+               shortname.value=reqnumber.value;
+           }
+       </script>
         <style>
             h1{
                 text-align: center;
@@ -41,7 +47,7 @@ pri editaci pouze popisy (viz stara verze).
                     </c:otherwise>
             </c:choose>
         </h1>
-        <c:if test="!empty ${error}">
+        <c:if test="${!empty error}">
             <p style="background-color: yellow;text-align: center;color: red;font-size: xx-large">
                 <c:out value="${error}"/>
             </p>
@@ -51,6 +57,7 @@ pri editaci pouze popisy (viz stara verze).
                 <div class="formItem">
                     <span class="label"><label class="label" for="reqnumber">Nazev</label></span>
                     <span class="input"><input type="text" name="reqnumber" value="<c:if test="${!empty spz.reqnumber}">${spz.reqnumber}</c:if>"></span>
+                    <input type="hidden" name="shortname"/>
                 </div>
                 <div class="formItem">
                     <span class="label"><label for="contactperson">Kontakt</label></span>
@@ -99,7 +106,7 @@ pri editaci pouze popisy (viz stara verze).
                     <span class="label"><label for="file2">Soubor 2:</label></span>
                     <span class="input"><input type="file" name="file2"/></span>
                 </div>
-                <span class="formItem"><input type="submit" value="Registrovat novou SPZ"/></span>
+                        <span class="formItem"><input type="submit" value="Registrovat novou SPZ" onfocus="copy();"/></span>
         </form>
         </div>
     </body>
