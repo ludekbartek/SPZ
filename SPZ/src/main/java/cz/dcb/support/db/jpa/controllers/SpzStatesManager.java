@@ -6,6 +6,8 @@
 package cz.dcb.support.db.jpa.controllers;
 
 import cz.dcb.support.db.jpa.controllers.exceptions.NonexistentEntityException;
+import cz.dcb.support.db.jpa.entities.Spz;
+import cz.dcb.support.db.jpa.entities.Spzstate;
 import cz.dcb.support.db.jpa.entities.Spzstates;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -31,5 +33,7 @@ public interface SpzStatesManager {
     EntityManager getEntityManager();
 
     int getSpzstatesCount();
+    
+    List<Spzstate> findSpzstates(Spz spz);
     
 }
