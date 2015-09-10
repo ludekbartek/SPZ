@@ -6,6 +6,8 @@
 package cz.dcb.support.db.jpa.controllers;
 
 import cz.dcb.support.db.jpa.controllers.exceptions.NonexistentEntityException;
+import cz.dcb.support.db.jpa.entities.Spz;
+import cz.dcb.support.db.jpa.entities.Spzstate;
 import cz.dcb.support.db.jpa.entities.Spzstates;
 import java.io.Serializable;
 import java.util.List;
@@ -143,4 +145,18 @@ public class SpzStatesJpaController implements Serializable, SpzStatesManager {
         }
     }
     
+    @Override
+    public List<Spzstate> findSpzstates(Spz spz) {
+        EntityManager em = getEntityManager();
+        List<Spzstate> states = null;
+        try{
+            CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+            Query query = em.createQuery("select state from Spzstate state where state.id in (select stateid from spzstates states where states.spzid=:spzid)");
+            query.setParameter("spzid", spz.getId());
+            states = (List<Spzstate>)query.getResultList();
+        }finally{
+            em.close();
+        }
+        return states;
+    }
 }
