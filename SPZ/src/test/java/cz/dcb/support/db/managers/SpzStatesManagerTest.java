@@ -195,7 +195,7 @@ public class SpzStatesManagerTest {
         System.out.println("findSpzstatesEntities");
         int maxResults = 0;
         int firstResult = 0;
-        SpzStatesManager instance = new SpzStatesManagerImpl();
+        //SpzStatesManager instance = new SpzStatesManagerImpl();
         List<Spzstates> expResult = new ArrayList<>();
         List<Spzstates> result = manager.findSpzstatesEntities(maxResults, firstResult);
         assertEquals(expResult, result);
@@ -254,6 +254,23 @@ public class SpzStatesManagerTest {
         assertEquals(count, manager.getSpzstatesCount());
     }
 
+    @Test
+    public void testFindSpzStates(){
+        Spz spz = DBUtils.createSpz();
+        Random rand = new Random();
+        int count = rand.nextInt(15)+5;
+        List<Spzstates> allStates = new ArrayList<>();
+        List<Spzstates> states = createSpzStates(count,spz);
+        allStates.addAll(states);
+        allStates.addAll(createSpzStates(count));
+        List<Spzstate> result = manager.findSpzstates(spz);
+        assertArrayEquals(states.toArray(), result.toArray());
+        allStates.removeAll(result);
+        for(Spzstates remain:states){
+            assertFalse(allStates.contains(remain));
+        }
+    }
+    
     private void clearDB() {
         EntityManagerFactory emf = DBUtils.getEntityManagerFactory();
         SpzManager spzManager = new SpzJpaController(emf);
@@ -294,37 +311,47 @@ public class SpzStatesManagerTest {
         }
         return values;
     }
-
-    public class SpzStatesManagerImpl implements SpzStatesManager {
-
-        public void create(Spzstates spzstates) {
+    
+    private List<Spzstates> createSpzStates(int count, Spz spz){
+        List<Spzstates> values = new ArrayList<>();
+        for(int i=0;i<count;i++){
+            Spzstates value = DBUtils.createSpzStates(spz);
+            manager.create(value);
+            values.add(value);
         }
-
-        public void destroy(Integer id) throws NonexistentEntityException {
-        }
-
-        public void edit(Spzstates spzstates) throws NonexistentEntityException, Exception {
-        }
-
-        public Spzstates findSpzstates(Integer id) {
-            return null;
-        }
-
-        public List<Spzstates> findSpzstatesEntities() {
-            return null;
-        }
-
-        public List<Spzstates> findSpzstatesEntities(int maxResults, int firstResult) {
-            return null;
-        }
-
-        public EntityManager getEntityManager() {
-            return null;
-        }
-
-        public int getSpzstatesCount() {
-            return 0;
-        }
+        return values;
     }
+
+//    public class SpzStatesManagerImpl implements SpzStatesManager {
+//
+//        public void create(Spzstates spzstates) {
+//        }
+//
+//        public void destroy(Integer id) throws NonexistentEntityException {
+//        }
+//
+//        public void edit(Spzstates spzstates) throws NonexistentEntityException, Exception {
+//        }
+//
+//        public Spzstates findSpzstates(Integer id) {
+//            return null;
+//        }
+//
+//        public List<Spzstates> findSpzstatesEntities() {
+//            return null;
+//        }
+//
+//        public List<Spzstates> findSpzstatesEntities(int maxResults, int firstResult) {
+//            return null;
+//        }
+//
+//        public EntityManager getEntityManager() {
+//            return null;
+//        }
+//
+//        public int getSpzstatesCount() {
+//            return 0;
+//        }
+//    }
     
 }
