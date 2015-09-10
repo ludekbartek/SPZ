@@ -5,7 +5,10 @@
  */
 package cz.dcb.support.web.entities;
 
+import cz.dcb.support.db.jpa.entities.Spzstate;
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -18,6 +21,9 @@ public class SPZWebEntity {
      private String kind;
      private String issuer;
      private String contactperson;
+     private String shortname;
+     private String analyst;
+     private String developer;
      private Date issuedate;
      private String requestdescription;
      private Date specDate;
@@ -29,6 +35,47 @@ public class SPZWebEntity {
      private Short priority;
      private String requesttype;
      private Date implementationacceptdate;
+     private Spzstate revisedRequest;
+     private List<Spzstate> history;
+
+    public Spzstate getRevisedRequest() {
+        return revisedRequest;
+    }
+
+    public void setRevisedRequest(Spzstate revisedRequest) {
+        this.revisedRequest = revisedRequest;
+    }
+     
+    public List<Spzstate> getHistory() {
+        return Collections.unmodifiableList(history);
+    }
+
+    public void setHistory(List<Spzstate> history) {
+        this.history = history;
+    }
+
+    public String getDeveloper() {
+        return developer;
+    }
+
+    public void setDeveloper(String developer) {
+        this.developer = developer;
+    }
+
+    public String getAnalyst() {
+        return analyst;
+    }
+
+    public void setAnalyst(String analyst) {
+        this.analyst = analyst;
+    }
+    public String getShortname() {
+        return shortname;
+    }
+
+    public void setShortname(String shorname) {
+        this.shortname = shorname;
+    }
 
     public Date getImplementationacceptdate() {
         return implementationacceptdate;
