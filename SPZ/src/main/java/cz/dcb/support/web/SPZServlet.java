@@ -11,11 +11,14 @@ import cz.dcb.support.db.jpa.controllers.SpzJpaController;
 import cz.dcb.support.db.jpa.controllers.SpzManager;
 import cz.dcb.support.db.jpa.controllers.SpzStateJpaController;
 import cz.dcb.support.db.jpa.controllers.SpzStateManager;
+import cz.dcb.support.db.jpa.controllers.SpzStatesJpaController;
+import cz.dcb.support.db.jpa.controllers.SpzStatesManager;
 import cz.dcb.support.db.jpa.controllers.UserJpaController;
 import cz.dcb.support.db.jpa.controllers.UserManager;
 import cz.dcb.support.db.jpa.entities.Spz;
 import cz.dcb.support.db.jpa.entities.SpzStates;
 import cz.dcb.support.db.jpa.entities.Spzstate;
+import cz.dcb.support.db.jpa.entities.Spzstates;
 import cz.dcb.support.web.entities.SPZWebEntity;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -200,8 +203,8 @@ public class SPZServlet extends HttpServlet {
         Integer id = getSpzId(request.getParameterMap());
         spz=manager.findSpz(id);
         request.setAttribute("spz", spz);
-        
-        switch(getCurrentState(spz)){
+        SpzStates currentState = getCurrentState(spz);
+        switch(currentState){
             case POSTED:
                 jspName="/editPost.jsp";
                 break;
@@ -459,7 +462,9 @@ public class SPZServlet extends HttpServlet {
     }
 
     private SpzStates getCurrentState(Spz spz) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        SpzStatesManager manager = new SpzStatesJpaController(emf);
+        Spzstate state = manager.getCurrentState(spz);
+        return SpzStates.values()[state.getCurrentstate()];
     }
 
 }
