@@ -217,5 +217,4 @@ public class Spzstate implements Serializable {
     public String toString() {
         return "cz.dcb.support.db.jpa.entities.Spzstate[ id=" + id + " ]";
     }
-    
 }
