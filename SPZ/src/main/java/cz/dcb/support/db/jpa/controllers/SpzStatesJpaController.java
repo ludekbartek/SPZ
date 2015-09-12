@@ -10,11 +10,17 @@ import cz.dcb.support.db.jpa.entities.Spz;
 import cz.dcb.support.db.jpa.entities.Spzstate;
 import cz.dcb.support.db.jpa.entities.Spzstates;
 import java.io.Serializable;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
+import javax.persistence.NoResultException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
@@ -23,7 +29,7 @@ import javax.persistence.criteria.Root;
  * @author bar
  */
 public class SpzStatesJpaController implements Serializable, SpzStatesManager {
-
+    private static final Logger logger=Logger.getLogger(SpzStateJpaController.class.getName());
     public SpzStatesJpaController(EntityManagerFactory emf) {
         this.emf = emf;
     }
@@ -159,4 +165,31 @@ public class SpzStatesJpaController implements Serializable, SpzStatesManager {
         }
         return states;
     }
+
+    @Override
+    public Spzstate getCurrentState(Spz spz) {
+        EntityManager em = getEntityManager();
+        Spzstate currentState = null;
+        Integer currentStateId = null;
+        try{
+            em.getTransaction().begin();
+            Query query = em.createQuery("select max(states.stateid) from Spzstates states where states.spzid=:spzid");
+            query.setParameter("spzid", spz.getId());
+            currentStateId = (Integer)query.getSingleResult();
+            query = em.createQuery("select state from Spzstate state where state.id=:id");
+            query.setParameter("id", currentStateId);
+            currentState = (Spzstate)query.getSingleResult();
+            em.getTransaction().commit();
+        }catch(NoResultException ex){
+            logger.log(Level.INFO,"No data found.",ex);
+            return null;
+        }
+        finally{
+            em.getTransaction().rollback();
+            em.close();
+        }
+        return currentState;
+    }
+
+    
 }
