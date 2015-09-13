@@ -182,10 +182,11 @@ public class SpzStatesJpaController implements Serializable, SpzStatesManager {
             em.getTransaction().commit();
         }catch(NoResultException ex){
             logger.log(Level.INFO,"No data found.",ex);
-            return null;
+            em.getTransaction().rollback();
+        }catch(Exception ex1){
+            em.getTransaction().rollback();
         }
         finally{
-            em.getTransaction().rollback();
             em.close();
         }
         return currentState;
