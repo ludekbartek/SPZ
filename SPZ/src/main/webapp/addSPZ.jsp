@@ -20,7 +20,7 @@ pri editaci pouze popisy (viz stara verze).
                shortname.value=reqnumber.value;
            }
        </script>
-        <style>
+       <style>
             h1{
                 text-align: center;
             }
