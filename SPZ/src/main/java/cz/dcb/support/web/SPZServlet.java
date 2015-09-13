@@ -48,6 +48,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.derby.drda.NetworkServerControl;
+import java.math.BigInteger;
 
 /**
  *
@@ -166,11 +167,19 @@ public class SPZServlet extends HttpServlet {
     private void addSpz(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         if(checkSpzParams(request.getParameterMap())){
             SpzManager manager= new SpzJpaController(emf);
+            SpzStateManager stateManager = new SpzStateJpaController(emf);
+            SpzStatesManager statesManager = new SpzStatesJpaController(emf);
             Spz spz = requestParamsToSpz(request.getParameterMap());
-            
+            Spzstate state = new Spzstate();
+            createNewState(state,spz);
             spz.setIssuedate(new GregorianCalendar().getTime());
             spz.setShortname(spz.getReqnumber());
             manager.create(spz);
+            createNewState(state, spz);
+            
+            stateManager.create(state);
+            Spzstates states = createSpzStates(spz,state);
+            statesManager.create(states);
             
             List<Spz> spzs = manager.findSpzEntities();
             request.setAttribute("spzs", spzs);
@@ -210,6 +219,7 @@ public class SPZServlet extends HttpServlet {
                 break;
             case NEW:
                 jspName="/editNew.jsp";
+                break;
             case ANALYLIS:
                 jspName="/editAnal.jsp";
                 break;
@@ -248,6 +258,7 @@ public class SPZServlet extends HttpServlet {
                 break;
             case INVOICED:
                 jspName = "/invoiced.jsp";
+                break;
             default:return;
               
         }
@@ -464,7 +475,24 @@ public class SPZServlet extends HttpServlet {
     private SpzStates getCurrentState(Spz spz) {
         SpzStatesManager manager = new SpzStatesJpaController(emf);
         Spzstate state = manager.getCurrentState(spz);
-        return SpzStates.values()[state.getCurrentstate()];
+        int stateId = state.getCurrentstate();
+        SpzStates vals[] = SpzStates.values();
+        return vals[stateId];
+    }
+
+    private void createNewState(Spzstate state, Spz spz) {
+        state.setIdate(new GregorianCalendar().getTime());
+        state.setCode(SpzStates.POSTED.toString());
+        state.setCurrentstate(SpzStates.POSTED.ordinal());
+       
+        state.setTs(BigInteger.valueOf(new GregorianCalendar().getTimeInMillis()));
+    }
+
+    private Spzstates createSpzStates(Spz spz, Spzstate state) {
+        Spzstates states= new Spzstates();
+        states.setSpzid(spz.getId());
+        states.setStateid(state.getId());
+        return states;
     }
 
 }
