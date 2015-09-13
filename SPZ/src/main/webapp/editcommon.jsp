@@ -9,11 +9,11 @@
                 <td class="label">Nazev:</td>
                 <td class="highligh-value"><c:out value="${spz.shortname}"/></td>
                 <td class="label">Typ:</td>
-                <td><c:out value="${spz.reqtype}"/></td>
+                <td><c:out value="${spz.requesttype}"/></td>
             </tr>
             <tr>
                 <td class="label">Zadal:</td>
-                <td><c:out value="${spz.issuer}"/>, <c:out value="{spz.issuedate}"/></td>
+                <td><!--<c:out value="{spz.issuer}"/>-->, <c:out value="{spz.issuedate}"/></td>
                 <td class="label">Kontakt</td>
                 <td><c:out value="${spz.contactperson}"/></td>
             </tr>
