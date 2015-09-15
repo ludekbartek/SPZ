@@ -1,5 +1,6 @@
 
-            <tr>
+            <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<tr>
                 <td class="label">Cislo:</td>
                 <td class="highlight-value"><c:out value="${spz.reqnumber}"/></td>
                 <td class="label">Priorita:</td>
@@ -13,7 +14,13 @@
             </tr>
             <tr>
                 <td class="label">Zadal:</td>
-                <td><!--<c:out value="{spz.issuer}"/>-->, <c:out value="{spz.issuedate}"/></td>
+                <td>
+            <c:choose>
+                <c:when test="${!empty spz.issuer}">
+                    <c:out value="${spz.issuer}"/>
+                </c:when>
+                <c:otherwise>Administrator</c:otherwise>
+            </c:choose>, <c:out value="${spz.issuedate}"/></td>
                 <td class="label">Kontakt</td>
                 <td><c:out value="${spz.contactperson}"/></td>
             </tr>
@@ -23,7 +30,7 @@
             </tr>
             <tr>
                 <td class="label">Analytik:</td>
-                <td colspan="3"><c:out value="${spz.analyst}"/></td>
+                <td colspan="3"><c:if test="${!empty spz.analyst}"><c:out value="${spz.analyst}"/></c:if></td>
             </tr>
             <tr>
                 <td class="label">Vyvojar</td>
