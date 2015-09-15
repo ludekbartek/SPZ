@@ -211,7 +211,8 @@ public class SPZServlet extends HttpServlet {
         SpzStateManager stateManager = new SpzStateJpaController(emf);
         Integer id = getSpzId(request.getParameterMap());
         spz=manager.findSpz(id);
-        request.setAttribute("spz", spz);
+        SPZWebEntity spzEnt = spzToEntity(spz);
+        request.setAttribute("spz", spzEnt);
         SpzStates currentState = getCurrentState(spz);
         switch(currentState){
             case POSTED:
@@ -427,30 +428,36 @@ public class SPZServlet extends HttpServlet {
 
     private List<SPZWebEntity> spzToEntities(List<Spz> spzs) {
         List<SPZWebEntity> entities = new ArrayList<>();
-        SpzIssuerManager issuerManager = new SpzIssuerJpaController(emf);
-        SpzStateManager stateManager = new SpzStateJpaController(emf);
-        UserManager userManger = new UserJpaController(emf);
         
         for(Spz spz:spzs){
-            SPZWebEntity entity;
-            entity = new SPZWebEntity();
-            entity.setId(spz.getId());
-            entity.setReqnumber(spz.getReqnumber());
-            entity.setIssuedate(spz.getIssuedate());
-            entity.setContactperson(spz.getContactperson());
-            entity.setReqnumber(spz.getReqnumber());
-            entity.setRequesttype(spz.getRequesttype());
-            Integer spzIssuerId = issuerManager.findSpzIssuerIdBySpzId(spz.getId());
-            if(spzIssuerId > -1){
-                String issuerName = userManger.findUser(spzIssuerId).getName();
-                entity.setIssuer(issuerName);
-            }
-            entity.setRequestdescription(spz.getRequestdescription());
-            entity.setKind(spz.getRequesttype());
-            entity.setDate(getLastChangeDate(spz.getId(),stateManager));
+            SPZWebEntity entity = spzToEntity(spz);
             entities.add(entity);
         }
         return entities;
+    }
+
+    private SPZWebEntity spzToEntity(Spz spz) {
+        SpzIssuerManager issuerManager = new SpzIssuerJpaController(emf);
+        SpzStateManager stateManager = new SpzStateJpaController(emf);
+        UserManager userManger = new UserJpaController(emf);
+      
+        SPZWebEntity entity;
+        entity = new SPZWebEntity();
+        entity.setId(spz.getId());
+        entity.setReqnumber(spz.getReqnumber());
+        entity.setIssuedate(spz.getIssuedate());
+        entity.setContactperson(spz.getContactperson());
+        entity.setReqnumber(spz.getReqnumber());
+        entity.setRequesttype(spz.getRequesttype());
+        Integer spzIssuerId = issuerManager.findSpzIssuerIdBySpzId(spz.getId());
+        if(spzIssuerId > -1){
+            String issuerName = userManger.findUser(spzIssuerId).getName();
+            entity.setIssuer(issuerName);
+        }
+        entity.setRequestdescription(spz.getRequestdescription());
+        entity.setKind(spz.getRequesttype());
+        entity.setDate(getLastChangeDate(spz.getId(),stateManager));
+        return entity;
     }
 
     private Date getLastChangeDate(Integer id,SpzStateManager manager) {
