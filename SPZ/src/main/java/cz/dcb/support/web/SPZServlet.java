@@ -19,7 +19,9 @@ import cz.dcb.support.db.jpa.entities.Spz;
 import cz.dcb.support.db.jpa.entities.SpzStates;
 import cz.dcb.support.db.jpa.entities.Spzstate;
 import cz.dcb.support.db.jpa.entities.Spzstates;
+import cz.dcb.support.db.jpa.entities.User;
 import cz.dcb.support.web.entities.SPZWebEntity;
+import cz.dcb.support.web.entities.SpzStateWebEntity;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.math.BigInteger;
@@ -182,7 +184,7 @@ public class SPZServlet extends HttpServlet {
             statesManager.create(states);
             
             List<Spz> spzs = manager.findSpzEntities();
-            request.setAttribute("spzs", spzs);
+            request.setAttribute("spzs", spzToEntities(spzs));
             /*request.setAttribute(null, spz);
             request.getRequestDispatcher("/listSPZ.jsp").forward(request,response);
             */
@@ -439,8 +441,10 @@ public class SPZServlet extends HttpServlet {
     private SPZWebEntity spzToEntity(Spz spz) {
         SpzIssuerManager issuerManager = new SpzIssuerJpaController(emf);
         SpzStateManager stateManager = new SpzStateJpaController(emf);
+        SpzStatesManager statesManager = new SpzStatesJpaController(emf);
         UserManager userManger = new UserJpaController(emf);
-      
+        List<SpzStateWebEntity> history;
+        
         SPZWebEntity entity;
         entity = new SPZWebEntity();
         entity.setId(spz.getId());
@@ -449,6 +453,12 @@ public class SPZServlet extends HttpServlet {
         entity.setContactperson(spz.getContactperson());
         entity.setReqnumber(spz.getReqnumber());
         entity.setRequesttype(spz.getRequesttype());
+        Spzstate current = statesManager.getCurrentState(spz);
+        User user = userManger.findUserByLogin(current.getIssuerLogin());
+        entity.setIssuer((user!=null?user.getLogin():"Nenastaven"));
+        history = spzStatesToSpzStateWebEntities(statesManager.findSpzstates(spz));
+        entity.setHistory(history);
+        
         Integer spzIssuerId = issuerManager.findSpzIssuerIdBySpzId(spz.getId());
         if(spzIssuerId > -1){
             String issuerName = userManger.findUser(spzIssuerId).getName();
@@ -500,6 +510,33 @@ public class SPZServlet extends HttpServlet {
         states.setSpzid(spz.getId());
         states.setStateid(state.getId());
         return states;
+    }
+
+    private List<SpzStateWebEntity> spzStatesToSpzStateWebEntities(List<Spzstate> spzStates) {
+        List<SpzStateWebEntity> result = new ArrayList<>();
+        for(Spzstate state:spzStates){
+            SpzStateWebEntity entity = spzStateToSpzWebEntity(state);
+            result.add(entity);
+        }
+        
+        return result;
+    }
+
+    private SpzStateWebEntity spzStateToSpzWebEntity(Spzstate state) {
+        UserManager userMan = new UserJpaController(emf);
+        SpzStateWebEntity entity = new SpzStateWebEntity();
+        entity.setId(state.getId());
+        entity.setAssumedManDays(state.getAssumedmandays());
+        entity.setMandays(state.getMandays());
+        entity.setClassType(state.getClasstype());
+        entity.setCode(state.getCode());
+        entity.setCurrentState(Long.valueOf(state.getCurrentstate()));
+        entity.setIssueDate(state.getIdate());
+        entity.setReleaseNotes(state.getReleasenotes());
+        entity.setRevisedRequestDescription(state.getRevisedrequestdescription());
+        entity.setSolutionDescription(state.getSolutiondescription());
+        entity.setIssuer(userMan.findUserByLogin(state.getIssuerLogin()));
+        return entity;
     }
 
 }
