@@ -7,15 +7,15 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <c:forEach items="${spz.history}" var="item">
-    <div class="state-header">Registrovan <c:out value="${item.idate}"/>
+    <div class="state-header">Registrovan <c:out value="${item.issueDate}"/>
          <c:out value="${item.issuer}"/>
     </div>
          <div  class="state-body">
              <c:out value="${item.issuer}"/>
-             (<c:out value="${item.idate}"/>)
+             (<c:out value="${item.issueDate}"/>)
          </div>
          <div class="body">
-             <c:out value="${item.reviseddescription}"/>
+             <c:out value="${item.revisedRequestDescription}"/>
          </div>
          <form action="${pageContext.request.contextPath}/SPZServlet/removeState">
              <input type="hidden" name="spzstateid" value="${item.id}"/>
