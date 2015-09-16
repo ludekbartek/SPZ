@@ -157,7 +157,7 @@ public class SpzStatesJpaController implements Serializable, SpzStatesManager {
         List<Spzstate> states = null;
         try{
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            Query query = em.createQuery("select state from Spzstate state where state.id in (select stateid from spzstates states where states.spzid=:spzid)");
+            Query query = em.createQuery("select state from Spzstate state where state.id in (select states.stateid from Spzstates states where states.spzid=:spzid)");
             query.setParameter("spzid", spz.getId());
             states = (List<Spzstate>)query.getResultList();
         }finally{
