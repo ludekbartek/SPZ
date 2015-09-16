@@ -36,7 +36,7 @@ public class SPZWebEntity {
      private String requesttype;
      private Date implementationacceptdate;
      private Spzstate revisedRequest;
-     private List<Spzstate> history;
+     private List<SpzStateWebEntity> history;
 
     public Spzstate getRevisedRequest() {
         return revisedRequest;
@@ -46,11 +46,11 @@ public class SPZWebEntity {
         this.revisedRequest = revisedRequest;
     }
      
-    public List<Spzstate> getHistory() {
+    public List<SpzStateWebEntity> getHistory() {
         return Collections.unmodifiableList(history);
     }
 
-    public void setHistory(List<Spzstate> history) {
+    public void setHistory(List<SpzStateWebEntity> history) {
         this.history = history;
     }
 
