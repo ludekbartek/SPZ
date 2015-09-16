@@ -37,6 +37,6 @@ public interface SpzStatesManager {
     
     List<Spzstate> findSpzstates(Spz spz);
 
-    public Spzstate getCurrentState(Spz spz);
+    Spzstate getCurrentState(Spz spz);
     
 }
