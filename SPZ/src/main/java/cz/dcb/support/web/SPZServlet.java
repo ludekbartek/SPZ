@@ -196,7 +196,7 @@ public class SPZServlet extends HttpServlet {
             request.setAttribute("action","add");
             Spz spz = requestParamsToSpz(request.getParameterMap());
             if(spz!=null){
-                request.setAttribute("spz", spz);
+                request.setAttribute("spz", spzToEntity(spz));
                 request.setAttribute("error", "Nektera polozka chybi nebo ma neplatnou hodnotu" );
             }
             request.getRequestDispatcher("/addSPZ.jsp").forward(request,response);
