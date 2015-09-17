@@ -1,4 +1,4 @@
-
+            <%@taglib prefix="f" uri="http://java.sun.com/jsp/jstl/fmt" %>
             <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <tr>
                 <td class="label">Cislo:</td>
@@ -20,7 +20,9 @@
                     <c:out value="${spz.issuer}"/>
                 </c:when>
                 <c:otherwise>Administrator</c:otherwise>
-            </c:choose>, <c:out value="${spz.issuedate}"/></td>
+            </c:choose>, <!--<c:out value="${spz.issuedate}"/>-->
+            <f:formatDate dateStyle="LONG" type="both" timeStyle="SHORT" value="${spz.issuedate}"/> 
+                </td>
                 <td class="label">Kontakt</td>
                 <td><c:out value="${spz.contactperson}"/></td>
             </tr>

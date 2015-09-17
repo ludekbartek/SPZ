@@ -6,13 +6,16 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="f" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <c:forEach items="${spz.history}" var="item">
-    <div class="state-header">Registrovan <c:out value="${item.issueDate}"/>
+    <div class="state-header">Registrovan <f:formatDate type="both" dateStyle="LONG" timeStyle="short" value="${item.issueDate}"/>
          <c:out value="${item.issuer}"/>
     </div>
          <div  class="state-body">
              <c:out value="${item.issuer}"/>
-             (<c:out value="${item.issueDate}"/>)
+             (<f:formatDate type="both" dateStyle="LONG" timeStyle="SHORT" value="${item.issueDate}"/>)
+                         
+             <!--(<c:out value="${item.issueDate}"/>)-->
          </div>
          <div class="body">
              <c:out value="${item.revisedRequestDescription}"/>
