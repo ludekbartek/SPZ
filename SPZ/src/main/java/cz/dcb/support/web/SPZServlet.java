@@ -5,6 +5,8 @@
  */
 package cz.dcb.support.web;
 
+import cz.dcb.support.db.jpa.controllers.AttachmentJpaController;
+import cz.dcb.support.db.jpa.controllers.AttachmentManager;
 import cz.dcb.support.db.jpa.controllers.SpzIssuerJpaController;
 import cz.dcb.support.db.jpa.controllers.SpzIssuerManager;
 import cz.dcb.support.db.jpa.controllers.SpzJpaController;
@@ -15,6 +17,7 @@ import cz.dcb.support.db.jpa.controllers.SpzStatesJpaController;
 import cz.dcb.support.db.jpa.controllers.SpzStatesManager;
 import cz.dcb.support.db.jpa.controllers.UserJpaController;
 import cz.dcb.support.db.jpa.controllers.UserManager;
+import cz.dcb.support.db.jpa.entities.Attachment;
 import cz.dcb.support.db.jpa.entities.Spz;
 import cz.dcb.support.db.jpa.entities.SpzStates;
 import cz.dcb.support.db.jpa.entities.Spzstate;
@@ -22,14 +25,13 @@ import cz.dcb.support.db.jpa.entities.Spzstates;
 import cz.dcb.support.db.jpa.entities.User;
 import cz.dcb.support.web.entities.SPZWebEntity;
 import cz.dcb.support.web.entities.SpzStateWebEntity;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.PrintWriter;
-import java.math.BigInteger;
 import java.text.DateFormat;
-import java.text.FieldPosition;
 import java.text.ParseException;
-import java.text.ParsePosition;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -39,42 +41,54 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.annotation.security.DeclareRoles;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.HttpConstraint;
-import javax.servlet.annotation.ServletSecurity;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.derby.drda.NetworkServerControl;
 import java.math.BigInteger;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import javax.servlet.annotation.MultipartConfig;
+import javax.servlet.http.Part;
 
 /**
  *
  * @author bar
  */
 @WebServlet(urlPatterns = {"/SPZServlet","/SPZServlet/*"})
+@MultipartConfig(location = "/tmp")
 //@WebServlet(name = "SPZServlet", urlPatterns = {"/SPZServlet/*"})
 /*@ServletSecurity(
  @HttpConstraint(transportGuarantee = ServletSecurity.TransportGuarantee.CONFIDENTIAL,
          rolesAllowed = {"user"}))
 @DeclareRoles({"admin","user"})*/
 public class SPZServlet extends HttpServlet {
-
-    private EntityManagerFactory emf = Persistence.createEntityManagerFactory("support_JPA");
+    private static final Logger LOGGER = Logger.getLogger(SPZServlet.class.getName());
+    private final EntityManagerFactory emf = Persistence.createEntityManagerFactory("support_JPA");
     @Override
     public void init(){
         try {
             NetworkServerControl serverControl = new NetworkServerControl();
-                Logger.getLogger(SPZServlet.class.getName()).log(Level.INFO,"Starting derby");
+                LOGGER.log(Level.INFO,"Starting derby");
                 PrintWriter log = new PrintWriter("suppport-derby.log");
                 serverControl.start(log);
         } catch (Exception ex) {
-            Logger.getLogger(SPZServlet.class.getName()).log(Level.SEVERE, null, ex);
+            LOGGER.log(Level.SEVERE, "Derby start failed:", ex);
         }
+        Path attachDir = Paths.get("./attachments");
+        if(!Files.exists(attachDir)){
+            try {
+                Files.createDirectory(attachDir);
+            } catch (IOException ex) {
+                Logger.getLogger(SPZServlet.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+            
     }
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -137,7 +151,11 @@ public class SPZServlet extends HttpServlet {
                             break;
                 case "/editspz":editSpz(request,response);
                             break;
+                case "/updatespz":updateSPZ(request,response);
+                            break;
                 case "/adduser":addUser(request,response);
+                            break;
+                case "/addnote":addNote(request,response);
                             break;
                 case "/edituser":editUser(request,response);
                             break;
@@ -149,8 +167,13 @@ public class SPZServlet extends HttpServlet {
                             break;
                 case "/editproject":editProject(request,response);
                             break;
-                default:break;
+                default:
+                    StringBuilder errorMesg = new StringBuilder("Invalid action").append(action).append(". Using list instead.");
+                    LOGGER.log(Level.INFO,errorMesg.toString());
+                    listSpz(request,response);
+                    
             }
+            
     }
     /**
      * Returns a short description of the servlet.
@@ -384,7 +407,7 @@ public class SPZServlet extends HttpServlet {
         try {
             value = formater.parse(strVal);
         } catch (ParseException ex) {
-            Logger.getLogger(SPZServlet.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(SPZServlet.class.getName()).log(Level.SEVERE, String.format("Invalid date %s format.",strVal), ex);
             return null;
         }
         return value;
@@ -537,6 +560,140 @@ public class SPZServlet extends HttpServlet {
         entity.setSolutionDescription(state.getSolutiondescription());
         entity.setIssuer(userMan.findUserByLogin(state.getIssuerLogin()));
         return entity;
+    }
+
+    private void updateSPZ(HttpServletRequest request, HttpServletResponse response) throws IOException,ServletException {
+        Spz spz = requestParamsToSpz(request.getParameterMap());
+        SpzManager manager = new SpzJpaController(emf);
+        try {
+            manager.edit(spz);
+        } catch (Exception ex) {
+            LOGGER.log(Level.SEVERE,"Error editing SPZ: ",ex);
+            request.setAttribute("error", "Chyba pri uprave SPZ. Vice viz log.");
+            List<SPZWebEntity> spzs = spzToEntities(manager.findSpzEntities());
+            request.setAttribute("spzs", spzs);
+            request.getRequestDispatcher("/listSPZ.jsp").forward(request, response);
+            
+        }
+    }
+
+    private void addNote(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        AttachmentManager manager = new AttachmentJpaController(emf);
+        Map<String,String[]> params = request.getParameterMap();
+        String fileName;
+        InputStream in = null;
+        Part part1 = request.getPart("soubor1"),
+             part2 = request.getPart("soubor2"),
+             part3 = request.getPart("soubor3");
+        
+        if(part1 != null){
+            in = part1.getInputStream();
+            fileName = new StringBuilder("attachments/").append(part1.getSubmittedFileName()).toString();
+            try{
+                uploadFile(request, response, manager, fileName, in);
+            }catch(ServletException| IOException ex){
+                displayError(request, fileName, ex, response);
+            }
+        }
+        
+        if(part2!=null){
+            fileName = new StringBuilder("attachments/").append(part2.getSubmittedFileName()).toString();
+            in = part2.getInputStream();
+            try{
+                uploadFile(request,response,manager,fileName,in);
+            }catch(ServletException | IOException ex){
+                displayError(request, fileName, ex, response);
+            }
+        }
+        
+        if(part3!=null){
+            in = part3.getInputStream();
+            fileName = new StringBuilder("attachments/").append(part3.getSubmittedFileName()).toString();
+            try{
+                uploadFile(request,response,manager,fileName,in);
+            }catch(ServletException |IOException ex){
+                displayError(request, fileName, ex, response);
+            }
+            
+        }
+        SpzManager spzManager = new SpzJpaController(emf);
+        List<Spz> spzs = spzManager.findSpzEntities();
+        request.setAttribute("spzs", spzs);
+        request.getRequestDispatcher("/editPost.jsp").forward(request, response);
+        
+    }
+
+    private void displayError(HttpServletRequest request, String fileName, final java.lang.Exception ex, HttpServletResponse response) throws IOException, ServletException {
+        setEditAttributes(request);
+        request.setAttribute("err", String.format("Error loading file %s: %s", fileName, ex));
+        request.getRequestDispatcher("/editPost.jsp").forward(request, response);
+    }
+
+    private void setEditAttributes(HttpServletRequest request) {
+        if(request.getParameterMap().containsKey("desc")){
+            request.setAttribute("desc",request.getParameter("desc"));
+        }
+        if(request.getParameterMap().containsKey("soubor1")){
+            request.setAttribute("soubor1", request.getParameter("soubor1"));
+        }
+        if(request.getParameterMap().containsKey("soubor2")){
+            request.setAttribute("soubor2", request.getParameter("soubor2"));
+        }
+        if(request.getParameterMap().containsKey("soubor3")){
+            request.setAttribute("soubor3", request.getParameter("soubor3"));
+        }
+        if(request.getParameterMap().containsKey("ext")){
+            request.setAttribute("ext", request.getParameter("ext"));
+        }
+    }
+
+    private void uploadFile(HttpServletRequest request, HttpServletResponse response, AttachmentManager manager,String fileParam, InputStream in) throws IOException, ServletException {
+       // String fileName = new StringBuilder("attachments/").append(fileParam).toString();
+        try{
+            uploadFile(request,response,fileParam,in);
+        }catch(ServletException | IOException ex){
+            LOGGER.log(Level.SEVERE,"Error saving attachment: ",ex);
+            /*request.setAttribute("err", "Error loading file "+fileParam+": "+ex);
+            request.getRequestDispatcher("/editPost.jsp").forward(request, response);*/
+            return;
+        }
+        Attachment file = requestToAttachment(request);
+        file.setContent(fileParam);
+        file.setType(Files.probeContentType(Paths.get(fileParam)));
+        manager.create(file);
+    }
+    
+    private void uploadFile(HttpServletRequest request, HttpServletResponse response,String fileName, InputStream in) throws IOException, ServletException {
+            
+            OutputStream out = null;
+            int count = 0;
+            out = new FileOutputStream(fileName);
+            
+            try{
+                do{
+                    byte[] data = new byte[1024];
+                    count = in.read(data);
+                    if(count!=0){
+                        out.write(data);
+                    }
+                }while(count == 1024);
+            }finally{
+                try{
+                    out.close();
+                }catch(IOException ex){
+                    LOGGER.log(Level.SEVERE,String.format("Unable to close output file %s.",fileName));
+                }
+
+            }
+            
+    }
+
+    private Attachment requestToAttachment(HttpServletRequest request) {
+        Attachment attachment = new Attachment();
+        attachment.setDate(new GregorianCalendar().getTime());
+        attachment.setTs(BigInteger.valueOf(new GregorianCalendar().getTimeInMillis()));
+        
+        return attachment;
     }
 
 }
