@@ -53,6 +53,8 @@ import java.math.BigInteger;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Collections;
+import java.util.Comparator;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.Part;
 
@@ -74,9 +76,9 @@ public class SPZServlet extends HttpServlet {
     public void init(){
         try {
             NetworkServerControl serverControl = new NetworkServerControl();
-                LOGGER.log(Level.INFO,"Starting derby");
-                PrintWriter log = new PrintWriter("suppport-derby.log");
-                serverControl.start(log);
+            LOGGER.log(Level.INFO,"Starting derby");
+            PrintWriter log = new PrintWriter("suppport-derby.log");
+            serverControl.start(log);
         } catch (Exception ex) {
             LOGGER.log(Level.SEVERE, "Derby start failed:", ex);
         }
@@ -116,10 +118,8 @@ public class SPZServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String action = request.getPathInfo();
-        if(action.compareToIgnoreCase("/listSPZ")==0){
-            listSpz(request, response);
-        }
+        request.setAttribute("error", "Pouzita metoda get misto post.");
+        listSpz(request, response);
     }
 
     /**
@@ -166,6 +166,8 @@ public class SPZServlet extends HttpServlet {
                 case "/addproject":addProject(request,response);
                             break;
                 case "/editproject":editProject(request,response);
+                            break;
+                case "/delete":deleteSpz(request,response);
                             break;
                 default:
                     StringBuilder errorMesg = new StringBuilder("Invalid action").append(action).append(". Using list instead.");
@@ -694,6 +696,106 @@ public class SPZServlet extends HttpServlet {
         attachment.setTs(BigInteger.valueOf(new GregorianCalendar().getTimeInMillis()));
         
         return attachment;
+    }
+
+    private void deleteSpzState(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        Map<String,String[]> params = request.getParameterMap();
+        if(!params.containsKey("spzid")){
+            request.setAttribute("error", "Missing spz id to be able to delete last spz state.");
+            request.getRequestDispatcher("/editPost.jsp").forward(request, response);
+            return;
+
+        }
+        int spzId = Integer.parseInt(params.get("spzid")[0]);
+        SpzManager manager = new SpzJpaController(emf);
+        SpzStateManager stateManager = new SpzStateJpaController(emf);
+        SpzStatesManager statesManager = new SpzStatesJpaController(emf);
+        Spz spz = manager.findSpz(spzId);
+        List<Spzstate> spzStates = statesManager.findSpzstates(spz);
+        Collections.sort(spzStates,new Comparator<Spzstate>() {
+
+            @Override
+            public int compare(Spzstate o1, Spzstate o2) {
+                return o2.getIdate().compareTo(o1.getIdate());
+            }
+        });
+        Spzstate previous = spzStates.get(1);
+        previous.setCurrentstate(0);
+        try {
+            stateManager.edit(previous);
+        } catch (Exception ex) {
+            Logger.getLogger(SPZServlet.class.getName()).log(Level.SEVERE, "Error deleting current state flag.", ex);
+            
+            request.setAttribute("error", "Nepodarilo se zrusit priznak aktualniho stavu.");
+            listSpz(request, response);
+            return;
+        }
+        previous.setIdate(new GregorianCalendar().getTime());
+        Spzstates newState = new Spzstates();
+        newState.setSpzid(spzId);
+        previous.setCurrentstate(1);
+        stateManager.create(previous);
+        newState.setStateid(previous.getId());
+        statesManager.create(newState);
+        listSpz(request, response);
+    }
+
+    private void deleteSpz(HttpServletRequest request, HttpServletResponse response) {
+        SpzManager spzManager = new SpzJpaController(emf);
+        SpzStateManager stateManager = new SpzStateJpaController(emf);
+        SpzStatesManager statesManager = new SpzStatesJpaController(emf);
+        
+        String strSpzId = request.getParameter("spzid");
+        Integer spzId = null;
+        try{
+            spzId = Integer.parseInt(strSpzId);
+        }catch(NumberFormatException nfe){
+            LOGGER.log(Level.SEVERE,"SPZ id is not a valid number.",nfe);
+            request.setAttribute("error", "ID spz neni cislo.");
+            try {
+                editSpz(request, response);
+            } catch (ServletException | IOException ex) {
+                Logger.getLogger(SPZServlet.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        Spz spz = spzManager.findSpz(spzId);
+        Spzstate currentState = stateManager.getCurrentState(spz);
+        currentState.setCurrentstate(0);
+        try {
+            stateManager.edit(currentState);
+        } catch (Exception ex) {
+            Logger.getLogger(SPZServlet.class.getName()).log(Level.SEVERE, "Unable to remove current state flag.", ex);
+            request.setAttribute("error", "Nelze zmenit priznak aktualniho stavu.");
+            try {
+                listSpz(request, response);
+            } catch (ServletException | IOException ex1) {
+                Logger.getLogger(SPZServlet.class.getName()).log(Level.SEVERE, null, ex1);
+                return;
+            }
+        }
+        Spzstate spzState = new Spzstate();
+        spzState.setAssumedmandays(currentState.getAssumedmandays());
+        spzState.setClasstype(currentState.getClasstype());
+        spzState.setCode(currentState.getCode());
+        spzState.setCurrentstate(1);
+        spzState.setAssumedmandays(0.0);
+        spzState.setIdate(currentState.getIdate());
+        spzState.setIssuerLogin(currentState.getIssuerLogin());
+        spzState.setMandays(currentState.getMandays());
+        spzState.setReleasenotes(currentState.getReleasenotes());
+        spzState.setRevisedrequestdescription(currentState.getRevisedrequestdescription());
+        spzState.setTs(BigInteger.valueOf(new GregorianCalendar().getTimeInMillis()));
+        stateManager.create(spzState);
+        
+        Spzstates states = new Spzstates();
+        states.setSpzid(spzId);
+        states.setStateid(spzState.getId());
+        statesManager.create(states);
+        try {
+            listSpz(request, response);
+        } catch (ServletException | IOException ex) {
+            Logger.getLogger(SPZServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
 }
