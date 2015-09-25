@@ -169,6 +169,8 @@ public class SPZServlet extends HttpServlet {
                             break;
                 case "/delete":deleteSpz(request,response);
                             break;
+                case "/removestate":deleteSpzState(request,response);
+                            break;
                 default:
                     StringBuilder errorMesg = new StringBuilder("Invalid action").append(action).append(". Using list instead.");
                     LOGGER.log(Level.INFO,errorMesg.toString());
@@ -719,21 +721,32 @@ public class SPZServlet extends HttpServlet {
                 return o2.getIdate().compareTo(o1.getIdate());
             }
         });
-        Spzstate previous = spzStates.get(1);
-        previous.setCurrentstate(0);
-        try {
-            stateManager.edit(previous);
-        } catch (Exception ex) {
-            Logger.getLogger(SPZServlet.class.getName()).log(Level.SEVERE, "Error deleting current state flag.", ex);
+        Spzstate previous = null;
+        if(spzStates.size()>1){
+            previous = spzStates.get(1);
+            previous.setCurrentstate(0);
+            previous.setIdate(new GregorianCalendar().getTime());
+            try {
+                stateManager.edit(previous);
+            } catch (Exception ex) {
+                Logger.getLogger(SPZServlet.class.getName()).log(Level.SEVERE, "Error deleting current state flag.", ex);
             
-            request.setAttribute("error", "Nepodarilo se zrusit priznak aktualniho stavu.");
-            listSpz(request, response);
-            return;
+                request.setAttribute("error", "Nepodarilo se zrusit priznak aktualniho stavu.");
+                listSpz(request, response);
+                return;
+            }
         }
-        previous.setIdate(new GregorianCalendar().getTime());
         Spzstates newState = new Spzstates();
         newState.setSpzid(spzId);
-        previous.setCurrentstate(1);
+        if(previous!=null){
+            previous.setCurrentstate(1);
+        }else{
+            previous = new Spzstate();
+            previous.setAssumedmandays(0.0);
+            previous.setCurrentstate(SpzStates.CANCELED.ordinal());
+            previous.setIdate(new GregorianCalendar().getTime());
+            previous.setTs(BigInteger.valueOf(new GregorianCalendar().getTimeInMillis()));
+        }
         stateManager.create(previous);
         newState.setStateid(previous.getId());
         statesManager.create(newState);
