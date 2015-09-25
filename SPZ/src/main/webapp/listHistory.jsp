@@ -20,7 +20,7 @@
          <div class="body">
              <c:out value="${item.revisedRequestDescription}"/>
          </div>
-         <form action="${pageContext.request.contextPath}/SPZServlet/removeState">
+         <form action="${pageContext.request.contextPath}/SPZServlet/removeState" method="post">
              <input type="hidden" name="spzstateid" value="${item.id}"/>
              <input type="hidden" name="spzid" value="${spz.id}"/>
              <input type="submit" value="smazat posledni stav"/>
