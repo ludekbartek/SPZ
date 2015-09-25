@@ -15,6 +15,11 @@
     </head>
     <body>
         <h1>System servisni podpory</h1>
+        <c:if test="${! empty error}">
+            <div id="erorr" style="background-color: yellow;border-color: red;">
+                <c:out value="${error}"/>
+            </div>
+        </c:if>
         <div id="heading" style="width: 100%">
             <span class="actions" style="float:left;">
            
