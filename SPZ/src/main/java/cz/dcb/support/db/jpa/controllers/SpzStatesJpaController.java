@@ -193,5 +193,4 @@ public class SpzStatesJpaController implements Serializable, SpzStatesManager {
         return currentState;
     }
 
-    
 }

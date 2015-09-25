@@ -6,10 +6,13 @@
 package cz.dcb.support.db.jpa.controllers;
 
 import cz.dcb.support.db.jpa.controllers.exceptions.NonexistentEntityException;
+import cz.dcb.support.db.jpa.entities.Spz;
 import cz.dcb.support.db.jpa.entities.Spzstate;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
@@ -158,5 +161,25 @@ public class SpzStateJpaController implements Serializable, SpzStateManager {
         }
         return date;
     }
-    
+
+    @Override
+    public Spzstate getCurrentState(Spz spz) {
+        EntityManager em = getEntityManager();
+        Spzstate state = null;
+        try{
+            em.getTransaction().begin();
+            Query query=em.createQuery("select SPZSTATE from Spzstate SPZSTATE where SPZSTATE.id in (select spzstates.id from Spzstates spzstates where spzstates.spzid = :spzid) and SPZSTATE.currentstate=1");
+            query.setParameter("spzid", spz.getId());
+            state = (Spzstate)query.getSingleResult();
+            em.getTransaction().commit();
+        }catch(Exception ex){
+            Logger.getAnonymousLogger().log(Level.SEVERE,"Error selecting current state: ",ex);
+            em.getTransaction().rollback();
+        }
+        finally{
+            em.close();
+        }
+        return state;
+    }
+
 }
