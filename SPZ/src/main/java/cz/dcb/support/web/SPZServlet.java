@@ -284,7 +284,7 @@ public class SPZServlet extends HttpServlet {
                 jspName = "/confirmed.jsp";
                 break;
             case CANCELED:
-                jspName = "/canceled.jsp";
+                jspName = "/editCanceled.jsp";
                 break;
             case INVOICED:
                 jspName = "/invoiced.jsp";
@@ -728,6 +728,7 @@ public class SPZServlet extends HttpServlet {
             previous.setIdate(new GregorianCalendar().getTime());
             try {
                 stateManager.edit(previous);
+                
             } catch (Exception ex) {
                 Logger.getLogger(SPZServlet.class.getName()).log(Level.SEVERE, "Error deleting current state flag.", ex);
             
@@ -750,7 +751,10 @@ public class SPZServlet extends HttpServlet {
         stateManager.create(previous);
         newState.setStateid(previous.getId());
         statesManager.create(newState);
-        listSpz(request, response);
+        request.setAttribute("spz", spz);
+        request.setAttribute("state", previous);
+        request.getRequestDispatcher("/editDeleted.jsp").forward(request, response);
+        //listSpz(request, response);
     }
 
     private void deleteSpz(HttpServletRequest request, HttpServletResponse response) {
