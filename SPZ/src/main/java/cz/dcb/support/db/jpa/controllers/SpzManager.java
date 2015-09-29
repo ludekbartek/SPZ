@@ -9,6 +9,7 @@ import cz.dcb.support.db.jpa.controllers.exceptions.NonexistentEntityException;
 import cz.dcb.support.db.jpa.entities.Spz;
 import java.util.List;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 
 /**
  *
@@ -31,5 +32,7 @@ public interface SpzManager {
     EntityManager getEntityManager();
 
     int getSpzCount();
+
+    public void create(Spz spz, EntityManager manager);
     
 }

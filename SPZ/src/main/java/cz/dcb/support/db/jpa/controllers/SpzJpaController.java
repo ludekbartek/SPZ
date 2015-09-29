@@ -13,6 +13,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
+import javax.persistence.EntityTransaction;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
@@ -141,6 +142,11 @@ public class SpzJpaController implements Serializable, SpzManager {
         } finally {
             em.close();
         }
+    }
+
+    @Override
+    public void create(Spz spz,EntityManager em) {
+        em.persist(spz);
     }
     
 }
