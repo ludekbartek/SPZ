@@ -6,12 +6,12 @@
 package cz.dcb.support.db.jpa.entities;
 
 /**
- *
+ * States the SPZ goes through
  * @author bar
  */
 public enum SpzStates {
-    POSTED, NEW, ANALYLIS, REFINE, SPECIFIED, IMPLEMENTATION, DCB_ACCEPTED, 
+    POSTED, NEW, ANALYSIS, 
+    REFINE, SPECIFIED, IMPLEMENTATION, DCB_ACCEPTED, 
     RELEASED, IMPLEMENTATION_REFINE, RE_IMPLEMENTATION, RE_ANALYSIS, 
     RECLAIMED, CONFIRMED, CANCELED, INVOICED
-    
 }
