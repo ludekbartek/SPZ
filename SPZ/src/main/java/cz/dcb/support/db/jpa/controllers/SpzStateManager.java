@@ -11,6 +11,7 @@ import cz.dcb.support.db.jpa.entities.Spzstate;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 
 /**
  *
@@ -37,5 +38,7 @@ public interface SpzStateManager {
     Date getLastChange(Integer id);
 
     public Spzstate getCurrentState(Spz spz);
+
+    public void create(Spzstate state,EntityManager em);
 
 }
