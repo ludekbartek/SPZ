@@ -12,6 +12,7 @@ import cz.dcb.support.db.jpa.entities.Spzstate;
 import cz.dcb.support.db.jpa.entities.Spzstates;
 import java.util.List;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 
 /**
  *
@@ -38,5 +39,7 @@ public interface SpzStatesManager {
     List<Spzstate> findSpzstates(Spz spz);
 
     Spzstate getCurrentState(Spz spz);
+
+    public void create(Spzstates states, EntityManager em);
     
 }
