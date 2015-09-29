@@ -39,7 +39,7 @@
             <span class='left'>
                 <span class="label">Název:</span>
                 <span class="highlight-value">
-                    <c:out value="${spz.name}"/>
+                    <c:out value="${spz.reqnumber}"/>
                 </span>
             </span>            
             
@@ -48,14 +48,14 @@
                     Typ:
                 </span>
                 <span class="highlight-value">
-                    <c:out value="${spz.type}"/>
+                    <c:out value="${spz.kind}"/>
                 </span>
             </span>
         </div>
         <div>
             <span class="left">
                 <span class="label">
-                    Zadal
+                    Zadal:
                 </span>
                 <span class="value">
                     <c:out value="${spz.issuer}"/><br/>
@@ -63,14 +63,14 @@
                 </span>
             </span>
             <span class="center">
-                <span class="label">Zadal</span>
-                <span class="value">${spz.contact}</span>
+                <span class="label">Zadal:</span>
+                <span class="value">${spz.contactperson}</span>
             </span>
         </div>
         <div>
             <span class="left">
                 <span class="label">
-                    Zadání
+                    Zadání:
                 </span>
                 <span class="value">
                     <c:out value="${spz.requestdescription}"/>
@@ -80,7 +80,7 @@
         <div>
             <span class="left">
                 <span class="label">
-                    Analytik
+                    Analytik:
                 </span>
                 <span class="value">
                     <c:out value="${spz.analyst}"/>
@@ -90,7 +90,7 @@
         <div>
             <span class="left">
                 <span class="label">
-                    Vývojář
+                    Vývojář:
                 </span>
                 <span class="value">
                     <c:out value="${spz.developer}"/>
@@ -99,9 +99,9 @@
         </div>
                 <h2>Informace pro stav 'Zrušit'</h2>
                 <form action="${pageContext.request.contextPath}/SPZServlet/cancelState">
-                    <input type='spzId' value="${spz.id}"/>
+                    <input type='hidden' value="${spz.id}"/>
                     <div>
-                        <label for='note'>Poznámka</label>
+                        <label for='note'>Poznámka:</label>
                         <textarea cols="40" rows="5" name="note">
                         </textarea>
                     </div>
