@@ -55,6 +55,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.Comparator;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.Part;
 
@@ -72,6 +74,12 @@ import javax.servlet.http.Part;
 public class SPZServlet extends HttpServlet {
     private static final Logger LOGGER = Logger.getLogger(SPZServlet.class.getName());
     private final EntityManagerFactory emf = Persistence.createEntityManagerFactory("support_JPA");
+   
+    private static final String STATES[] ={"Registrovaná","Nová","Probíhá analýza",
+        "Změněna", "Specifikována","Probíhá implementace","Přijata ze strany DCB",
+        "Uvolněná", "Změna implementace", "Nová implementace", "Probíhá nová analýza",
+        "Zamítnuntá", "Potvrzená", "Zrušená", "Fakturovaná"};
+    
     @Override
     public void init(){
         try {
@@ -196,22 +204,37 @@ public class SPZServlet extends HttpServlet {
     private void addSpz(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         if(checkSpzParams(request.getParameterMap())){
             SpzManager manager= new SpzJpaController(emf);
+            EntityManager entMan = emf.createEntityManager();
+            EntityTransaction transaction = entMan.getTransaction();
             SpzStateManager stateManager = new SpzStateJpaController(emf);
             SpzStatesManager statesManager = new SpzStatesJpaController(emf);
             Spz spz = requestParamsToSpz(request.getParameterMap());
             Spzstate state = new Spzstate();
-            createNewState(state,spz);
+          //  createNewState(state,spz);
             spz.setIssuedate(new GregorianCalendar().getTime());
             spz.setShortname(spz.getReqnumber());
-            manager.create(spz);
-            createNewState(state, spz);
-            
-            stateManager.create(state);
-            Spzstates states = createSpzStates(spz,state);
-            statesManager.create(states);
-            
-            List<Spz> spzs = manager.findSpzEntities();
-            request.setAttribute("spzs", spzToEntities(spzs));
+            try{
+                transaction.begin();
+
+                manager.create(spz);
+                createNewState(state, spz);
+
+                stateManager.create(state);
+                state.setCurrentstate(state.getId());
+                stateManager.edit(state);
+                Spzstates states = createSpzStates(spz,state);
+                statesManager.create(states,entMan);
+                
+                transaction.commit();
+                List<Spz> spzs = manager.findSpzEntities();
+                request.setAttribute("spzs", spzToEntities(spzs));
+            }catch(Exception ex){
+                transaction.rollback();
+                LOGGER.log(Level.SEVERE,"Chyba pri pridavani SPZ.", ex);
+                request.setAttribute("error", "Chyba pri pridavani SPZ.");
+            }finally{
+                entMan.close();
+            }
             /*request.setAttribute(null, spz);
             request.getRequestDispatcher("/listSPZ.jsp").forward(request,response);
             */
@@ -233,7 +256,6 @@ public class SPZServlet extends HttpServlet {
     }
 
     private void editSpz(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        
         String jspName;
         Spz spz = null;
         SpzManager manager = new SpzJpaController(emf);
@@ -242,51 +264,51 @@ public class SPZServlet extends HttpServlet {
         spz=manager.findSpz(id);
         SPZWebEntity spzEnt = spzToEntity(spz);
         request.setAttribute("spz", spzEnt);
-        SpzStates currentState = getCurrentState(spz);
-        switch(currentState){
-            case POSTED:
+        String currentState = getCurrentState(spz);
+        switch(currentState.toUpperCase()){
+            case "POSTED":
                 jspName="/editPost.jsp";
                 break;
-            case NEW:
+            case "NEW":
                 jspName="/editNew.jsp";
                 break;
-            case ANALYLIS:
+            case "ANALYSIS":
                 jspName="/editAnal.jsp";
                 break;
-            case REFINE:
+            case "REFINE":
                 jspName = "/editRef.jsp";
                 break;
-            case SPECIFIED:
+            case "SPECIFIED":
                 jspName = "/editSpec.jsp";
                 break;
-            case IMPLEMENTATION:
+            case "IMPLEMENTATION":
                 jspName = "/editImpl.jsp";
                 break;
-            case DCB_ACCEPTED:
+            case "DCB_ACCEPTED":
                 jspName = "/editDCBAcc.jsp";
                 break;
-            case RELEASED:
+            case "RELEASED":
                 jspName="/editRel.jsp";
                 break;
-            case IMPLEMENTATION_REFINE:
+            case "IMPLEMENTATION_REFINE":
                 jspName = "/editImplRef.jsp";
                 break;
-            case RE_IMPLEMENTATION:
+            case "RE_IMPLEMENTATION":
                 jspName ="/reImpl.jsp";
                 break;
-            case RE_ANALYSIS:
+            case "RE_ANALYSIS":
                 jspName = "/reAnal.jsp";
                 break;
-            case RECLAIMED:
+            case "RECLAIMED":
                 jspName = "/reclaimed.jsp";
                 break;
-            case CONFIRMED:
+            case "CONFIRMED":
                 jspName = "/confirmed.jsp";
                 break;
-            case CANCELED:
+            case "CANCELED":
                 jspName = "/editCanceled.jsp";
                 break;
-            case INVOICED:
+            case "INVOICED":
                 jspName = "/invoiced.jsp";
                 break;
             default:return;
@@ -481,7 +503,10 @@ public class SPZServlet extends HttpServlet {
         entity.setReqnumber(spz.getReqnumber());
         entity.setRequesttype(spz.getRequesttype());
         Spzstate current = statesManager.getCurrentState(spz);
-        User user = userManger.findUserByLogin(current.getIssuerLogin());
+        User user = null;
+        if(current!=null){
+            user = userManger.findUserByLogin(current.getIssuerLogin());
+        }
         entity.setIssuer((user!=null?user.getLogin():"Nenastaven"));
         history = spzStatesToSpzStateWebEntities(statesManager.findSpzstates(spz));
         entity.setHistory(history);
@@ -516,19 +541,15 @@ public class SPZServlet extends HttpServlet {
         return id;
     }
 
-    private SpzStates getCurrentState(Spz spz) {
+    private String getCurrentState(Spz spz) {
         SpzStatesManager manager = new SpzStatesJpaController(emf);
         Spzstate state = manager.getCurrentState(spz);
-        int stateId = state.getCurrentstate();
-        SpzStates vals[] = SpzStates.values();
-        return vals[stateId];
+        return state.getCode();
     }
 
     private void createNewState(Spzstate state, Spz spz) {
         state.setIdate(new GregorianCalendar().getTime());
         state.setCode(SpzStates.POSTED.toString());
-        state.setCurrentstate(SpzStates.POSTED.ordinal());
-       
         state.setTs(BigInteger.valueOf(new GregorianCalendar().getTimeInMillis()));
     }
 
@@ -556,7 +577,7 @@ public class SPZServlet extends HttpServlet {
         entity.setAssumedManDays(state.getAssumedmandays());
         entity.setMandays(state.getMandays());
         entity.setClassType(state.getClasstype());
-        entity.setCode(state.getCode());
+        entity.setCode(STATES[SpzStates.valueOf(state.getCode()).ordinal()]);
         entity.setCurrentState(Long.valueOf(state.getCurrentstate()));
         entity.setIssueDate(state.getIdate());
         entity.setReleaseNotes(state.getReleasenotes());
@@ -702,13 +723,13 @@ public class SPZServlet extends HttpServlet {
 
     private void deleteSpzState(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Map<String,String[]> params = request.getParameterMap();
-        if(!params.containsKey("spzid")){
+        if(!params.containsKey("id")){
             request.setAttribute("error", "Missing spz id to be able to delete last spz state.");
             request.getRequestDispatcher("/editPost.jsp").forward(request, response);
             return;
 
         }
-        int spzId = Integer.parseInt(params.get("spzid")[0]);
+        int spzId = Integer.parseInt(params.get("id")[0]);
         SpzManager manager = new SpzJpaController(emf);
         SpzStateManager stateManager = new SpzStateJpaController(emf);
         SpzStatesManager statesManager = new SpzStatesJpaController(emf);
@@ -742,11 +763,13 @@ public class SPZServlet extends HttpServlet {
         if(previous!=null){
             previous.setCurrentstate(1);
         }else{
-            previous = new Spzstate();
-            previous.setAssumedmandays(0.0);
-            previous.setCurrentstate(SpzStates.CANCELED.ordinal());
-            previous.setIdate(new GregorianCalendar().getTime());
-            previous.setTs(BigInteger.valueOf(new GregorianCalendar().getTimeInMillis()));
+            editSpz(request, response);
+            return;
+//            previous = new Spzstate();
+//            previous.setAssumedmandays(0.0);
+//            previous.setCurrentstate(SpzStates.CANCELED.ordinal());
+//            previous.setIdate(new GregorianCalendar().getTime());
+//            previous.setTs(BigInteger.valueOf(new GregorianCalendar().getTimeInMillis()));
         }
         stateManager.create(previous);
         newState.setStateid(previous.getId());
@@ -777,7 +800,7 @@ public class SPZServlet extends HttpServlet {
         }
         Spz spz = spzManager.findSpz(spzId);
         Spzstate currentState = stateManager.getCurrentState(spz);
-        currentState.setCurrentstate(0);
+        currentState.setCode(SpzStates.CANCELED.toString());
         try {
             stateManager.edit(currentState);
         } catch (Exception ex) {
