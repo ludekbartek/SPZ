@@ -261,7 +261,13 @@ public class SPZServlet extends HttpServlet {
         SpzManager manager = new SpzJpaController(emf);
         SpzStateManager stateManager = new SpzStateJpaController(emf);
         Integer id = getSpzId(request.getParameterMap());
-        spz=manager.findSpz(id);
+        spz = manager.findSpz(id);
+        if(request.getParameterMap().containsKey("newstate")){
+            
+            changeState(spz,request,response);
+            request.getRequestDispatcher("./listSPZ.jsp").forward(request, response);
+            return;
+        }
         SPZWebEntity spzEnt = spzToEntity(spz);
         request.setAttribute("spz", spzEnt);
         String currentState = getCurrentState(spz);
@@ -836,6 +842,40 @@ public class SPZServlet extends HttpServlet {
         } catch (ServletException | IOException ex) {
             Logger.getLogger(SPZServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    private void changeState(Spz spz, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String stringState = request.getParameter("newstate");
+        SpzStates state = SpzStates.valueOf(stringState);
+        Spzstate newState = new Spzstate();
+        newState.setCurrentstate(1);
+        newState.setCode(state.toString());
+        if(request.getParameterMap().containsKey("issuer")){
+            newState.setIssuerLogin(request.getParameter("issuer"));
+        }
+        newState.setIdate(new GregorianCalendar().getTime());
+        SpzStateManager spzManager = new SpzStateJpaController(emf);
+        SpzStateManager stateManager = new SpzStateJpaController(emf);
+        SpzStatesManager statesManager = new SpzStatesJpaController(emf);
+        Spzstates newStates = new Spzstates();
+        EntityManager entMan = stateManager.getEntityManager();
+        
+        try{
+            entMan.getTransaction().begin();
+            stateManager.create(newState,entMan);
+            newStates.setSpzid(spz.getId());
+            newStates.setStateid(newState.getId());
+            statesManager.create(newStates,entMan);
+            entMan.getTransaction().commit();
+        }catch(Exception ex){
+            entMan.getTransaction().rollback();
+            LOGGER.log(Level.SEVERE,"Error set state ANALYSIS on SPZ.",ex);
+            request.setAttribute("error", "Chyba při přechodu do stavu Probíhá analýza.");
+            return;
+        }finally{
+            entMan.close();
+        }
+        return;
     }
 
 }
