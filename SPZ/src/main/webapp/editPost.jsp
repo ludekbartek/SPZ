@@ -20,14 +20,14 @@
             <%@include file="editcommon.jsp" %>
             <tr>
                 <td colspan="3">
-                    <form action="${pageContext.request.contextPath}/SPZServlet/edit" method="post">
+                    <form action="${pageContext.request.contextPath}/SPZServlet/listSPZ" method="post">
                         <input type="submit" value="Predat k analyze"/>
-                        <input type="hidden" name="spzid" value="${spz.id}"/>
-                        <input type="hidden" name="state" value="posted"/>
-                        <input type="hidden" name="newState" value="analysis"/>
+                        <input type="hidden" name="id" value="${spz.id}"/>
+                        <input type="hidden" name="state" value="POSTED"/>
+                        <input type="hidden" name="newstate" value="ANALYSIS"/>
                     </form>
                     <form action="${pageContext.request.contextPath}/SPZServlet/delete" method="post">    
-                        <input type="hidden" name="spzid" value="${spz.id}"/>
+                        <input type="hidden" name="id" value="${spz.id}"/>
                         <input type="submit" value="Zrusit"/>
                     </form>
                 </td>
