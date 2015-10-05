@@ -15,11 +15,12 @@ pri editaci pouze popisy (viz stara verze).
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
        <title>Nova SPZ</title>
        <script>
-           procedure copy()
+           procedure copy(where, wh)
            {
                shortname.value=reqnumber.value;
            }
        </script>
+       <script src="scripts/support-scripts.js"/>
        <style>
             h1{
                 text-align: center;
@@ -106,7 +107,7 @@ pri editaci pouze popisy (viz stara verze).
                     <span class="label"><label for="file2">Soubor 2:</label></span>
                     <span class="input"><input type="file" name="file2"/></span>
                 </div>
-                        <span class="formItem"><input type="submit" value="Registrovat novou SPZ" onfocus="copy();"/></span>
+                        <span class="formItem"><input type="submit" value="Registrovat novou SPZ" onfocus="shortname.value = reqnumber.value;"/></span>
         </form>
         </div>
     </body>
