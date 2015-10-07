@@ -50,11 +50,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.derby.drda.NetworkServerControl;
 import java.math.BigInteger;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Properties;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.servlet.annotation.MultipartConfig;
@@ -82,6 +87,24 @@ public class SPZServlet extends HttpServlet {
     
     @Override
     public void init(){
+        Properties props = new Properties();
+        String url; 
+        try {
+            props.load(getServletContext().getResourceAsStream("/settings/spz.properties"));
+            url = props.getProperty("DBURL");
+        } catch (IOException ex) {
+            url = "jdbc:derby://localhost:1527/support";
+            Logger.getLogger(SPZServlet.class.getName()).log(Level.INFO, "Setting url to default." + url, ex);
+        }
+        Connection con;
+        try {
+            con = DriverManager.getConnection(url);
+            con.close();
+            return;
+        } catch (SQLException ex) {
+            Logger.getLogger(SPZServlet.class.getName()).log(Level.SEVERE, "Server not running. Trying to start the new one.", ex);
+        }
+        
         try {
             NetworkServerControl serverControl = new NetworkServerControl();
             LOGGER.log(Level.INFO,"Starting derby");
@@ -217,6 +240,8 @@ public class SPZServlet extends HttpServlet {
                 transaction.begin();
 
                 manager.create(spz);
+                spz.setReqnumber(String.format("%05d",spz.getId()));
+                manager.edit(spz);
                 createNewState(state, spz);
 
                 stateManager.create(state);
@@ -358,11 +383,14 @@ public class SPZServlet extends HttpServlet {
     }
 
     private boolean checkSpzParams(Map<String, String[]> parameterMap) {
-        if(!checkReqNumber(parameterMap)){
+        /*if(!checkReqNumber(parameterMap)){
             return false;
-        }
+        }*/
 
         if(!checkReqType(parameterMap)){
+            return false;
+        }
+        if(!checkShortName(parameterMap)){
             return false;
         }
        /* if(!checkIssueDate(parameterMap)){
@@ -389,11 +417,15 @@ public class SPZServlet extends HttpServlet {
     }
 
     private Spz requestParamsToSpz(Map<String, String[]> parameterMap) {
-        Spz spz = new Spz();
-        if(!parameterMap.containsKey("reqnumber")){
+        if(!checkSpzParams(parameterMap)){
             return null;
         }
-        spz.setReqnumber(parameterMap.get("reqnumber")[0]);
+        Spz spz = new Spz();
+        /*if(!parameterMap.containsKey("reqnumber")){
+            return null;
+        }*/
+       // spz.setShortname(parameterMap.get("shortname")[0]);
+        
         spz.setRequestdescription(parameterMap.get("requestdescription")[0]);
         spz.setContactperson(parameterMap.get("contactperson")[0]);
         if(parameterMap.containsKey("shortname")) spz.setShortname(parameterMap.get("shortname")[0]);
