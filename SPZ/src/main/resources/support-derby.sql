@@ -1,7 +1,7 @@
 create table SUSER.Spz
 (
-    id int primary key not null generated always as identity,
-    reqNumber varchar(10),
+    id int primary key not null generated always as identity, /*Primarni klic*/
+    reqNumber varchar(10), /*cislo spz [0-9]{10} - ulozim poslednich 10 cisel z klice*/
     priority smallint,
     issueDate timestamp,
     contactPerson varchar(32),
