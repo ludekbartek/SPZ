@@ -14,13 +14,13 @@ pri editaci pouze popisy (viz stara verze).
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
        <title>Nova SPZ</title>
-       <script>
+      <!-- <script>
            procedure copy(where, wh)
            {
                shortname.value=reqnumber.value;
            }
-       </script>
-       <script src="scripts/support-scripts.js"/>
+       </script>-->
+      <script src="scripts/support-scripts.js"></script>
        <style>
             h1{
                 text-align: center;
@@ -56,9 +56,9 @@ pri editaci pouze popisy (viz stara verze).
         <div id="form" style="width: 100%;">
             <form action="${pageContext.request.contextPath}/SPZServlet/addspz" method="post">
                 <div class="formItem">
-                    <span class="label"><label class="label" for="reqnumber">Nazev</label></span>
-                    <span class="input"><input type="text" name="reqnumber" value="<c:if test="${!empty spz.reqnumber}">${spz.reqnumber}</c:if>"></span>
-                    <input type="hidden" name="shortname"/>
+                    <span class="label"><label class="label" for="shortname">Nazev</label></span>
+                    <span class="input"><input type="text" name="shortname" value="<c:if test="${!empty spz.reqnumber}">${spz.reqnumber}</c:if>"></span>
+                    <!--<input type="hidden" name="shortname"/>-->
                 </div>
                 <div class="formItem">
                     <span class="label"><label for="contactperson">Kontakt</label></span>
