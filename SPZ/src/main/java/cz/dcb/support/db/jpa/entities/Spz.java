@@ -50,9 +50,9 @@ public class Spz implements Serializable {
     private Integer id;
     @Size(max = 10)
     @Column(name = "REQNUMBER", length = 10)
-    private String reqnumber;
+    private String reqnumber; // generovana ciselna hodnota ve tvaru [0-9]{5}
     @Column(name = "PRIORITY")
-    private Short priority;
+    private Short priority; // 1-4, default 3
     @Column(name = "ISSUEDATE")
     @Temporal(TemporalType.TIMESTAMP)
     private Date issuedate;
@@ -64,7 +64,7 @@ public class Spz implements Serializable {
     private String requesttype;
     @Size(max = 50)
     @Column(name = "SHORTNAME", length = 50)
-    private String shortname;
+    private String shortname; //zadava se ve formulari, pole nazev
     @Size(max = 9000)
     @Column(name = "REQUESTDESCRIPTION", length = 9000)
     private String requestdescription;
