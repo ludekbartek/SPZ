@@ -76,6 +76,7 @@
                 <th>Instalace</th>
                 <th>Skut. prac.</th>
                 <th>Stav SPZ</th>
+                <th>Standardni?</th>
                 <th>Ze dne</th>
             </thead>
             <c:forEach items="${spzs}" var="item">
@@ -108,6 +109,27 @@
                     <td>
                         <c:out value="${item.requestdescription}"/>
                         <input type="hidden" name="requestdescription" value="${requestdescription}"/>
+                    </td>
+                    <td>
+                        <f:formatDate value="${item.specDate}" pattern="dd.MM. yyyy"/>
+                    </td>
+                    <td>
+                        <f:formatNumber value="${item.workLoadEstimation}"/>
+                    </td>
+                    <td>
+                        <f:formatDate value="${item.installDate}" pattern="dd.MM. yyyy"/>
+                    </td>
+                    <td>
+                        <f:formatNumber value="${item.workLoadReal}"/>
+                    </td>
+                    <td>
+                        <c:out value="${item.history.toArray()[0].code}"/>
+                    </td>
+                    <td>
+                        <c:choose>
+                            <c:when test="${item.category==1}">Standardni</c:when>
+                            <c:otherwise>Nestandardni</c:otherwise>
+                        </c:choose>
                     </td>
                     <td>
                         <f:formatDate value="${item.implementationacceptdate}" pattern="dd.MM.yyyy"/>

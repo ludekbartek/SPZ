@@ -78,6 +78,15 @@ pri editaci pouze popisy (viz stara verze).
                     </span>
                 </div>
                 <div class="formItem">
+                    <span class="label">Kategorie:</span>
+                    <span class="input">
+                        <select name="category">
+                            <option value="1" selected="true">Standardni</option>
+                            <option value="0">Nestandardni</option>
+                        </select>
+                    </span>
+                </div>
+                <div class="formItem">
                     <span class="label"><label for="priority">Priorita</label></span>
                     <span class="input">
                         <select name="priority">
@@ -87,6 +96,7 @@ pri editaci pouze popisy (viz stara verze).
                         </select>
                     </span>
                 </div>
+                        
                 <div class="formItem">
                     <span class="label"><label for="desc">Poznamka</label></span>
                     <span class="input">

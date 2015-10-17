@@ -33,10 +33,19 @@ public class SPZWebEntity {
      private int spzState;
      private Date date;
      private Short priority;
+     private Short category;
      private String requesttype;
      private Date implementationacceptdate;
      private Spzstate revisedRequest;
      private List<SpzStateWebEntity> history;
+
+    public Short getCategory() {
+        return category;
+    }
+
+    public void setCategory(Short category) {
+        this.category = category;
+    }
 
     public Spzstate getRevisedRequest() {
         return revisedRequest;

@@ -40,7 +40,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Spz.findByShortname", query = "SELECT s FROM Spz s WHERE s.shortname = :shortname"),
     @NamedQuery(name = "Spz.findByRequestdescription", query = "SELECT s FROM Spz s WHERE s.requestdescription = :requestdescription"),
     @NamedQuery(name = "Spz.findByImplementationacceptdate", query = "SELECT s FROM Spz s WHERE s.implementationacceptdate = :implementationacceptdate"),
-    @NamedQuery(name = "Spz.findByTs", query = "SELECT s FROM Spz s WHERE s.ts = :ts")})
+    @NamedQuery(name = "Spz.findByTs", query = "SELECT s FROM Spz s WHERE s.ts = :ts"),
+    @NamedQuery(name = "Spz.findByCategory", query="Select s From Spz s WHERE s.category = :category")})
 public class Spz implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -73,6 +74,8 @@ public class Spz implements Serializable {
     private Date implementationacceptdate;
     @Column(name = "TS")
     private BigInteger ts;
+    @Column(name="CATEGORY")
+    private short category; //1 - standardni, 0 - nestandardni
 
     public Spz() {
     }
@@ -159,6 +162,14 @@ public class Spz implements Serializable {
 
     public void setTs(BigInteger ts) {
         this.ts = ts;
+    }
+
+    public short getCategory() {
+        return category;
+    }
+
+    public void setCategory(short category) {
+        this.category = category;
     }
 
     @Override

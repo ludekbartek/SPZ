@@ -455,7 +455,9 @@ public class SPZServlet extends HttpServlet {
         spz.setRequesttype(reqType);
         short priority = Short.parseShort(strPriority);
         spz.setPriority(priority);
-        
+        String strCategory = parameterMap.get("category")[0];
+        short category = Short.parseShort(strCategory);
+        spz.setCategory(priority);
         spz.setRequesttype(parameterMap.get("reqtype")[0]);
         return spz;
     }
