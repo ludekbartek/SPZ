@@ -9,7 +9,8 @@ create table SUSER.Spz
     shortName varchar(50),
     requestDescription varchar(9000),
     implementationAcceptDate timestamp,
-    ts bigint
+    ts bigint,
+    category smallint
 );
 
 create table SUSER.SpzState 
