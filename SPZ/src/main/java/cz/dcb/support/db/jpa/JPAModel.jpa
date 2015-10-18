@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<jpa:entity-mappings status="GENERATED" jaxb-support="false" id="_143806629529478" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/orm orm_2_1.xsd" xmlns:java="http://jcp.org/en/jsr/detail?id=270" xmlns:jpa="http://java.sun.com/xml/ns/persistence/orm" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-    <jpa:entity class="Spzstates" jaxb-root-element="false" static-metamodel="false" visibile="true" minimized="false" id="_143806629529481">
-        <jpa:table name="SPZSTATES"/>
+<jpa:entity-mappings jaxb-support="false" id="_143806629529478" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/orm orm_2_1.xsd" xmlns:java="http://jcp.org/en/jsr/detail?id=270" xmlns:jpa="http://java.sun.com/xml/ns/persistence/orm" xmlns:ns4="http://nbmodeler.java.net" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <jpa:entity jaxb-root-element="false" static-metamodel="false" abstract="false" class="Spzstates" visibile="true" minimized="false" id="_143806629529481">
         <jpa:attributes>
             <jpa:id name="id" attribute-type="java.lang.Integer" visibile="true" id="_143806629543397">
                 <jpa:column name="ID" unique="false" nullable="false" insertable="true" updatable="true" table="SPZSTATES"/>
@@ -13,10 +12,12 @@
             <jpa:basic name="stateid" optional="true" attribute-type="java.lang.Integer" visibile="true" id="_143806629543399">
                 <jpa:column name="STATEID" unique="false" nullable="true" insertable="true" updatable="true" table="SPZSTATES"/>
             </jpa:basic>
+            <jpa:one-to-one name="spz1" target-entity="Spz" primaryKey="false" connected-entity-id="_143806629542994" visibile="true" id="_144517006630822"/>
+            <jpa:one-to-one name="spzstate1" target-entity="Spzstate" primaryKey="false" connected-entity-id="_143806629542993" visibile="true" id="_144517012466523"/>
         </jpa:attributes>
+        <jpa:table name="SPZSTATES"/>
     </jpa:entity>
-    <jpa:entity class="User" jaxb-root-element="false" static-metamodel="false" visibile="true" minimized="false" id="_143806629542882">
-        <jpa:table name="USER_"/>
+    <jpa:entity jaxb-root-element="false" static-metamodel="false" abstract="false" class="User" visibile="true" minimized="false" id="_143806629542882">
         <jpa:attributes>
             <jpa:id name="id" attribute-type="java.lang.Integer" visibile="true" id="_1438066295433100">
                 <jpa:column name="ID" unique="false" nullable="false" insertable="true" updatable="true" table="USER_"/>
@@ -50,9 +51,9 @@
                 <jpa:column name="TS" unique="false" nullable="true" insertable="true" updatable="true" table="USER_"/>
             </jpa:basic>
         </jpa:attributes>
+        <jpa:table name="USER_"/>
     </jpa:entity>
-    <jpa:entity class="Attachment" jaxb-root-element="false" static-metamodel="false" visibile="true" minimized="false" id="_143806629542883">
-        <jpa:table name="ATTACHMENT"/>
+    <jpa:entity jaxb-root-element="false" static-metamodel="false" abstract="false" class="Attachment" visibile="true" minimized="false" id="_143806629542883">
         <jpa:attributes>
             <jpa:id name="id" attribute-type="java.lang.Integer" visibile="true" id="_1438066295433110">
                 <jpa:column name="ID" unique="false" nullable="false" insertable="true" updatable="true" table="ATTACHMENT"/>
@@ -75,9 +76,9 @@
                 <jpa:column name="TS" unique="false" nullable="true" insertable="true" updatable="true" table="ATTACHMENT"/>
             </jpa:basic>
         </jpa:attributes>
+        <jpa:table name="ATTACHMENT"/>
     </jpa:entity>
-    <jpa:entity class="Project" jaxb-root-element="false" static-metamodel="false" visibile="true" minimized="false" id="_143806629542884">
-        <jpa:table name="PROJECT"/>
+    <jpa:entity jaxb-root-element="false" static-metamodel="false" abstract="false" class="Project" visibile="true" minimized="false" id="_143806629542884">
         <jpa:attributes>
             <jpa:id name="id" attribute-type="java.lang.Integer" visibile="true" id="_1438066295434116">
                 <jpa:column name="ID" unique="false" nullable="false" insertable="true" updatable="true" table="PROJECT"/>
@@ -93,9 +94,9 @@
                 <jpa:column name="TS" unique="false" nullable="true" insertable="true" updatable="true" table="PROJECT"/>
             </jpa:basic>
         </jpa:attributes>
+        <jpa:table name="PROJECT"/>
     </jpa:entity>
-    <jpa:entity class="Spzanalyst" jaxb-root-element="false" static-metamodel="false" visibile="true" minimized="false" id="_143806629542885">
-        <jpa:table name="SPZANALYST"/>
+    <jpa:entity jaxb-root-element="false" static-metamodel="false" abstract="false" class="Spzanalyst" visibile="true" minimized="false" id="_143806629542885">
         <jpa:attributes>
             <jpa:id name="id" attribute-type="java.lang.Integer" visibile="true" id="_1438066295434120">
                 <jpa:column name="ID" unique="false" nullable="false" insertable="true" updatable="true" table="SPZANALYST"/>
@@ -107,10 +108,12 @@
             <jpa:basic name="userid" optional="true" attribute-type="java.lang.Integer" visibile="true" id="_1438066295434122">
                 <jpa:column name="USERID" unique="false" nullable="true" insertable="true" updatable="true" table="SPZANALYST"/>
             </jpa:basic>
+            <jpa:one-to-one name="user1" target-entity="User" primaryKey="false" connected-entity-id="_143806629542882" visibile="true" id="_144516992285220"/>
+            <jpa:one-to-one name="spz1" target-entity="Spz" primaryKey="false" connected-entity-id="_143806629542994" visibile="true" id="_144516993548521"/>
         </jpa:attributes>
+        <jpa:table name="SPZANALYST"/>
     </jpa:entity>
-    <jpa:entity class="Configuration" jaxb-root-element="false" static-metamodel="false" visibile="true" minimized="false" id="_143806629542886">
-        <jpa:table name="CONFIGURATION"/>
+    <jpa:entity jaxb-root-element="false" static-metamodel="false" abstract="false" class="Configuration" visibile="true" minimized="false" id="_143806629542886">
         <jpa:attributes>
             <jpa:id name="id" attribute-type="java.lang.Integer" visibile="true" id="_1438066295434123">
                 <jpa:column name="ID" unique="false" nullable="false" insertable="true" updatable="true" table="CONFIGURATION"/>
@@ -129,9 +132,9 @@
                 <jpa:column name="TS" unique="false" nullable="true" insertable="true" updatable="true" table="CONFIGURATION"/>
             </jpa:basic>
         </jpa:attributes>
+        <jpa:table name="CONFIGURATION"/>
     </jpa:entity>
-    <jpa:entity class="Projectconfiguration" jaxb-root-element="false" static-metamodel="false" visibile="true" minimized="false" id="_143806629542887">
-        <jpa:table name="PROJECTCONFIGURATION"/>
+    <jpa:entity jaxb-root-element="false" static-metamodel="false" abstract="false" class="Projectconfiguration" visibile="true" minimized="false" id="_143806629542887">
         <jpa:attributes>
             <jpa:id name="id" attribute-type="java.lang.Integer" visibile="true" id="_1438066295435128">
                 <jpa:column name="ID" unique="false" nullable="false" insertable="true" updatable="true" table="PROJECTCONFIGURATION"/>
@@ -143,10 +146,12 @@
             <jpa:basic name="configurationid" optional="true" attribute-type="java.lang.Integer" visibile="true" id="_1438066295435130">
                 <jpa:column name="CONFIGURATIONID" unique="false" nullable="true" insertable="true" updatable="true" table="PROJECTCONFIGURATION"/>
             </jpa:basic>
+            <jpa:one-to-one name="project1" target-entity="Project" primaryKey="false" connected-entity-id="_143806629542884" visibile="true" id="_144517040437728"/>
+            <jpa:one-to-one name="configuration1" target-entity="Configuration" primaryKey="false" connected-entity-id="_143806629542886" visibile="true" id="_144517041458829"/>
         </jpa:attributes>
+        <jpa:table name="PROJECTCONFIGURATION"/>
     </jpa:entity>
-    <jpa:entity class="Spznote" jaxb-root-element="false" static-metamodel="false" visibile="true" minimized="false" id="_143806629542888">
-        <jpa:table name="SPZNOTE"/>
+    <jpa:entity jaxb-root-element="false" static-metamodel="false" abstract="false" class="Spznote" visibile="true" minimized="false" id="_143806629542888">
         <jpa:attributes>
             <jpa:id name="id" attribute-type="java.lang.Integer" visibile="true" id="_1438066295435131">
                 <jpa:column name="ID" unique="false" nullable="false" insertable="true" updatable="true" table="SPZNOTE"/>
@@ -165,10 +170,11 @@
             <jpa:basic name="ts" optional="true" attribute-type="java.math.BigInteger" visibile="true" id="_1438066295435135">
                 <jpa:column name="TS" unique="false" nullable="true" insertable="true" updatable="true" table="SPZNOTE"/>
             </jpa:basic>
+            <jpa:one-to-one name="spz1" target-entity="Spz" primaryKey="false" connected-entity-id="_143806629542994" visibile="true" id="_144517026324824"/>
         </jpa:attributes>
+        <jpa:table name="SPZNOTE"/>
     </jpa:entity>
-    <jpa:entity class="Noteissuer" jaxb-root-element="false" static-metamodel="false" visibile="true" minimized="false" id="_143806629542889">
-        <jpa:table name="NOTEISSUER"/>
+    <jpa:entity jaxb-root-element="false" static-metamodel="false" abstract="false" class="Noteissuer" visibile="true" minimized="false" id="_143806629542889">
         <jpa:attributes>
             <jpa:id name="id" attribute-type="java.lang.Integer" visibile="true" id="_1438066295436136">
                 <jpa:column name="ID" unique="false" nullable="false" insertable="true" updatable="true" table="NOTEISSUER"/>
@@ -180,10 +186,12 @@
             <jpa:basic name="userid" optional="true" attribute-type="java.lang.Integer" visibile="true" id="_1438066295436138">
                 <jpa:column name="USERID" unique="false" nullable="true" insertable="true" updatable="true" table="NOTEISSUER"/>
             </jpa:basic>
+            <jpa:one-to-one name="spznote1" target-entity="Spznote" primaryKey="false" connected-entity-id="_143806629542888" visibile="true" id="_144517075000136"/>
+            <jpa:one-to-one name="user1" target-entity="User" primaryKey="false" connected-entity-id="_143806629542882" visibile="true" id="_144517077265237"/>
         </jpa:attributes>
+        <jpa:table name="NOTEISSUER"/>
     </jpa:entity>
-    <jpa:entity class="Useraccess" jaxb-root-element="false" static-metamodel="false" visibile="true" minimized="false" id="_143806629542890">
-        <jpa:table name="USERACCESS"/>
+    <jpa:entity jaxb-root-element="false" static-metamodel="false" abstract="false" class="Useraccess" visibile="true" minimized="false" id="_143806629542890">
         <jpa:attributes>
             <jpa:id name="id" attribute-type="java.lang.Integer" visibile="true" id="_1438066295436139">
                 <jpa:column name="ID" unique="false" nullable="false" insertable="true" updatable="true" table="USERACCESS"/>
@@ -201,10 +209,12 @@
             <jpa:basic name="configurationid" optional="true" attribute-type="java.lang.Integer" visibile="true" id="_1438066295436143">
                 <jpa:column name="CONFIGURATIONID" unique="false" nullable="true" insertable="true" updatable="true" table="USERACCESS"/>
             </jpa:basic>
+            <jpa:one-to-one name="user1" target-entity="User" primaryKey="false" connected-entity-id="_143806629542882" visibile="true" id="_144517046656630"/>
+            <jpa:one-to-one name="configuration1" target-entity="Configuration" primaryKey="false" connected-entity-id="_143806629542886" visibile="true" id="_144517050253531"/>
         </jpa:attributes>
+        <jpa:table name="USERACCESS"/>
     </jpa:entity>
-    <jpa:entity class="Spzstatenote" jaxb-root-element="false" static-metamodel="false" visibile="true" minimized="false" id="_143806629542891">
-        <jpa:table name="SPZSTATENOTE"/>
+    <jpa:entity jaxb-root-element="false" static-metamodel="false" abstract="false" class="Spzstatenote" visibile="true" minimized="false" id="_143806629542891">
         <jpa:attributes>
             <jpa:id name="id" attribute-type="java.lang.Integer" visibile="true" id="_1438066295436144">
                 <jpa:column name="ID" unique="false" nullable="false" insertable="true" updatable="true" table="SPZSTATENOTE"/>
@@ -216,10 +226,12 @@
             <jpa:basic name="stateid" optional="true" attribute-type="java.lang.Integer" visibile="true" id="_1438066295436146">
                 <jpa:column name="STATEID" unique="false" nullable="true" insertable="true" updatable="true" table="SPZSTATENOTE"/>
             </jpa:basic>
+            <jpa:one-to-one name="spz1" target-entity="Spz" primaryKey="false" connected-entity-id="_143806629542994" visibile="true" id="_144517027211025"/>
+            <jpa:one-to-one name="spznote1" target-entity="Spznote" primaryKey="false" connected-entity-id="_143806629542888" visibile="true" id="_144517032201027"/>
         </jpa:attributes>
+        <jpa:table name="SPZSTATENOTE"/>
     </jpa:entity>
-    <jpa:entity class="Roles" jaxb-root-element="false" static-metamodel="false" visibile="true" minimized="false" id="_143806629542892">
-        <jpa:table name="ROLES"/>
+    <jpa:entity jaxb-root-element="false" static-metamodel="false" abstract="false" class="Roles" visibile="true" minimized="false" id="_143806629542892">
         <jpa:attributes>
             <jpa:id name="id" attribute-type="java.lang.Integer" visibile="true" id="_1438066295436147">
                 <jpa:column name="ID" unique="false" nullable="false" insertable="true" updatable="true" table="ROLES"/>
@@ -232,9 +244,9 @@
                 <jpa:column name="ROLE_" unique="false" nullable="true" insertable="true" updatable="true" table="ROLES" length="32"/>
             </jpa:basic>
         </jpa:attributes>
+        <jpa:table name="ROLES"/>
     </jpa:entity>
-    <jpa:entity class="Spzstate" jaxb-root-element="false" static-metamodel="false" visibile="true" minimized="false" id="_143806629542993">
-        <jpa:table name="SPZSTATE"/>
+    <jpa:entity jaxb-root-element="false" static-metamodel="false" abstract="false" class="Spzstate" visibile="true" minimized="false" id="_143806629542993">
         <jpa:attributes>
             <jpa:id name="id" attribute-type="java.lang.Integer" visibile="true" id="_1438066295436150">
                 <jpa:column name="ID" unique="false" nullable="false" insertable="true" updatable="true" table="SPZSTATE"/>
@@ -275,9 +287,9 @@
                 <jpa:column name="CURRENTSTATE" unique="false" nullable="true" insertable="true" updatable="true" table="SPZSTATE"/>
             </jpa:basic>
         </jpa:attributes>
+        <jpa:table name="SPZSTATE"/>
     </jpa:entity>
-    <jpa:entity class="Spz" jaxb-root-element="false" static-metamodel="false" visibile="true" minimized="false" id="_143806629542994">
-        <jpa:table name="SPZ"/>
+    <jpa:entity jaxb-root-element="false" static-metamodel="false" abstract="false" class="Spz" visibile="true" minimized="false" id="_143806629542994">
         <jpa:attributes>
             <jpa:id name="id" attribute-type="java.lang.Integer" visibile="true" id="_1438066295437162">
                 <jpa:column name="ID" unique="false" nullable="false" insertable="true" updatable="true" table="SPZ"/>
@@ -312,10 +324,13 @@
             <jpa:basic name="ts" optional="true" attribute-type="java.math.BigInteger" visibile="true" id="_1438066295437171">
                 <jpa:column name="TS" unique="false" nullable="true" insertable="true" updatable="true" table="SPZ"/>
             </jpa:basic>
+            <jpa:basic name="category" attribute-type="short" visibile="true" id="_144505327468520">
+                <jpa:column name="CATEGORY" unique="false" nullable="true" insertable="true" updatable="true" table="SPZ" length="255"/>
+            </jpa:basic>
         </jpa:attributes>
+        <jpa:table name="SPZ"/>
     </jpa:entity>
-    <jpa:entity class="Attachmentnote" jaxb-root-element="false" static-metamodel="false" visibile="true" minimized="false" id="_143806629542995">
-        <jpa:table name="ATTACHMENTNOTE"/>
+    <jpa:entity jaxb-root-element="false" static-metamodel="false" abstract="false" class="Attachmentnote" visibile="true" minimized="false" id="_143806629542995">
         <jpa:attributes>
             <jpa:id name="id" attribute-type="java.lang.Integer" visibile="true" id="_1438066295437172">
                 <jpa:column name="ID" unique="false" nullable="false" insertable="true" updatable="true" table="ATTACHMENTNOTE"/>
@@ -327,10 +342,12 @@
             <jpa:basic name="spznoteid" optional="true" attribute-type="java.lang.Integer" visibile="true" id="_1438066295437174">
                 <jpa:column name="SPZNOTEID" unique="false" nullable="true" insertable="true" updatable="true" table="ATTACHMENTNOTE"/>
             </jpa:basic>
+            <jpa:one-to-one name="attachment1" target-entity="Attachment" primaryKey="false" connected-entity-id="_143806629542883" visibile="true" id="_144517061887032"/>
+            <jpa:one-to-one name="spznote1" target-entity="Spznote" primaryKey="false" connected-entity-id="_143806629542888" visibile="true" id="_144517062690133"/>
         </jpa:attributes>
+        <jpa:table name="ATTACHMENTNOTE"/>
     </jpa:entity>
-    <jpa:entity class="Spzissuer" jaxb-root-element="false" static-metamodel="false" visibile="true" minimized="false" id="_143806629542996">
-        <jpa:table name="SPZISSUER"/>
+    <jpa:entity jaxb-root-element="false" static-metamodel="false" abstract="false" class="Spzissuer" visibile="true" minimized="false" id="_143806629542996">
         <jpa:attributes>
             <jpa:id name="id" attribute-type="java.lang.Integer" visibile="true" id="_1438066295437175">
                 <jpa:column name="ID" unique="false" nullable="false" insertable="true" updatable="true" table="SPZISSUER"/>
@@ -342,9 +359,61 @@
             <jpa:basic name="userid" optional="true" attribute-type="java.lang.Integer" visibile="true" id="_1438066295437177">
                 <jpa:column name="USERID" unique="false" nullable="true" insertable="true" updatable="true" table="SPZISSUER"/>
             </jpa:basic>
+            <jpa:one-to-one name="user1" target-entity="User" primaryKey="false" connected-entity-id="_143806629542882" visibile="true" id="_144517067871434"/>
+            <jpa:one-to-one name="spz1" target-entity="Spz" primaryKey="false" connected-entity-id="_143806629542994" visibile="true" id="_144517069104235"/>
         </jpa:attributes>
+        <jpa:table name="SPZISSUER"/>
     </jpa:entity>
     <jpa:diagram id="_143806629529479">
-        <plane elementRef="_143806629529478" id="_143806629529480_p"/>
+        <plane elementRef="_143806629529478" id="_143806629529480_p">
+            <shape elementRef="_143806629529481" id="_143806629529481_gui">
+                <Bounds x="32.0" y="10.0" width="168.0" height="158.0"/>
+            </shape>
+            <shape elementRef="_143806629542882" id="_143806629542882_gui">
+                <Bounds x="563.0" y="178.0" width="129.0" height="246.0"/>
+            </shape>
+            <shape elementRef="_143806629542883" id="_143806629542883_gui">
+                <Bounds x="163.0" y="535.0" width="178.0" height="166.0"/>
+            </shape>
+            <shape elementRef="_143806629542884" id="_143806629542884_gui">
+                <Bounds x="793.0" y="248.0" width="146.0" height="126.0"/>
+            </shape>
+            <shape elementRef="_143806629542885" id="_143806629542885_gui">
+                <Bounds x="388.0" y="10.0" width="175.0" height="158.0"/>
+            </shape>
+            <shape elementRef="_143806629542886" id="_143806629542886_gui">
+                <Bounds x="1025.0" y="228.0" width="193.0" height="146.0"/>
+            </shape>
+            <shape elementRef="_143806629542887" id="_143806629542887_gui">
+                <Bounds x="915.0" y="-45.0" width="241.0" height="158.0"/>
+            </shape>
+            <shape elementRef="_143806629542888" id="_143806629542888_gui">
+                <Bounds x="398.0" y="507.0" width="155.0" height="178.0"/>
+            </shape>
+            <shape elementRef="_143806629542889" id="_143806629542889_gui">
+                <Bounds x="498.0" y="726.0" width="174.0" height="158.0"/>
+            </shape>
+            <shape elementRef="_143806629542890" id="_143806629542890_gui">
+                <Bounds x="616.0" y="-85.0" width="177.0" height="198.0"/>
+            </shape>
+            <shape elementRef="_143806629542891" id="_143806629542891_gui">
+                <Bounds x="-30.0" y="349.0" width="193.0" height="158.0"/>
+            </shape>
+            <shape elementRef="_143806629542892" id="_143806629542892_gui">
+                <Bounds x="1378.0" y="32.0" width="135.0" height="106.0"/>
+            </shape>
+            <shape elementRef="_143806629542993" id="_143806629542993_gui">
+                <Bounds x="-280.0" y="178.0" width="214.0" height="286.0"/>
+            </shape>
+            <shape elementRef="_143806629542994" id="_143806629542994_gui">
+                <Bounds x="200.0" y="178.0" width="219.0" height="266.0"/>
+            </shape>
+            <shape elementRef="_143806629542995" id="_143806629542995_gui">
+                <Bounds x="130.0" y="743.0" width="211.0" height="158.0"/>
+            </shape>
+            <shape elementRef="_143806629542996" id="_143806629542996_gui">
+                <Bounds x="621.0" y="476.0" width="166.0" height="158.0"/>
+            </shape>
+        </plane>
     </jpa:diagram>
 </jpa:entity-mappings>
