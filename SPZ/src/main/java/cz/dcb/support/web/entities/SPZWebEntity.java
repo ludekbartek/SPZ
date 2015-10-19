@@ -12,8 +12,8 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- *
- * @author bar
+ * Entitni trida reprezentujici jednu SPZ pro potreby editace a vypisu v JSP
+ * @author Ludek Bartek
  */
 public class SPZWebEntity {
      private Integer id;

@@ -9,8 +9,8 @@ import cz.dcb.support.db.jpa.entities.User;
 import java.util.Date;
 
 /**
- *
- * @author bar
+ * Entitni trid reprezentujici stav SPZ pro ucely zobrazovani a editace v JSP
+ * @author Ludek Bartek
  */
 public class SpzStateWebEntity {
     private long id;

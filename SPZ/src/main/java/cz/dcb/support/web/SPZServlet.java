@@ -219,11 +219,22 @@ public class SPZServlet extends HttpServlet {
     public String getServletInfo() {
         return "System podpory zakazniku";
     }// </editor-fold>
-
+    /**
+     * Performs user authetication 
+     * @param request http request containing login information
+     * @param response http response
+     */
     private void authenticate(HttpServletRequest request, HttpServletResponse response) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    /**
+     * Adds new spz from request parameters
+     * @param request http request containing spz attributes 
+     * @param response http response
+     * @throws IOException may be thrown while forwarding http request to listSPZ.jsp
+     * @throws ServletException may be thrown while forwarding http request to listSPZ.jsp
+     */
     private void addSpz(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         if(checkSpzParams(request.getParameterMap())){
             SpzManager manager= new SpzJpaController(emf);
@@ -279,7 +290,16 @@ public class SPZServlet extends HttpServlet {
         }
         listSpz(request, response);
     }
-
+    
+    /**
+     * Performs modifications of existing SPZ
+     * @param request http request with parameters containing required data
+     * @param response http response 
+     * @throws ServletException thrown while processing request. For details see 
+     *                 exception message 
+     * @throws IOException thrown while processing request. For details see 
+     *                 exception message 
+     */
     private void editSpz(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String jspName;
         Spz spz = null;
@@ -349,31 +369,72 @@ public class SPZServlet extends HttpServlet {
        // listSpz(request, response);
     }
 
+    /**
+     * Adds new user
+     * @param request http request containing required data
+     * @param response http response 
+     */
     private void addUser(HttpServletRequest request, HttpServletResponse response) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    /**
+     * Modifies user data
+     * @param request http request containing required data
+     * @param response http response 
+     */
     private void editUser(HttpServletRequest request, HttpServletResponse response) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         
     }
 
+    /**
+     * Adds new attachment to an existing SPZ
+     * @param request http request containing required data about attachment
+     * @param response http response
+     */
     private void addAttachment(HttpServletRequest request, HttpServletResponse response) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    /**
+     * Edits an existing attachment
+     * @param request http request containing id of attachment to be modified as well as data
+     *                that should be modified
+     * @param response http response 
+     */
     private void editAttachment(HttpServletRequest request, HttpServletResponse response) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    /**
+     * Adds new project.
+     * @param request http request containing new project data 
+     * @param response http response
+     */
     private void addProject(HttpServletRequest request, HttpServletResponse response) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    /**
+     * Edits an existing project
+     * @param request http request containing id of the project to be modified as well as 
+     *                the modified information
+     * @param response http response
+     */
     private void editProject(HttpServletRequest request, HttpServletResponse response) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    /**
+     * Lists all SPZs in the system
+     * @param request http request
+     * @param response http response
+     * @throws ServletException exception that may happend (for more details see 
+     *                          exception message 
+     * @throws IOException exception that may happend (for more details see 
+     *                          exception message 
+     */
     private void listSpz(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         SpzManager spzManager = new SpzJpaController(emf);
         List<Spz> spzs = spzManager.findSpzEntities();
@@ -382,6 +443,11 @@ public class SPZServlet extends HttpServlet {
         request.getRequestDispatcher("/listSPZ.jsp").forward(request, response);
     }
 
+    /**
+     * Checks if the parameter map contains all information needed by SPZ entity
+     * @param parameterMap map of information with SPZ attributes 
+     * @return true if all required data are contained and are in a correct form. 
+     */
     private boolean checkSpzParams(Map<String, String[]> parameterMap) {
         /*if(!checkReqNumber(parameterMap)){
             return false;
@@ -416,6 +482,12 @@ public class SPZServlet extends HttpServlet {
         return true;
     }
 
+    /**
+     * Transforms http request parameters to a SPZ
+     * @param parameterMap http request parameters 
+     * @return new SPZ corresponding to the parameters if they are correct
+     *         null otherwise.
+     */
     private Spz requestParamsToSpz(Map<String, String[]> parameterMap) {
         if(!checkSpzParams(parameterMap)){
             return null;
@@ -462,6 +534,13 @@ public class SPZServlet extends HttpServlet {
         return spz;
     }
 
+    /**
+     * Helper method transforming string representing a date into the 
+     * java.util.Date object.
+     * @param strVal value to be transformed.
+     * @return null if the parameter is in incorrect form, corresponding date
+     *         otherwise.
+     */
     private Date stringToDate(String strVal) {
         DateFormat formater = DateFormat.getDateInstance(DateFormat.SHORT, new Locale("cs"));
         Date value = null;
@@ -479,6 +558,11 @@ public class SPZServlet extends HttpServlet {
         return value;
     }
 
+    /**
+     * Checks the parameterMap for attribute reqnumber
+     * @param parameterMap request parameter map
+     * @return true if reqnumber is present and not null, false otherwise.
+     */
     private boolean checkReqNumber(Map<String, String[]> parameterMap) {
         boolean result = parameterMap.containsKey("reqnumber");
         if(!result)return false;
@@ -486,14 +570,29 @@ public class SPZServlet extends HttpServlet {
         return !reqNumber.isEmpty();
     }
 
+    /**
+     * Checks the parameter map for attribute issuedate
+     * @param parameterMap request parameter map
+     * @return true if issuedate is present and not null, false otherwise.
+     */
     private boolean checkIssueDate(Map<String, String[]> parameterMap) {
         return parameterMap.containsKey("issuedate") && !parameterMap.get("issuedate")[0].isEmpty();
     }
 
+    /**
+     * Checks the paramterMap for attribute contactperson
+     * @param parameterMap request parameter map.
+     * @return true if the contactperson is present and not null, false otherwise
+     */
     private boolean checkContactPerson(Map<String, String[]> parameterMap) {
         return parameterMap.containsKey("contactperson") && !parameterMap.get("contactperson")[0].isEmpty();
     }
 
+    /**
+     * Checks the parameterMap for attribute shortname
+     * @param parameterMap request parameter map
+     * @return true if the shortname is present and not null, false otherwise.
+     */
     private boolean checkShortName(Map<String, String[]> parameterMap) {
         boolean result = parameterMap.containsKey("shortname");
         if(!result){
@@ -503,20 +602,41 @@ public class SPZServlet extends HttpServlet {
         return !shortName.isEmpty();
     }
 
+    /**
+     * Checks the parameterMap for attribute requestdescription
+     * @param parameterMap http request parameterMap
+     * @return true if the attribute is present and not null, false otherwise.
+     */
     private boolean checkRequestDescription(Map<String, String[]> parameterMap) {
         boolean result = parameterMap.containsKey("requestdescription");
         result = result && !(parameterMap.get("requestdescription")[0].isEmpty());
         return result;
     }
 
+    /**
+     * Checks the parameterMap for attribute implementationacceptancedate
+     * @param parameterMap http request parameterMap
+     * @return true if the attribute is present and not null, false otherwise.
+     */
     private boolean checkImplementationAcceptanceDate(Map<String, String[]> parameterMap) {
         return parameterMap.containsKey("implementationacceptancedate") && !parameterMap.get("implementationacceptancedate")[0].isEmpty();
     }
 
+    /**
+     * Checks the parameterMap for attribute reqtype
+     * @param parameterMap http request parameterMap
+     * @return true if the attribute is present and not null, false otherwise.
+     */
     private boolean checkReqType(Map<String, String[]> parameterMap) {
         return parameterMap.containsKey("reqtype") && !parameterMap.get("reqtype")[0].isEmpty();
     }
 
+    /**
+     * Transforms the SPZ list into a list of SPZWebEntity used for presentation
+     * in a JSP
+     * @param spzs list of SPZ to be transformed
+     * @return list of SPZWebEntities.
+     */
     private List<SPZWebEntity> spzToEntities(List<Spz> spzs) {
         List<SPZWebEntity> entities = new ArrayList<>();
         
@@ -527,6 +647,11 @@ public class SPZServlet extends HttpServlet {
         return entities;
     }
 
+    /**
+     * Transforms particular SPZ into SPZWebEntity instance.
+     * @param spz SPZ to be transformed
+     * @return Transformed SPZ
+     */
     private SPZWebEntity spzToEntity(Spz spz) {
         SpzIssuerManager issuerManager = new SpzIssuerJpaController(emf);
         SpzStateManager stateManager = new SpzStateJpaController(emf);
@@ -562,11 +687,23 @@ public class SPZServlet extends HttpServlet {
         return entity;
     }
 
+    /**
+     * Returns the last change date for SPZ with id
+     * @param id SPZ id
+     * @param manager SpzStateManager used to access Spzstate table in db.
+     * @return Required date.
+     */
     private Date getLastChangeDate(Integer id,SpzStateManager manager) {
         return manager.getLastChange(id);
         
     }
 
+    /**
+     * Returns the value of attribute id from http request parameterMap
+     * @param parameterMap http request parameter map containing require info
+     * @return Value of id if the map contains it and it is correct null 
+     * otherwise
+     */
     private Integer getSpzId(Map<String, String[]> parameterMap) {
         if(!parameterMap.containsKey("id")){
             return null;
@@ -581,18 +718,34 @@ public class SPZServlet extends HttpServlet {
         return id;
     }
 
+    /**
+     * Returns current state of the spz
+     * @param spz the spz we are looking for its present state
+     * @return String representation of the spz state.
+     */
     private String getCurrentState(Spz spz) {
         SpzStatesManager manager = new SpzStatesJpaController(emf);
         Spzstate state = manager.getCurrentState(spz);
         return state.getCode();
     }
 
+    /**
+     * Creates state for a new spz
+     * @param state The state to be returned
+     * @param spz SPZ we are creating the new state 
+     */
     private void createNewState(Spzstate state, Spz spz) {
         state.setIdate(new GregorianCalendar().getTime());
         state.setCode(SpzStates.POSTED.toString());
         state.setTs(BigInteger.valueOf(new GregorianCalendar().getTimeInMillis()));
     }
 
+    /**
+     * Create Spzstates entity for the given spz and its state
+     * @param spz SPZ we are creating Spzstates for
+     * @param state the state of the spz
+     * @return Spzstates instance.
+     */
     private Spzstates createSpzStates(Spz spz, Spzstate state) {
         Spzstates states= new Spzstates();
         states.setSpzid(spz.getId());
@@ -600,6 +753,11 @@ public class SPZServlet extends HttpServlet {
         return states;
     }
 
+    /**
+     * Converts List of spz states into the list of SpzStateWebEntity
+     * @param spzStates List of Spz states to be transformed
+     * @return Corresponding SpzStateWebEntity list
+     */
     private List<SpzStateWebEntity> spzStatesToSpzStateWebEntities(List<Spzstate> spzStates) {
         List<SpzStateWebEntity> result = new ArrayList<>();
         for(Spzstate state:spzStates){
@@ -610,6 +768,11 @@ public class SPZServlet extends HttpServlet {
         return result;
     }
 
+    /**
+     * Transforms spz state into the SpzStateWebEntity instance.
+     * @param state Spz state to be converted
+     * @return Converted Spz state
+     */
     private SpzStateWebEntity spzStateToSpzWebEntity(Spzstate state) {
         UserManager userMan = new UserJpaController(emf);
         SpzStateWebEntity entity = new SpzStateWebEntity();
@@ -627,6 +790,15 @@ public class SPZServlet extends HttpServlet {
         return entity;
     }
 
+    /**
+     * Updates the SPZ according the parameters of the http request
+     * @param request http request with required data
+     * @param response http response
+     * @throws IOException may be thrown while forwarding to the listSPZ.jsp 
+     *                     after some exception has occurred in editing.
+     * @throws ServletException may be thrown while forwarding to the listSPZ.jsp 
+     *                     after some exception has occurred in editing.
+     */
     private void updateSPZ(HttpServletRequest request, HttpServletResponse response) throws IOException,ServletException {
         Spz spz = requestParamsToSpz(request.getParameterMap());
         SpzManager manager = new SpzJpaController(emf);
@@ -642,6 +814,14 @@ public class SPZServlet extends HttpServlet {
         }
     }
 
+    /**
+     * Add files with notes to SPZ.
+     * @param request http request parameters with required data
+     * @param response http response
+     *
+     * @throws IOException may be thrown while forwarding to the listSPZ.jsp 
+     *                     
+     */
     private void addNote(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         AttachmentManager manager = new AttachmentJpaController(emf);
         Map<String,String[]> params = request.getParameterMap();
@@ -656,7 +836,7 @@ public class SPZServlet extends HttpServlet {
             fileName = new StringBuilder("attachments/").append(part1.getSubmittedFileName()).toString();
             try{
                 uploadFile(request, response, manager, fileName, in);
-            }catch(ServletException| IOException ex){
+            }catch(IOException ex){
                 displayError(request, fileName, ex, response);
             }
         }
@@ -666,7 +846,7 @@ public class SPZServlet extends HttpServlet {
             in = part2.getInputStream();
             try{
                 uploadFile(request,response,manager,fileName,in);
-            }catch(ServletException | IOException ex){
+            }catch(IOException ex){
                 displayError(request, fileName, ex, response);
             }
         }
@@ -676,7 +856,7 @@ public class SPZServlet extends HttpServlet {
             fileName = new StringBuilder("attachments/").append(part3.getSubmittedFileName()).toString();
             try{
                 uploadFile(request,response,manager,fileName,in);
-            }catch(ServletException |IOException ex){
+            }catch(IOException ex){
                 displayError(request, fileName, ex, response);
             }
             
@@ -688,6 +868,15 @@ public class SPZServlet extends HttpServlet {
         
     }
 
+    /**
+     * Used to display errors on loading SPZ attachments
+     * @param request http request with parameters for editPost.jsp
+     * @param fileName file name that has not been loaded
+     * @param ex exception that has occurred
+     * @param response http response
+     * @throws IOException  may be thrown while forwarding to the editPost.jsp 
+     * @throws ServletException may be thrown while forwarding to the editPost.jsp 
+     */
     private void displayError(HttpServletRequest request, String fileName, final java.lang.Exception ex, HttpServletResponse response) throws IOException, ServletException {
         setEditAttributes(request);
         request.setAttribute("err", String.format("Error loading file %s: %s", fileName, ex));
@@ -712,11 +901,21 @@ public class SPZServlet extends HttpServlet {
         }
     }
 
-    private void uploadFile(HttpServletRequest request, HttpServletResponse response, AttachmentManager manager,String fileParam, InputStream in) throws IOException, ServletException {
+    /**
+     * Uploads attachment in the correct folder.
+     * @param request http request with required data
+     * @param response http response
+     * @param manager AttachmentManager used to create new Attachment entity in 
+     *                the database.
+     * @param fileParam the file name of the attachment
+     * @param in input stream to load atachment from.
+     * @throws IOException may be thrown while displaying the error
+     */
+    private void uploadFile(HttpServletRequest request, HttpServletResponse response, AttachmentManager manager,String fileParam, InputStream in) throws IOException/*, ServletException*/ {
        // String fileName = new StringBuilder("attachments/").append(fileParam).toString();
         try{
             uploadFile(request,response,fileParam,in);
-        }catch(ServletException | IOException ex){
+        }catch(IOException ex){
             LOGGER.log(Level.SEVERE,"Error saving attachment: ",ex);
             /*request.setAttribute("err", "Error loading file "+fileParam+": "+ex);
             request.getRequestDispatcher("/editPost.jsp").forward(request, response);*/
@@ -728,7 +927,16 @@ public class SPZServlet extends HttpServlet {
         manager.create(file);
     }
     
-    private void uploadFile(HttpServletRequest request, HttpServletResponse response,String fileName, InputStream in) throws IOException, ServletException {
+    /**
+     * Uploads the SPZ attachment according the parameters
+     * @param request http request 
+     * @param response http response
+     * @param fileName the file name where to store the attachment
+     * @param in input stream used to load the attachment
+     * @throws IOException IOException that occurred during the attachment 
+     * upload
+     */
+    private void uploadFile(HttpServletRequest request, HttpServletResponse response,String fileName, InputStream in) throws IOException/*, ServletException*/ {
             
             OutputStream out = null;
             int count = 0;
@@ -752,7 +960,13 @@ public class SPZServlet extends HttpServlet {
             }
             
     }
-
+    
+    
+    /**
+     * Converts the http request parameters into the Attachment instance.
+     * @param request http request
+     * @return Attachment instance corresponding the http request parameters.
+     */
     private Attachment requestToAttachment(HttpServletRequest request) {
         Attachment attachment = new Attachment();
         attachment.setDate(new GregorianCalendar().getTime());
@@ -761,6 +975,16 @@ public class SPZServlet extends HttpServlet {
         return attachment;
     }
 
+    /**
+     * Deletes the spz state according the request parameters. Used to remove
+     * last spz state.
+     * @param request http request with required data
+     * @param response http response
+     * @throws ServletException may be thrown while forwarding to the either 
+     *                          editPost.jsp or editDeleted.jsp 
+     * @throws IOException may be thrown while forwarding to the either 
+     *                          editPost.jsp or editDeleted.jsp 
+     */
     private void deleteSpzState(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Map<String,String[]> params = request.getParameterMap();
         if(!params.containsKey("id")){
@@ -820,6 +1044,11 @@ public class SPZServlet extends HttpServlet {
         //listSpz(request, response);
     }
 
+    /**
+     * Transforms the spz into the SpzState CANCELED
+     * @param request http request with required parameters
+     * @param response http response
+     */
     private void deleteSpz(HttpServletRequest request, HttpServletResponse response) {
         SpzManager spzManager = new SpzJpaController(emf);
         SpzStateManager stateManager = new SpzStateJpaController(emf);
@@ -877,8 +1106,14 @@ public class SPZServlet extends HttpServlet {
             Logger.getLogger(SPZServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
-    private void changeState(Spz spz, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    
+    /**
+     * Moves the spz into a new SPZ state according request parameters
+     * @param spz spz to change its state
+     * @param request http request with required parameters
+     * @param response http response
+     */
+    private void changeState(Spz spz, HttpServletRequest request, HttpServletResponse response) /*throws ServletException, IOException */{
         String stringState = request.getParameter("newstate");
         SpzStates state = SpzStates.valueOf(stringState);
         Spzstate newState = new Spzstate();
