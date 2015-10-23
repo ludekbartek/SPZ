@@ -529,7 +529,7 @@ public class SPZServlet extends HttpServlet {
         spz.setPriority(priority);
         String strCategory = parameterMap.get("category")[0];
         short category = Short.parseShort(strCategory);
-        spz.setCategory(priority);
+        spz.setCategory(category);
         spz.setRequesttype(parameterMap.get("reqtype")[0]);
         return spz;
     }
