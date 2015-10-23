@@ -76,7 +76,7 @@
                 <th>Instalace</th>
                 <th>Skut. prac.</th>
                 <th>Stav SPZ</th>
-                <th>Standardni?</th>
+                <th>Kategorie</th>
                 <th>Ze dne</th>
             </thead>
             <c:forEach items="${spzs}" var="item">
@@ -127,7 +127,7 @@
                     </td>
                     <td>
                         <c:choose>
-                            <c:when test="${item.category==1}">Standardni</c:when>
+                            <c:when test="${item.category=='1'}">Standardni</c:when>
                             <c:otherwise>Nestandardni</c:otherwise>
                         </c:choose>
                     </td>
