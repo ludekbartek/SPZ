@@ -92,7 +92,9 @@ pri editaci pouze popisy (viz stara verze).
                         <select name="priority">
                             <option value="1" <c:if test="${priority=='1'}">selected="true"</c:if>>1</option>
                             <option value="2" <c:if test="${priority=='2'}">selected="true"</c:if>>2</option>
-                            <option value="3" <c:if test="${priority=='3'}">selected="true"</c:if>>3</option>
+                            <option value="3" <c:if test="${priority=='3' or empty priority}">selected="true"</c:if>>3</option>
+                            <option value="4" <c:if test="${priority=='4'}">selected="true"</c:if>>4</option>
+                            <option value="5" <c:if test="${priority=='5'}">selected="true"</c:if>>5</option>
                         </select>
                     </span>
                 </div>
