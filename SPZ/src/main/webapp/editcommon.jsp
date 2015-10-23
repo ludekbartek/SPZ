@@ -5,6 +5,15 @@
                 <td class="highlight-value"><c:out value="${spz.reqnumber}"/></td>
                 <td class="label">Priorita:</td>
                 <td><c:out value="${spz.priority}"/></td>
+                
+            </tr>
+            <tr>
+                <td class="label">Kategorie:</td>
+                <td><c:choose>
+                        <c:when test="${spz.category=='1'}">Standardni</c:when>
+                        <c:otherwise>Nestandardni</c:otherwise>
+                    </c:choose></td>
+                <td/>
             </tr>
             <tr>
                 <td class="label">Nazev:</td>
