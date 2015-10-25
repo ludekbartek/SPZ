@@ -685,6 +685,7 @@ public class SPZServlet extends HttpServlet {
         entity.setKind(spz.getRequesttype());
         entity.setDate(getLastChangeDate(spz.getId(),stateManager));
         entity.setCategory(spz.getCategory());
+        entity.setPriority(spz.getPriority());
         return entity;
     }
 
