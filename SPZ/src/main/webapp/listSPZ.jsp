@@ -107,8 +107,8 @@
                         <input type="hidden" name="issuedate" value="${item.issuedate}"/>
                     </td>
                     <td>
-                        <c:out value="${item.requestdescription}"/>
-                        <input type="hidden" name="requestdescription" value="${requestdescription}"/>
+                        <c:out value="${item.shortname}"/>
+                        <input type="hidden" name="shortname" value="${item.shortname}"/>
                     </td>
                     <td>
                         <f:formatDate value="${item.specDate}" pattern="dd.MM. yyyy"/>
