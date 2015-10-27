@@ -137,7 +137,7 @@ public class SpzManagerTest {
         spz.setRequesttype("Modifikace datovych struktur.");
         checkResult(spz);
         
-        spz.setShortname("Nove kratke jmeno.");
+        spz.setShortName("Nove kratke jmeno.");
         checkResult(spz);
         
         spz.setTs(new BigInteger("10000000000"));
@@ -170,11 +170,11 @@ public class SpzManagerTest {
     @Test(expected = RollbackException.class)
     public void testInvalidShortName()throws Exception{
         Spz spz = DBUtils.createSpz();
-        spz.setShortname(createString(50));
+        spz.setShortName(createString(50));
         manager.create(spz);
-        spz.setShortname(createString(51));
+        spz.setShortName(createString(51));
         manager.edit(spz);
-        fail("Invalid short name accepted "+spz.getShortname());    
+        fail("Invalid short name accepted "+spz.getShortName());    
         
     }
     
@@ -196,7 +196,7 @@ public class SpzManagerTest {
         manager.create(spz);
         spz.setReqnumber(createNumber(11));
         manager.edit(spz);
-        fail("Invalid short name accepted "+spz.getShortname());    
+        fail("Invalid short name accepted "+spz.getShortName());    
         
     }
     private void checkResult(Spz spz) throws Exception {

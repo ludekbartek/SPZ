@@ -246,7 +246,7 @@ public class DBUtils {
         spz.setReqnumber("One");
         spz.setRequestdescription("Testik");
         spz.setRequesttype("nejaky");
-        spz.setShortname("short");
+        spz.setShortName("short");
         spz.setTs(BigInteger.ONE);
         return spz;
     }
