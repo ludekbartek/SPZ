@@ -1,16 +1,16 @@
 create table SUSER.Spz
 (
     id int primary key not null generated always as identity, /*Primarni klic*/
-    reqNumber varchar(10), /*cislo spz [0-9]{10} - ulozim poslednich 10 cisel z klice, zatim maji delku 5 */
-    priority smallint,
-    issueDate timestamp,
-    contactPerson varchar(32),
-    requestType varchar(32),
-    shortName varchar(50),
-    requestDescription varchar(9000),
-    implementationAcceptDate timestamp,
-    ts bigint,
-    category smallint
+    reqNumber varchar(10), /*cislo spz [0-9]{10} - uklada se poslednich 10 cisel z klice, zatim maji delku 5 */
+    priority smallint, /*priorita SPZ 1-4*/
+    issueDate timestamp, /* Casove razitko, obsahuje cas vytvoreni SPZ v milisekundach od zacatku ery*/
+    contactPerson varchar(32), /*Jmeno kontaktni osoby*/
+    requestType varchar(32), /*typ pozadavku*/
+    shortName varchar(50), /*strucny nazev pozadavku, v seznamu pole popis*/
+    requestDescription varchar(9000), /*popis pozadavku*/
+    implementationAcceptDate timestamp, /*datum akceptace opravy*/
+    ts bigint,/*casove razitko, cas vytvoreni zaznamu v DB*/
+    category smallint /*kategorie SPZ - 0 = nestandardni,1 = standardni*/
 );
 
 create table SUSER.SpzState 
