@@ -37,7 +37,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Spz.findByIssuedate", query = "SELECT s FROM Spz s WHERE s.issuedate = :issuedate"),
     @NamedQuery(name = "Spz.findByContactperson", query = "SELECT s FROM Spz s WHERE s.contactperson = :contactperson"),
     @NamedQuery(name = "Spz.findByRequesttype", query = "SELECT s FROM Spz s WHERE s.requesttype = :requesttype"),
-    @NamedQuery(name = "Spz.findByShortname", query = "SELECT s FROM Spz s WHERE s.shortname = :shortname"),
+    @NamedQuery(name = "Spz.findByShortname", query = "SELECT s FROM Spz s WHERE s.shortName = :shortName"),
     @NamedQuery(name = "Spz.findByRequestdescription", query = "SELECT s FROM Spz s WHERE s.requestdescription = :requestdescription"),
     @NamedQuery(name = "Spz.findByImplementationacceptdate", query = "SELECT s FROM Spz s WHERE s.implementationacceptdate = :implementationacceptdate"),
     @NamedQuery(name = "Spz.findByTs", query = "SELECT s FROM Spz s WHERE s.ts = :ts"),
@@ -65,7 +65,7 @@ public class Spz implements Serializable {
     private String requesttype;
     @Size(max = 50)
     @Column(name = "SHORTNAME", length = 50)
-    private String shortname; //zadava se ve formulari, pole nazev
+    private String shortName; //zadava se ve formulari, pole nazev
     @Size(max = 9000)
     @Column(name = "REQUESTDESCRIPTION", length = 9000)
     private String requestdescription;
@@ -132,12 +132,12 @@ public class Spz implements Serializable {
         this.requesttype = requesttype;
     }
 
-    public String getShortname() {
-        return shortname;
+    public String getShortName() {
+        return shortName;
     }
 
-    public void setShortname(String shortname) {
-        this.shortname = shortname;
+    public void setShortName(String shortname) {
+        this.shortName = shortname;
     }
 
     public String getRequestdescription() {
