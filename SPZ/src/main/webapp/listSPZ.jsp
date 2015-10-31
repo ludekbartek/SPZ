@@ -84,31 +84,31 @@
                 <form action="${pageContext.request.contextPath}/SPZServlet/editspz" method="POST">
                     <td>
                         <input type="hidden" name="id" value="${item.id}"/>
-                        <input type="hidden" name="reqnumber" value="${item.reqnumber}"/>
-                        <input type="submit" value="${item.reqnumber}"/>
+                        <input type="hidden" name="reqNumber" value="${item.reqNumber}"/>
+                        <input type="submit" value="${item.reqNumber}"/>
                     </td>
                    <td>
                         <c:out value="${item.priority}"/>
                         <input type="hidden" name="priority" value="${item.priority}"/>
                     </td>
                     <td>
-                        <c:out value="${item.requesttype}"/>
-                        <input type="hidden" name="requesttype" value="${item.requesttype}"/>
+                        <c:out value="${item.requestType}"/>
+                        <input type="hidden" name="requestType" value="${item.requestType}"/>
                     </td>
                     <td>
                         zde bude zadavatel
                     </td>
                     <td>
-                        <c:out value="${item.contactperson}"/>
-                        <input type="hidden" name="contactperson" value="${item.contactperson}"/>
+                        <c:out value="${item.contactPerson}"/>
+                        <input type="hidden" name="contactPerson" value="${item.contactPerson}"/>
                     </td>
                     <td>
-                        <f:formatDate pattern="dd.MM.yy" value="${item.issuedate}"/> 
-                        <input type="hidden" name="issuedate" value="${item.issuedate}"/>
+                        <f:formatDate pattern="dd.MM.yy" value="${item.issueDate}"/> 
+                        <input type="hidden" name="issuedate" value="${item.issueDate}"/>
                     </td>
                     <td>
-                        <c:out value="${item.shortname}"/>
-                        <input type="hidden" name="shortname" value="${item.shortname}"/>
+                        <c:out value="${item.shortName}"/>
+                        <input type="hidden" name="shortName" value="${item.shortName}"/>
                     </td>
                     <td>
                         <f:formatDate value="${item.specDate}" pattern="dd.MM. yyyy"/>
@@ -132,8 +132,8 @@
                         </c:choose>
                     </td>
                     <td>
-                        <f:formatDate value="${item.implementationacceptdate}" pattern="dd.MM.yyyy"/>
-                        <input type="hidden" name="implementationacceptdate" value="${item.implementationacceptdate}"/>
+                        <f:formatDate value="${item.implementationAcceptDate}" pattern="dd.MM.yyyy"/>
+                        <input type="hidden" name="implementationAcceptDate" value="${item.implementationAcceptDate}"/>
                     </td>
                 </form>        
                 </tr>
@@ -147,10 +147,10 @@
                     <td>
                         <c:choose> 
                             <c:when test="exist $invspz">
-                                <input name="reqnumber" type="text" value="{$spz.reqnumber}"/>
+                                <input name="reqNumber" type="text" value="{$spz.reqNumber}"/>
                             </c:when>
                             <c:otherwise>
-                                <input name="reqnumber" type="text" />
+                                <input name="reqNumber" type="text" />
                             </c:otherwise>
                         </c:choose>
                     </td>
@@ -173,21 +173,21 @@
                     <td>
                         <c:choose>
                             <c:when test="exist $invspz">
-                                <input type="date" name="issuedate" value="${invspz.issuedate}"/>
+                                <input type="date" name="issuedate" value="${invspz.issueDate}"/>
                             </c:when>
                             <c:otherwise>
-                                <input type="date" name="issuedate"/>
+                                <input type="date" name="issueDate"/>
                             </c:otherwise>
                         </c:choose>
                     </td>
                     <td>
-                        <input type="text" name="contactperson"/>
+                        <input type="text" name="contactPerson"/>
                     </td>
                     <td><c:choose>
                             <c:when test="exist $invspz">
                             <select name="reqtype">
-                                <option value="radna"<c:if test="${invspz.reqtype == 'radna'}">selected="true"</c:if>>radna</option>
-                                <option value="mimoradna"<c:if test="${invspz.reqtype = 'mimoradna'}">selected="true"</c:if>>mimoradna</option>
+                                <option value="radna"<c:if test="${invspz.reqType == 'radna'}">selected="true"</c:if>>radna</option>
+                                <option value="mimoradna"<c:if test="${invspz.reqType = 'mimoradna'}">selected="true"</c:if>>mimoradna</option>
                             </select>
                             </c:when>
                             <c:otherwise>
@@ -201,27 +201,27 @@
                     <td>
                         <c:choose>
                             <c:when test="exist $invspz">
-                                <input type="text" name="shortname" value="${invspz.shortname}"/>
+                                <input type="text" name="shortName" value="${invspz.shortName}"/>
                             </c:when>
                             <c:otherwise>
-                                <input type="text" name="shortname"/>
+                                <input type="text" name="shortName"/>
                             </c:otherwise>
                         </c:choose>
                     </td>
                     <td>
                         <textarea rows="3" cols="40" name="requestdescription">
                             <c:if test="exist $invspz">
-                                <c:out value="${invspz.requestdescrption}"/>
+                                <c:out value="${invspz.requestDescrption}"/>
                             </c:if>    
                         </textarea>
                     </td>
                     <td>
                         <c:choose>
                             <c:when test="exist $invspz">
-                             <input type="date" name="implementationacceptancedate" value="${invspz.implementationacceptancedate}"/>
+                             <input type="date" name="implementationAcceptanceDate" value="${invspz.implementationAcceptanceDate}"/>
                             </c:when>
                             <c:otherwise>
-                                <input type="date" name="implementationacceptancedate"/>
+                                <input type="date" name="implementationAcceptanceDate"/>
                             </c:otherwise>
                         </c:choose>
                     </td>

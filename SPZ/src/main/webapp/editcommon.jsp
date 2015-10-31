@@ -2,7 +2,7 @@
             <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
             <tr>
                 <td class="label">Cislo:</td>
-                <td class="highlight-value"><c:out value="${spz.reqnumber}"/></td>
+                <td class="highlight-value"><c:out value="${spz.reqNumber}"/></td>
                 <td class="label">Priorita:</td>
                 <td><c:out value="${spz.priority}"/></td>
                 
@@ -17,9 +17,9 @@
             </tr>
             <tr>
                 <td class="label">Nazev:</td>
-                <td class="highligh-value"><c:out value="${spz.shortname}"/></td>
+                <td class="highligh-value"><c:out value="${spz.shortName}"/></td>
                 <td class="label">Typ:</td>
-                <td><c:out value="${spz.requesttype}"/></td>
+                <td><c:out value="${spz.requestType}"/></td>
             </tr>
             <tr>
                 <td class="label">Zadal:</td>
@@ -29,15 +29,15 @@
                     <c:out value="${spz.issuer}"/>
                 </c:when>
                 <c:otherwise>Administrator</c:otherwise>
-            </c:choose>, <!--<c:out value="${spz.issuedate}"/>-->
-            <f:formatDate dateStyle="LONG" type="both" timeStyle="SHORT" value="${spz.issuedate}"/> 
+            </c:choose>, <!--<c:out value="${spz.issueDate}"/>-->
+            <f:formatDate dateStyle="LONG" type="both" timeStyle="SHORT" value="${spz.issueDate}"/> 
                 </td>
                 <td class="label">Kontakt</td>
-                <td><c:out value="${spz.contactperson}"/></td>
+                <td><c:out value="${spz.contactPerson}"/></td>
             </tr>
             <tr>
                 <td class="label">Zadani:</td>
-                <td colspan="3"><c:out value="${spz.requestdescription}"/></td>
+                <td colspan="3"><c:out value="${spz.requestDescription}"/></td>
             </tr>
             <tr>
                 <td class="label">Analytik:</td>
