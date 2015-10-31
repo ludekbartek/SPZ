@@ -662,12 +662,12 @@ public class SPZServlet extends HttpServlet {
         SPZWebEntity entity;
         entity = new SPZWebEntity();
         entity.setId(spz.getId());
-        entity.setShortname(spz.getShortName());
-        entity.setReqnumber(spz.getReqnumber());
-        entity.setIssuedate(spz.getIssuedate());
-        entity.setContactperson(spz.getContactperson());
-        entity.setReqnumber(spz.getReqnumber());
-        entity.setRequesttype(spz.getRequesttype());
+        entity.setShortName(spz.getShortName());
+        entity.setReqNumber(spz.getReqnumber());
+        entity.setIssueDate(spz.getIssuedate());
+        entity.setContactPerson(spz.getContactperson());
+        entity.setReqNumber(spz.getReqnumber());
+        entity.setRequestType(spz.getRequesttype());
         Spzstate current = statesManager.getCurrentState(spz);
         User user = null;
         if(current!=null){
@@ -682,7 +682,7 @@ public class SPZServlet extends HttpServlet {
             String issuerName = userManger.findUser(spzIssuerId).getName();
             entity.setIssuer(issuerName);
         }
-        entity.setRequestdescription(spz.getRequestdescription());
+        entity.setRequestDescription(spz.getRequestdescription());
         entity.setKind(spz.getRequesttype());
         entity.setDate(getLastChangeDate(spz.getId(),stateManager));
         entity.setCategory(spz.getCategory());

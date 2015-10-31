@@ -17,15 +17,15 @@ import java.util.Objects;
  */
 public class SPZWebEntity {
      private Integer id;
-     private String reqnumber;
+     private String reqNumber;
      private String kind;
      private String issuer;
-     private String contactperson;
-     private String shortname;
+     private String contactPerson;
+     private String shortName;
      private String analyst;
      private String developer;
-     private Date issuedate;
-     private String requestdescription;
+     private Date issueDate;
+     private String requestDescription;
      private Date specDate;
      private double workLoadEstimation;
      private Date installDate;
@@ -34,8 +34,8 @@ public class SPZWebEntity {
      private Date date;
      private Short priority;
      private Short category;
-     private String requesttype;
-     private Date implementationacceptdate;
+     private String requestType;
+     private Date implementationAcceptDate;
      private Spzstate revisedRequest;
      private List<SpzStateWebEntity> history;
 
@@ -78,28 +78,28 @@ public class SPZWebEntity {
     public void setAnalyst(String analyst) {
         this.analyst = analyst;
     }
-    public String getShortname() {
-        return shortname;
+    public String getShortName() {
+        return shortName;
     }
 
-    public void setShortname(String shorname) {
-        this.shortname = shorname;
+    public void setShortName(String shorname) {
+        this.shortName = shorname;
     }
 
-    public Date getImplementationacceptdate() {
-        return implementationacceptdate;
+    public Date getImplementationAcceptDate() {
+        return implementationAcceptDate;
     }
 
-    public void setImplementationacceptdate(Date implementationacceptdate) {
-        this.implementationacceptdate = implementationacceptdate;
+    public void setImplementationAcceptDate(Date implementationAcceptDate) {
+        this.implementationAcceptDate = implementationAcceptDate;
     }
 
-    public String getRequesttype() {
-        return requesttype;
+    public String getRequestType() {
+        return requestType;
     }
 
-    public void setRequesttype(String requesttype) {
-        this.requesttype = requesttype;
+    public void setRequestType(String requestType) {
+        this.requestType = requestType;
     }
      
     public Short getPriority() {
@@ -118,12 +118,12 @@ public class SPZWebEntity {
         this.id = id;
     }
 
-    public String getReqnumber() {
-        return reqnumber;
+    public String getReqNumber() {
+        return reqNumber;
     }
 
-    public void setReqnumber(String number) {
-        this.reqnumber = number;
+    public void setReqNumber(String number) {
+        this.reqNumber = number;
     }
 
     public String getKind() {
@@ -142,28 +142,28 @@ public class SPZWebEntity {
         this.issuer = issuer;
     }
 
-    public String getContactperson() {
-        return contactperson;
+    public String getContactPerson() {
+        return contactPerson;
     }
 
-    public void setContactperson(String contact) {
-        this.contactperson = contact;
+    public void setContactPerson(String contact) {
+        this.contactPerson = contact;
     }
 
-    public Date getIssuedate() {
-        return issuedate;
+    public Date getIssueDate() {
+        return issueDate;
     }
 
-    public void setIssuedate(Date issueDate) {
-        this.issuedate = issueDate;
+    public void setIssueDate(Date issueDate) {
+        this.issueDate = issueDate;
     }
 
-    public String getRequestdescription() {
-        return requestdescription;
+    public String getRequestDescription() {
+        return requestDescription;
     }
 
-    public void setRequestdescription(String description) {
-        this.requestdescription = description;
+    public void setRequestDescription(String description) {
+        this.requestDescription = description;
     }
 
     public Date getSpecDate() {
