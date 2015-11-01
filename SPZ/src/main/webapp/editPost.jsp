@@ -20,7 +20,7 @@
             <%@include file="editcommon.jsp" %>
             <tr>
                 <td colspan="3">
-                    <form action="${pageContext.request.contextPath}/SPZServlet/listSPZ" method="post">
+                    <form action="${pageContext.request.contextPath}/SPZServlet/editSPZ" method="post">
                         <input type="submit" value="Predat k analyze"/>
                         <input type="hidden" name="id" value="${spz.id}"/>
                         <input type="hidden" name="state" value="POSTED"/>
