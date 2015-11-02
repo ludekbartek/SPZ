@@ -17,7 +17,7 @@
             </tr>
             <tr>
                 <td class="label">Nazev:</td>
-                <td class="highligh-value"><c:out value="${spz.shortName}"/></td>
+                <td class="highligh-value"><c:out value="${spz.shortName}" /></td>
                 <td class="label">Typ:</td>
                 <td><c:out value="${spz.requestType}"/></td>
             </tr>
@@ -37,7 +37,7 @@
             </tr>
             <tr>
                 <td class="label">Zadani:</td>
-                <td colspan="3"><c:out value="${spz.requestDescription}"/></td>
+                <td colspan="3"><c:out value="${spz.requestDescription}" escapeXml="false"/></td>
             </tr>
             <tr>
                 <td class="label">Analytik:</td>
