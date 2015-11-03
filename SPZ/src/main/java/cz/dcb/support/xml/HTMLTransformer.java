@@ -5,35 +5,31 @@
  */
 package cz.dcb.support.xml;
 
+import cz.dcb.support.db.exceptions.SPZException;
 import java.io.IOException;
 import java.io.StringReader;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 import org.xml.sax.Attributes;
-import org.xml.sax.ContentHandler;
 import org.xml.sax.InputSource;
-import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
 /**
- *
- * @author bar
+ * Pomocna trida, ktera prevadi nazvy html elementu a atributu na mala pismena,
+ * aby sly primo zobrazit v JSP.
+ * 
+ * @author Ludek Bartek
  */
+
 public class HTMLTransformer extends DefaultHandler{
-    private StringBuilder result = new StringBuilder();
+    private final StringBuilder result = new StringBuilder();
    
-    public void startParse(String html){
+    public void convert(String html) throws SPZException{
         try {
             SAXParserFactory spf = SAXParserFactory.newInstance();
             SAXParser parser=spf.newSAXParser();
@@ -41,6 +37,7 @@ public class HTMLTransformer extends DefaultHandler{
             parser.parse(input,this);
         } catch (ParserConfigurationException | SAXException | IOException ex) {
             Logger.getLogger(HTMLTransformer.class.getName()).log(Level.SEVERE, null, ex);
+            throw new SPZException("Chyba pri konverzi html popisu.", ex);
         }
         
 
