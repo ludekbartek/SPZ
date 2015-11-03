@@ -44,25 +44,28 @@ public class HTMLTransformer extends DefaultHandler{
     }
     @Override
     public void startElement(String uri, String localName, String qName, Attributes atts) throws SAXException {
-       result.append("<").append(localName.toLowerCase());
+       result.append("<").append(qName.toLowerCase());
        for(int i=0;i<atts.getLength();i++){
            String name = atts.getLocalName(i);
            String value = atts.getValue(name);
            
-           result.append(name.toLowerCase()).append("=\"").append(value).append("\" ");
+           result.append(" ").append(name.toLowerCase()).append("=\"").append(value).append("\" ");
        }
+        System.err.println("start: " + qName +", result :" + result.toString());
        result.append(">");
     }  
 
     @Override
     public void characters(char [] ch, int start,int length){
+        System.err.println("chars: " + ch);
         result.append(new String(ch,start,length));
     }
     
     @Override
     public void endElement(String uri, String localName, String qName) throws SAXException {
+        System.err.println("end: "+qName);
         result.append("</");
-        result.append(localName.toLowerCase());
+        result.append(qName.toLowerCase());
         result.append(">");
     }
     
