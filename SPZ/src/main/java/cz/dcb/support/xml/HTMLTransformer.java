@@ -55,6 +55,11 @@ public class HTMLTransformer extends DefaultHandler{
     }  
 
     @Override
+    public void characters(char [] ch, int start,int length){
+        result.append(new String(ch,start,length));
+    }
+    
+    @Override
     public void endElement(String uri, String localName, String qName) throws SAXException {
         result.append("</");
         result.append(localName.toLowerCase());
