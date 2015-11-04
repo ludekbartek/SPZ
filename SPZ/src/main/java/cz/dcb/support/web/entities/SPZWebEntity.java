@@ -5,11 +5,15 @@
  */
 package cz.dcb.support.web.entities;
 
+import cz.dcb.support.db.exceptions.SPZException;
 import cz.dcb.support.db.jpa.entities.Spzstate;
+import cz.dcb.support.xml.HTMLTransformer;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Entitni trida reprezentujici jednu SPZ pro potreby editace a vypisu v JSP
@@ -159,7 +163,16 @@ public class SPZWebEntity {
     }
 
     public String getRequestDescription() {
-        return requestDescription;
+        HTMLTransformer transformer = new HTMLTransformer();
+        String description;
+        try {
+            transformer.convert(requestDescription);
+            description = transformer.getResult();
+        } catch (SPZException ex) {
+            Logger.getLogger(SPZWebEntity.class.getName()).log(Level.SEVERE, "Chyba v popisu pozadavku.", ex);
+            description = this.requestDescription;
+        }
+        return description;
     }
 
     public void setRequestDescription(String description) {
