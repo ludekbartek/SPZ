@@ -19,7 +19,7 @@
              <!--(<c:out value="${item.issueDate}"/>)-->
          </div>
          <div class="body">
-             <c:out value="${item.revisedRequestDescription}"/>
+             <c:out value="${item.revisedRequestDescription}" escapeXml="false"/>
          </div>
 </c:forEach>
 <c:if test="${item.code!='Registrovaná'}">
