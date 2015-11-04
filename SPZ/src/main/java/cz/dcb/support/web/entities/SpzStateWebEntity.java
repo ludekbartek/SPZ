@@ -5,8 +5,12 @@
  */
 package cz.dcb.support.web.entities;
 
+import cz.dcb.support.db.exceptions.SPZException;
 import cz.dcb.support.db.jpa.entities.User;
+import cz.dcb.support.xml.HTMLTransformer;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Entitni trid reprezentujici stav SPZ pro ucely zobrazovani a editace v JSP
@@ -50,7 +54,16 @@ public class SpzStateWebEntity {
     }
 
     public String getRevisedRequestDescription() {
-        return revisedRequestDescription;
+        String correctedValue;
+        HTMLTransformer transformer = new HTMLTransformer();
+        try {
+            transformer.convert(revisedRequestDescription);
+            correctedValue = transformer.getResult();
+        } catch (SPZException ex) {
+            Logger.getLogger(SpzStateWebEntity.class.getName()).log(Level.SEVERE, null, ex);
+            correctedValue = revisedRequestDescription;
+        }
+        return correctedValue;
     }
 
     public void setRevisedRequestDescription(String revisedRequestDescription) {
