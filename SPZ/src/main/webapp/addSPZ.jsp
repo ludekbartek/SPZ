@@ -102,9 +102,7 @@ pri editaci pouze popisy (viz stara verze).
                 <div class="formItem">
                     <span class="label"><label for="desc">Poznamka</label></span>
                     <span class="input">
-                        <textarea name="desc" cols="80" rows="5">
-                            
-                        </textarea>
+                        <textarea name="desc" cols="80" rows="5"></textarea>
                     </span>
                 </div>
                 <div class="formItem">
