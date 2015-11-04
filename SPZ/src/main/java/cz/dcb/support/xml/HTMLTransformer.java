@@ -30,6 +30,9 @@ public class HTMLTransformer extends DefaultHandler{
     private final StringBuilder result = new StringBuilder();
    
     public void convert(String html) throws SPZException{
+        if(html==null){
+            return;
+        }
         try {
             SAXParserFactory spf = SAXParserFactory.newInstance();
             SAXParser parser=spf.newSAXParser();
