@@ -5,6 +5,7 @@
  */
 package cz.dcb.support.web;
 
+import cz.dcb.support.db.exceptions.SPZException;
 import cz.dcb.support.db.jpa.controllers.AttachmentJpaController;
 import cz.dcb.support.db.jpa.controllers.AttachmentManager;
 import cz.dcb.support.db.jpa.controllers.SpzIssuerJpaController;
@@ -25,6 +26,7 @@ import cz.dcb.support.db.jpa.entities.Spzstates;
 import cz.dcb.support.db.jpa.entities.User;
 import cz.dcb.support.web.entities.SPZWebEntity;
 import cz.dcb.support.web.entities.SpzStateWebEntity;
+import cz.dcb.support.xml.HTMLTransformer;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -498,7 +500,17 @@ public class SPZServlet extends HttpServlet {
         }*/
        // spz.setShortname(parameterMap.get("shortname")[0]);
         
-        spz.setRequestdescription(parameterMap.get("requestdescription")[0]);
+        String requestDescription;
+        String strDescription = parameterMap.get("requestdescription")[0];
+        HTMLTransformer transformer = new HTMLTransformer();
+        try {
+            transformer.convert(strDescription);
+            requestDescription = transformer.getResult();
+        } catch (SPZException ex) {
+            Logger.getLogger(SPZServlet.class.getName()).log(Level.SEVERE, "Chyba v popisu/zadani SPZ", ex);
+            requestDescription = strDescription;
+        }
+        spz.setRequestdescription(requestDescription);
         spz.setContactperson(parameterMap.get("contactperson")[0]);
         if(parameterMap.containsKey("shortname")) spz.setShortName(parameterMap.get("shortname")[0]);
         Date issueDate = null;
