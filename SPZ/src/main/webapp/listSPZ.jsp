@@ -7,14 +7,16 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="f" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<f:setBundle basename="list"/>
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>System servisni podpory</title>
+        <title><f:message key="header"/></title>
     </head>
     <body>
         <h1>System servisni podpory</h1>
+        <!--<h1><f:message key="header"/></h1>-->
         <c:if test="${! empty error}">
             <div id="erorr" style="background-color: yellow;border-color: red;">
                 <c:out value="${error}"/>

@@ -1145,14 +1145,14 @@ public class SPZServlet extends HttpServlet {
         EntityManager entMan = stateManager.getEntityManager();
         
         try{
-            entMan.getTransaction().begin();
-            stateManager.create(newState,entMan);
+            //entMan.getTransaction().begin();
+            stateManager.create(newState);
             newStates.setSpzid(spz.getId());
             newStates.setStateid(newState.getId());
-            statesManager.create(newStates,entMan);
-            entMan.getTransaction().commit();
+            statesManager.create(newStates);
+            //entMan.getTransaction().commit();
         }catch(Exception ex){
-            entMan.getTransaction().rollback();
+            //entMan.getTransaction().rollback();
             LOGGER.log(Level.SEVERE,"Error set state ANALYSIS on SPZ.",ex);
             request.setAttribute("error", "Chyba při přechodu do stavu Probíhá analýza.");
             return;
