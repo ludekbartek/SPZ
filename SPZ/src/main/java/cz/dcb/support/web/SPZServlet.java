@@ -258,7 +258,7 @@ public class SPZServlet extends HttpServlet {
                 createNewState(state, spz);
 
                 stateManager.create(state);
-                state.setCurrentstate(state.getId());
+                state.setCurrentstate(1);
                 stateManager.edit(state);
                 Spzstates states = createSpzStates(spz,state);
                 statesManager.create(states,entMan);
@@ -1131,33 +1131,52 @@ public class SPZServlet extends HttpServlet {
     private void changeState(Spz spz, HttpServletRequest request, HttpServletResponse response) /*throws ServletException, IOException */{
         String stringState = request.getParameter("newstate");
         SpzStates state = SpzStates.valueOf(stringState);
+        Spzstate currentState;
+        
         Spzstate newState = new Spzstate();
         newState.setCurrentstate(1);
         newState.setCode(state.toString());
         if(request.getParameterMap().containsKey("issuer")){
             newState.setIssuerLogin(request.getParameter("issuer"));
         }
+        
         newState.setIdate(new GregorianCalendar().getTime());
-        SpzStateManager spzManager = new SpzStateJpaController(emf);
+        newState.setTs(BigInteger.valueOf(new Date().getTime()));
+        SpzManager spzManager = new SpzJpaController(emf);
         SpzStateManager stateManager = new SpzStateJpaController(emf);
         SpzStatesManager statesManager = new SpzStatesJpaController(emf);
         Spzstates newStates = new Spzstates();
+        newStates.setSpzid(spz.getId());
+        currentState = stateManager.getCurrentState(spz);
+        if(currentState!=null){
+            currentState.setCurrentstate(0);
+        }
         EntityManager entMan = stateManager.getEntityManager();
         
         try{
-            //entMan.getTransaction().begin();
+            entMan.getTransaction().begin();
             stateManager.create(newState);
-            newStates.setSpzid(spz.getId());
-            newStates.setStateid(newState.getId());
+            /*newStates.setSpzid(spz.getId());
+            newStates.setStateid(newState.getId());*/
             statesManager.create(newStates);
-            //entMan.getTransaction().commit();
+            entMan.getTransaction().commit();
         }catch(Exception ex){
-            //entMan.getTransaction().rollback();
-            LOGGER.log(Level.SEVERE,"Error set state ANALYSIS on SPZ.",ex);
-            request.setAttribute("error", "Chyba při přechodu do stavu Probíhá analýza.");
+            entMan.getTransaction().rollback();
+            LOGGER.log(Level.SEVERE,"Error changing the state on SPZ.",ex);
+            request.setAttribute("error", "Chyba při zmene stavu.");
             return;
         }finally{
             entMan.close();
+        }
+        newStates.setStateid(newState.getId());
+        try {
+            if(currentState!=null){
+                stateManager.edit(currentState);
+            }
+            statesManager.edit(newStates);
+        } catch (Exception ex) {
+            LOGGER.log(Level.SEVERE, "Error setting the state id in SpzStates.", ex);
+            request.setAttribute("error", "Chyba pri zmene stavu. Nelze nastavit id stavu.");
         }
         return;
     }
