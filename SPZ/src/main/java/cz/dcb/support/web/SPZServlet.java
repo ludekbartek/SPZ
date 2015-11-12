@@ -681,7 +681,7 @@ public class SPZServlet extends HttpServlet {
         entity.setReqNumber(spz.getReqnumber());
         entity.setRequestType(spz.getRequesttype());
         Spzstate current = statesManager.getCurrentState(spz);
-        entity.setSpzState(current.getCurrentstate());
+        entity.setSpzState(current.getCode());
         User user = null;
         if(current!=null){
             user = userManger.findUserByLogin(current.getIssuerLogin());

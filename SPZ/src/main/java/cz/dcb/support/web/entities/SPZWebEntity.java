@@ -34,7 +34,7 @@ public class SPZWebEntity {
      private double workLoadEstimation;
      private Date installDate;
      private double workLoadReal;
-     private int spzState;
+     private String spzState;
      private Date date;
      private Short priority;
      private Short category;
@@ -211,11 +211,11 @@ public class SPZWebEntity {
         this.workLoadReal = workLoadReal;
     }
 
-    public int getSpzState() {
+    public String getSpzState() {
         return spzState;
     }
 
-    public void setSpzState(int spzState) {
+    public void setSpzState(String spzState) {
         this.spzState = spzState;
     }
 
