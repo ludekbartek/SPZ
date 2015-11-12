@@ -125,7 +125,7 @@
                         <f:formatNumber value="${item.workLoadReal}"/>
                     </td>
                     <td>
-                        <c:out value="${item.history.toArray()[0].code}"/>
+                        <c:out value="${item.spzState}"/>
                     </td>
                     <td>
                         <c:choose>
