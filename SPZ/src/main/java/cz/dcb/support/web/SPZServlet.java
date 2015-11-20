@@ -100,23 +100,30 @@ public class SPZServlet extends HttpServlet {
             Logger.getLogger(SPZServlet.class.getName()).log(Level.INFO, "Setting url to default." + url, ex);
         }
         Connection con;
+        boolean started = false;
         try {
             con = DriverManager.getConnection(url);
             con.close();
-            return;
+            started=true;
+            
         } catch (SQLException ex) {
             Logger.getLogger(SPZServlet.class.getName()).log(Level.SEVERE, "Server not running. Trying to start the new one.", ex);
         }
         
-        try {
-            NetworkServerControl serverControl = new NetworkServerControl();
-            LOGGER.log(Level.INFO,"Starting derby");
-            PrintWriter log = new PrintWriter("suppport-derby.log");
-            serverControl.start(log);
-        } catch (Exception ex) {
-            LOGGER.log(Level.SEVERE, "Derby start failed:", ex);
+        if(!started){
+            try {
+                NetworkServerControl serverControl = new NetworkServerControl();
+                LOGGER.log(Level.INFO,"Starting derby");
+                PrintWriter log = new PrintWriter("suppport-derby.log");
+                serverControl.start(log);
+            } catch (Exception ex) {
+                LOGGER.log(Level.SEVERE, "Derby start failed:", ex);
+            }
         }
-        Path attachDir = Paths.get("./attachments");
+        StringBuilder attachRoot = new StringBuilder(props.getProperty("ATTACH_DIR")).append("/attachments");
+        
+        Logger.getLogger(SPZServlet.class.getName()).log(Level.INFO,"Attach root:",attachRoot);
+        Path attachDir = Paths.get(attachRoot.toString());
         if(!Files.exists(attachDir)){
             try {
                 Files.createDirectory(attachDir);
