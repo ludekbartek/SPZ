@@ -92,7 +92,8 @@ public class SPZServlet extends HttpServlet {
         Properties props = new Properties();
         String url; 
         try {
-            props.load(getServletContext().getResourceAsStream("/settings/spz.properties"));
+            InputStream stream = getServletContext().getResourceAsStream("/WEB-INF/properties/spz.properties");
+            props.load(stream);
             url = props.getProperty("DBURL");
         } catch (IOException ex) {
             url = "jdbc:derby://localhost:1527/support";
