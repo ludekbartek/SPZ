@@ -15,8 +15,8 @@
         <title><f:message key="header"/></title>
     </head>
     <body>
-        <h1>System servisni podpory</h1>
-        <!--<h1><f:message key="header"/></h1>-->
+        <!--<h1>System servisni podpory</h1>-->
+        <h1><f:message key="header"/></h1>
         <c:if test="${! empty error}">
             <div id="erorr" style="background-color: yellow;border-color: red;">
                 <c:out value="${error}"/>
@@ -66,20 +66,20 @@
         <div id="table">
         <table style="float:left;">
             <thead style="border-bottom: black solid;background-color: #cccccc">
-                <th>Cislo pozadavku</th>
-                <th>Pri.</th>
-                <th>Typ pozadavku</th>
-                <th>Zadal</th>
-                <th>Kontaktni osoba</th>
-                <th>Dne</th>
-                <th>Zadani</th>
-                <th>Specs dne</th>
-                <th>Odhad. prac.</th>
-                <th>Instalace</th>
-                <th>Skut. prac.</th>
-                <th>Stav SPZ</th>
-                <th>Kategorie</th>
-                <th>Ze dne</th>
+                <th><f:message key="reqid"/></th>
+                <th><f:message key="priority"/><!--Pri.--></th>
+                <th><f:message key="reqtype"/><!--Typ pozadavku--></th>
+                <th><f:message key="issuer"/><!--Zadal--></th>
+                <th><f:message key="contact"/><!--Kontaktni osoba--></th>
+                <th><f:message key="issuedate"/><!--Dne--></th>
+                <th><f:message key="reqspec"/><!--Zadani--></th>
+                <th><f:message key="specdate"/><!--Specs dne--></th>
+                <th><f:message key="estwork"/><!--Odhad. prac.--></th>
+                <th><f:message key="install"/><!--Instalace--></th>
+                <th><f:message key="realwork"/><!--Skut. prac.--></th>
+                <th><f:message key="state"/><!--Stav SPZ--></th>
+                <th><f:message key="category"/><!--Kategorie--></th>
+                <th><f:message key="changedate"/><!--Ze dne--></th>
             </thead>
             <c:forEach items="${spzs}" var="item">
                 <tr>
