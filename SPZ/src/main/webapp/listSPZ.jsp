@@ -125,7 +125,7 @@
                         <f:formatNumber value="${item.workLoadReal}"/>
                     </td>
                     <td>
-                        <c:out value="${item.spzState}"/>
+                        <f:message key="${item.spzState}"/>
                     </td>
                     <td>
                         <c:choose>
