@@ -90,14 +90,18 @@ public class SPZServlet extends HttpServlet {
     @Override
     public void init(){
         Properties props = new Properties();
-        String url; 
+        Properties propsDerby = new Properties();
+        String url,derbyHome=null; 
+       
         try {
             InputStream stream = getServletContext().getResourceAsStream("/WEB-INF/properties/spz.properties");
             props.load(stream);
+            derbyHome = props.getProperty("DERBY_HOME");
             url = props.getProperty("DBURL");
+            LOGGER.log(Level.INFO,String.format("DERBY_HOME=%s, DBURL=%s",derbyHome,url));
         } catch (IOException ex) {
             url = "jdbc:derby://localhost:1527/support";
-            Logger.getLogger(SPZServlet.class.getName()).log(Level.INFO, "Setting url to default." + url, ex);
+            LOGGER.log(Level.INFO, "Setting url to default." + url, ex);
         }
         Connection con;
         boolean started = false;
@@ -107,28 +111,39 @@ public class SPZServlet extends HttpServlet {
             started=true;
             
         } catch (SQLException ex) {
-            Logger.getLogger(SPZServlet.class.getName()).log(Level.SEVERE, "Server not running. Trying to start the new one.", ex);
+            LOGGER.log(Level.SEVERE, "Server not running. Trying to start the new one.", ex);
         }
-        
+        NetworkServerControl serverControl = null;
         if(!started){
             try {
-                NetworkServerControl serverControl = new NetworkServerControl();
+                serverControl = new NetworkServerControl();
                 LOGGER.log(Level.INFO,"Starting derby");
                 PrintWriter log = new PrintWriter("suppport-derby.log");
+                Properties derbyProps = serverControl.getCurrentProperties();
+                if(derbyHome!=null){
+                    derbyProps.setProperty("derby.system.home", derbyHome);
+                }
                 serverControl.start(log);
             } catch (Exception ex) {
+//                if(serverControl!=null){
+//                    try {
+//                        serverControl.shutdown();
+//                    } catch (Exception ex1) {
+//                        LOGGER.log(Level.SEVERE, "Derby cannot be shutdown.", ex1);
+//                    }
+//                }
                 LOGGER.log(Level.SEVERE, "Derby start failed:", ex);
             }
         }
         StringBuilder attachRoot = new StringBuilder(props.getProperty("ATTACH_DIR")).append("/attachments");
         
-        Logger.getLogger(SPZServlet.class.getName()).log(Level.INFO,"Attach root:",attachRoot);
+        LOGGER.log(Level.INFO,"Attach root:",attachRoot);
         Path attachDir = Paths.get(attachRoot.toString());
         if(!Files.exists(attachDir)){
             try {
                 Files.createDirectory(attachDir);
             } catch (IOException ex) {
-                Logger.getLogger(SPZServlet.class.getName()).log(Level.SEVERE, null, ex);
+                LOGGER.log(Level.SEVERE, null, ex);
             }
         }
             
@@ -191,6 +206,8 @@ public class SPZServlet extends HttpServlet {
                 case "/listspz":listSpz(request,response);
                             break;
                 case "/editspz":editSpz(request,response);
+                            break;
+                case "/spzsolution":getSpzSolution(request,response);
                             break;
                 case "/updatespz":updateSPZ(request,response);
                             break;
@@ -1188,6 +1205,17 @@ public class SPZServlet extends HttpServlet {
             request.setAttribute("error", "Chyba pri zmene stavu. Nelze nastavit id stavu.");
         }
         return;
+    }
+
+    /**
+     * Used to get SPZ solution from user and store it into database.
+     * @param request http request
+     * @param response http response
+     */
+    private void getSpzSolution(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        Spz spz = requestParamsToSpz(request.getParameterMap());
+        request.setAttribute("spz", spz);
+        request.getRequestDispatcher("/setSolution.jsp").forward(request, response);
     }
 
 }
