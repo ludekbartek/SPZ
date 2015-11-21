@@ -24,7 +24,7 @@
         <input type="hidden" name="id" value="${spz.id}"/>
         <input type="submit" value="Vratit zpet klientovi k doplneni"/>
     </form>
-    <form action="${pageContext.request.contextPath}/SPZServlet/editspz" method="post">
+    <form action="${pageContext.request.contextPath}/SPZServlet/spzsolution" method="post">
         <input type="hidden" name="state" value="ANALYSIS"/>
         <input type="hidden" name="newstate" value="SPECIFIED"/>
         <input type="hidden" name="id" value="${spz.id}"/>
