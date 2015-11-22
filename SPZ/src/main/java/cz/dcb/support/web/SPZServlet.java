@@ -12,8 +12,12 @@ import cz.dcb.support.db.jpa.controllers.SpzIssuerJpaController;
 import cz.dcb.support.db.jpa.controllers.SpzIssuerManager;
 import cz.dcb.support.db.jpa.controllers.SpzJpaController;
 import cz.dcb.support.db.jpa.controllers.SpzManager;
+import cz.dcb.support.db.jpa.controllers.SpzNoteJpaController;
+import cz.dcb.support.db.jpa.controllers.SpzNoteManager;
 import cz.dcb.support.db.jpa.controllers.SpzStateJpaController;
 import cz.dcb.support.db.jpa.controllers.SpzStateManager;
+import cz.dcb.support.db.jpa.controllers.SpzStateNoteJpaController;
+import cz.dcb.support.db.jpa.controllers.SpzStateNoteManager;
 import cz.dcb.support.db.jpa.controllers.SpzStatesJpaController;
 import cz.dcb.support.db.jpa.controllers.SpzStatesManager;
 import cz.dcb.support.db.jpa.controllers.UserJpaController;
@@ -21,7 +25,9 @@ import cz.dcb.support.db.jpa.controllers.UserManager;
 import cz.dcb.support.db.jpa.entities.Attachment;
 import cz.dcb.support.db.jpa.entities.Spz;
 import cz.dcb.support.db.jpa.entities.SpzStates;
+import cz.dcb.support.db.jpa.entities.Spznote;
 import cz.dcb.support.db.jpa.entities.Spzstate;
+import cz.dcb.support.db.jpa.entities.Spzstatenote;
 import cz.dcb.support.db.jpa.entities.Spzstates;
 import cz.dcb.support.db.jpa.entities.User;
 import cz.dcb.support.web.entities.SPZWebEntity;
@@ -52,7 +58,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.derby.drda.NetworkServerControl;
 import java.math.BigInteger;
-import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -1213,9 +1218,65 @@ public class SPZServlet extends HttpServlet {
      * @param response http response
      */
     private void getSpzSolution(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        Spz spz = requestParamsToSpz(request.getParameterMap());
-        request.setAttribute("spz", spz);
+        int spzId = Integer.parseInt(request.getParameter("spzid"));
+        SpzManager manager = new SpzJpaController(emf);
+        Spz spz = manager.findSpz(spzId);
+        
+        changeState(spz, request, response);
+        SpzStateManager stateManager = new SpzStateJpaController(emf);
+        Spzstate spzState = stateManager.getCurrentState(spz);
+        String revisedDesc = request.getParameter("revisedsolutiondescription");
+        if(revisedDesc!=null){
+            spzState.setRevisedrequestdescription(revisedDesc);
+        }
+        String solDesc = request.getParameter("solutiondescription");
+        if(solDesc!=null){
+            spzState.setSolutiondescription(solDesc);
+        }
+        try{
+            Double estWorkLoad = Double.parseDouble(request.getParameter("estimatedworkload"));
+            spzState.setAssumedmandays(estWorkLoad);
+        }catch(NumberFormatException ex){
+            LOGGER.log(Level.INFO,"Nezadana nebo neplatna hodnota odhadu pracnosti.");
+        }
+            
+        Spznote note = createSpznote(request);
+        if(note!=null){
+            Spzstatenote stateNote = new Spzstatenote();
+            stateNote.setStateid(spzState.getId());
+            stateNote.setNoteid(note.getId());
+            SpzStateNoteManager stateNoteMan = new SpzStateNoteJpaController(emf);
+            stateNoteMan.create(stateNote);
+        }
+        //Spz spz = requestParamsToSpz(request.getParameterMap());
+        SPZWebEntity entity = spzToEntity(spz);
+        request.setAttribute("spz", entity);
         request.getRequestDispatcher("/setSolution.jsp").forward(request, response);
+    }
+
+    private Spznote createSpznote(HttpServletRequest request) {
+        Spznote stateNote = new Spznote();
+        String note = request.getParameter("desc");
+        String ext = request.getParameter("ext");
+        
+        if(note==null){
+            return null;
+        } 
+        stateNote.setNotetext(note);
+        Calendar cal = new GregorianCalendar();
+        stateNote.setNotedate(cal.getTime());
+        stateNote.setTs(BigInteger.valueOf(cal.getTimeInMillis()));
+        
+        if(ext!=null){
+            short val = 1;
+            stateNote.setExternalnote(val);
+        }else{
+            short val = 0;
+            stateNote.setExternalnote(val);
+        }
+        SpzNoteManager noteManager = new SpzNoteJpaController(emf);
+        noteManager.create(stateNote);
+        return stateNote;
     }
 
 }
