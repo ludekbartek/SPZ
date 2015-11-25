@@ -884,6 +884,7 @@ public class SPZServlet extends HttpServlet {
                 uploadFile(request, response, manager, fileName, in);
             }catch(IOException ex){
                 displayError(request, fileName, ex, response);
+                return;
             }
         }
         
@@ -894,6 +895,7 @@ public class SPZServlet extends HttpServlet {
                 uploadFile(request,response,manager,fileName,in);
             }catch(IOException ex){
                 displayError(request, fileName, ex, response);
+                return;
             }
         }
         
@@ -904,12 +906,46 @@ public class SPZServlet extends HttpServlet {
                 uploadFile(request,response,manager,fileName,in);
             }catch(IOException ex){
                 displayError(request, fileName, ex, response);
+                return;
             }
             
         }
         SpzManager spzManager = new SpzJpaController(emf);
-        List<Spz> spzs = spzManager.findSpzEntities();
-        request.setAttribute("spzs", spzs);
+        SpzStateNoteManager stateNoteManager = new SpzStateNoteJpaController(emf);
+        SpzStateManager stateManager = new SpzStateJpaController(emf);
+        SpzNoteManager noteManager = new SpzNoteJpaController(emf);
+        String strSpzId = request.getParameter("id");
+        if(strSpzId==null){
+            request.setAttribute("error", "Missing spz id.");
+            editSpz(request, response);
+            //request.getRequestDispatcher("/editPost.jsp").forward(request, response);
+            return;
+        }
+        int id = Integer.parseInt(strSpzId);
+        Spz spz = spzManager.findSpz(id);
+        Spzstate state = stateManager.getCurrentState(spz);
+        Spzstatenote stateNote = new Spzstatenote();
+        Spznote note = new Spznote();
+        String noteText = request.getParameter("desc");
+        String externalStr = request.getParameter("external");
+        LOGGER.log(Level.INFO,"external ",externalStr);
+        short external = (short)(externalStr.compareToIgnoreCase("on")==0?1:0);
+        note.setExternalnote(external);
+        if(noteText==null){
+            request.setAttribute("error", "Missing note description.");
+            //request.getRequestDispatcher("/editPost.jsp").forward(request, response);
+            editSpz(request, response);
+            return;
+        }
+        note.setNotetext(noteText);
+        note.setNotedate(new GregorianCalendar().getTime());
+        note.setExternalnote(external);
+        note.setTs(BigInteger.valueOf(new GregorianCalendar().getTimeInMillis()));
+        noteManager.create(note);
+        stateNote.setNoteid(note.getId());
+        stateNote.setStateid(state.getId());
+        stateNoteManager.create(stateNote);
+        request.setAttribute("spz", spzToEntity(spz));
         request.getRequestDispatcher("/editPost.jsp").forward(request, response);
         
     }
@@ -1221,7 +1257,6 @@ public class SPZServlet extends HttpServlet {
         int spzId = Integer.parseInt(request.getParameter("spzid"));
         SpzManager manager = new SpzJpaController(emf);
         Spz spz = manager.findSpz(spzId);
-        
         changeState(spz, request, response);
         SpzStateManager stateManager = new SpzStateJpaController(emf);
         Spzstate spzState = stateManager.getCurrentState(spz);
@@ -1234,8 +1269,10 @@ public class SPZServlet extends HttpServlet {
             spzState.setSolutiondescription(solDesc);
         }
         try{
-            Double estWorkLoad = Double.parseDouble(request.getParameter("estimatedworkload"));
-            spzState.setAssumedmandays(estWorkLoad);
+            if(request.getParameterMap().containsKey("estimatedworkload")){
+                 Double estWorkLoad = Double.parseDouble(request.getParameter("estimatedworkload"));
+                 spzState.setAssumedmandays(estWorkLoad);
+            }
         }catch(NumberFormatException ex){
             LOGGER.log(Level.INFO,"Nezadana nebo neplatna hodnota odhadu pracnosti.");
         }
