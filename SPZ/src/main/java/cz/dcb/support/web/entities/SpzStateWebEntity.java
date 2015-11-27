@@ -6,9 +6,13 @@
 package cz.dcb.support.web.entities;
 
 import cz.dcb.support.db.exceptions.SPZException;
+import cz.dcb.support.db.jpa.entities.Spznote;
 import cz.dcb.support.db.jpa.entities.User;
 import cz.dcb.support.xml.HTMLTransformer;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -28,6 +32,7 @@ public class SpzStateWebEntity {
     private Short classType;
     private Date issueDate;
     private Long currentState;
+    private List<SpzNoteEntity> notes;
 
     public long getId() {
         return id;
@@ -126,5 +131,12 @@ public class SpzStateWebEntity {
         this.currentState = currentState;
     }
     
+    public void setNotes(List<SpzNoteEntity> notes){
+        this.notes = notes;
+    }
+    
+    public List<SpzNoteEntity> getNotes(){
+        return Collections.unmodifiableList(notes);
+    }
     
 }
