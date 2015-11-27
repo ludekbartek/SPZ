@@ -17,7 +17,7 @@ class AttachmentEntity {
     private String content;
     private String location;
     private String type;
-    private List<SpzNoteEntity> notes;
+    private List<SpzNoteEntity> notes; //tyto poznamky jiz neobsahuji prilohy
 
     public Date getDate() {
         return date;
