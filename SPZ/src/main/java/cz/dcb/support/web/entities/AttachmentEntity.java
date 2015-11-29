@@ -12,7 +12,7 @@ import java.util.List;
  *
  * @author bar
  */
-class AttachmentEntity {
+public class AttachmentEntity {
     private Date date;
     private String content;
     private String location;
