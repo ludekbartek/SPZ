@@ -8,6 +8,7 @@ package cz.dcb.support.db.managers;
 import cz.dcb.support.db.jpa.controllers.AttachmentNoteJpaController;
 import cz.dcb.support.db.jpa.controllers.AttachmentNoteManager;
 import cz.dcb.support.db.jpa.controllers.exceptions.NonexistentEntityException;
+import cz.dcb.support.db.jpa.entities.Attachment;
 import cz.dcb.support.db.jpa.entities.Attachmentnote;
 import cz.dcb.support.db.managers.utils.DBUtils;
 import java.util.ArrayList;
@@ -246,6 +247,11 @@ public class AttachmentNoteManagerTest {
         }
 
         public EntityManager getEntityManager() {
+            return null;
+        }
+
+        @Override
+        public List<Attachment> getAttachmentsForNote(Integer id) {
             return null;
         }
     }
