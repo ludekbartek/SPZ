@@ -1327,6 +1327,7 @@ public class SPZServlet extends HttpServlet {
         List<SpzNoteEntity> noteEntities = new ArrayList<>();
         for(Spznote note:notes){
             SpzNoteEntity entity = spzStateNoteToWebEntity(note);
+            noteEntities.add(entity);
         }
         return noteEntities;
     }
@@ -1335,7 +1336,7 @@ public class SPZServlet extends HttpServlet {
         SpzNoteEntity entity = new SpzNoteEntity();
         entity.setNoteDate(note.getNotedate());
         entity.setNoteText(note.getNotetext());
-        entity.setExternal(note.getExternalnote());
+        entity.setInternal(note.getExternalnote());
         AttachmentNoteManager manager= new AttachmentNoteJpaController(emf);
         List<Attachment> attachments = manager.getAttachmentsForNote(note.getId());
         
