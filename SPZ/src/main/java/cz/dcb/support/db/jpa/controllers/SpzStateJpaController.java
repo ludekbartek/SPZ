@@ -7,7 +7,9 @@ package cz.dcb.support.db.jpa.controllers;
 
 import cz.dcb.support.db.jpa.controllers.exceptions.NonexistentEntityException;
 import cz.dcb.support.db.jpa.entities.Spz;
+import cz.dcb.support.db.jpa.entities.Spznote;
 import cz.dcb.support.db.jpa.entities.Spzstate;
+import cz.dcb.support.db.jpa.entities.Spzstatenote;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -187,5 +189,23 @@ public class SpzStateJpaController implements Serializable, SpzStateManager {
     public void create(Spzstate spzstate, EntityManager em) {
         em.persist(spzstate);
     }
+
+    @Override
+    public List<Spznote> getStateNotes(Integer spzStateId) {
+        EntityManager em = getEntityManager();
+        List<Spznote> notes = null;
+        try{
+            em.getTransaction().begin();
+            Query query = em.createQuery("select note from Spznote note where note.id in (Select statenote.noteid from Spzstatenote statenote where statenote.stateid=:stateid)");
+            query.setParameter("stateid", spzStateId);
+            notes = query.getResultList();
+        }catch(Exception ex){
+            Logger.getAnonymousLogger().log(Level.SEVERE,String.format("Error retrieving spznotes for state with id %d:",spzStateId),ex);
+            em.getTransaction().rollback();
+        }
+        return notes;
+    }
+
+    
 
 }
