@@ -194,9 +194,9 @@ public class SpzStateJpaController implements Serializable, SpzStateManager {
     public List<Spznote> getStateNotes(Integer spzStateId) {
         EntityManager em = getEntityManager();
         List<Spznote> notes = null;
-        try{
+        try{ 
             em.getTransaction().begin();
-            Query query = em.createQuery("select note from Spznote note where note.id in (Select statenote.noteid from Spzstatenote statenote where statenote.stateid=:stateid)");
+            Query query = em.createQuery("select note from Spznote note  where note.id in (Select statenote.noteid from Spzstatenote statenote where statenote.stateid=:stateid) ORDER BY note.notedate DESC");
             query.setParameter("stateid", spzStateId);
             notes = query.getResultList();
         }catch(Exception ex){
