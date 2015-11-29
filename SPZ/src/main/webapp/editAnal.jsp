@@ -21,19 +21,19 @@
     <form action="${pageContext.request.contextPath}/SPZServlet/editspz" method="post">
         <input type="hidden" name="state" value="ANALYSIS"/>
         <input type="hidden" name="newstate" value="REFINE"/>
-        <input type="hidden" name="id" value="${spz.id}"/>
+        <input type="hidden" name="spzid" value="${spz.id}"/>
         <input type="submit" value="Vratit zpet klientovi k doplneni"/>
     </form>
     <form action="${pageContext.request.contextPath}/SPZServlet/spzsolution" method="post">
         <input type="hidden" name="state" value="ANALYSIS"/>
         <input type="hidden" name="newstate" value="SPECIFIED"/>
-        <input type="hidden" name="id" value="${spz.id}"/>
+        <input type="hidden" name="spzid" value="${spz.id}"/>
         <input type="submit" value="Navrhnout reseni"/>
     </form>
     <form action="${pageContext.request.contextPath}/SPZServlet/editspz" method="post">
         <input type="hidden" name="state" value="ANALYSIS"/>
         <input type="hidden" name="newstate" value="REFINE"/>
-        <input type="hidden" name="id" value="${spz.id}"/>
+        <input type="hidden" name="spzid" value="${spz.id}"/>
         <input type="submit" value="Zmenit analytika"/>
     </form>
     <form action="${pageContext.request.contextPath}/SPZServlet/delete" method="post">
