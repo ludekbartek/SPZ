@@ -8,6 +8,8 @@ package cz.dcb.support.web;
 import cz.dcb.support.db.exceptions.SPZException;
 import cz.dcb.support.db.jpa.controllers.AttachmentJpaController;
 import cz.dcb.support.db.jpa.controllers.AttachmentManager;
+import cz.dcb.support.db.jpa.controllers.AttachmentNoteJpaController;
+import cz.dcb.support.db.jpa.controllers.AttachmentNoteManager;
 import cz.dcb.support.db.jpa.controllers.SpzIssuerJpaController;
 import cz.dcb.support.db.jpa.controllers.SpzIssuerManager;
 import cz.dcb.support.db.jpa.controllers.SpzJpaController;
@@ -30,7 +32,9 @@ import cz.dcb.support.db.jpa.entities.Spzstate;
 import cz.dcb.support.db.jpa.entities.Spzstatenote;
 import cz.dcb.support.db.jpa.entities.Spzstates;
 import cz.dcb.support.db.jpa.entities.User;
+import cz.dcb.support.web.entities.AttachmentEntity;
 import cz.dcb.support.web.entities.SPZWebEntity;
+import cz.dcb.support.web.entities.SpzNoteEntity;
 import cz.dcb.support.web.entities.SpzStateWebEntity;
 import cz.dcb.support.xml.HTMLTransformer;
 import java.io.FileOutputStream;
@@ -833,6 +837,9 @@ public class SPZServlet extends HttpServlet {
         entity.setRevisedRequestDescription(state.getRevisedrequestdescription());
         entity.setSolutionDescription(state.getSolutiondescription());
         entity.setIssuer(userMan.findUserByLogin(state.getIssuerLogin()));
+        SpzStateManager stateManager = new SpzStateJpaController(emf);
+        List<Spznote> notes = stateManager.getStateNotes(state.getId());
+        entity.setNotes(spzStateNotesToWebEntity(notes));
         return entity;
     }
 
@@ -1316,4 +1323,46 @@ public class SPZServlet extends HttpServlet {
         return stateNote;
     }
 
+    private List<SpzNoteEntity> spzStateNotesToWebEntity(List<Spznote> notes) {
+        List<SpzNoteEntity> noteEntities = new ArrayList<>();
+        for(Spznote note:notes){
+            SpzNoteEntity entity = spzStateNoteToWebEntity(note);
+        }
+        return noteEntities;
+    }
+
+    private SpzNoteEntity spzStateNoteToWebEntity(Spznote note){
+        SpzNoteEntity entity = new SpzNoteEntity();
+        entity.setNoteDate(note.getNotedate());
+        entity.setNoteText(note.getNotetext());
+        entity.setExternal(note.getExternalnote());
+        AttachmentNoteManager manager= new AttachmentNoteJpaController(emf);
+        List<Attachment> attachments = manager.getAttachmentsForNote(note.getId());
+        
+        List<AttachmentEntity> atachmentsEntities = attachmentsToWebEntity(attachments);
+                
+        return entity;
+    }
+
+    private List<AttachmentEntity> attachmentsToWebEntity(List<Attachment> attachments) {
+        List<AttachmentEntity> entities = new ArrayList<>();
+        if(attachments !=null){
+            for(Attachment attachment:attachments){
+                AttachmentEntity entity = attachmentToWebEntity(attachment);
+                entities.add(entity);
+            }
+        }else{
+            LOGGER.log(Level.INFO,"attachments are null");
+        }
+        return entities;
+    }
+
+    private AttachmentEntity attachmentToWebEntity(Attachment attachment) {
+        AttachmentEntity entity = new AttachmentEntity();
+        entity.setContent(attachment.getContent());
+        entity.setDate(attachment.getDate());
+        entity.setLocation(attachment.getLocation());
+        entity.setType(attachment.getType());
+        return entity;
+    }
 }
