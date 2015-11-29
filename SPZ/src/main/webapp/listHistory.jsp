@@ -18,12 +18,24 @@
              (<f:formatDate type="both" dateStyle="LONG" timeStyle="SHORT" value="${item.issueDate}"/>)
              <c:forEach items="${item.notes}" var="note">
                  <div class="note">
+                     <c:choose>
+                         <c:when test="${empty noteIssuer}">
+                             Nezadan
+                         </c:when>
+                         <c:otherwise>
+                             <c:out value="${note.noteIssuer}"/>
+                         </c:otherwise>
+                     </c:choose> 
+                     (<f:formatDate type="both" dateStyle="LONG" timeStyle="SHORT" value="${note.noteDate}"/>)
                      <c:if test="${note.internal!=1}">
                          <div class="note-header">
                              #########<f:message key="internal"/>#########
                          </div>
-                     </c:if>          
-                     <c:out value="${note.noteText}" escapeXml="false"/> 
+                             
+                     </c:if>
+                     <div class="notetext">
+                        <c:out value="${note.noteText}" escapeXml="false"/> 
+                     </div>
                  </div>
             </c:forEach>
              <!--(<c:out value="${item.issueDate}"/>)-->
