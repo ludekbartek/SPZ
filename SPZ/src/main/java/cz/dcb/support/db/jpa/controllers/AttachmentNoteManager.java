@@ -6,6 +6,7 @@
 package cz.dcb.support.db.jpa.controllers;
 
 import cz.dcb.support.db.jpa.controllers.exceptions.NonexistentEntityException;
+import cz.dcb.support.db.jpa.entities.Attachment;
 import cz.dcb.support.db.jpa.entities.Attachmentnote;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -31,5 +32,7 @@ public interface AttachmentNoteManager {
     int getAttachmentnoteCount();
 
     EntityManager getEntityManager();
+
+    public List<Attachment> getAttachmentsForNote(Integer id);
     
 }
