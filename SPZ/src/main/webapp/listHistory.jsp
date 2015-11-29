@@ -15,7 +15,12 @@
          <div  class="state-body">
              <c:out value="${item.issuer}"/>
              (<f:formatDate type="both" dateStyle="LONG" timeStyle="SHORT" value="${item.issueDate}"/>)
-                         
+             <c:forEach items="${item.notes}" var="note">
+                 <c:if test="${note.noteinternal==1}">
+                     #########<f:message key="internal"/>#########
+                 </c:if>          
+                 <c:out value="${note.notetext}" escapeXml="true"/>    
+            </c:forEach>
              <!--(<c:out value="${item.issueDate}"/>)-->
          </div>
          <div class="body">
