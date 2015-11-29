@@ -169,7 +169,7 @@ public class SpzStateJpaController implements Serializable, SpzStateManager {
         Spzstate state = null;
         try{
             em.getTransaction().begin();
-            Query query=em.createQuery("select SPZSTATE from Spzstate SPZSTATE where SPZSTATE.id in (select spzstates.id from Spzstates spzstates where spzstates.spzid = :spzid) and SPZSTATE.currentstate=1");
+            Query query=em.createQuery("select SPZSTATE from Spzstate SPZSTATE where SPZSTATE.id in (select spzstates.stateid from Spzstates spzstates where spzstates.spzid = :spzid) and SPZSTATE.currentstate=1");
             query.setParameter("spzid", spz.getId());
             state = (Spzstate)query.getSingleResult();
             em.getTransaction().commit();
