@@ -6,9 +6,13 @@
 package cz.dcb.support.db.jpa.controllers;
 
 import cz.dcb.support.db.jpa.controllers.exceptions.NonexistentEntityException;
+import cz.dcb.support.db.jpa.entities.Attachment;
 import cz.dcb.support.db.jpa.entities.Attachmentnote;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
@@ -142,6 +146,28 @@ public class AttachmentNoteJpaController implements Serializable, AttachmentNote
         } finally {
             em.close();
         }
+    }
+
+    @Override
+    public List<Attachment> getAttachmentsForNote(Integer id) {
+        EntityManager em = getEntityManager();
+        List<Attachment> attachments = null;
+        List<Attachment> result = null;
+        try{
+            Query queryIds = em.createQuery("select ATTACHNOTE.id from Attachmentnote attachnote where ATTACHNOTE.spznoteid = :noteid");
+            List<Integer> attachmentNoteIds = queryIds.getResultList();
+            result = new ArrayList<>();
+            for(int ident :attachmentNoteIds){
+               Query query;
+                query = em.createQuery("select ATTACHMENT from Attachment attachment where ATTACHMENT.id = :atid");
+               query.setParameter(":atid", ident);
+               attachments = query.getResultList();
+               result.addAll(attachments);
+            }
+        }catch(Exception ex){
+            Logger.getAnonymousLogger().log(Level.SEVERE,String.format("Error retrieving attachment with id = %d: %s",id,ex));
+        }
+        return result;
     }
     
 }
