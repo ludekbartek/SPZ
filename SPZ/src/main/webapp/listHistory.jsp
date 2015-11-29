@@ -23,7 +23,7 @@
                              #########<f:message key="internal"/>#########
                          </div>
                      </c:if>          
-                     <c:out value="${note.noteText}" escapeXml="true"/> 
+                     <c:out value="${note.noteText}" escapeXml="false"/> 
                  </div>
             </c:forEach>
              <!--(<c:out value="${item.issueDate}"/>)-->
