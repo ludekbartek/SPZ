@@ -936,7 +936,7 @@ public class SPZServlet extends HttpServlet {
         String noteText = request.getParameter("desc");
         String externalStr = request.getParameter("external");
         LOGGER.log(Level.INFO,"external ",externalStr);
-        short external = (short)(externalStr.compareToIgnoreCase("on")==0?1:0);
+        short external = (short)(externalStr!=null&&externalStr.compareToIgnoreCase("on")==0?1:0);
         note.setExternalnote(external);
         if(noteText==null){
             request.setAttribute("error", "Missing note description.");
