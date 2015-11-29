@@ -17,7 +17,7 @@ public class SpzNoteEntity {
     private Date noteDate;
     private String noteText;
     private short internal;
-    private String noteIssuerName;
+    private String noteIssuer;
     private List<AttachmentEntity> attachments;
 
     public Date getNoteDate() {
@@ -44,12 +44,12 @@ public class SpzNoteEntity {
         this.internal = internal;
     }
 
-    public String getNoteIssuerName() {
-        return noteIssuerName;
+    public String getNoteIssuer() {
+       return noteIssuer;
     }
 
-    public void setNoteIssuerName(String noteIssuerName) {
-        this.noteIssuerName = noteIssuerName;
+    public void setNoteIssuer(String issuer) {
+        this.noteIssuer = issuer;
     }
 
     public List<AttachmentEntity> getAttachments() {
