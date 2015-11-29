@@ -8,10 +8,10 @@ package cz.dcb.support.db.jpa.controllers;
 import cz.dcb.support.db.jpa.controllers.exceptions.NonexistentEntityException;
 import cz.dcb.support.db.jpa.entities.Spz;
 import cz.dcb.support.db.jpa.entities.Spzstate;
+import cz.dcb.support.db.jpa.entities.Spzstatenote;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.EntityManager;
-import javax.persistence.EntityTransaction;
 
 /**
  *
@@ -38,6 +38,8 @@ public interface SpzStateManager {
     Date getLastChange(Integer id);
 
     public Spzstate getCurrentState(Spz spz);
+    
+    List<Spzstatenote> getStateNotes(Integer spzNoteId);
 
     public void create(Spzstate state,EntityManager em);
 
