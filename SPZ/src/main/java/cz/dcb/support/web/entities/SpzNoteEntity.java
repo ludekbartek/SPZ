@@ -13,7 +13,7 @@ import java.util.List;
  *
  * @author bar
  */
-class SpzNoteEntity {
+public class SpzNoteEntity {
     private Date noteDate;
     private String noteText;
     private short external;
