@@ -33,7 +33,7 @@
             </div>
             <div class="singleareainput">
                 <f:message key="estWork"/>:
-                <textarea name="estimatedworkload"></textarea>
+                <input type="text" name="estimatedworkload" maxlength="5"/>
             </div>
             <div class="areainput">
                 <f:message key="note"/>:
