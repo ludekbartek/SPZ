@@ -24,6 +24,7 @@ import cz.dcb.support.db.jpa.controllers.SpzStatesJpaController;
 import cz.dcb.support.db.jpa.controllers.SpzStatesManager;
 import cz.dcb.support.db.jpa.controllers.UserJpaController;
 import cz.dcb.support.db.jpa.controllers.UserManager;
+import cz.dcb.support.db.jpa.controllers.exceptions.NonexistentEntityException;
 import cz.dcb.support.db.jpa.entities.Attachment;
 import cz.dcb.support.db.jpa.entities.Spz;
 import cz.dcb.support.db.jpa.entities.SpzStates;
@@ -68,6 +69,7 @@ import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Properties;
@@ -287,6 +289,8 @@ public class SPZServlet extends HttpServlet {
                 transaction.begin();
 
                 manager.create(spz);
+                transaction.commit();
+                transaction.begin();
                 spz.setReqnumber(String.format("%05d",spz.getId()));
                 manager.edit(spz);
                 createNewState(state, spz);
@@ -296,12 +300,24 @@ public class SPZServlet extends HttpServlet {
                 stateManager.edit(state);
                 Spzstates states = createSpzStates(spz,state);
                 statesManager.create(states,entMan);
-                
                 transaction.commit();
+                
+                if(request.getParameterMap().containsKey("desc")){
+                    request.setAttribute("jsp", "./list.jsp");
+                    addNote(request, response,spz.getId());
+                }
+                
                 List<Spz> spzs = manager.findSpzEntities();
                 request.setAttribute("spzs", spzToEntities(spzs));
             }catch(Exception ex){
-                transaction.rollback();
+                try {
+                    manager.destroy(spz.getId());
+                } catch (NonexistentEntityException ex1) {
+                    Logger.getLogger(SPZServlet.class.getName()).log(Level.SEVERE, null, ex1);
+                }
+                if(transaction.isActive()){
+                    transaction.rollback();
+                }
                 LOGGER.log(Level.SEVERE,"Chyba pri pridavani SPZ.", ex);
                 request.setAttribute("error", "Chyba pri pridavani SPZ.");
             }finally{
@@ -876,84 +892,11 @@ public class SPZServlet extends HttpServlet {
      *                     
      */
     private void addNote(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        AttachmentManager manager = new AttachmentJpaController(emf);
+        
         Map<String,String[]> params = request.getParameterMap();
-        String fileName;
-        InputStream in = null;
-        Part part1 = request.getPart("soubor1"),
-             part2 = request.getPart("soubor2"),
-             part3 = request.getPart("soubor3");
-        
-        if(part1 != null){
-            in = part1.getInputStream();
-            fileName = new StringBuilder("attachments/").append(part1.getSubmittedFileName()).toString();
-            try{
-                uploadFile(request, response, manager, fileName, in);
-            }catch(IOException ex){
-                displayError(request, fileName, ex, response);
-                return;
-            }
-        }
-        
-        if(part2!=null){
-            fileName = new StringBuilder("attachments/").append(part2.getSubmittedFileName()).toString();
-            in = part2.getInputStream();
-            try{
-                uploadFile(request,response,manager,fileName,in);
-            }catch(IOException ex){
-                displayError(request, fileName, ex, response);
-                return;
-            }
-        }
-        
-        if(part3!=null){
-            in = part3.getInputStream();
-            fileName = new StringBuilder("attachments/").append(part3.getSubmittedFileName()).toString();
-            try{
-                uploadFile(request,response,manager,fileName,in);
-            }catch(IOException ex){
-                displayError(request, fileName, ex, response);
-                return;
-            }
-            
-        }
-        SpzManager spzManager = new SpzJpaController(emf);
-        SpzStateNoteManager stateNoteManager = new SpzStateNoteJpaController(emf);
-        SpzStateManager stateManager = new SpzStateJpaController(emf);
-        SpzNoteManager noteManager = new SpzNoteJpaController(emf);
-        String strSpzId = request.getParameter("id");
-        if(strSpzId==null){
-            request.setAttribute("error", "Missing spz id.");
-            editSpz(request, response);
-            //request.getRequestDispatcher("/editPost.jsp").forward(request, response);
-            return;
-        }
-        int id = Integer.parseInt(strSpzId);
-        Spz spz = spzManager.findSpz(id);
-        Spzstate state = stateManager.getCurrentState(spz);
-        Spzstatenote stateNote = new Spzstatenote();
-        Spznote note = new Spznote();
-        String noteText = request.getParameter("desc");
-        String externalStr = request.getParameter("external");
-        LOGGER.log(Level.INFO,"external ",externalStr);
-        short external = (short)(externalStr!=null&&externalStr.compareToIgnoreCase("on")==0?1:0);
-        note.setExternalnote(external);
-        if(noteText==null){
-            request.setAttribute("error", "Missing note description.");
-            //request.getRequestDispatcher("/editPost.jsp").forward(request, response);
-            editSpz(request, response);
-            return;
-        }
-        note.setNotetext(noteText);
-        note.setNotedate(new GregorianCalendar().getTime());
-        note.setExternalnote(external);
-        note.setTs(BigInteger.valueOf(new GregorianCalendar().getTimeInMillis()));
-        noteManager.create(note);
-        stateNote.setNoteid(note.getId());
-        stateNote.setStateid(state.getId());
-        stateNoteManager.create(stateNote);
-        request.setAttribute("spz", spzToEntity(spz));
-        request.getRequestDispatcher("/editPost.jsp").forward(request, response);
+        String  strId = request.getParameter("id");
+        int id = Integer.parseInt(strId);
+        addNote(request,response,id);
         
     }
 
@@ -1365,5 +1308,97 @@ public class SPZServlet extends HttpServlet {
         entity.setLocation(attachment.getLocation());
         entity.setType(attachment.getType());
         return entity;
+    }
+
+    private void addNote(HttpServletRequest request, HttpServletResponse response, Integer spzId) throws ServletException, IOException {
+        AttachmentManager manager = new AttachmentJpaController(emf);
+        String fileName=null;
+        InputStream in = null;
+        Part part1 = null,part2 = null, part3 = null;
+        String header = request.getHeader("Content-type");
+        if(header.contains("multipart")){
+            try {
+                part1 = request.getPart("soubor1");
+                part2 = request.getPart("soubor2");
+                part3 = request.getPart("soubor3");
+            } catch (IOException ex) {
+                Logger.getLogger(SPZServlet.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        if(part1 != null){
+            try{
+                in = part1.getInputStream();
+                fileName = new StringBuilder("attachments/").append(part1.getSubmittedFileName()).toString();
+                try{
+                    uploadFile(request, response, manager, fileName, in);
+                }catch(IOException ex){
+                    displayError(request, fileName, ex, response);
+                    return;
+                }
+            }catch(IOException ex){
+                Logger.getLogger(SPZServlet.class.getName()).log(Level.SEVERE, null,ex);
+            }
+        }
+        
+        if(part2!=null){
+            fileName = new StringBuilder("attachments/").append(part2.getSubmittedFileName()).toString();
+            
+            try{
+                in = part2.getInputStream();
+                uploadFile(request,response,manager,fileName,in);
+            }catch(IOException ex){
+                displayError(request, fileName, ex, response);
+                return;
+            }
+        }
+        
+        if(part3!=null){
+            
+            try{
+                in = part3.getInputStream();
+                fileName = new StringBuilder("attachments/").append(part3.getSubmittedFileName()).toString();
+                uploadFile(request,response,manager,fileName,in);
+            }catch(IOException ex){
+                displayError(request, fileName, ex, response);
+                return;
+            }
+            
+        }
+        SpzManager spzManager = new SpzJpaController(emf);
+        SpzStateNoteManager stateNoteManager = new SpzStateNoteJpaController(emf);
+        SpzStateManager stateManager = new SpzStateJpaController(emf);
+        SpzNoteManager noteManager = new SpzNoteJpaController(emf);
+        
+        Spz spz = spzManager.findSpz(spzId);
+        Spzstate state = stateManager.getCurrentState(spz);
+        Spzstatenote stateNote = new Spzstatenote();
+        Spznote note = new Spznote();
+        String noteText = request.getParameter("desc");
+        String externalStr = request.getParameter("external");
+        LOGGER.log(Level.INFO,"external ",externalStr);
+        short external = (short)(externalStr!=null&&externalStr.compareToIgnoreCase("on")==0?1:0);
+        note.setExternalnote(external);
+        if(noteText==null){
+            request.setAttribute("error", "Missing note description.");
+            //request.getRequestDispatcher("/editPost.jsp").forward(request, response);
+            editSpz(request, response);
+            return;
+        }
+        note.setNotetext(noteText);
+        note.setNotedate(new GregorianCalendar().getTime());
+        note.setExternalnote(external);
+        note.setTs(BigInteger.valueOf(new GregorianCalendar().getTimeInMillis()));
+        noteManager.create(note);
+        stateNote.setNoteid(note.getId());
+        stateNote.setStateid(state.getId());
+        stateNoteManager.create(stateNote);
+        String jsp = (String)request.getAttribute("jsp");
+        if(jsp.contains("list")){
+            listSpz(request, response);
+            return;
+        }
+        request.setAttribute("spz", spzToEntity(spz));
+        request.getRequestDispatcher("/editPost.jsp").forward(request, response);
+        
     }
 }
