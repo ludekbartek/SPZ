@@ -51,7 +51,7 @@
             </span>
              <span class="actions" style="float:right">
                 <form action="${pageContext.request.contextPath}/SPZServlet/reports" method="post">    
-                    <input type="submit" value'<f:message key="reports"/>'/>
+                    <input type="submit" value='<f:message key="reports"/>'/>
                 </form>
             </span>            
             <span class="actions" style="float:right;">
