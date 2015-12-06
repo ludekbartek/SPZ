@@ -37,7 +37,7 @@
         <input type="submit" value="Zmenit analytika"/>
     </form>
     <form action="${pageContext.request.contextPath}/SPZServlet/delete" method="post">
-        <input type="submit" name="Zrusit"/>
+        <input type="submit" value="Zrusit"/>
         <input type="hidden" name="newstate" value="CANCELED"/>
         <input type="hidden" name="id" value="${spz.id}"/>
         <input type="hidden" name="state" value="ANALYSIS"/>
