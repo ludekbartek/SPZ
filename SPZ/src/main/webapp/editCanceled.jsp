@@ -97,6 +97,7 @@
                 </span>
             </span>
         </div>
+                <c:import url="listHistory.jsp"/>
                 <h2>Informace pro stav 'Zrušit'</h2>
                 <form action="${pageContext.request.contextPath}/SPZServlet/cancelState">
                     <input type='hidden' value="${spz.id}"/>
@@ -112,7 +113,7 @@
                         <input type='submit' value="Odeslat!"/>
                     </div>
                 </form>
-                <h2>Historie SPZ</h2>
-                <c:import url="listHistory.jsp"/>
+                <!--<h2>Historie SPZ</h2>-->
+                
     </body>
 </html>
