@@ -1070,8 +1070,14 @@ public class SPZServlet extends HttpServlet {
         stateManager.create(previous);
         newState.setStateid(previous.getId());
         statesManager.create(newState);
-        request.setAttribute("spz", spz);
-        request.setAttribute("state", previous);
+        SPZWebEntity entity = spzToEntity(spz);
+        SpzStateWebEntity prev = spzStateToSpzWebEntity(previous);
+        request.setAttribute("spz", entity);
+        request.setAttribute("state", prev);
+        if(prev.getCode().compareToIgnoreCase("canceled")!=0){
+            listSpz(request, response);
+            return;
+        }
         request.getRequestDispatcher("/editDeleted.jsp").forward(request, response);
         //listSpz(request, response);
     }
