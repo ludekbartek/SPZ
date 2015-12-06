@@ -5,11 +5,15 @@
  */
 package cz.dcb.support.db.managers;
 
-import cz.dcb.support.db.jpa.Attachment;
-import cz.dcb.support.db.jpa.Spznote;
+import cz.dcb.support.db.jpa.controllers.AttachmentJpaController;
+import cz.dcb.support.db.jpa.controllers.AttachmentManager;
+import cz.dcb.support.db.jpa.entities.Attachment;
+import cz.dcb.support.db.jpa.entities.Spznote;
 import cz.dcb.support.db.managers.exceptions.NonexistentEntityException;
 import cz.dcb.support.db.managers.exceptions.PreexistingEntityException;
 import cz.dcb.support.db.managers.utils.DBUtils;
+import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Random;
@@ -28,10 +32,9 @@ import static org.junit.Assert.*;
  * @author bar
  */
 public class AttachmentManagerTest {
-    private EntityManagerFactory emf = null;
-    
+    private AttachmentManager manager = new AttachmentJpaController(DBUtils.getEntityManagerFactory());
+   
     public AttachmentManagerTest() {
-        emf = DBUtils.getEntityManagerFactory();
     }
     
     @BeforeClass
@@ -44,10 +47,20 @@ public class AttachmentManagerTest {
     
     @Before
     public void setUp() {
+        for(Attachment attach:manager.findAttachmentEntities()){
+            try {
+                manager.destroy(attach.getId());
+            } catch (cz.dcb.support.db.jpa.controllers.exceptions.NonexistentEntityException ex) {
+                Logger.getLogger(AttachmentManagerTest.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }
     
     @After
-    public void tearDown() {
+    public void tearDown() throws cz.dcb.support.db.jpa.controllers.exceptions.NonexistentEntityException {
+        for(Attachment attach:manager.findAttachmentEntities()){
+            manager.destroy(attach.getId());
+        }
     }
 
     /**
@@ -58,22 +71,21 @@ public class AttachmentManagerTest {
         System.out.println("create");
         testCreateNullAttachment();
         testValidAttachment();
-        testNullDateAttachment();
     }
 
     private void testValidAttachment() throws Exception {
-        AttachmentManager instance = new AttachmentJpaController(emf);
+//        AttachmentManager instance = new AttachmentJpaController(emf);
         Attachment attachment = DBUtils.createAttachment();
-        instance.create(attachment);
-        checkExistance(instance,attachment);
+        manager.create(attachment);
+        checkExistance(manager,attachment);
     }
 
     
     private void testCreateNullAttachment() {
-        Attachment attachment = new Attachment();
+        Attachment attachment = null;
         try{
-            attachment.setDate(null);
-            fail("Created null date Attachment");
+            manager.create(attachment);
+            fail("Created null Attachment");
         }catch(NullPointerException|IllegalArgumentException ex){
             Logger.getLogger(AttachmentJpaController.class.getName()).log(Level.INFO,"Creating null attachment ok");
         }catch(Exception ex1){
@@ -81,18 +93,6 @@ public class AttachmentManagerTest {
         }
     }
 
-    /**
-     * Test of destroy method, of class AttachmentManager.
-     */
-    @Test
-    public void testDestroy() throws Exception {
-        System.out.println("destroy");
-        Integer id = null;
-        AttachmentManager instance = new AttachmentManagerImpl();
-        instance.destroy(id);
-        // TODO review the generated test code and remove the default call to fail.
-      //  fail("The test case is a prototype.");
-    }
 
     /**
      * Test of edit method, of class AttachmentManager.
@@ -111,29 +111,48 @@ public class AttachmentManagerTest {
      * Test of findAttachment method, of class AttachmentManager.
      */
     @Test
-    public void testFindAttachment() {
+    public void testFindNullIdAttachment() {
         System.out.println("findAttachment");
         Integer id = null;
-        AttachmentManager instance = new AttachmentManagerImpl();
         Attachment expResult = null;
-        Attachment result = instance.findAttachment(id);
+        Attachment result = null;
+        try{
+            result = manager.findAttachment(id);
+            fail("Lze vyhledat prilohu s id null.");
+        }catch(IllegalArgumentException iae){
+            
+        }
         assertEquals(expResult, result);
-        fail("Dodelat nalezeni (ne)existujicich priloh");
+        
         // TODO review the generated test code and remove the default call to fail.
         //fail("The test case is a prototype.");
     }
 
+    @Test
+    public void testFindAttachment(){
+        List<Attachment> data = createCorrectData();
+        int maxId = data.get(1).getId();
+        for(Attachment attach:data){
+            Attachment result = manager.findAttachment(attach.getId());
+            if(attach.getId()>maxId){
+                maxId=attach.getId();
+            }
+            assertEquals(attach + "not found.", attach,result);
+        }
+        Attachment result = manager.findAttachment(maxId+10);
+        assertNull("Result should be null.", result);
+    }
     /**
      * Test of findAttachmentEntities method, of class AttachmentManager.
      */
     @Test
     public void testFindAttachmentEntities_0args() {
         System.out.println("findAttachmentEntities");
-        AttachmentManager instance = new AttachmentManagerImpl();
-        List<Attachment> expResult = null;
-        List<Attachment> result = instance.findAttachmentEntities();
-        assertEquals(expResult, result);
-        fail("Dodelat nalezeni (ne)existujicich priloh");
+//        AttachmentManager instance = new AttachmentManagerImpl();
+        List<Attachment> expResult = createCorrectData();
+        List<Attachment> result = manager.findAttachmentEntities();
+        assertDeepEquals(expResult, result);
+        
         // TODO review the generated test code and remove the default call to fail.
        // fail("The test case is a prototype.");
     }
@@ -144,33 +163,73 @@ public class AttachmentManagerTest {
     @Test
     public void testFindAttachmentEntities_int_int() {
         System.out.println("findAttachmentEntities");
-        int maxResults = 0;
+        List<Attachment> attachments = createCorrectData();
+        int maxResults = 5;
         int firstResult = 0;
-        AttachmentManager instance = new AttachmentManagerImpl();
-        List<Attachment> expResult = null;
-        List<Attachment> result = instance.findAttachmentEntities(maxResults, firstResult);
-        assertEquals(expResult, result);
-        fail("Dodelat nalezeni (ne)existujicich priloh");
+//        AttachmentManager instance = new AttachmentManagerImpl();
+        List<Attachment> expResult = attachments.subList(firstResult, firstResult+maxResults);
+        List<Attachment> result = manager.findAttachmentEntities(maxResults, firstResult);
+        assertDeepEquals(expResult, result);
+//        fail("Dodelat nalezeni (ne)existujicich priloh");
         // TODO review the generated test code and remove the default call to fail.
         //fail("The test case is a prototype.");
     }
 
+    private List<Attachment> createCorrectData() {
+        List<Attachment> attachments = new ArrayList<>();
+        Attachment attach = DBUtils.createAttachment();
+        String name = attach.getContent();
+        for(int i=0;i<20;i++){
+            String newName = name + i;
+            attach = DBUtils.createAttachment();
+            attach.setContent(name);
+            manager.create(attach);
+            attachments.add(attach);
+        }
+        return attachments;
+    }
+
+    @Test
+    public void testFindAttachmentEntities_int_intIncorrectParameters(){
+        createCorrectData();
+        List<Attachment> result = null;
+        try{
+            result = manager.findAttachmentEntities(-1, 1);
+            fail("Lze vyhledavat zaporny pocet priloh.");
+        }catch(IllegalArgumentException iae){
+            assertNull("Result should be null.",result);
+        }
+       
+        try{
+            result = manager.findAttachmentEntities(1, -1);
+            fail("Lze vyhledavat od zaporneho indexu");
+        }catch(IllegalArgumentException iae){
+            assertNull("Result should be null.",result);
+        }
+        
+        try{
+            result = manager.findAttachmentEntities(1, 30);
+            assertEquals("Result should be empty.",0, result.size());
+        }catch(IllegalArgumentException iae){
+            fail("Unexpected exception has been thrown.");
+        }
+    }
     /**
      * Test of getAttachmentCount method, of class AttachmentManager.
      */
     @Test
-    public void testGetAttachmentCount() throws NonexistentEntityException {
+    public void testGetAttachmentCount() throws NonexistentEntityException, cz.dcb.support.db.jpa.controllers.exceptions.NonexistentEntityException {
         System.out.println("getAttachmentCount");
-        AttachmentManager man = new AttachmentJpaController(emf);
+//        AttachmentManager man = new AttachmentJpaController(emf);
         int expResult = 0;
-        int result = man.getAttachmentCount();
+        int result = manager.getAttachmentCount();
         assertEquals(expResult, result);
         //AttachmentManager man = new AttachmentJpaController(emf);
-        Attachment attach = addCorrectAttachemnt(man);
-        result = man.getAttachmentCount();
+        Attachment attach = addCorrectAttachemnt(manager);
+        result = manager.getAttachmentCount();
         assertEquals("Incorrect attachments count. ",1,result);
-        man.destroy(attach.getId());
-        result = man.getAttachmentCount();
+        manager.destroy(attach.getId());
+        result = manager.getAttachmentCount();
         assertEquals("Incorrect attachments count. ",0,result);
         // TODO review the generated test code and remove the default call to fail.
         //fail("The test case is a prototype.");
@@ -181,27 +240,13 @@ public class AttachmentManagerTest {
         assertEquals("Retrieved data differs.",result,expected);
     }
 
-    private void testNullDateAttachment() {
-        Attachment attachment = null;
-        AttachmentManager instance = new AttachmentJpaController(emf);
-        try{
-            instance.create(attachment);
-            fail("Created null Attachment");
-        }catch(NullPointerException ex){
-            Logger.getLogger(AttachmentJpaController.class.getName()).log(Level.INFO,"Creating null attachment ok");
-        }catch(Exception ex1){
-            fail("Wrong exception thrown: "+ ex1);
-        }
-   
-    }
-
     private void testIncorrectEdits() throws Exception {
-        AttachmentManager man = new AttachmentJpaController(emf);
-        Attachment attachment = addCorrectAttachemnt(man);
+//        AttachmentManager man = new AttachmentJpaController(emf);
+        Attachment attachment = addCorrectAttachemnt(manager);
         Attachment newValue = null;
         try {
-            man.edit(newValue);
-        } catch (NonexistentEntityException ex) {
+            manager.edit(newValue);
+        } catch (NonexistentEntityException|IllegalArgumentException ex) {
             Logger.getLogger(AttachmentManagerTest.class.getName()).log(Level.INFO, "Correct exception while editing null attachment.", ex);
         } catch (Exception ex1){
             fail("Incorrect exception thrown while editing null attachment.");
@@ -211,37 +256,39 @@ public class AttachmentManagerTest {
         //attachment1.setId(-1);
         attachment1.setDate(attachment.getDate());
         attachment1.setLocation(attachment.getLocation());
-        attachment1.setSpznoteId(attachment.getSpznoteId());
+        
         attachment1.setTs(attachment.getTs());
         attachment1.setType(attachment.getType());
+        attachment1.setId(attachment.getId());
         
         try {
-            man.edit(attachment1);
+            manager.edit(attachment1);
         } catch (NonexistentEntityException ex) {
             Logger.getLogger(AttachmentManagerTest.class.getName()).log(Level.SEVERE, "Correct exception has been thrown.", ex);
         }
-        checkNonExistance(man, newValue);
+        newValue = manager.findAttachment(attachment1.getId());
+        checkNonExistance(manager, newValue);
         
     }
 
     private void testCorrectEdits() throws Exception {
-        AttachmentManager man = new AttachmentJpaController(emf);
-        Attachment attach = addCorrectAttachemnt(man);
+        //AttachmentManager man = new AttachmentJpaController(emf);
+        Attachment attach = addCorrectAttachemnt(manager);
         attach.setContent("Changed content.");
-        man.edit(attach);
-        checkExistance(man, attach);
+        manager.edit(attach);
+        checkExistance(manager, attach);
         attach.setDate(new GregorianCalendar().getTime());
-        man.edit(attach);
-        checkExistance(man, attach);
+        manager.edit(attach);
+        checkExistance(manager, attach);
         attach.setLocation("/new/path");
-        man.edit(attach);
-        checkExistance(man, attach);
-        attach.setTs(attach.getTs()+1);
-        man.edit(attach);
-        checkExistance(man, attach);
+        manager.edit(attach);
+        checkExistance(manager, attach);
+        attach.setTs(attach.getTs().add(BigInteger.ONE));
+        manager.edit(attach);
+        checkExistance(manager, attach);
         attach.setType("application/x+msword");
-        man.edit(attach);
-        checkExistance(man, attach);
+        manager.edit(attach);
+        checkExistance(manager, attach);
     }
 
     private Attachment addCorrectAttachemnt(AttachmentManager man) {
@@ -252,8 +299,7 @@ public class AttachmentManagerTest {
         attach.setContent("Some content " + val );
         attach.setLocation("/Some/path"+val);
         attach.setDate(new GregorianCalendar().getTime());
-        attach.setSpznoteId(new Spznote());
-        attach.setTs(val);
+        attach.setTs(BigInteger.valueOf(val));
         attach.setType("radna"+val);
         try {
             man.create(attach);
@@ -268,7 +314,7 @@ public class AttachmentManagerTest {
         Attachment res = man.findAttachment(newValue.getId());
         assertNotSame(newValue, res);
     }
-
+/*
     public class AttachmentManagerImpl implements AttachmentManager {
 
         public void create(Attachment attachment) throws PreexistingEntityException, Exception {
@@ -296,5 +342,12 @@ public class AttachmentManagerTest {
             return 0;
         }
     }
-    
+  */  
+
+    private void assertDeepEquals(List<Attachment> expResult, List<Attachment> result) {
+       assertEquals("Nesouhlasi velikost",expResult.size(),result.size());
+       for(Attachment attach:expResult){
+           assertTrue(attach+" not found in result.",result.contains(attach));
+       }
+    }
 }

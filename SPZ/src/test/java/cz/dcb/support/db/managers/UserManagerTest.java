@@ -5,17 +5,17 @@
  */
 package cz.dcb.support.db.managers;
 
-import cz.dcb.support.db.jpa.User;
-import cz.dcb.support.db.managers.exceptions.IllegalOrphanException;
-import cz.dcb.support.db.managers.exceptions.NonexistentEntityException;
-import cz.dcb.support.db.managers.exceptions.PreexistingEntityException;
+import cz.dcb.support.db.jpa.entities.User;
+import cz.dcb.support.db.jpa.controllers.UserJpaController;
+import cz.dcb.support.db.jpa.controllers.UserManager;
+
 import cz.dcb.support.db.managers.utils.DBUtils;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -32,6 +32,7 @@ public class UserManagerTest {
 
     private UserManager manager = null;
     private static final Logger logger = Logger.getLogger(UserManagerTest.class.getName());
+    private static final int MAX_USERS=95;
     public UserManagerTest() {
         EntityManagerFactory emf = DBUtils.getEntityManagerFactory();
         manager = new UserJpaController(emf);
@@ -39,7 +40,6 @@ public class UserManagerTest {
     
     @BeforeClass
     public static void setUpClass() {
-        
     }
     
     @AfterClass
@@ -50,9 +50,9 @@ public class UserManagerTest {
     public void setUp() {
         for(User user:manager.findUserEntities()){
             try {
-                manager.destroy(user.getLogin());
-            } catch (IllegalOrphanException | NonexistentEntityException ex) {
-                Logger.getLogger(UserManagerTest.class.getName()).log(Level.SEVERE, null, ex);
+                manager.destroy(user.getId());
+            } catch (cz.dcb.support.db.jpa.controllers.exceptions.NonexistentEntityException ex) {
+                logger.log(Level.SEVERE, null, ex);
             }
         }
     }
@@ -76,20 +76,14 @@ public class UserManagerTest {
         user = DBUtils.createUser();
         try{
             manager.create(user);
-            User retValue = manager.findUser(user.getLogin());
+            User retValue = manager.findUser(user.getId());
             assertNotNull("User not found",retValue);
             assertEquals("User login differs.",retValue.getLogin(), user.getLogin());
         }catch(Exception ex){
             fail("Unexpected exception thrown: "+ex);
         }
-        try{
-            manager.create(user);
-            fail("Duplicit user created");
-        }catch(PreexistingEntityException ex){
-            
-        }
-        // TODO review the generated test code and remove the default call to fail.
-        //fail("The test case is a prototype.");
+//        manager.create(user);
+//        fail("Duplicit user created");
     }
 
     /**
@@ -138,7 +132,7 @@ public class UserManagerTest {
         user.setName(null);
         try{
             manager.edit(user);
-            User modified =manager.findUser(user.getLogin());
+            User modified =manager.findUser(user.getId());
             
             assertEquals("Login differs.",user.getLogin(),modified.getLogin());
             assertEquals("Name differs.", user.getName(),modified.getName());
@@ -159,7 +153,7 @@ public class UserManagerTest {
         user.setPassword(passwd.append("xx").toString());
         try{
             manager.edit(user);
-            User returned = manager.findUser(login);
+            User returned = manager.findUser(user.getId());
             assertEquals("E-mail does not match:",returned.getEmail(), email.toString());
             assertEquals("Name does not match:",returned.getName(), name.toString());
             assertEquals("Password does not match:", returned.getPassword(), passwd.toString());
@@ -187,17 +181,15 @@ public class UserManagerTest {
         try{
             User expResult = manager.findUser(null);
             fail("findUser accepts null parameter");
-        }catch(NullPointerException npe){
-            logger.log(Level.INFO,"findUser(null) je ok",npe);
+        }catch(NullPointerException | IllegalArgumentException ex){
+            logger.log(Level.INFO,"findUser(null) je ok",ex);
         }catch(Exception ex){
             logger.log(Level.SEVERE,"findUser(null) vyhodilo neocekavanou vyjimku",ex);
             fail("vyhozena neocekavana vyjimka "+ex);
         }
         
-        String id = "";
-        
         User expResult = null;
-        User result = manager.findUser(id);
+        User result = manager.findUser(-1);
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         //fail("The test case is a prototype.");
@@ -208,7 +200,7 @@ public class UserManagerTest {
         User user = DBUtils.createUser();
         try {
             manager.create(user);
-            User found = manager.findUser(user.getLogin());
+            User found = manager.findUser(user.getId());
             assertEquals("Login differs", user.getLogin(),found.getLogin());
             assertEquals("Name differs",user.getName(),found.getName());
             assertEquals("E-mail differs",user.getEmail(), found.getEmail());
@@ -220,28 +212,65 @@ public class UserManagerTest {
         
     }
 
+    @Test
+    public void testFindUserByLogin()throws Exception{
+        Random rand = new Random();
+        int count = rand.nextInt(MAX_USERS)+5;
+        try{
+            manager.findUserByLogin(null);
+            fail("Exception should be thrown.");
+        }catch(IllegalArgumentException iae){
+            logger.log(Level.INFO,"",iae);
+            
+        }
+        String login = new String();
+        try{
+                User result = manager.findUserByLogin(login);
+                fail("Exceptin should be thrown - login is empty: "+login);
+        }catch(IllegalArgumentException iae){
+            logger.log(Level.INFO,"",iae);
+        }
+        
+        List<User> users = createUsers(count);
+        for(User user:users){
+            User result = manager.findUserByLogin(user.getLogin());
+            assertEquals(result, user);
+        }
+        User missed = DBUtils.createUser();
+        missed.setLogin(missed.getLogin()+(count+3));
+        User result = manager.findUserByLogin(missed.getLogin());
+        assertNull(result);
+    }
     /**
      * Test of findUserEntities method, of class UserManager.
      */
     @Test
     public void testFindUserEntities_0args() throws Exception {
         System.out.println("findUserEntities");
+        Random rand = new Random();
+        int count = rand.nextInt(MAX_USERS)+5;
         //UserManager instance = new UserManagerImpl();
         List<User> result = manager.findUserEntities();
         List<User> expResult = new ArrayList<>();
         assertEquals("List of users should be empty.",expResult, result);
-        for(int i=1;i<=10;i++){
-            User user = DBUtils.createUser();
-            user.setLogin(user.getLogin()+i);
-            expResult.add(user);
-            manager.create(user);
-        }
+        expResult = createUsers(count);
         result = manager.findUserEntities();
         assertEquals("nesouhlasi pocty prvku v kolekcich",expResult.size(), result.size());
         assertDeepEquals("Nesouhlasi kolekce",result,expResult);
         //assertEquals("Nesouhlasi zadana a vracena kolekce uzivatel",result,expResult);
         // TODO review the generated test code and remove the default call to fail.
         //fail("The test case is a prototype.");
+    }
+
+    private List<User> createUsers(int count) {
+        List<User> users = new ArrayList<>();
+        for(int i=1;i<=10;i++){
+            User user = DBUtils.createUser();
+            user.setLogin(user.getLogin()+i);
+            users.add(user);
+            manager.create(user);
+        }
+        return users;
     }
 
     /**
@@ -307,7 +336,7 @@ public class UserManagerTest {
         int pomCount = users.size()-1;
         for(Iterator<User> it=users.iterator();it.hasNext();){
             User removeUser = it.next();
-            manager.destroy(removeUser.getLogin());
+            manager.destroy(removeUser.getId());
             it.remove();
             assertEquals("User number does not match", users.size(),manager.getUserCount());
             assertTrue("User is not removed.",!manager.findUserEntities().contains(removeUser));
@@ -331,7 +360,7 @@ public class UserManagerTest {
         }
     }
 
-    public class UserManagerImpl implements UserManager {
+/*    public class UserManagerImpl implements UserManager {
 
         public void create(User user) throws PreexistingEntityException, Exception {
         }
@@ -358,5 +387,5 @@ public class UserManagerTest {
             return 0;
         }
     }
-    
+  */  
 }

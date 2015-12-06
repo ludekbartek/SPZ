@@ -12,12 +12,28 @@
     <class>cz.dcb.support.db.jpa.Project</class>
     <class>cz.dcb.support.db.jpa.Attachment</class>
     <class>cz.dcb.support.db.jpa.User</class>
+    <class>cz.dcb.support.db.jpa.entities.Spzanalyst</class>
+    <class>cz.dcb.support.db.jpa.entities.Attachmentnote</class>
+    <class>cz.dcb.support.db.jpa.entities.Spzissuer</class>
+    <class>cz.dcb.support.db.jpa.entities.User</class>
+    <class>cz.dcb.support.db.jpa.entities.Configuration</class>
+    <class>cz.dcb.support.db.jpa.entities.Spzstatenote</class>
+    <class>cz.dcb.support.db.jpa.entities.Attachment</class>
+    <class>cz.dcb.support.db.jpa.entities.Roles</class>
+    <class>cz.dcb.support.db.jpa.entities.Spznote</class>
+    <class>cz.dcb.support.db.jpa.entities.Spzstates</class>
+    <class>cz.dcb.support.db.jpa.entities.Project</class>
+    <class>cz.dcb.support.db.jpa.entities.Spz</class>
+    <class>cz.dcb.support.db.jpa.entities.Noteissuer</class>
+    <class>cz.dcb.support.db.jpa.entities.Useraccess</class>
+    <class>cz.dcb.support.db.jpa.entities.Projectconfiguration</class>
+    <class>cz.dcb.support.db.jpa.entities.Spzstate</class>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
-      <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/support?zeroDateTimeBehavior=convertToNull"/>
-      <property name="javax.persistence.jdbc.user" value="root"/>
-      <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
-      <property name="javax.persistence.jdbc.password" value=""/>
+      <property name="javax.persistence.jdbc.url" value="jdbc:derby://localhost:1527/support"/>
+      <property name="javax.persistence.jdbc.user" value="suser"/>
+      <property name="javax.persistence.jdbc.driver" value="org.apache.derby.jdbc.ClientDriver"/>
+      <property name="javax.persistence.jdbc.password" value="suser"/>
     </properties>
   </persistence-unit>
 </persistence>
