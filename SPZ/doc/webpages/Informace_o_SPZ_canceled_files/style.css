@@ -1,0 +1,144 @@
+table functions {
+	margin: 0px; width: 255px;
+}
+table functions td {
+	margin: 5px; padding: 1px;
+}
+.functions input {
+	width: 255px;
+}
+table.admin {
+	padding: 3px; border: 0px currentColor; border-image: none; width: 100%; height: 100%;
+}
+table.admin td {
+	padding: 0px;
+}
+table.printspz {
+	border-width: 2px; border-style: solid; text-align: left;
+}
+table.printspz td {
+	border-width: 1px; border-style: solid; padding: 4px; font-family: "Times New Roman"; font-size: 11pt;
+}
+table.reportlist th {
+	background: rgb(211, 211, 211);
+}
+table.reportlist {
+	width: 100%; font-size: 12px;
+}
+table.report {
+	border: thin outset currentColor; border-image: none; width: 100%;
+}
+table.report td {
+	padding: 3px; border-bottom-width: 1px; border-bottom-style: solid;
+}
+table.report th {
+	background: rgb(211, 211, 211); border-width: 2px 0px; border-style: solid; padding: 5px;
+}
+body {
+	margin: 0px;
+}
+table {
+	font: 10px/normal sans-serif; font-size-adjust: none; font-stretch: normal;
+}
+table.spzdetail {
+	width: 100%;
+}
+table.spzdetail td {
+	border: 1px groove currentColor; border-image: none; vertical-align: top;
+}
+table.infospz {
+	border: 2px groove currentColor; border-image: none; width: 100%;
+}
+table.infospz td {
+	padding: 2px; border: 1px groove currentColor; border-image: none; vertical-align: top;
+}
+table.novaspz {
+	width: 100%;
+}
+table.titlehead {
+	width: 100%;
+}
+table.searchfilter {
+	margin: 0px; width: 100%;
+}
+table.searchfilter td {
+	text-align: center;
+}
+table.spzhistory {
+	width: 100%;
+}
+th {
+	background: rgb(211, 211, 211);
+}
+table.list {
+	width: 100%;
+}
+table.list td {
+	border-bottom-width: 1px; border-bottom-style: solid;
+}
+td .username {
+	text-align: right; color: green; vertical-align: top;
+}
+td.title {
+	font: italic 900 24px/normal fantasy; text-align: center; color: gray; font-size-adjust: none; font-stretch: normal;
+}
+.error {
+	color: red;
+}
+td.navigace {
+	text-align: center; color: blue;
+}
+td.stateheader {
+	color: green; border-top-width: 1px; border-top-style: solid;
+}
+h1 {
+	text-align: center; margin-top: 6px;
+}
+h2 {
+	margin-top: 6px;
+}
+.statetrans {
+	border: 1px solid currentColor; border-image: none; text-align: center; margin-top: 4px; background-color: rgb(189, 212, 237);
+}
+.hlavicka.statenote {
+	
+}
+.telo.statenote {
+	padding-left: 30px;
+}
+.novaspz textarea {
+	width: 100%; height: 156px;
+}
+.novaspz td {
+	vertical-align: top;
+}
+.novaspz input {
+	width: 100%;
+}
+textarea.desc {
+	width: 100%; height: 156px;
+}
+textarea.smalldesc {
+	width: 100%; height: 40px;
+}
+.prompt {
+	width: 20%; vertical-align: top;
+}
+.del {
+	vertical-align: middle; cursor: hand;
+}
+pre {
+	font: 11px/normal sans-serif; margin: 0px; font-size-adjust: none; font-stretch: normal;
+}
+.preformated {
+	font: 11px/normal sans-serif; margin: 0px; font-size-adjust: none; font-stretch: normal;
+}
+.novyradek {
+	margin: 5px 0px 2px;
+}
+.cekanamne {
+	color: green;
+}
+ul {
+	list-style-type: disc;
+}
