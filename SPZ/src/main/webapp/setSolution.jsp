@@ -40,7 +40,7 @@
                 <textarea name="desc"></textarea>
             </div>
             <input type="checkbox" id="ext"/><label for="ext"><f:message key="extNote"/></label>
-            <input type="submit" name="<f:message key="send"/>"/>
+            <input type="submit" value="<f:message key="submit"/>"/>
         </form>        
         <h1><f:message key="history"/></h1>
         <jsp:include page="listHistory.jsp"/>
