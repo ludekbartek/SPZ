@@ -39,7 +39,7 @@
             <span class='left'>
                 <span class="label">Název:</span>
                 <span class="highlight-value">
-                    <c:out value="${spz.reqnumber}"/>
+                    <c:out value="${spz.reqNumber}"/>
                 </span>
             </span>            
             
@@ -59,12 +59,12 @@
                 </span>
                 <span class="value">
                     <c:out value="${spz.issuer}"/><br/>
-                    <f:formatDate dateStyle="LONG" type="both" timeStyle="SHORT" value="${spz.issuedate}"/>
+                    <f:formatDate dateStyle="LONG" type="both" timeStyle="SHORT" value="${spz.issueDate}"/>
                 </span>
             </span>
             <span class="center">
                 <span class="label">Zadal:</span>
-                <span class="value">${spz.contactperson}</span>
+                <span class="value">${spz.contactPerson}</span>
             </span>
         </div>
         <div>
@@ -73,7 +73,7 @@
                     Zadání:
                 </span>
                 <span class="value">
-                    <c:out value="${spz.requestdescription}"/>
+                    <c:out value="${spz.requestDescription}"/>
                 </span>
             </span>
         </div>
