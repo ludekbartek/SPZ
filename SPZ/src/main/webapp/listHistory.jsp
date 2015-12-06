@@ -9,6 +9,7 @@
 <%@taglib prefix="f" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <f:setBundle basename="list"/>
+<h2>Historie SPZ</h2>
 <c:forEach items="${spz.history}" var="item">
     <div class="state-header"><c:out value="${item.code}"/> <f:formatDate type="both" dateStyle="LONG" timeStyle="short" value="${item.issueDate}"/>
          <c:out value="${item.issuer}"/>
