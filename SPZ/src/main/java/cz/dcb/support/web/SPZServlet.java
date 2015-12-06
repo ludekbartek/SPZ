@@ -1040,8 +1040,10 @@ public class SPZServlet extends HttpServlet {
         });
         Spzstate previous = null;
         if(spzStates.size()>1){
+            Spzstate current = stateManager.getCurrentState(spz);
+            current.setCurrentstate(0);
             previous = spzStates.get(1);
-            previous.setCurrentstate(0);
+            previous.setCurrentstate(1);
             previous.setIdate(new GregorianCalendar().getTime());
             try {
                 stateManager.edit(previous);
