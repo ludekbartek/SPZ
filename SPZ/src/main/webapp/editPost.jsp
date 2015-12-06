@@ -36,7 +36,7 @@
                 </td>
             </tr>
         </table>
-        <h2>Historie SPZ</h2>
+        <!--<h2>Historie SPZ</h2>-->
         <%@include  file="listHistory.jsp"%>
         <h2>Pridej poznamku</h2>
         <form action="${pageContext.request.contextPath}/SPZServlet/addNote" enctype="multipart/form-data" method="post">
