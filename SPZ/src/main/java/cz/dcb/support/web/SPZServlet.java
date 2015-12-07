@@ -10,6 +10,10 @@ import cz.dcb.support.db.jpa.controllers.AttachmentJpaController;
 import cz.dcb.support.db.jpa.controllers.AttachmentManager;
 import cz.dcb.support.db.jpa.controllers.AttachmentNoteJpaController;
 import cz.dcb.support.db.jpa.controllers.AttachmentNoteManager;
+import cz.dcb.support.db.jpa.controllers.RolesJpaController;
+import cz.dcb.support.db.jpa.controllers.RolesManager;
+import cz.dcb.support.db.jpa.controllers.SpzAnalystJpaController;
+import cz.dcb.support.db.jpa.controllers.SpzAnalystManager;
 import cz.dcb.support.db.jpa.controllers.SpzIssuerJpaController;
 import cz.dcb.support.db.jpa.controllers.SpzIssuerManager;
 import cz.dcb.support.db.jpa.controllers.SpzJpaController;
@@ -22,6 +26,8 @@ import cz.dcb.support.db.jpa.controllers.SpzStateNoteJpaController;
 import cz.dcb.support.db.jpa.controllers.SpzStateNoteManager;
 import cz.dcb.support.db.jpa.controllers.SpzStatesJpaController;
 import cz.dcb.support.db.jpa.controllers.SpzStatesManager;
+import cz.dcb.support.db.jpa.controllers.UserAccessJpaController;
+import cz.dcb.support.db.jpa.controllers.UserAccessManager;
 import cz.dcb.support.db.jpa.controllers.UserJpaController;
 import cz.dcb.support.db.jpa.controllers.UserManager;
 import cz.dcb.support.db.jpa.controllers.exceptions.NonexistentEntityException;
@@ -239,6 +245,8 @@ public class SPZServlet extends HttpServlet {
                 case "/delete":deleteSpz(request,response);
                             break;
                 case "/removestate":deleteSpzState(request,response);
+                            break;
+                case "/changeanalyst":changeAnalyst(request,response);
                             break;
                 default:
                     StringBuilder errorMesg = new StringBuilder("Invalid action").append(action).append(". Using list instead.");
@@ -1408,5 +1416,27 @@ public class SPZServlet extends HttpServlet {
         request.setAttribute("spz", spzToEntity(spz));
         request.getRequestDispatcher("/editPost.jsp").forward(request, response);
         
+    }
+
+    private void changeAnalyst(HttpServletRequest request, HttpServletResponse response){
+        RolesManager rolesMan = new RolesJpaController(emf);
+        UserAccessManager accessMan = new UserAccessJpaController(emf);
+        SpzAnalystManager analystManager = new SpzAnalystJpaController(emf);
+        UserManager userManager = new UserJpaController(emf);
+        SpzManager spzManager = new SpzJpaController(emf);
+        //SpzAnalystManager spzAnalystManager = new SpzAnalystJpaController(emf);
+        int spzId = getSpzId(request.getParameterMap());
+        
+        try {
+            request.getRequestDispatcher("./editAnalyst.jsp").forward(request, response);
+        } catch (ServletException | IOException ex) {
+            try {
+                request.setAttribute("error", "Nelze zmenit analytika (vice viz log).");
+                LOGGER.log(Level.SEVERE,"Chyba pri prechodu na editAnalyst.jsp:",ex);
+                listSpz(request, response);
+            } catch (ServletException | IOException ex1) {
+                Logger.getLogger(SPZServlet.class.getName()).log(Level.SEVERE, null, ex1);
+            }
+        }
     }
 }
