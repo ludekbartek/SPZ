@@ -23,7 +23,8 @@
         </form>
         <jsp:include page="listHistory.jsp"/>
         <h2>Pridej poznamku</h2>
-        <form action="${pageContext.request.contextPath}/SPZServlet/addNote" enctype="multipart/form-data" method="post">
+        <jsp:include page="addNote.jsp"/>
+        <!--<form action="${pageContext.request.contextPath}/SPZServlet/addNote" enctype="multipart/form-data" method="post">
             <textarea name="desc" cols="80" rows="8"><c:if test="${!empty desc}"><c:out value="${desc}"/></c:if></textarea>
             <input type="hidden" name="id" value="${spz.id}"/>
             <input type="checkbox" name="external" id="ext" <c:if test="${!empty ext and ext=='true'}">checked="true"</c:if>/><label for="ext">Poznamka viditelna pro zakaznika</label>
@@ -42,6 +43,6 @@
                 </tr>
             </table>
             
-        </form>
+        </form>-->
     </body>
 </html>
