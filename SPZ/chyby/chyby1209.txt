@@ -1,0 +1,22 @@
+
+Subject:
+Test SPZ
+From:
+Marie Lehotská <lehotska@dcb.cz>
+Date:
+12/09/2015 09:31 AM
+To:
+"bartek_dcb" <bartek@dcb.cz>
+
+ Dobrý den, 
+posílám problémy z dnešního textu.  
+ 
+--------------------------------------------------
+chybí potvrzení změny stavu,
+zobrazuje se text "interní poznámka" vždy
+ořezání textu pole Zadání
+-----------------------------------------------
+ 
+ 
+Zdravím
+    Marie Lehotská
