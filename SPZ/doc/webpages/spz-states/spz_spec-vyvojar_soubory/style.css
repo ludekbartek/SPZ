@@ -1,0 +1,204 @@
+TABLE functions {
+	margin : 0;
+	width : 255px;
+}
+TABLE functions TD {
+	padding: 1px;
+	margin : 5px;
+}
+.functions INPUT {
+	width : 255px;
+}
+TABLE.admin {
+	border : 0;
+	width : 100%;
+	height : 100%;
+	padding : 3px;
+}
+
+TABLE.admin TD {
+	padding : 0px;
+}
+
+TABLE.printspz  {
+	text-align : left;
+	border-style : solid;
+	border-width : 2px;
+}
+TABLE.printspz TD {
+	font-family : "Times New Roman";
+	font-size : 11pt;
+	border-style : solid;
+	padding : 4px;
+	border-width : 1px;
+}
+TABLE.reportlist TH {
+	font : italic 12px/20px;
+	background : #D3D3D3;
+}
+TABLE.reportlist {
+	width : 100%;
+	font-size : 12px;
+}
+TABLE.report	{
+	border-style : solid;
+	border-width : 2px 0px;
+	border : thin outset;
+	width : 100%;
+}
+TABLE.report TD {
+	font : 12px;
+	border-bottom-style : solid;
+	border-bottom-width : 1px;
+	padding : 3px;
+}
+TABLE.report TH {
+	background : #D3D3D3;
+	font : italic 12px;
+	border-style : solid;
+	border-width : 2px 0px;
+	padding : 5px;
+}
+BODY {
+	margin : 0px 0px 0px 0px;
+}
+TABLE {
+	font : 10px sans-serif;
+}
+TABLE.spzdetail {
+	width : 100%;
+}
+TABLE.spzdetail TD {
+	border : 1 groove;
+	vertical-align : top;
+}
+TABLE.infospz {
+	width : 100%;
+	font : 11px;
+	border : 2px groove;
+}
+TABLE.infospz TD {
+	border : 1 groove;
+	vertical-align : top;
+	padding : 2px;
+}
+TABLE.novaspz {
+	width : 100%;
+}
+TABLE.titlehead {
+	width : 100%;
+}
+TABLE.searchfilter {
+	width : 100%;
+	margin : 0px;
+}
+TABLE.searchfilter TD{
+	text-align : center;
+}
+TABLE.spzhistory {
+	width : 100%;
+}
+TH {
+	background : #D3D3D3;
+	font : bold italic larger;
+}
+TABLE.list {
+	width : 100%;
+}
+TABLE.list TD {
+	border-bottom-style : solid;
+	border-bottom-width : 1px;
+}
+TD .username {
+	vertical-align : top;
+	text-align : right;
+	color : Green; 
+}
+TD.title {
+	font : 900 italic 24px fantasy;
+	color : Gray;
+	text-align : center;
+	width : *;
+}
+.error {
+	color : Red;
+	font : 20px;
+}
+TD.navigace {
+	color : Blue;
+	font : 10px;
+	text-align : center;
+}
+TD.stateheader {
+	color : Green;
+	font : bold italic larger;
+	border-top-style : solid;
+	border-top-width : 1px;
+}
+H1 {
+	font : bold 14px;
+	text-align : center;
+	margin-top : 6px;
+}
+H2 {
+	font : bold italic 12px;
+	margin-top : 6px;
+}
+.statetrans {
+	text-align : center;
+	font : bold italic 16px/26px;
+	margin-top : 4px;
+	border : 1px solid;
+	background-color: #BDD4ED;
+}
+.statenote.hlavicka {
+	font : italic;
+}
+.statenote.telo  {
+	padding-left : 30px;
+}
+.novaspz TEXTAREA {
+	width : 100%;
+	height : 156px;
+}
+.novaspz TD {
+	vertical-align : top;
+}
+.novaspz INPUT {
+	width : 100%;
+}
+TEXTAREA.desc {
+	height : 156px;
+	width : 100%;
+}
+TEXTAREA.smalldesc {
+	height: 40px;
+	width: 100%;
+}
+.prompt {
+	width : 20%;
+	vertical-align : top;
+}
+
+.del {
+	vertical-align : middle;
+	cursor : hand;
+}
+pre {
+	margin : 0px 0px 0px 0px;
+	font : 11px sans-serif;
+}
+.preformated {
+	margin : 0px 0px 0px 0px;
+	font : 11px sans-serif;
+}
+.novyradek  {
+	margin : 5px 0 2px 0;
+}
+.cekanamne {
+	color : Green;
+	font : 11px;
+}
+UL {
+	list-style-type : disc;
+}

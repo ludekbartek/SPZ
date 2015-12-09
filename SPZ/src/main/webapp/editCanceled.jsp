@@ -39,7 +39,7 @@
             <span class='left'>
                 <span class="label">Název:</span>
                 <span class="highlight-value">
-                    <c:out value="${spz.reqnumber}"/>
+                    <c:out value="${spz.reqNumber}"/>
                 </span>
             </span>            
             
@@ -59,12 +59,12 @@
                 </span>
                 <span class="value">
                     <c:out value="${spz.issuer}"/><br/>
-                    <f:formatDate dateStyle="LONG" type="both" timeStyle="SHORT" value="${spz.issuedate}"/>
+                    <f:formatDate dateStyle="LONG" type="both" timeStyle="SHORT" value="${spz.issueDate}"/>
                 </span>
             </span>
             <span class="center">
                 <span class="label">Zadal:</span>
-                <span class="value">${spz.contactperson}</span>
+                <span class="value">${spz.contactPerson}</span>
             </span>
         </div>
         <div>
@@ -73,7 +73,7 @@
                     Zadání:
                 </span>
                 <span class="value">
-                    <c:out value="${spz.requestdescription}"/>
+                    <c:out value="${spz.requestDescription}"/>
                 </span>
             </span>
         </div>
@@ -97,8 +97,9 @@
                 </span>
             </span>
         </div>
+                <c:import url="listHistory.jsp"/>
                 <h2>Informace pro stav 'Zrušit'</h2>
-                <form action="${pageContext.request.contextPath}/SPZServlet/cancelState">
+                <!--<form action="${pageContext.request.contextPath}/SPZServlet/cancelState">
                     <input type='hidden' value="${spz.id}"/>
                     <div>
                         <label for='note'>Poznámka:</label>
@@ -111,8 +112,9 @@
                     <div>
                         <input type='submit' value="Odeslat!"/>
                     </div>
-                </form>
-                <h2>Historie SPZ</h2>
-                <c:import url="listHistory.jsp"/>
+                </form>-->
+                <jsp:include page="addNote.jsp"/>
+                <!--<h2>Historie SPZ</h2>-->
+                
     </body>
 </html>

@@ -29,13 +29,16 @@
                     <form action="${pageContext.request.contextPath}/SPZServlet/delete" method="post">    
                         <input type="hidden" name="id" value="${spz.id}"/>
                         <input type="submit" value="Zrusit"/>
+                        <input type="hidden" name="newstate" value="CANCELED"/>
+                        <input type="hidden" name="id" value="${spz.id}"/>
+                        <input type="hidden" name="state" value="POSTED"/>
                     </form>
                 </td>
             </tr>
         </table>
-        <h2>Historie SPZ</h2>
+        <!--<h2>Historie SPZ</h2>-->
         <%@include  file="listHistory.jsp"%>
-        <h2>Pridej poznamku</h2>
+        <!--<h2>Pridej poznamku</h2>
         <form action="${pageContext.request.contextPath}/SPZServlet/addNote" enctype="multipart/form-data" method="post">
             <textarea name="desc" cols="80" rows="8"><c:if test="${!empty desc}"><c:out value="${desc}"/></c:if></textarea>
             <input type="hidden" name="id" value="${spz.id}"/>
@@ -55,7 +58,8 @@
                 </tr>
             </table>
             
-        </form>
+        </form>-->
+        <jsp:include page="addNote.jsp"/>
         <p style="text-align:right;">
             <form action="${pageContext.request.contextPath}/SPZServlet/updateSPZ" method="post">
                 <input type="button" value="Zmena SPZ"/>

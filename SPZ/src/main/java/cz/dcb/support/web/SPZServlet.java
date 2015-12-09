@@ -10,6 +10,10 @@ import cz.dcb.support.db.jpa.controllers.AttachmentJpaController;
 import cz.dcb.support.db.jpa.controllers.AttachmentManager;
 import cz.dcb.support.db.jpa.controllers.AttachmentNoteJpaController;
 import cz.dcb.support.db.jpa.controllers.AttachmentNoteManager;
+import cz.dcb.support.db.jpa.controllers.RolesJpaController;
+import cz.dcb.support.db.jpa.controllers.RolesManager;
+import cz.dcb.support.db.jpa.controllers.SpzAnalystJpaController;
+import cz.dcb.support.db.jpa.controllers.SpzAnalystManager;
 import cz.dcb.support.db.jpa.controllers.SpzIssuerJpaController;
 import cz.dcb.support.db.jpa.controllers.SpzIssuerManager;
 import cz.dcb.support.db.jpa.controllers.SpzJpaController;
@@ -22,6 +26,8 @@ import cz.dcb.support.db.jpa.controllers.SpzStateNoteJpaController;
 import cz.dcb.support.db.jpa.controllers.SpzStateNoteManager;
 import cz.dcb.support.db.jpa.controllers.SpzStatesJpaController;
 import cz.dcb.support.db.jpa.controllers.SpzStatesManager;
+import cz.dcb.support.db.jpa.controllers.UserAccessJpaController;
+import cz.dcb.support.db.jpa.controllers.UserAccessManager;
 import cz.dcb.support.db.jpa.controllers.UserJpaController;
 import cz.dcb.support.db.jpa.controllers.UserManager;
 import cz.dcb.support.db.jpa.controllers.exceptions.NonexistentEntityException;
@@ -239,6 +245,8 @@ public class SPZServlet extends HttpServlet {
                 case "/delete":deleteSpz(request,response);
                             break;
                 case "/removestate":deleteSpzState(request,response);
+                            break;
+                case "/changeanalyst":changeAnalyst(request,response);
                             break;
                 default:
                     StringBuilder errorMesg = new StringBuilder("Invalid action").append(action).append(". Using list instead.");
@@ -1040,8 +1048,10 @@ public class SPZServlet extends HttpServlet {
         });
         Spzstate previous = null;
         if(spzStates.size()>1){
+            Spzstate current = stateManager.getCurrentState(spz);
+            current.setCurrentstate(0);
             previous = spzStates.get(1);
-            previous.setCurrentstate(0);
+            previous.setCurrentstate(1);
             previous.setIdate(new GregorianCalendar().getTime());
             try {
                 stateManager.edit(previous);
@@ -1070,8 +1080,14 @@ public class SPZServlet extends HttpServlet {
         stateManager.create(previous);
         newState.setStateid(previous.getId());
         statesManager.create(newState);
-        request.setAttribute("spz", spz);
-        request.setAttribute("state", previous);
+        SPZWebEntity entity = spzToEntity(spz);
+        SpzStateWebEntity prev = spzStateToSpzWebEntity(previous);
+        request.setAttribute("spz", entity);
+        request.setAttribute("state", prev);
+        if(prev.getCode().compareToIgnoreCase("canceled")!=0){
+            listSpz(request, response);
+            return;
+        }
         request.getRequestDispatcher("/editDeleted.jsp").forward(request, response);
         //listSpz(request, response);
     }
@@ -1393,12 +1409,34 @@ public class SPZServlet extends HttpServlet {
         stateNote.setStateid(state.getId());
         stateNoteManager.create(stateNote);
         String jsp = (String)request.getAttribute("jsp");
-        if(jsp.contains("list")){
+        if(jsp!=null && jsp.contains("list")){
             listSpz(request, response);
             return;
         }
         request.setAttribute("spz", spzToEntity(spz));
         request.getRequestDispatcher("/editPost.jsp").forward(request, response);
         
+    }
+
+    private void changeAnalyst(HttpServletRequest request, HttpServletResponse response){
+        RolesManager rolesMan = new RolesJpaController(emf);
+        UserAccessManager accessMan = new UserAccessJpaController(emf);
+        SpzAnalystManager analystManager = new SpzAnalystJpaController(emf);
+        UserManager userManager = new UserJpaController(emf);
+        SpzManager spzManager = new SpzJpaController(emf);
+        //SpzAnalystManager spzAnalystManager = new SpzAnalystJpaController(emf);
+        int spzId = getSpzId(request.getParameterMap());
+        
+        try {
+            request.getRequestDispatcher("./editAnalyst.jsp").forward(request, response);
+        } catch (ServletException | IOException ex) {
+            try {
+                request.setAttribute("error", "Nelze zmenit analytika (vice viz log).");
+                LOGGER.log(Level.SEVERE,"Chyba pri prechodu na editAnalyst.jsp:",ex);
+                listSpz(request, response);
+            } catch (ServletException | IOException ex1) {
+                Logger.getLogger(SPZServlet.class.getName()).log(Level.SEVERE, null, ex1);
+            }
+        }
     }
 }
