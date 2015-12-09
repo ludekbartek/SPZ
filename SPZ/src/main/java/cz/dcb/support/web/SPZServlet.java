@@ -1409,7 +1409,7 @@ public class SPZServlet extends HttpServlet {
         stateNote.setStateid(state.getId());
         stateNoteManager.create(stateNote);
         String jsp = (String)request.getAttribute("jsp");
-        if(jsp.contains("list")){
+        if(jsp!=null && jsp.contains("list")){
             listSpz(request, response);
             return;
         }
