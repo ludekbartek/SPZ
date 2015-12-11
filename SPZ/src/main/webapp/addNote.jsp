@@ -4,7 +4,8 @@
 <h2><f:message key="addNoteHeading"/></h2>
 <form action="${pageContext.request.contextPath}/SPZServlet/addNote" enctype="multipart/form-data" method="post">
     <textarea name="desc" cols="80" rows="8" maxlength="8000"><c:if test="${!empty desc}"><c:out value="${desc}"/></c:if></textarea>
-    <input type="hidden" name="id" value="${spz.id}"/>
+    <input type="hidden" name="spzid" value="${spz.id}"/>
+    <input type="hidden" name="jsp" value="${jsp}"/>
     <input type="checkbox" name="external" id="ext" <c:if test="${!empty ext and ext=='true'}">checked="true"</c:if>/><label for="ext"><f:message key="extNote"/></label>
     <br/>
     <input type="submit" value="<f:message key="saveNote"/>"/>

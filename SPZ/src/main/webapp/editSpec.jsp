@@ -14,9 +14,10 @@
     </head>
     <body>
         <h1>Informace o SPZ</h1>
+        <c:set var="jsp" value="./editSpec.jsp"/>
         <jsp:include page="editcommon.jsp"/>
         <form action="${pageContext.request.contextPath}/SPZServlet/delete" method="post">
-            <input type="hidden" name="id" value="${spz.id}"/>
+            <input type="hidden" name="spzid" value="${spz.id}"/>
             <input type="hidden" name="state" value="SPECIFIED"/>
             <input type="hidden" name="newState" value="CANCELED"/>
             <input type="submit" value="Zrusit"/>

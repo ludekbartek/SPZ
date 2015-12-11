@@ -48,6 +48,7 @@ pri editaci pouze popisy (viz stara verze).
                     </c:otherwise>
             </c:choose>
         </h1>
+        <c:set var="jsp" value="./addSPZ.jsp"/>
         <c:if test="${!empty error}">
             <p style="background-color: yellow;text-align: center;color: red;font-size: xx-large">
                 <c:out value="${error}"/>
@@ -57,7 +58,7 @@ pri editaci pouze popisy (viz stara verze).
             <form action="${pageContext.request.contextPath}/SPZServlet/addspz" method="post">
                 <div class="formItem">
                     <span class="label"><label class="label" for="shortname">Nazev</label></span>
-                    <span class="input"><input type="text" name="shortname" value="<c:if test="${!empty spz.reqnumber}">${spz.reqnumber}</c:if>"></span>
+                    <span class="input"><input type="text" name="shortname" maxlength="50" size="50" value="<c:if test="${!empty spz.reqnumber}">${spz.reqnumber}</c:if>"></span>
                     <!--<input type="hidden" name="shortname"/>-->
                 </div>
                 <div class="formItem">

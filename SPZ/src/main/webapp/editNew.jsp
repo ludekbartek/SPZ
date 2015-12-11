@@ -16,6 +16,7 @@
         <h1>System servisni podpory</h1>
         <h2>Informace o SPZ</h2>
         <table>
+            <c:set var="jsp" value="./editNew.jsp"/>
             <%@include file="editcommon.jsp" %>
             <tr>
                 <td colspan="3">

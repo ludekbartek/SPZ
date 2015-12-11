@@ -85,7 +85,7 @@
                 <tr>
                 <form action="${pageContext.request.contextPath}/SPZServlet/editspz" method="POST">
                     <td>
-                        <input type="hidden" name="id" value="${item.id}"/>
+                        <input type="hidden" name="spzid" value="${item.id}"/>
                         <input type="hidden" name="reqNumber" value="${item.reqNumber}"/>
                         <input type="submit" value="${item.reqNumber}"/>
                     </td>
