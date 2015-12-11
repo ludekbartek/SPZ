@@ -8,6 +8,8 @@ package cz.dcb.support.xml;
 import cz.dcb.support.db.exceptions.SPZException;
 import java.io.IOException;
 import java.io.StringReader;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.parsers.ParserConfigurationException;
@@ -28,6 +30,7 @@ import org.xml.sax.helpers.DefaultHandler;
 
 public class HTMLTransformer extends DefaultHandler{
     private final StringBuilder result = new StringBuilder();
+    private List<String> elementStack = new ArrayList<>();
    
     public void convert(String html) throws SPZException{
         if(html==null){
@@ -47,6 +50,7 @@ public class HTMLTransformer extends DefaultHandler{
     }
     @Override
     public void startElement(String uri, String localName, String qName, Attributes atts) throws SAXException {
+       elementStack.add(qName.toLowerCase());
        result.append("<").append(qName.toLowerCase());
        for(int i=0;i<atts.getLength();i++){
            String name = atts.getLocalName(i);
@@ -67,6 +71,11 @@ public class HTMLTransformer extends DefaultHandler{
     @Override
     public void endElement(String uri, String localName, String qName) throws SAXException {
         System.err.println("end: "+qName);
+        String begin = elementStack.get(elementStack.size()-1);
+        if(!begin.equals(qName.toLowerCase()))
+        {
+            throw new SAXException("Koncova znacka neodpovida pocatecni: "+qName.toLowerCase()+begin.toLowerCase());
+        }
         result.append("</");
         result.append(qName.toLowerCase());
         result.append(">");
