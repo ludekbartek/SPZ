@@ -288,7 +288,15 @@ public class SPZServlet extends HttpServlet {
             EntityTransaction transaction = entMan.getTransaction();
             SpzStateManager stateManager = new SpzStateJpaController(emf);
             SpzStatesManager statesManager = new SpzStatesJpaController(emf);
-            Spz spz = requestParamsToSpz(request.getParameterMap());
+            Spz spz = null;
+            try {
+                spz = requestParamsToSpz(request.getParameterMap());
+            } catch (SPZException ex) {
+                LOGGER.log(Level.SEVERE, "Chyba pri prevodu parametru na SPZ.", ex);
+                request.setAttribute("errror", "Chyba pri prevodu parametru na SPZ:" + ex);
+                request.getRequestDispatcher("./addSPZ.jsp").forward(request, response);
+                return;
+            }
             Spzstate state = new Spzstate();
           //  createNewState(state,spz);
             spz.setIssuedate(new GregorianCalendar().getTime());
@@ -340,7 +348,12 @@ public class SPZServlet extends HttpServlet {
             //request.getRequestDispatcher("/editSPZ.jsp").forward(request, response);
         }else{
             request.setAttribute("action","add");
-            Spz spz = requestParamsToSpz(request.getParameterMap());
+            Spz spz = null;
+            try{
+                spz = requestParamsToSpz(request.getParameterMap());
+            }catch(SPZException ex){
+                request.setAttribute("error", "Chyba pri prevodu parametru na SPZ: "+ex);
+            }
             if(spz!=null){
                 request.setAttribute("spz", spzToEntity(spz));
                 request.setAttribute("error", "Nektera polozka chybi nebo ma neplatnou hodnotu" );
@@ -548,7 +561,7 @@ public class SPZServlet extends HttpServlet {
      * @return new SPZ corresponding to the parameters if they are correct
      *         null otherwise.
      */
-    private Spz requestParamsToSpz(Map<String, String[]> parameterMap) {
+    private Spz requestParamsToSpz(Map<String, String[]> parameterMap) throws SPZException {
         if(!checkSpzParams(parameterMap)){
             return null;
         }
@@ -560,14 +573,21 @@ public class SPZServlet extends HttpServlet {
         
         String requestDescription;
         String strDescription = parameterMap.get("requestdescription")[0];
-        HTMLTransformer transformer = new HTMLTransformer();
-        try {
+        if(strDescription.startsWith("<"))
+        {
+            HTMLTransformer transformer = new HTMLTransformer();
+        //try {
             transformer.convert(strDescription);
             requestDescription = transformer.getResult();
-        } catch (SPZException ex) {
-            Logger.getLogger(SPZServlet.class.getName()).log(Level.SEVERE, "Chyba v popisu/zadani SPZ", ex);
+        }else{
             requestDescription = strDescription;
         }
+        
+//        } catch (SPZException ex) {
+//            Logger.getLogger(SPZServlet.class.getName()).log(Level.SEVERE, "Chyba v popisu/zadani SPZ", ex);
+//            requestDescription = strDescription;
+//            request
+//        }
         spz.setRequestdescription(requestDescription);
         spz.setContactperson(parameterMap.get("contactperson")[0]);
         if(parameterMap.containsKey("shortname")) spz.setShortName(parameterMap.get("shortname")[0]);
@@ -779,10 +799,14 @@ public class SPZServlet extends HttpServlet {
      * otherwise
      */
     private Integer getSpzId(Map<String, String[]> parameterMap) {
-        if(!parameterMap.containsKey("id")){
-            return null;
+        if(!parameterMap.containsKey("spzid")){
+           return null;
         }
-        String strId = parameterMap.get("id")[0];
+        String strId=parameterMap.get("spzid")[0];
+        if(strId == null){
+            return null;
+        }        
+
         Integer id;
         try{
             id = Integer.parseInt(strId);
@@ -877,7 +901,14 @@ public class SPZServlet extends HttpServlet {
      *                     after some exception has occurred in editing.
      */
     private void updateSPZ(HttpServletRequest request, HttpServletResponse response) throws IOException,ServletException {
-        Spz spz = requestParamsToSpz(request.getParameterMap());
+        Spz spz = null;
+        try{
+            spz = requestParamsToSpz(request.getParameterMap());
+        }catch(SPZException ex){
+            request.setAttribute("error", "Zadane parametry nelze prevest na SPZ:" + ex);
+            request.getRequestDispatcher("/listSPZ.jsp").forward(request, response);
+            return;
+        }
         SpzManager manager = new SpzJpaController(emf);
         try {
             manager.edit(spz);
@@ -902,7 +933,7 @@ public class SPZServlet extends HttpServlet {
     private void addNote(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         
         Map<String,String[]> params = request.getParameterMap();
-        String  strId = request.getParameter("id");
+        String  strId = request.getParameter("spzid");
         int id = Integer.parseInt(strId);
         addNote(request,response,id);
         
@@ -1027,13 +1058,13 @@ public class SPZServlet extends HttpServlet {
      */
     private void deleteSpzState(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Map<String,String[]> params = request.getParameterMap();
-        if(!params.containsKey("id")){
+        if(!params.containsKey("spzid")){
             request.setAttribute("error", "Missing spz id to be able to delete last spz state.");
             request.getRequestDispatcher("/editPost.jsp").forward(request, response);
             return;
 
         }
-        int spzId = Integer.parseInt(params.get("id")[0]);
+        int spzId = Integer.parseInt(params.get("spzid")[0]);
         SpzManager manager = new SpzJpaController(emf);
         SpzStateManager stateManager = new SpzStateJpaController(emf);
         SpzStatesManager statesManager = new SpzStatesJpaController(emf);
@@ -1328,7 +1359,7 @@ public class SPZServlet extends HttpServlet {
 
     private void addNote(HttpServletRequest request, HttpServletResponse response, Integer spzId) throws ServletException, IOException {
         AttachmentManager manager = new AttachmentJpaController(emf);
-        String fileName=null;
+        String fileName = null;
         InputStream in = null;
         Part part1 = null,part2 = null, part3 = null;
         String header = request.getHeader("Content-type");
@@ -1391,6 +1422,23 @@ public class SPZServlet extends HttpServlet {
         Spznote note = new Spznote();
         String noteText = request.getParameter("desc");
         String externalStr = request.getParameter("external");
+        HTMLTransformer transformer = new HTMLTransformer();
+        String noteLower;
+        String jsp;
+        try {
+            transformer.convert(noteText);
+            noteLower = transformer.getResult();
+        } catch (SPZException ex) {
+            Logger.getLogger(SPZServlet.class.getName()).log(Level.SEVERE, "Chyba v poznamce: ",ex);
+            request.setAttribute("error", "Chyba v poznamce: "+ex);
+            if(request.getParameterMap().containsKey("jsp")){
+                jsp=request.getParameter("jsp");
+            }else{
+                jsp="./listSpz.jsp";
+            }
+            request.getRequestDispatcher(jsp).forward(request,response);
+            return;
+        }
         LOGGER.log(Level.INFO,"external ",externalStr);
         short external = (short)(externalStr!=null&&externalStr.compareToIgnoreCase("1")==0?1:0);
         note.setExternalnote(external);
@@ -1408,7 +1456,7 @@ public class SPZServlet extends HttpServlet {
         stateNote.setNoteid(note.getId());
         stateNote.setStateid(state.getId());
         stateNoteManager.create(stateNote);
-        String jsp = (String)request.getAttribute("jsp");
+        jsp = (String)request.getAttribute("jsp");
         if(jsp!=null && jsp.contains("list")){
             listSpz(request, response);
             return;
