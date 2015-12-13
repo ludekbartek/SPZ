@@ -2,7 +2,7 @@
 <html>
     <head>
         <title>Systém servisní podpory</title>
-        <meta http-equiv="Refresh" content="0; url=index.jsp">
+     <!--   <meta http-equiv="Refresh" content="0; url=index.jsp">-->
         <link rel="stylesheet" type="text/css" href="style/dcb.css">
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         
@@ -10,5 +10,14 @@
     <body>
         <div id="heading">Systém servisní podpory</div>
         <div id="image"><image src="./images/DCB_3.jpg"/></div>
+        <form action="/SPZ/SPZServlet/login" method="post">
+            <label for="login">Role:</label>
+            <select name="login">
+                <option value="user">Uzivatel</option>
+                <option value="analyst">Analytik</option>
+            </select>
+            <input type="submit" value="Prihlasit"/>
+        </form>
+        <form action="/SPZ/SPZServlet/login"
     </body>
 </html>
