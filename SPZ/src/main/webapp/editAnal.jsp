@@ -18,7 +18,7 @@
     
     <h1><f:message key="header"/></h1>
     <jsp:include page="editcommon.jsp"/>
-    <c:if test="${user.role!='user'}">
+    <c:if test="${user.role!='0'}">
         <c:set var="jsp" value="./editAnal.jsp"/>
         <form action="${pageContext.request.contextPath}/SPZServlet/editspz" method="post">
             <input type="hidden" name="state" value="ANALYSIS"/>

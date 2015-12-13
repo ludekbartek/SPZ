@@ -21,7 +21,7 @@
             <%@include file="editcommon.jsp" %>
             <tr>
                 <td colspan="3">
-                    <c:if test="${user.role!='user'}">
+                    <c:if test="${user.role!='0'}">
                         <form action="${pageContext.request.contextPath}/SPZServlet/editSPZ" method="post">
                             <input type="submit" value="Predat k analyze"/>
                             <input type="hidden" name="spzid" value="${spz.id}"/>
