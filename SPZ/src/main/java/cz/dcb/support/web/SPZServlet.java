@@ -43,6 +43,7 @@ import cz.dcb.support.web.entities.AttachmentEntity;
 import cz.dcb.support.web.entities.SPZWebEntity;
 import cz.dcb.support.web.entities.SpzNoteEntity;
 import cz.dcb.support.web.entities.SpzStateWebEntity;
+import cz.dcb.support.web.entities.UserWebEntity;
 import cz.dcb.support.xml.HTMLTransformer;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -215,7 +216,7 @@ public class SPZServlet extends HttpServlet {
             String action = request.getPathInfo();
             //String action = request.getParameter("action");
             switch(action.toLowerCase()){
-                case "/login"://authenticate(request,response);
+                case "/login":authenticate(request,response);
                               listSpz(request, response);
                             break;
                 case "/addspz":addSpz(request,response);
@@ -270,8 +271,13 @@ public class SPZServlet extends HttpServlet {
      * @param request http request containing login information
      * @param response http response
      */
-    private void authenticate(HttpServletRequest request, HttpServletResponse response) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    private void authenticate(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        if(request.getParameterMap().containsKey("login")){
+            String login = request.getParameter("login");
+            UserWebEntity user = requestToUserWebEntity(request);
+            request.setAttribute("user",user);
+            request.getRequestDispatcher("/SPZServlet/listspz").forward(request, response);
+        }
     }
 
     /**
@@ -1486,5 +1492,29 @@ public class SPZServlet extends HttpServlet {
                 Logger.getLogger(SPZServlet.class.getName()).log(Level.SEVERE, null, ex1);
             }
         }
+    }
+
+    private UserWebEntity requestToUserWebEntity(HttpServletRequest request) {
+        UserWebEntity user = new UserWebEntity();
+        String login = request.getParameter("login");
+        user.setLogin(login);
+        switch(login){
+            case "user":
+                user.setName("Franta Uzivatel");
+                user.setRole(2);
+                user.setId(2);
+                break;
+            case "analyst":
+                user.setName("Tonda Vyvojar");
+                user.setRole(1);
+                user.setId(1);
+                break;
+            default: 
+                user.setLogin("Tomas Korinek");
+                user.setRole(0);
+                user.setId(0);
+                break;
+        }
+        return user;
     }
 }
