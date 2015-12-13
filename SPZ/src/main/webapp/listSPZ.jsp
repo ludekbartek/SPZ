@@ -57,6 +57,7 @@
             <span class="actions" style="float:right;">
                 <form action="${pageContext.request.contextPath}/SPZServlet/addspz" method="post">
                     <!--<input type="hidden" name="action" value="/addspz"/>-->
+                    <input type="hidden" name="role" value="${role}"/>
                     <input type="submit" value='<f:message key="newSpz"/>'/>
                 </form>
             </span>
@@ -86,6 +87,7 @@
                 <form action="${pageContext.request.contextPath}/SPZServlet/editspz" method="POST">
                     <td>
                         <input type="hidden" name="spzid" value="${item.id}"/>
+                        <input type="hidden" name="role" value="${role}"/>
                         <input type="hidden" name="reqNumber" value="${item.reqNumber}"/>
                         <input type="submit" value="${item.reqNumber}"/>
                     </td>
