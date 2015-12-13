@@ -56,6 +56,7 @@ pri editaci pouze popisy (viz stara verze).
         </c:if>
         <div id="form" style="width: 100%;">
             <form action="${pageContext.request.contextPath}/SPZServlet/addspz" method="post">
+                <input type="hidden" name="userid" value="${user.id}"/>
                 <div class="formItem">
                     <span class="label"><label class="label" for="shortname">Nazev</label></span>
                     <span class="input"><input type="text" name="shortname" maxlength="50" size="50" value="<c:if test="${!empty spz.reqnumber}">${spz.reqnumber}</c:if>"></span>
