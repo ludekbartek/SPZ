@@ -13,7 +13,7 @@ public class UserWebEntity {
    private long id;
    private String name;
    private String login;
-   private Roles role;
+   private int role;
 
     public long getId() {
         return id;
@@ -40,11 +40,11 @@ public class UserWebEntity {
     }
 
     public int getRole() {
-        return role.ordinal();
+        return role;
     }
 
     public void setRole(int role) {
-        this.role = Roles.values()[role];
+        this.role = role;
     }
 
     @Override
