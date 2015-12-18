@@ -40,6 +40,7 @@ import cz.dcb.support.db.jpa.entities.Spzstatenote;
 import cz.dcb.support.db.jpa.entities.Spzstates;
 import cz.dcb.support.db.jpa.entities.User;
 import cz.dcb.support.web.entities.AttachmentEntity;
+import cz.dcb.support.web.entities.Roles;
 import cz.dcb.support.web.entities.SPZWebEntity;
 import cz.dcb.support.web.entities.SpzNoteEntity;
 import cz.dcb.support.web.entities.SpzStateWebEntity;
@@ -385,6 +386,8 @@ public class SPZServlet extends HttpServlet {
         SpzManager manager = new SpzJpaController(emf);
         SpzStateManager stateManager = new SpzStateJpaController(emf);
         Integer id = getSpzId(request.getParameterMap());
+        UserWebEntity user = requestToUserWebEntity(request);
+        request.setAttribute("user", user);
         spz = manager.findSpz(id);
         if(request.getParameterMap().containsKey("newstate")){
             
@@ -1496,25 +1499,47 @@ public class SPZServlet extends HttpServlet {
 
     private UserWebEntity requestToUserWebEntity(HttpServletRequest request) {
         UserWebEntity user = new UserWebEntity();
-        String login = request.getParameter("login");
-        user.setLogin(login);
-        switch(login){
-            case "user":
-                user.setName("Franta Uzivatel");
-                user.setRole(2);
-                user.setId(2);
-                break;
-            case "analyst":
-                user.setName("Tonda Vyvojar");
-                user.setRole(1);
-                user.setId(1);
-                break;
-            default: 
-                user.setLogin("Tomas Korinek");
-                user.setRole(0);
-                user.setId(0);
-                break;
+        if(request.getParameterMap().containsKey("login")){
+            String login = request.getParameter("login");
+            user.setLogin(login);
+            switch(login){
+                case "user":
+                    user.setName("Franta Uzivatel");
+                    user.setRole(Roles.CLIENT.ordinal());
+                    user.setId(2);
+                    break;
+                case "analyst":
+                    user.setName("Tonda Vyvojar");
+                    user.setRole(Roles.ANALYST.ordinal());
+                    user.setId(1);
+                    break;
+                default: 
+                    user.setLogin("root");
+                    user.setName("Tomas Korinek");
+                    user.setRole(Roles.ANALYST.ordinal());
+                    user.setId(0);
+                    break;
+            }
+        }else{
+            String strId = request.getParameter("userid");
+            if(strId!=null){
+                switch(strId){
+                    case "1":
+                        user.setId(1);
+                        user.setLogin("analyst");
+                        user.setName("Franta Vyvojar");
+                        user.setRole(Roles.ANALYST.ordinal());
+                        break;
+                    default:
+                        user.setId(0);
+                        user.setLogin("user");
+                        user.setName("Franta Uzivatel");
+                        user.setRole(Roles.CLIENT.ordinal());
+                     
+                }
+            }
         }
+        
         return user;
     }
 }
