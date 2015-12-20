@@ -278,8 +278,9 @@ public class SPZServlet extends HttpServlet {
     private void authenticate(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         if(request.getParameterMap().containsKey("login")){
             String login = request.getParameter("login");
-            UserWebEntity user = requestToUserWebEntity(request);
-            request.setAttribute("user",user);
+            User user = getUserByLogin(login);
+            UserWebEntity userWeb = userToEntity(user);
+            request.setAttribute("user",userWeb);
             request.getRequestDispatcher("/SPZServlet/listspz").forward(request, response);
         }
     }
@@ -389,8 +390,9 @@ public class SPZServlet extends HttpServlet {
         SpzManager manager = new SpzJpaController(emf);
         SpzStateManager stateManager = new SpzStateJpaController(emf);
         Integer id = getSpzId(request.getParameterMap());
-        UserWebEntity user = requestToUserWebEntity(request);
-        request.setAttribute("user", user);
+        User user = getUserByParameter(request);
+        UserWebEntity userWeb = userToEntity(user);
+        request.setAttribute("user", userWeb);
         spz = manager.findSpz(id);
         if(request.getParameterMap().containsKey("newstate")){
             
@@ -1603,5 +1605,11 @@ public class SPZServlet extends HttpServlet {
     private List<Useraccess> getUserRoles(Integer userId) {
         UserAccessManager accessMan = new UserAccessJpaController(emf);
         return accessMan.findUseraccessEntities(userId);
+    }
+
+    private User getUserByLogin(String login) {
+        UserManager userMan = new UserJpaController(emf);
+        User user = userMan.findUserByLogin(login);
+        return user;
     }
 }
