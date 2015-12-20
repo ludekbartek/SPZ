@@ -142,5 +142,19 @@ public class UserAccessJpaController implements Serializable, UserAccessManager 
             em.close();
         }
     }
+
+    @Override
+    public List<Useraccess> findUseraccessEntities(int userId) {
+        EntityManager em = getEntityManager();
+        List<Useraccess> roles = null;
+        try{
+            Query query = em.createQuery("select access from Useraccess access where access.userid=:userid");
+            query.setParameter("userid", userId);
+            roles = query.getResultList();
+        }finally{
+            em.close();
+        }
+        return roles;
+    }
     
 }
