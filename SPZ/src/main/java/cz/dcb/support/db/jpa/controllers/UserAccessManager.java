@@ -23,6 +23,8 @@ public interface UserAccessManager {
     void edit(Useraccess useraccess) throws NonexistentEntityException, Exception;
 
     Useraccess findUseraccess(Integer id);
+    
+    List<Useraccess> findUseraccessEntities(int userId);
 
     List<Useraccess> findUseraccessEntities();
 
