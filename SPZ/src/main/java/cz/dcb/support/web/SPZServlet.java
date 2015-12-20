@@ -39,6 +39,7 @@ import cz.dcb.support.db.jpa.entities.Spzstate;
 import cz.dcb.support.db.jpa.entities.Spzstatenote;
 import cz.dcb.support.db.jpa.entities.Spzstates;
 import cz.dcb.support.db.jpa.entities.User;
+import cz.dcb.support.db.jpa.entities.Useraccess;
 import cz.dcb.support.web.entities.AttachmentEntity;
 import cz.dcb.support.web.entities.Roles;
 import cz.dcb.support.web.entities.SPZWebEntity;
@@ -249,6 +250,8 @@ public class SPZServlet extends HttpServlet {
                 case "/removestate":deleteSpzState(request,response);
                             break;
                 case "/changeanalyst":changeAnalyst(request,response);
+                            break;
+                case "/acceptsolution":acceptSolution(request,response);
                             break;
                 default:
                     StringBuilder errorMesg = new StringBuilder("Invalid action").append(action).append(". Using list instead.");
@@ -1541,5 +1544,64 @@ public class SPZServlet extends HttpServlet {
         }
         
         return user;
+    }
+
+    private void acceptSolution(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        Map<String,String[]> parameterMap = request.getParameterMap();
+        if(!parameterMap.containsKey("spzid")){
+            request.setAttribute("error", "Chybi parametr s spzid.");
+            listSpz(request, response);
+            return;
+        }
+        
+        Spz spz = getSpzByParameter(request);
+        
+        if(!parameterMap.containsKey("userid")){
+            request.setAttribute("error", "Chybi parametr s userid.");
+            listSpz(request, response);
+        }
+        User user = getUserByParameter(request);
+        
+        SPZWebEntity spzEnt = spzToEntity(spz);
+        UserWebEntity userEnt = userToEntity(user);
+        request.setAttribute("spz", spzEnt);
+        request.setAttribute("user", userEnt);
+        request.getRequestDispatcher("/acceptSol.jsp").forward(request, response);
+    }
+
+    private Spz getSpzByParameter(HttpServletRequest request) throws NumberFormatException {
+        String spzIdStr = request.getParameter("spzid");
+        int spzId = Integer.parseInt(spzIdStr);
+        SpzManager spzMan = new SpzJpaController(emf);
+        Spz spz = spzMan.findSpz(spzId);
+        return spz;
+    }
+
+    private User getUserByParameter(HttpServletRequest request) {
+        String userIdStr = request.getParameter("userid");
+        int userId = Integer.parseInt(userIdStr);
+        UserManager userMan = new UserJpaController(emf);
+        User user = userMan.findUser(userId);
+        return user;
+    }
+
+    private UserWebEntity userToEntity(User user) {
+        UserWebEntity entity = new UserWebEntity();
+        entity.setId(user.getId());
+        entity.setLogin(user.getLogin());
+        entity.setName(user.getName());
+        List<Useraccess> roles = getUserRoles(user.getId());
+        switch(roles.get(0).getRole()){
+            case "client":entity.setRole(Roles.CLIENT.ordinal());
+                          break;
+            default:entity.setRole(Roles.ANALYST.ordinal());
+        }
+        return entity;    
+        
+    }
+
+    private List<Useraccess> getUserRoles(Integer userId) {
+        UserAccessManager accessMan = new UserAccessJpaController(emf);
+        return accessMan.findUseraccessEntities(userId);
     }
 }
