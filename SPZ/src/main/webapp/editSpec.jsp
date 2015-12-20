@@ -16,7 +16,7 @@
         <h1>Informace o SPZ</h1>
         <c:set var="jsp" value="./editSpec.jsp"/>
         <jsp:include page="editcommon.jsp"/>
-        <c:if test="${user.role==0}">
+        <c:if test="${user.role==1}">
             <form action="${pageContext.request.contextPath}/SPZServlet/delete" method="post">
                 <input type="hidden" name="spzid" value="${spz.id}"/>
                 <input type="hidden" name="state" value="SPECIFIED"/>
@@ -25,15 +25,15 @@
                 <input type="submit" value="Zrusit"/>
             </form>
         </c:if>
-        <c:if test="${user.role}==1">
-            <form action="${pageContext.request.contextPath}/SPZServlet/acceptsolution" method="post">
+        <c:if test="${user.role==0}">
+            <form action="${pageContext.request.contextPath}/SPZServlet/editspz" method="post">
                 <input type="hidden" name="spzid" value="${spz.id}"/>
                 <input type="hidden" name="userid" value="${user.id}"/>
                 <input type="hidden" name="state" value="SPECIFIED"/>
                 <input type="hidden" name="newState" value="RANALYSIS"/>
-                <input type="submit" value="Odeslat zpet k analyze (nesouhlasime s resenim)"
+                <input type="submit" value="Odeslat zpet k analyze (nesouhlasime s resenim)"/>
             </form>
-            <form action="${pageContext.request.contextPath}/SPZServlet/editspz" method="post">
+            <form action="${pageContext.request.contextPath}/SPZServlet/acceptsolution" method="post">
                 <input type="hidden" name="spzid" value="${spz.id}"/>
                 <input type="hidden" name="userid" value="${user.id}"/>
                 <input type="hidden" name="state" value="SPECIFIED"/>
