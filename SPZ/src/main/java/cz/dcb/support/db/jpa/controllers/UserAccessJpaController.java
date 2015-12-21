@@ -16,6 +16,7 @@ import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
+@SuppressWarnings("unchecked")
 /**
  *
  * @author bar

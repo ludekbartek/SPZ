@@ -25,6 +25,7 @@ import javax.persistence.NoResultException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
+@SuppressWarnings("unchecked")
 /**
  *
  * @author bar
@@ -122,7 +123,7 @@ public class SpzStatesJpaController implements Serializable, SpzStatesManager {
                 q.setMaxResults(maxResults);
                 q.setFirstResult(firstResult);
             }
-            return q.getResultList();
+            return (List<Spzstates>)q.getResultList();
         } finally {
             em.close();
         }

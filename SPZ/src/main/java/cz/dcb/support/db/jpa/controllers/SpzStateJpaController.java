@@ -23,6 +23,8 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
+
+@SuppressWarnings ("unchecked")
 /**
  *
  * @author bar
@@ -113,7 +115,7 @@ public class SpzStateJpaController implements Serializable, SpzStateManager {
     private List<Spzstate> findSpzstateEntities(boolean all, int maxResults, int firstResult) {
         EntityManager em = getEntityManager();
         try {
-            CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+            CriteriaQuery<Object> cq = em.getCriteriaBuilder().createQuery();
             cq.select(cq.from(Spzstate.class));
             Query q = em.createQuery(cq);
             if (!all) {
@@ -140,7 +142,7 @@ public class SpzStateJpaController implements Serializable, SpzStateManager {
     public int getSpzstateCount() {
         EntityManager em = getEntityManager();
         try {
-            CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+            CriteriaQuery<Object> cq = em.getCriteriaBuilder().createQuery();
             Root<Spzstate> rt = cq.from(Spzstate.class);
             cq.select(em.getCriteriaBuilder().count(rt));
             Query q = em.createQuery(cq);

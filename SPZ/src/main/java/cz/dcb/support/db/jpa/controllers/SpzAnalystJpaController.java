@@ -15,7 +15,7 @@ import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-
+@SuppressWarnings( "unchecked" )
 /**
  *
  * @author bar
@@ -106,14 +106,14 @@ public class SpzAnalystJpaController implements Serializable, SpzAnalystManager 
     private List<Spzanalyst> findSpzanalystEntities(boolean all, int maxResults, int firstResult) {
         EntityManager em = getEntityManager();
         try {
-            CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+            CriteriaQuery<Object> cq = em.getCriteriaBuilder().createQuery();
             cq.select(cq.from(Spzanalyst.class));
             Query q = em.createQuery(cq);
             if (!all) {
                 q.setMaxResults(maxResults);
                 q.setFirstResult(firstResult);
             }
-            return q.getResultList();
+            return (List<Spzanalyst>)q.getResultList();
         } finally {
             em.close();
         }
@@ -133,7 +133,7 @@ public class SpzAnalystJpaController implements Serializable, SpzAnalystManager 
     public int getSpzanalystCount() {
         EntityManager em = getEntityManager();
         try {
-            CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+            CriteriaQuery<Object> cq = em.getCriteriaBuilder().createQuery();
             Root<Spzanalyst> rt = cq.from(Spzanalyst.class);
             cq.select(em.getCriteriaBuilder().count(rt));
             Query q = em.createQuery(cq);
