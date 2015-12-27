@@ -41,9 +41,12 @@ public class HTMLTransformer extends DefaultHandler{
             SAXParser parser=spf.newSAXParser();
             InputSource input = new InputSource(new StringReader(html));
             parser.parse(input,this);
-        } catch (ParserConfigurationException | SAXException | IOException ex) {
-            Logger.getLogger(HTMLTransformer.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ParserConfigurationException |  IOException ex) {
+            Logger.getLogger(HTMLTransformer.class.getName()).log(Level.SEVERE, "Chyba pri parsovani popisu.", ex);
             throw new SPZException("Chyba pri konverzi html popisu.", ex);
+        } catch (SAXException ex) {
+            Logger.getLogger(HTMLTransformer.class.getName()).log(Level.INFO,"Popis je nejspis plain-text.");
+            result.append(html);
         }
         
 
