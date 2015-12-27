@@ -28,7 +28,7 @@
                          </c:otherwise>
                      </c:choose> 
                      (<f:formatDate type="both" dateStyle="LONG" timeStyle="SHORT" value="${note.noteDate}"/>)
-                     <c:if test="${note.internal!=1}">
+                     <c:if test="${note.external!=1}">
                          <div class="note-header">
                              #########<f:message key="internal"/>#########
                          </div>
