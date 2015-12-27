@@ -47,6 +47,7 @@ import cz.dcb.support.web.entities.SpzNoteEntity;
 import cz.dcb.support.web.entities.SpzStateWebEntity;
 import cz.dcb.support.web.entities.UserWebEntity;
 import cz.dcb.support.xml.HTMLTransformer;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -78,7 +79,6 @@ import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Properties;
@@ -102,6 +102,7 @@ public class SPZServlet extends HttpServlet {
     private static final Logger LOGGER = Logger.getLogger(SPZServlet.class.getName());
     private final EntityManagerFactory emf = Persistence.createEntityManagerFactory("support_JPA");
    
+    private static Path attachDir; 
     private static final String STATES[] ={"Registrovaná","Nová","Probíhá analýza",
         "Změněna", "Specifikována","Probíhá implementace","Přijata ze strany DCB",
         "Uvolněná", "Změna implementace", "Nová implementace", "Probíhá nová analýza",
@@ -158,7 +159,7 @@ public class SPZServlet extends HttpServlet {
         StringBuilder attachRoot = new StringBuilder(props.getProperty("ATTACH_DIR")).append("/attachments");
         
         LOGGER.log(Level.INFO,"Attach root:",attachRoot);
-        Path attachDir = Paths.get(attachRoot.toString());
+        attachDir = Paths.get(attachRoot.toString());
         if(!Files.exists(attachDir)){
             try {
                 Files.createDirectory(attachDir);
@@ -1025,6 +1026,10 @@ public class SPZServlet extends HttpServlet {
             
             OutputStream out = null;
             int count = 0;
+            File output = new File(fileName);
+            if(!output.exists()){
+                output.createNewFile();
+            }
             out = new FileOutputStream(fileName);
             
             try{
@@ -1389,7 +1394,7 @@ public class SPZServlet extends HttpServlet {
         if(part1 != null){
             try{
                 in = part1.getInputStream();
-                fileName = new StringBuilder("attachments/").append(part1.getSubmittedFileName()).toString();
+                fileName = new StringBuilder(attachDir.toString()).append("/").append(part1.getSubmittedFileName()).toString();
                 try{
                     uploadFile(request, response, manager, fileName, in);
                 }catch(IOException ex){
@@ -1402,7 +1407,7 @@ public class SPZServlet extends HttpServlet {
         }
         
         if(part2!=null){
-            fileName = new StringBuilder("attachments/").append(part2.getSubmittedFileName()).toString();
+            fileName = new StringBuilder(attachDir.toString()).append("/").append(part2.getSubmittedFileName()).toString();
             
             try{
                 in = part2.getInputStream();
@@ -1417,7 +1422,7 @@ public class SPZServlet extends HttpServlet {
             
             try{
                 in = part3.getInputStream();
-                fileName = new StringBuilder("attachments/").append(part3.getSubmittedFileName()).toString();
+                fileName = new StringBuilder(attachDir.toString()).append("/").append(part3.getSubmittedFileName()).toString();
                 uploadFile(request,response,manager,fileName,in);
             }catch(IOException ex){
                 displayError(request, fileName, ex, response);
