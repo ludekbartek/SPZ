@@ -26,6 +26,7 @@
                             <input type="submit" value="Predat k analyze"/>
                             <input type="hidden" name="spzid" value="${spz.id}"/>
                             <input type="hidden" name="state" value="POSTED"/>
+                            <input type="hidden" name="userid" value="${user.id}"/>
                             <input type="hidden" name="newstate" value="ANALYSIS"/>
                         </form>
                     </c:if>
@@ -34,6 +35,7 @@
                         <input type="submit" value="Zrusit"/>
                         <input type="hidden" name="newstate" value="CANCELED"/>
                         <input type="hidden" name="state" value="POSTED"/>
+                        <input type="hidden" name="userid" value="${user.id}"/>
                     </form>
                 </td>
             </tr>
@@ -66,6 +68,7 @@
             <form action="${pageContext.request.contextPath}/SPZServlet/updateSPZ" method="post">
                 <input type="button" value="Zmena SPZ"/>
                 <input type="hidden" name="spzid" value="${spz.id}"/>
+                <input type="hidden" name="userid" value="${user.id}"/>
             </form>
         </p>
     </body>
