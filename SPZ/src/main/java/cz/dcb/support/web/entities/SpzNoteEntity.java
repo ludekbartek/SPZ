@@ -16,7 +16,7 @@ import java.util.List;
 public class SpzNoteEntity {
     private Date noteDate;
     private String noteText;
-    private short internal;
+    private short external;
     private String noteIssuer;
     private List<AttachmentEntity> attachments;
 
@@ -36,12 +36,12 @@ public class SpzNoteEntity {
         this.noteText = noteText;
     }
 
-    public short getInternal() {
-        return internal;
+    public short getExternal() {
+        return external;
     }
 
-    public void setInternal(short internal) {
-        this.internal = internal;
+    public void setExternal(short external) {
+        this.external = external;
     }
 
     public String getNoteIssuer() {
