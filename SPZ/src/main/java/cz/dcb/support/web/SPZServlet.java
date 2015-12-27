@@ -1340,7 +1340,7 @@ public class SPZServlet extends HttpServlet {
         SpzNoteEntity entity = new SpzNoteEntity();
         entity.setNoteDate(note.getNotedate());
         entity.setNoteText(note.getNotetext());
-        entity.setInternal(note.getExternalnote());
+        entity.setExternal(note.getExternalnote());
         AttachmentNoteManager manager= new AttachmentNoteJpaController(emf);
         List<Attachment> attachments = manager.getAttachmentsForNote(note.getId());
         
@@ -1454,7 +1454,7 @@ public class SPZServlet extends HttpServlet {
             return;
         }
         LOGGER.log(Level.INFO,"external ",externalStr);
-        short external = (short)(externalStr!=null&&externalStr.compareToIgnoreCase("1")==0?1:0);
+        short external = (short)(externalStr!=null&&externalStr.compareToIgnoreCase("on")==0?1:0);
         note.setExternalnote(external);
         if(noteText==null){
             request.setAttribute("error", "Missing note description.");
