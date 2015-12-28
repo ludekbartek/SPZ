@@ -15,6 +15,7 @@
     </head>
     <body>
         <h1>Informace o SPZ</h1>
+        <c:set var="jsp" value="./editDeleted.jsp"/>
         <jsp:include page="editcommon.jsp"/>
         <jsp:include page="listHistory.jsp"/>
         <h2>Pridej poznamku</h2>

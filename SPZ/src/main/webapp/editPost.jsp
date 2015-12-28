@@ -16,22 +16,26 @@
     <body>
         <h1>System servisni podpory</h1>
         <h2>Informace o SPZ</h2>
+        <c:set var="jsp" value="./editPost.jsp"/>
         <table>
             <%@include file="editcommon.jsp" %>
             <tr>
                 <td colspan="3">
-                    <form action="${pageContext.request.contextPath}/SPZServlet/editSPZ" method="post">
-                        <input type="submit" value="Predat k analyze"/>
-                        <input type="hidden" name="id" value="${spz.id}"/>
-                        <input type="hidden" name="state" value="POSTED"/>
-                        <input type="hidden" name="newstate" value="ANALYSIS"/>
-                    </form>
+                    <c:if test="${user.role!='0'}">
+                        <form action="${pageContext.request.contextPath}/SPZServlet/editSPZ" method="post">
+                            <input type="submit" value="Predat k analyze"/>
+                            <input type="hidden" name="spzid" value="${spz.id}"/>
+                            <input type="hidden" name="state" value="POSTED"/>
+                            <input type="hidden" name="userid" value="${user.id}"/>
+                            <input type="hidden" name="newstate" value="ANALYSIS"/>
+                        </form>
+                    </c:if>
                     <form action="${pageContext.request.contextPath}/SPZServlet/delete" method="post">    
-                        <input type="hidden" name="id" value="${spz.id}"/>
+                        <input type="hidden" name="spzid" value="${spz.id}"/>
                         <input type="submit" value="Zrusit"/>
                         <input type="hidden" name="newstate" value="CANCELED"/>
-                        <input type="hidden" name="id" value="${spz.id}"/>
                         <input type="hidden" name="state" value="POSTED"/>
+                        <input type="hidden" name="userid" value="${user.id}"/>
                     </form>
                 </td>
             </tr>
@@ -63,7 +67,8 @@
         <p style="text-align:right;">
             <form action="${pageContext.request.contextPath}/SPZServlet/updateSPZ" method="post">
                 <input type="button" value="Zmena SPZ"/>
-                <input type="hidden" name="id" value="${spz.id}"/>
+                <input type="hidden" name="spzid" value="${spz.id}"/>
+                <input type="hidden" name="userid" value="${user.id}"/>
             </form>
         </p>
     </body>

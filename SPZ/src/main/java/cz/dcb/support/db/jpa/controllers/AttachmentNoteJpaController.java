@@ -24,6 +24,8 @@ import javax.persistence.criteria.Root;
  *
  * @author bar
  */
+
+@SuppressWarnings("unchecked")
 public class AttachmentNoteJpaController implements Serializable, AttachmentNoteManager {
 
     public AttachmentNoteJpaController(EntityManagerFactory emf) {

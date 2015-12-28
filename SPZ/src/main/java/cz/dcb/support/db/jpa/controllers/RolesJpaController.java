@@ -8,7 +8,6 @@ package cz.dcb.support.db.jpa.controllers;
 import cz.dcb.support.db.jpa.controllers.exceptions.NonexistentEntityException;
 import cz.dcb.support.db.jpa.entities.Roles;
 import java.io.Serializable;
-import java.security.InvalidParameterException;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -17,6 +16,7 @@ import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
+@SuppressWarnings("unchecked")
 /**
  *
  * @author bar

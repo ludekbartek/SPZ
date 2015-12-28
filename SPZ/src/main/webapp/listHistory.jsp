@@ -28,7 +28,7 @@
                          </c:otherwise>
                      </c:choose> 
                      (<f:formatDate type="both" dateStyle="LONG" timeStyle="SHORT" value="${note.noteDate}"/>)
-                     <c:if test="${note.internal!=1}">
+                     <c:if test="${note.external!=1}">
                          <div class="note-header">
                              #########<f:message key="internal"/>#########
                          </div>
@@ -48,7 +48,7 @@
 <c:if test="${item.code!='Registrovaná'}">
     <form action="${pageContext.request.contextPath}/SPZServlet/removeState" method="post">
      <input type="hidden" name="spzstateid" value="${item.id}"/>
-     <input type="hidden" name="id" value="${spz.id}"/>
+     <input type="hidden" name="spzid" value="${spz.id}"/>
      <input type="submit" value="smazat posledni stav" onsubmit="return confirm('Opravdu smazat posledni stav?');"/>
     </form>
  </c:if>

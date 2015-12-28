@@ -16,6 +16,7 @@ import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
+@SuppressWarnings("unchecked")
 /**
  *
  * @author bar
@@ -141,6 +142,20 @@ public class UserAccessJpaController implements Serializable, UserAccessManager 
         } finally {
             em.close();
         }
+    }
+
+    @Override
+    public List<Useraccess> findUseraccessEntities(int userId) {
+        EntityManager em = getEntityManager();
+        List<Useraccess> roles = null;
+        try{
+            Query query = em.createQuery("select access from Useraccess access where access.userid=:userid");
+            query.setParameter("userid", userId);
+            roles = query.getResultList();
+        }finally{
+            em.close();
+        }
+        return roles;
     }
     
 }
