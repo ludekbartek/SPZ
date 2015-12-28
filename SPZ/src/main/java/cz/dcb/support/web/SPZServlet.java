@@ -254,6 +254,8 @@ public class SPZServlet extends HttpServlet {
                             break;
                 case "/acceptsolution":acceptSolution(request,response);
                             break;
+                case "/editref":refineSolution(request,response);
+                            break;
                 default:
                     StringBuilder errorMesg = new StringBuilder("Invalid action").append(action).append(". Using list instead.");
                     LOGGER.log(Level.INFO,errorMesg.toString());
@@ -1616,5 +1618,17 @@ public class SPZServlet extends HttpServlet {
         UserManager userMan = new UserJpaController(emf);
         User user = userMan.findUserByLogin(login);
         return user;
+    }
+
+    private void refineSolution(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        Spz spz = getSpzByParameter(request);
+        User user = getUserByParameter(request);
+        SPZWebEntity spzWeb = spzToEntity(spz);
+        UserWebEntity userWeb = userToEntity(user);
+        request.setAttribute("spz", spzWeb);
+        request.setAttribute("user", userWeb);
+        request.setAttribute("change", true);
+        request.getRequestDispatcher("/editRef.jsp").forward(request, response);
+        return;
     }
 }
