@@ -27,6 +27,7 @@
                 <c:otherwise><f:message key="stateChangeHeader"/></c:otherwise>
             </c:choose> <c:out value="${spz.id}"/>
         </h1>
+        
         <table>
         <jsp:include page="editcommon.jsp"/>
         <tr>
@@ -45,26 +46,42 @@
             <td><c:out value="${spz.workLoadEstimation}"/></td>
         </tr>
         </table>
-        <c:if test="${user.role==1}">
-            <form action="${pageContext.request.contextPath}/SPZServlet/delete" method="post">
-                <input type="submit" value="<f:message key='cancelButton'/>"/>
-                <input type="hidden" name="spzid" value="${spz.id}"/>
-                <input type="hidden" name="userid" value="${user.id}"/>
-            </form>
-        </c:if>
-        <form action="${pageContext.request.contextPath}/editRef.jsp">
-            <input type="hidden" name="spz" value="${spz}"/>
-            <input type="hidden" name="change" value="true"/>
-            <input type="hidden" name="user" value="user"/>
             <c:choose>
-                <c:when test="${user.role==0}">
-                    <input type="submit" value="<f:message key='submitRefineUserButton'/>"/>
-                </c:when>
-                <c:otherwise>
-                    <input type="submit" value="<f:message key='submitRefineAnalButton'/>"/>
-                </c:otherwise>
-            </c:choose>
-        </form>
+                <c:when test="${empty change}">
+                <c:if test="${user.role==1}">
+                    <form action="${pageContext.request.contextPath}/SPZServlet/delete" method="post">
+                        <input type="submit" value="<f:message key='cancelButton'/>"/>
+                        <input type="hidden" name="spzid" value="${spz.id}"/>
+                        <input type="hidden" name="userid" value="${user.id}"/>
+                    </form>
+                </c:if>
+                <form action="${pageContext.request.contextPath}/SPZServlet/editref" method="post">
+                    <input type="hidden" name="spzid" value="${spz.id}"/>
+                    <input type="hidden" name="change" value="true"/>
+                    <input type="hidden" name="userid" value="${user.id}"/>
+                    <c:choose>
+                        <c:when test="${user.role==0}">
+                            <input type="submit" value="<f:message key='submitRefineUserButton'/>"/>
+                        </c:when>
+                        <c:otherwise>
+                            <input type="submit" value="<f:message key='submitRefineAnalButton'/>"/>
+                        </c:otherwise>
+                    </c:choose>
+                </form>
+            </c:when>
+            <c:otherwise>
+                <h2><f:message key="stateInfoHeader"/></h2>
+                <form action="${pageContext.request.contextPath}/SPZServlet/editspz" method="post">
+                    <input type="hidden" name="spzid" value="${spz.id}"/>
+                    <input type="hidden" name="userid" value="${user.id}"/>
+                    <input type="hidden" name="state" value="REFINE"/>
+                    <input type="hidden" name="newstate" value="ANALYSIS"/>
+                    <textarea name="desc" class="desc" cols="80" rows="5"></textarea>
+                    <input type="checkbox" name="external"/><label for="external"><f:message key="visible"/></label>
+                    <input type="submit" value="<f:message key='submit'/>"/>
+                </form>
+            </c:otherwise>
+        </c:choose>
         <jsp:include page="listHistory.jsp"/>
     </body>
 </html>
