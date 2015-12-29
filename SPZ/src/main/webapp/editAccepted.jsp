@@ -46,5 +46,7 @@
             </form>
         </c:if>
             <jsp:include page="listHistory.jsp"/>
+            <c:set var="jsp" value="./editAccepted.jsp"/>
+            <jsp:include page="addNote.jsp"/>
     </body>
 </html>
