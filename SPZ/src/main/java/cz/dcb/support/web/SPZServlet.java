@@ -452,6 +452,9 @@ public class SPZServlet extends HttpServlet {
             case "INVOICED":
                 jspName = "/invoiced.jsp";
                 break;
+            case "ACCEPTED":
+                jspName="/editAccepted.jsp";
+                break;
             default:return;
               
         }
