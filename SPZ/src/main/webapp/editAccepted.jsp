@@ -31,20 +31,37 @@
             <td colspan="3"><c:out value="${spz.workLoadEstimation}"/></td>
         </tr>
         </table>
-        <c:if test="${empty change}">
-            <form action="${pageContext.request.contextPath}/SPZServlet/acceptImpl">
+            <c:choose>
+        <c:when test="${empty change }">
+            <c:if test="${user.role !=0}">
+            <form action="${pageContext.request.contextPath}/SPZServlet/acceptimpl" method="post">
                 <input type="hidden" name="spzid" value="${spz.id}"/>
                 <input type="hidden" name="userid" value="${user.id}"/>
                 <input type="submit" value="<f:message key='acceptButton'/>"/>
             </form>
-            <form action="${pageContext.request.contextPath}/SPZServlet/">
+            
+            <form action="${pageContext.request.contextPath}/SPZServlet/delete" method="post">
                 <input type="hidden" name="newstate" value="CANCELED"/>
                 <input type="hidden" name="spzid" value="${spz.id}"/>
                 <input type="hidden" name="userid" value="${user.id}"/>
                 <input type="hidden" name="state" value="ACCEPTED"/>
                 <input type="submit" value="<f:message key='cancel'/>"/>
             </form>
-        </c:if>
+            
+            </c:if>
+        </c:when>
+            <c:otherwise>
+                <form action="${pageContext.request.contextPath}/SPZServlet/editspz" method="post">
+                    <input type="hidden" name="spzid" value="${spz.id}"/>
+                    <input type="hidden" name="userid" value="${user.id}"/>
+                    <input type="hidden" name="state" value="ACCEPTED"/>
+                    <input type="hidden" name="newstate" value="DCB_ACCEPTED"/>
+                    <textarea name="desc" cols="80" rows="8"></textarea>
+                    <input type="checkbox" name="external"/><label for="external"><f:message key="visible"/></label>
+                    <input type="submit" value="<f:message key='submit'/>"/>
+                </form>
+            </c:otherwise>
+            </c:choose>
             <jsp:include page="listHistory.jsp"/>
             <c:set var="jsp" value="./editAccepted.jsp"/>
             <jsp:include page="addNote.jsp"/>
