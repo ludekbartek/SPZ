@@ -41,7 +41,26 @@ public class SPZWebEntity {
      private String requestType;
      private Date implementationAcceptDate;
      private Spzstate revisedRequest;
+     private String revised;
+     private String solution;
      private List<SpzStateWebEntity> history;
+
+    public String getSolution() {
+        return solution;
+    }
+
+    public void setSolution(String solution) {
+        this.solution = solution;
+    }
+
+     
+    public String getRevised() {
+        return revised;
+    }
+
+    public void setRevised(String revised) {
+        this.revised = revised;
+    }
 
     public Short getCategory() {
         return category;

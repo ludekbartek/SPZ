@@ -256,6 +256,11 @@ public class SPZServlet extends HttpServlet {
                             break;
                 case "/editref":refineSolution(request,response);
                             break;
+                case "/acceptimpl":acceptImpl(request,response);
+                            break;
+                case "/releaseversion":releaseVersion(request,response);
+                            break;
+                case "/startimpl":startImplementation(request,response);
                 default:
                     StringBuilder errorMesg = new StringBuilder("Invalid action").append(action).append(". Using list instead.");
                     LOGGER.log(Level.INFO,errorMesg.toString());
@@ -426,7 +431,7 @@ public class SPZServlet extends HttpServlet {
                 jspName = "/editImpl.jsp";
                 break;
             case "DCB_ACCEPTED":
-                jspName = "/editDCBAcc.jsp";
+                jspName = "/editDcbAccepted.jsp";
                 break;
             case "RELEASED":
                 jspName="/editRel.jsp";
@@ -451,6 +456,9 @@ public class SPZServlet extends HttpServlet {
                 break;
             case "INVOICED":
                 jspName = "/invoiced.jsp";
+                break;
+            case "ACCEPTED":
+                jspName="/editAccepted.jsp";
                 break;
             default:return;
               
@@ -1621,6 +1629,27 @@ public class SPZServlet extends HttpServlet {
     }
 
     private void refineSolution(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        gotoJspWithSpzUserChange(request, response,"/editRef.jsp");
+    }
+
+    private void acceptImpl(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        gotoJspWithSpzUserChange(request, response, "/editAccepted.jsp");
+        
+    }
+
+    private void releaseVersion(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.setAttribute("newState", "RELEASED");
+        gotoJspWithSpzUserChange(request, response, "/changeState.jsp");
+    }
+    
+    private void startImplementation(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        Spz spz = getSpzByParameter(request);
+        request.setAttribute("developers",getProjectDevelopers(spz));
+        request.setAttribute("newState","IMPLEMENTATION");
+        gotoJspWithSpzUserChange(request, response, "/changeState.jsp");
+    }
+    
+    private void gotoJspWithSpzUserChange(HttpServletRequest request,HttpServletResponse response,String jsp) throws ServletException, IOException{
         Spz spz = getSpzByParameter(request);
         User user = getUserByParameter(request);
         SPZWebEntity spzWeb = spzToEntity(spz);
@@ -1628,7 +1657,11 @@ public class SPZServlet extends HttpServlet {
         request.setAttribute("spz", spzWeb);
         request.setAttribute("user", userWeb);
         request.setAttribute("change", true);
-        request.getRequestDispatcher("/editRef.jsp").forward(request, response);
-        return;
+        request.getRequestDispatcher(jsp).forward(request, response);
+    }
+
+    private List<User> getProjectDevelopers(Spz spz) {
+        UserAccessManager manager = new UserAccessJpaController(emf);
+        return manager.findDevelopers();
     }
 }
