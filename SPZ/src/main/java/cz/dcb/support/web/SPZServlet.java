@@ -1643,6 +1643,8 @@ public class SPZServlet extends HttpServlet {
     }
     
     private void startImplementation(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        Spz spz = getSpzByParameter(request);
+        request.setAttribute("developers",getProjectDevelopers(spz));
         request.setAttribute("newState","IMPLEMENTATION");
         gotoJspWithSpzUserChange(request, response, "/changeState.jsp");
     }
@@ -1656,5 +1658,10 @@ public class SPZServlet extends HttpServlet {
         request.setAttribute("user", userWeb);
         request.setAttribute("change", true);
         request.getRequestDispatcher(jsp).forward(request, response);
+    }
+
+    private List<User> getProjectDevelopers(Spz spz) {
+        UserAccessManager manager = new UserAccessJpaController(emf);
+        return manager.findDevelopers();
     }
 }
