@@ -1639,7 +1639,7 @@ public class SPZServlet extends HttpServlet {
 
     private void releaseVersion(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setAttribute("newState", "RELEASED");
-        gotoJspWithSpzUserChange(request, response, "/editRelease.jsp");
+        gotoJspWithSpzUserChange(request, response, "/changeState.jsp");
     }
     
     private void startImplementation(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -1657,7 +1657,4 @@ public class SPZServlet extends HttpServlet {
         request.setAttribute("change", true);
         request.getRequestDispatcher(jsp).forward(request, response);
     }
-
-    
-    
 }
