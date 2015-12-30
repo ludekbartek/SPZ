@@ -25,12 +25,14 @@
         </table>
             <h2><f:message key="stateInfo"/> '<f:message key="${newState}"/>'</h2>
         <form action='${pageContext.request.contextPath}/SPZServlet/editspz' method="post">
-            <label for='note'>Poznamka:</label>
+            <label for='note'><f:message key="noteLabel"/></label>
             <textarea name='note' cols='80' rows="5" maxlength="8000"></textarea>
             <input type='hidden' name='spzid' value='${spz.id}'/>
             <input type='hidden' name='userid' value='${user.id}'/>
             <input type='hidden' name="state" value='${spzState}'/>
             <input type="hidden" name="newstate" value="${newState}"/>
+            <input type="checkbox" name="external"/><label for="external"><f:message key="externalNote"/></label>
+            <br/>
             <input type="submit" value="<f:message key='submit'/>"/>
         </form>
         <jsp:include page="listHistory.jsp"/>
