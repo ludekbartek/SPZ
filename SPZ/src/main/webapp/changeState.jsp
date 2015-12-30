@@ -33,6 +33,14 @@
             <input type="hidden" name="newstate" value="${newState}"/>
             <input type="checkbox" name="external"/><label for="external"><f:message key="externalNote"/></label>
             <br/>
+            <label for="developer"><f:message key="developer"/></label>
+            <select name="developer">
+                <c:if test="${!empty developers}">
+                    <c:forEach var="developer" items="${developers}">
+                        <option><c:out value="${developer.name}"/></option>
+                    </c:forEach>
+                </c:if>
+            </select>
             <input type="submit" value="<f:message key='submit'/>"/>
         </form>
         <jsp:include page="listHistory.jsp"/>
