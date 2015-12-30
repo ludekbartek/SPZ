@@ -6,6 +6,7 @@
 package cz.dcb.support.db.jpa.controllers;
 
 import cz.dcb.support.db.jpa.controllers.exceptions.NonexistentEntityException;
+import cz.dcb.support.db.jpa.entities.User;
 import cz.dcb.support.db.jpa.entities.Useraccess;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -30,6 +31,10 @@ public interface UserAccessManager {
 
     List<Useraccess> findUseraccessEntities(int maxResults, int firstResult);
 
+    List<User> findDevelopers();
+    
+    List<User> findDevelopersForConfiguration(int configId);
+    
     EntityManager getEntityManager();
 
     int getUseraccessCount();
