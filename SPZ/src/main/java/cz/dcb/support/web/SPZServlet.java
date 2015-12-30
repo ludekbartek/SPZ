@@ -428,7 +428,7 @@ public class SPZServlet extends HttpServlet {
                 jspName = "/editImpl.jsp";
                 break;
             case "DCB_ACCEPTED":
-                jspName = "/editDCBAcc.jsp";
+                jspName = "/editDcbAccepted.jsp";
                 break;
             case "RELEASED":
                 jspName="/editRel.jsp";
