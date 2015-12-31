@@ -45,12 +45,14 @@
                     <input type="hidden" name="newState" value="IMPLREFINE"/>
                     <input type="submit" value="<f:message key='refineBut'/>"/>
                 </form>
-                <form action="${pageContext.request.contextPath}/SPZServlet/releaseVersion" method="post">
-                    <input type="hidden" name="spzid" value="${spz.id}"/>
-                    <input type="hidden" name="userid" value="${user.id}"/>
-                    <input type="hidden" name="state" value="IMPLEMENTATION"/>
-                    <input type="hidden" name="newState" value="RELEASE"/>
-                    <input type="submit" value="<f:message key='releaseBut'/>"/>
-                </form>
+                <c:if test="${user.role==1}">
+                    <form action="${pageContext.request.contextPath}/SPZServlet/releaseVersion" method="post">
+                        <input type="hidden" name="spzid" value="${spz.id}"/>
+                        <input type="hidden" name="userid" value="${user.id}"/>
+                        <input type="hidden" name="state" value="IMPLEMENTATION"/>
+                        <input type="hidden" name="newState" value="RELEASE"/>
+                        <input type="submit" value="<f:message key='releaseBut'/>"/>
+                    </form>
+                </c:if>
     </body>
 </html>
