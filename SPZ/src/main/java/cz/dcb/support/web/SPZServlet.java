@@ -261,6 +261,9 @@ public class SPZServlet extends HttpServlet {
                 case "/releaseversion":releaseVersion(request,response);
                             break;
                 case "/startimpl":startImplementation(request,response);
+                            break;
+                case "/install":install(request,response);
+                            break;
                 default:
                     StringBuilder errorMesg = new StringBuilder("Invalid action").append(action).append(". Using list instead.");
                     LOGGER.log(Level.INFO,errorMesg.toString());
@@ -1611,7 +1614,9 @@ public class SPZServlet extends HttpServlet {
         switch(roles.get(0).getRole()){
             case "client":entity.setRole(Roles.CLIENT.ordinal());
                           break;
-            default:entity.setRole(Roles.ANALYST.ordinal());
+            case "analyst":entity.setRole(Roles.CLIENT.ordinal());
+                          break;
+            default:entity.setRole(Roles.PROJECT_MANAGER.ordinal());
         }
         return entity;    
         
@@ -1649,6 +1654,14 @@ public class SPZServlet extends HttpServlet {
         gotoJspWithSpzUserChange(request, response, "/changeState.jsp");
     }
     
+    private void install(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        Spz spz=getSpzByParameter(request);
+        String newState = request.getParameter("newState");
+        request.setAttribute("newState", "INSTALLED");
+        request.setAttribute("state", "RELEASED");
+        gotoJspWithSpzUserChange(request, response, "/changeStateInstall.jsp");
+    }
+    
     private void gotoJspWithSpzUserChange(HttpServletRequest request,HttpServletResponse response,String jsp) throws ServletException, IOException{
         Spz spz = getSpzByParameter(request);
         User user = getUserByParameter(request);
@@ -1664,4 +1677,6 @@ public class SPZServlet extends HttpServlet {
         UserAccessManager manager = new UserAccessJpaController(emf);
         return manager.findDevelopers();
     }
+
+    
 }
