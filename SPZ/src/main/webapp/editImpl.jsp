@@ -36,21 +36,21 @@
                     <input type="hidden" name="userid" value="${user.id}"/>
                     <input type="hidden" name="state" value="IMPLEMENTATION"/>
                     <input type="hidden" name="newState" value="IMPLEMENTATION"/>
-                    <input type="submit" value="changeDevBut"/>
+                    <input type="submit" value="<f:message key='changeDevBut'/>"/>
                 </form>
                 <form action="${pageContext.request.contextPath}/SPZServlet/refineImpl" method="post">
                     <input type="hidden" name="spzid" value="${spz.id}"/>
                     <input type="hidden" name="userid" value="${user.id}"/>
                     <input type="hidden" name="state" value="IMPLEMENTATION"/>
                     <input type="hidden" name="newState" value="IMPLREFINE"/>
-                    <input type="submit" value="refineBut"/>
+                    <input type="submit" value="<f:message key='refineBut'/>"/>
                 </form>
-                    <form action="${pageContext.request.contextPath}/SPZServlet/releaseVersion" method="post">
-                        <input type="hidden" name="spzid" value="${spz.id}"/>
-                        <input type="hidden" name="userid" value="${user.id}"/>
-                        <input type="hidden" name="state" value="IMPLEMENTATION"/>
-                        <input type="hidden" name="newState" value="RELEASE"/>
-                        <input type="submit" value="releaseBut"/>
-                    </form>
+                <form action="${pageContext.request.contextPath}/SPZServlet/releaseVersion" method="post">
+                    <input type="hidden" name="spzid" value="${spz.id}"/>
+                    <input type="hidden" name="userid" value="${user.id}"/>
+                    <input type="hidden" name="state" value="IMPLEMENTATION"/>
+                    <input type="hidden" name="newState" value="RELEASE"/>
+                    <input type="submit" value="<f:message key='releaseBut'/>"/>
+                </form>
     </body>
 </html>
