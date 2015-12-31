@@ -23,7 +23,7 @@
         <table>
             <jsp:include page="editcommon.jsp"/>
         </table>
-            <h2><f:message key="stateInfo"/> '<f:message key="${newState}"/>'</h2>
+        <h2><f:message key="stateInfo"/> '<f:message key="${newState}"/>'</h2>
         <form action='${pageContext.request.contextPath}/SPZServlet/editspz' method="post">
             <label for='note'><f:message key="noteLabel"/></label>
             <textarea name='note' cols='80' rows="5" maxlength="8000"></textarea>
@@ -33,14 +33,14 @@
             <input type="hidden" name="newstate" value="${newState}"/>
             <input type="checkbox" name="external"/><label for="external"><f:message key="externalNote"/></label>
             <br/>
-            <label for="developer"><f:message key="developer"/></label>
-            <select name="developer">
-                <c:if test="${!empty developers}">
+            <c:if test="${!empty developers}">
+                <label for="developer"><f:message key="developer"/></label>
+                <select name="developer">
                     <c:forEach var="developer" items="${developers}">
                         <option><c:out value="${developer.name}"/></option>
                     </c:forEach>
-                </c:if>
-            </select>
+                </select>
+            </c:if>
             <input type="submit" value="<f:message key='submit'/>"/>
         </form>
         <jsp:include page="listHistory.jsp"/>
