@@ -463,7 +463,13 @@ public class SPZServlet extends HttpServlet {
             case "ACCEPTED":
                 jspName="/editAccepted.jsp";
                 break;
-            default:return;
+            case "INSTALLED":
+                jspName="/editInstalled.jsp";
+                break;
+            default:
+                request.setAttribute("error", "Neznamy stav SPZ: "+currentState);
+                listSpz(request, response);
+                return;
               
         }
         request.getRequestDispatcher(jspName).forward(request, response);
@@ -786,11 +792,15 @@ public class SPZServlet extends HttpServlet {
         entity.setContactPerson(spz.getContactperson());
         entity.setReqNumber(spz.getReqnumber());
         entity.setRequestType(spz.getRequesttype());
+
         Spzstate current = statesManager.getCurrentState(spz);
-        entity.setSpzState(current.getCode());
         User user = null;
         if(current!=null){
             user = userManger.findUserByLogin(current.getIssuerLogin());
+            entity.setSpzState(current.getCode());
+            entity.setWorkLoadReal(current.getMandays());
+            entity.setRelNotes(current.getReleasenotes());
+        
         }
         entity.setIssuer((user!=null?user.getLogin():"Nenastaven"));
         history = spzStatesToSpzStateWebEntities(statesManager.findSpzstates(spz));
@@ -1235,7 +1245,19 @@ public class SPZServlet extends HttpServlet {
         if(request.getParameterMap().containsKey("issuer")){
             newState.setIssuerLogin(request.getParameter("issuer"));
         }
-        
+        if(request.getParameterMap().containsKey("releasenotes")){
+            newState.setReleasenotes(request.getParameter("releasenotes"));
+        }
+        double realWorkload = 0.0;
+        if(request.getParameterMap().containsKey("mandays")){
+            String strWorkLoad = request.getParameter("mandays");
+            realWorkload += Double.parseDouble(strWorkLoad);
+        }
+        if(request.getParameterMap().containsKey("outofdevel")){
+            String strOutOfDevel = request.getParameter("outofdevel");
+            realWorkload += Double.parseDouble(strOutOfDevel);
+            newState.setMandays(realWorkload);
+        }
         newState.setIdate(new GregorianCalendar().getTime());
         newState.setTs(BigInteger.valueOf(new Date().getTime()));
         SpzManager spzManager = new SpzJpaController(emf);
@@ -1676,6 +1698,10 @@ public class SPZServlet extends HttpServlet {
     private List<User> getProjectDevelopers(Spz spz) {
         UserAccessManager manager = new UserAccessJpaController(emf);
         return manager.findDevelopers();
+    }
+
+    private double getSpzManDays() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     
