@@ -291,8 +291,9 @@ public class SPZServlet extends HttpServlet {
             String login = request.getParameter("login");
             User user = getUserByLogin(login);
             UserWebEntity userWeb = userToEntity(user);
-            request.setAttribute("user",userWeb);
-            request.getRequestDispatcher("/SPZServlet/listspz").forward(request, response);
+            request.setAttribute("userid",userWeb.getId());
+            //request.getRequestDispatcher("/SPZServlet/listspz").forward(request, response);
+            return;
         }
     }
 
@@ -546,6 +547,9 @@ public class SPZServlet extends HttpServlet {
         SpzManager spzManager = new SpzJpaController(emf);
         List<Spz> spzs = spzManager.findSpzEntities();
         List<SPZWebEntity> entities = spzToEntities(spzs);
+        UserWebEntity user = requestToUserWebEntity(request);
+        request.setAttribute("user", user);
+        LOGGER.log(Level.INFO,String.format("userid: %d",user.getId()));
         request.setAttribute("spzs", entities);
         request.getRequestDispatcher("/listSPZ.jsp").forward(request, response);
     }
@@ -1131,6 +1135,11 @@ public class SPZServlet extends HttpServlet {
         Spzstate previous = null;
         if(spzStates.size()>1){
             Spzstate current = stateManager.getCurrentState(spz);
+            if(current == null){
+                UserWebEntity user = requestToUserWebEntity(request);
+                request.setAttribute("error", "Nelze ziskat aktualni stav pro SPZ "+spz.getId());
+                listSpz(request, response);
+            }
             current.setCurrentstate(0);
             previous = spzStates.get(1);
             previous.setCurrentstate(1);
@@ -1140,7 +1149,7 @@ public class SPZServlet extends HttpServlet {
                 
             } catch (Exception ex) {
                 Logger.getLogger(SPZServlet.class.getName()).log(Level.SEVERE, "Error deleting current state flag.", ex);
-            
+                UserWebEntity user = requestToUserWebEntity(request);
                 request.setAttribute("error", "Nepodarilo se zrusit priznak aktualniho stavu.");
                 listSpz(request, response);
                 return;
@@ -1167,6 +1176,8 @@ public class SPZServlet extends HttpServlet {
         request.setAttribute("spz", entity);
         request.setAttribute("state", prev);
         if(prev.getCode().compareToIgnoreCase("canceled")!=0){
+            UserWebEntity user = requestToUserWebEntity(request);
+            
             listSpz(request, response);
             return;
         }
@@ -1206,6 +1217,7 @@ public class SPZServlet extends HttpServlet {
             Logger.getLogger(SPZServlet.class.getName()).log(Level.SEVERE, "Unable to remove current state flag.", ex);
             request.setAttribute("error", "Nelze zmenit priznak aktualniho stavu.");
             try {
+                UserWebEntity user = requestToUserWebEntity(request);
                 listSpz(request, response);
             } catch (ServletException | IOException ex1) {
                 Logger.getLogger(SPZServlet.class.getName()).log(Level.SEVERE, null, ex1);
@@ -1231,6 +1243,7 @@ public class SPZServlet extends HttpServlet {
         states.setStateid(spzState.getId());
         statesManager.create(states);
         try {
+            UserWebEntity user = requestToUserWebEntity(request);
             listSpz(request, response);
         } catch (ServletException | IOException ex) {
             Logger.getLogger(SPZServlet.class.getName()).log(Level.SEVERE, null, ex);
@@ -1501,6 +1514,8 @@ public class SPZServlet extends HttpServlet {
             }else{
                 jsp="./listSpz.jsp";
             }
+            UserWebEntity user = requestToUserWebEntity(request);
+            request.setAttribute("user", user);
             request.getRequestDispatcher(jsp).forward(request,response);
             return;
         }
@@ -1555,46 +1570,38 @@ public class SPZServlet extends HttpServlet {
 
     private UserWebEntity requestToUserWebEntity(HttpServletRequest request) {
         UserWebEntity user = new UserWebEntity();
+        UserManager userMan = new UserJpaController(emf);
+        UserAccessManager accMan = new UserAccessJpaController(emf);
+        User userEnt;
         if(request.getParameterMap().containsKey("login")){
             String login = request.getParameter("login");
-            user.setLogin(login);
-            switch(login){
-                case "user":
-                    user.setName("Franta Uzivatel");
-                    user.setRole(Roles.CLIENT.ordinal());
-                    user.setId(2);
-                    break;
-                case "analyst":
-                    user.setName("Tonda Vyvojar");
-                    user.setRole(Roles.ANALYST.ordinal());
-                    user.setId(1);
-                    break;
-                default: 
-                    user.setLogin("root");
-                    user.setName("Tomas Korinek");
-                    user.setRole(Roles.ANALYST.ordinal());
-                    user.setId(0);
-                    break;
-            }
+            userEnt = userMan.findUserByLogin(login);
         }else{
             String strId = request.getParameter("userid");
-            if(strId!=null){
-                switch(strId){
-                    case "1":
-                        user.setId(1);
-                        user.setLogin("analyst");
-                        user.setName("Franta Vyvojar");
-                        user.setRole(Roles.ANALYST.ordinal());
-                        break;
-                    default:
-                        user.setId(0);
-                        user.setLogin("user");
-                        user.setName("Franta Uzivatel");
-                        user.setRole(Roles.CLIENT.ordinal());
-                     
-                }
-            }
+            int uId = Integer.parseInt(strId);
+            userEnt = userMan.findUser(uId);
         }
+        user.setId(userEnt.getId());
+        user.setLogin(userEnt.getLogin());
+        user.setName(userEnt.getName());
+        List<Useraccess> roles = accMan.findUseraccessEntities(userEnt.getId());
+        if(!roles.isEmpty()){
+            switch(roles.get(0).getRole().toLowerCase()){
+                case "client":
+                    user.setRole(Roles.CLIENT.ordinal());
+                    break;
+                case "developer":;
+                case "analyst":
+                    user.setRole(Roles.ANALYST.ordinal());
+                    break;
+                default:
+                    user.setRole(Roles.PROJECT_MANAGER.ordinal());
+            }
+            
+        }else{
+            user.setRole(Roles.CLIENT.ordinal());
+        }
+
         
         return user;
     }
@@ -1647,7 +1654,8 @@ public class SPZServlet extends HttpServlet {
         switch(roles.get(0).getRole()){
             case "client":entity.setRole(Roles.CLIENT.ordinal());
                           break;
-            case "analyst":entity.setRole(Roles.CLIENT.ordinal());
+            case "analyst":
+            case "developer":entity.setRole(Roles.ANALYST.ordinal());
                           break;
             default:entity.setRole(Roles.PROJECT_MANAGER.ordinal());
         }
