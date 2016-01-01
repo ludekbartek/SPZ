@@ -798,7 +798,16 @@ public class SPZServlet extends HttpServlet {
         if(current!=null){
             user = userManger.findUserByLogin(current.getIssuerLogin());
             entity.setSpzState(current.getCode());
-            entity.setWorkLoadReal(current.getMandays());
+            Double mandays = current.getMandays();
+            if(mandays!=null)
+                entity.setWorkLoadReal(current.getMandays());
+            else entity.setWorkLoadReal(0.0);
+            mandays = current.getAssumedmandays();
+            if(mandays!=null){
+                entity.setWorkLoadEstimation(mandays);
+            }else{
+                entity.setWorkLoadEstimation(0);
+            }
             entity.setRelNotes(current.getReleasenotes());
         
         }
@@ -918,7 +927,7 @@ public class SPZServlet extends HttpServlet {
         entity.setClassType(state.getClasstype());
         entity.setCode(STATES[SpzStates.valueOf(state.getCode()).ordinal()]);
         entity.setCurrentState(Long.valueOf(state.getCurrentstate()));
-        entity.setIssueDate(state.getIdate());
+        entity.setIssueDate(new Date(state.getTs().longValue()));
         entity.setReleaseNotes(state.getReleasenotes());
         entity.setRevisedRequestDescription(state.getRevisedrequestdescription());
         entity.setSolutionDescription(state.getSolutiondescription());
@@ -1338,7 +1347,9 @@ public class SPZServlet extends HttpServlet {
         }
         //Spz spz = requestParamsToSpz(request.getParameterMap());
         SPZWebEntity entity = spzToEntity(spz);
+        User user = getUserByParameter(request);
         request.setAttribute("spz", entity);
+        request.setAttribute("user", user);
         request.getRequestDispatcher("/setSolution.jsp").forward(request, response);
     }
 
