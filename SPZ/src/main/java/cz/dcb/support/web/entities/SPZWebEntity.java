@@ -43,8 +43,18 @@ public class SPZWebEntity {
      private Spzstate revisedRequest;
      private String revised;
      private String solution;
+     private String relNotes;
      private List<SpzStateWebEntity> history;
 
+    public String getRelNotes() {
+        return relNotes;
+    }
+
+    public void setRelNotes(String relNotes) {
+        this.relNotes = relNotes;
+    }
+
+     
     public String getSolution() {
         return solution;
     }
