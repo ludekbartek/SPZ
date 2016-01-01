@@ -105,7 +105,7 @@ public class SPZServlet extends HttpServlet {
     private static Path attachDir; 
     private static final String STATES[] ={"Registrovaná","Nová","Probíhá analýza",
         "Změněna", "Specifikována","Probíhá implementace","Přijata ze strany DCB",
-        "Uvolněná", "Změna implementace", "Nová implementace", "Probíhá nová analýza",
+        "Uvolněná","Instalovana", "Změna implementace", "Nová implementace", "Probíhá nová analýza",
         "Zamítnuntá", "Potvrzená", "Zrušená", "Fakturovaná"};
     
     @Override
