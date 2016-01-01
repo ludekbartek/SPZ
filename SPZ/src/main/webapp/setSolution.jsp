@@ -25,6 +25,7 @@
             <input type="hidden" name="newstate" value="SPECIFIED"/>
             <input type="hidden" name="jsp" value="listSpz.jsp"/>
             <input type="hidden" name="spzid" value="${spz.id}"/>
+            <input type="hidden" name="userid" value="${user.id}"/>
             SPZ id:<c:out value="${spz.id}"/>
             <div class="areainput">
                 <f:message key="revLabel"/>:
