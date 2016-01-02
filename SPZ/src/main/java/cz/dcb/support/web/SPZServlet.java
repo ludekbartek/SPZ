@@ -34,6 +34,7 @@ import cz.dcb.support.db.jpa.controllers.exceptions.NonexistentEntityException;
 import cz.dcb.support.db.jpa.entities.Attachment;
 import cz.dcb.support.db.jpa.entities.Spz;
 import cz.dcb.support.db.jpa.entities.SpzStates;
+import cz.dcb.support.db.jpa.entities.Spzissuer;
 import cz.dcb.support.db.jpa.entities.Spznote;
 import cz.dcb.support.db.jpa.entities.Spzstate;
 import cz.dcb.support.db.jpa.entities.Spzstatenote;
@@ -311,11 +312,13 @@ public class SPZServlet extends HttpServlet {
             EntityTransaction transaction = entMan.getTransaction();
             SpzStateManager stateManager = new SpzStateJpaController(emf);
             SpzStatesManager statesManager = new SpzStatesJpaController(emf);
+            UserWebEntity user = requestToUserWebEntity(request);
             Spz spz = null;
             try {
                 spz = requestParamsToSpz(request.getParameterMap());
             } catch (SPZException ex) {
                 LOGGER.log(Level.SEVERE, "Chyba pri prevodu parametru na SPZ.", ex);
+                request.setAttribute("user", user);
                 request.setAttribute("errror", "Chyba pri prevodu parametru na SPZ:" + ex);
                 request.getRequestDispatcher("./addSPZ.jsp").forward(request, response);
                 return;
@@ -323,7 +326,7 @@ public class SPZServlet extends HttpServlet {
             Spzstate state = new Spzstate();
           //  createNewState(state,spz);
             spz.setIssuedate(new GregorianCalendar().getTime());
-//            spz.setShortName(spz.getReqnumber());
+              spz.setShortName(spz.getReqnumber());
             try{
                 transaction.begin();
 
@@ -332,7 +335,7 @@ public class SPZServlet extends HttpServlet {
                 transaction.begin();
                 spz.setReqnumber(String.format("%05d",spz.getId()));
                 manager.edit(spz);
-                createNewState(state, spz);
+                createNewState(state, spz, user.getLogin());
 
                 stateManager.create(state);
                 state.setCurrentstate(1);
@@ -345,6 +348,7 @@ public class SPZServlet extends HttpServlet {
                     request.setAttribute("jsp", "./list.jsp");
                     addNote(request, response,spz.getId());
                 }
+                createSpzIssuer(spz, user);
                 
                 List<Spz> spzs = manager.findSpzEntities();
                 request.setAttribute("spzs", spzToEntities(spzs));
@@ -359,6 +363,7 @@ public class SPZServlet extends HttpServlet {
                 }
                 LOGGER.log(Level.SEVERE,"Chyba pri pridavani SPZ.", ex);
                 request.setAttribute("error", "Chyba pri pridavani SPZ.");
+                request.setAttribute("user", user);
             }finally{
                 entMan.close();
             }
@@ -381,10 +386,20 @@ public class SPZServlet extends HttpServlet {
                 request.setAttribute("spz", spzToEntity(spz));
                 request.setAttribute("error", "Nektera polozka chybi nebo ma neplatnou hodnotu" );
             }
+            UserWebEntity user = requestToUserWebEntity(request);
+            request.setAttribute("user", user);
             request.getRequestDispatcher("/addSPZ.jsp").forward(request,response);
             return;
         }
         listSpz(request, response);
+    }
+
+    private void createSpzIssuer(Spz spz, UserWebEntity user) {
+        Spzissuer issuer = new Spzissuer();
+        SpzIssuerManager issuerManager = new SpzIssuerJpaController(emf);
+        issuer.setSpzid(spz.getId());
+        issuer.setUserid((int)user.getId());
+        issuerManager.create(issuer);
     }
     
     /**
@@ -410,7 +425,7 @@ public class SPZServlet extends HttpServlet {
             
             changeState(spz,request,response);
             request.setAttribute("user", userWeb);
-            request.getRequestDispatcher("/listSPZ.jsp").forward(request, response);
+            listSpz(request, response);
             return;
         }
         SPZWebEntity spzEnt = spzToEntity(spz);
@@ -815,7 +830,7 @@ public class SPZServlet extends HttpServlet {
             entity.setRelNotes(current.getReleasenotes());
         
         }
-        entity.setIssuer((user!=null?user.getLogin():"Nenastaven"));
+        entity.setIssuer((user!=null?user.getName():"Nenastaven"));
         history = spzStatesToSpzStateWebEntities(statesManager.findSpzstates(spz));
         entity.setHistory(history);
         
@@ -883,8 +898,9 @@ public class SPZServlet extends HttpServlet {
      * @param state The state to be returned
      * @param spz SPZ we are creating the new state 
      */
-    private void createNewState(Spzstate state, Spz spz) {
+    private void createNewState(Spzstate state, Spz spz, String issuerLogin) {
         state.setIdate(new GregorianCalendar().getTime());
+        state.setIssuerLogin(issuerLogin);
         state.setCode(SpzStates.POSTED.toString());
         state.setTs(BigInteger.valueOf(new GregorianCalendar().getTimeInMillis()));
     }
@@ -1124,19 +1140,20 @@ public class SPZServlet extends HttpServlet {
         SpzStateManager stateManager = new SpzStateJpaController(emf);
         SpzStatesManager statesManager = new SpzStatesJpaController(emf);
         Spz spz = manager.findSpz(spzId);
+        UserWebEntity user = requestToUserWebEntity(request);
         List<Spzstate> spzStates = statesManager.findSpzstates(spz);
         Collections.sort(spzStates,new Comparator<Spzstate>() {
 
             @Override
             public int compare(Spzstate o1, Spzstate o2) {
-                return o2.getIdate().compareTo(o1.getIdate());
+                return o2.getTs().compareTo(o1.getTs());
             }
         });
         Spzstate previous = null;
         if(spzStates.size()>1){
             Spzstate current = stateManager.getCurrentState(spz);
             if(current == null){
-                UserWebEntity user = requestToUserWebEntity(request);
+                request.setAttribute("user", user);
                 request.setAttribute("error", "Nelze ziskat aktualni stav pro SPZ "+spz.getId());
                 listSpz(request, response);
             }
@@ -1149,8 +1166,8 @@ public class SPZServlet extends HttpServlet {
                 
             } catch (Exception ex) {
                 Logger.getLogger(SPZServlet.class.getName()).log(Level.SEVERE, "Error deleting current state flag.", ex);
-                UserWebEntity user = requestToUserWebEntity(request);
                 request.setAttribute("error", "Nepodarilo se zrusit priznak aktualniho stavu.");
+                request.setAttribute("user", user);
                 listSpz(request, response);
                 return;
             }
@@ -1176,11 +1193,11 @@ public class SPZServlet extends HttpServlet {
         request.setAttribute("spz", entity);
         request.setAttribute("state", prev);
         if(prev.getCode().compareToIgnoreCase("canceled")!=0){
-            UserWebEntity user = requestToUserWebEntity(request);
             
             listSpz(request, response);
             return;
         }
+        request.setAttribute("user", user);
         request.getRequestDispatcher("/editDeleted.jsp").forward(request, response);
         //listSpz(request, response);
     }
@@ -1280,8 +1297,15 @@ public class SPZServlet extends HttpServlet {
             realWorkload += Double.parseDouble(strOutOfDevel);
             newState.setMandays(realWorkload);
         }
+        if(request.getParameterMap().containsKey("estimatedworkload")){
+            String estWork = request.getParameter("estimatedworkload");
+            double estimation = Double.parseDouble(estWork);
+            newState.setAssumedmandays(estimation);
+        }
+        User user = getUserByParameter(request);
         newState.setIdate(new GregorianCalendar().getTime());
         newState.setTs(BigInteger.valueOf(new Date().getTime()));
+        newState.setIssuerLogin(user.getLogin());
         SpzManager spzManager = new SpzJpaController(emf);
         SpzStateManager stateManager = new SpzStateJpaController(emf);
         SpzStatesManager statesManager = new SpzStatesJpaController(emf);
@@ -1493,6 +1517,7 @@ public class SPZServlet extends HttpServlet {
         SpzStateNoteManager stateNoteManager = new SpzStateNoteJpaController(emf);
         SpzStateManager stateManager = new SpzStateJpaController(emf);
         SpzNoteManager noteManager = new SpzNoteJpaController(emf);
+        UserWebEntity user = requestToUserWebEntity(request);
         
         Spz spz = spzManager.findSpz(spzId);
         Spzstate state = stateManager.getCurrentState(spz);
@@ -1514,13 +1539,12 @@ public class SPZServlet extends HttpServlet {
             }else{
                 jsp="./listSpz.jsp";
             }
-            UserWebEntity user = requestToUserWebEntity(request);
             request.setAttribute("user", user);
             request.getRequestDispatcher(jsp).forward(request,response);
             return;
         }
         LOGGER.log(Level.INFO,"external ",externalStr);
-        short external = (short)(externalStr!=null&&externalStr.compareToIgnoreCase("on")==0?1:0);
+        short external = (short)(externalStr!=null&&(externalStr.compareToIgnoreCase("on")==0||externalStr.compareTo("1")==0)?1:0);
         note.setExternalnote(external);
         if(noteText==null){
             request.setAttribute("error", "Missing note description.");
@@ -1536,6 +1560,11 @@ public class SPZServlet extends HttpServlet {
         stateNote.setNoteid(note.getId());
         stateNote.setStateid(state.getId());
         stateNoteManager.create(stateNote);
+        SpzIssuerManager issuerManager = new SpzIssuerJpaController(emf);
+        Spzissuer issuer = new Spzissuer();
+        issuer.setSpzid(spzId);
+        issuer.setUserid((int)user.getId());
+        
         jsp = (String)request.getAttribute("jsp");
         if(jsp!=null && jsp.contains("list")){
             listSpz(request, response);
