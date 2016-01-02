@@ -12,10 +12,10 @@
 <h2>Historie SPZ</h2>
 <c:forEach items="${spz.history}" var="item">
     <div class="state-header"><c:out value="${item.code}"/> <f:formatDate type="both" dateStyle="LONG" timeStyle="short" value="${item.issueDate}"/>
-         <c:out value="${item.issuer}"/>
+         <c:out value="${item.issuer.name}"/>
     </div>
          <div  class="state-body">
-             <c:out value="${item.issuer}"/>
+             <c:out value="${item.issuer.name}"/>
              (<f:formatDate type="both" dateStyle="LONG" timeStyle="SHORT" value="${item.issueDate}"/>)
              <c:forEach items="${item.notes}" var="note">
                  <div class="note">
@@ -24,7 +24,7 @@
                              Nezadan
                          </c:when>
                          <c:otherwise>
-                             <c:out value="${note.noteIssuer}"/>
+                             <c:out value="${note.noteIssuer.name}"/>
                          </c:otherwise>
                      </c:choose> 
                      (<f:formatDate type="both" dateStyle="LONG" timeStyle="SHORT" value="${note.noteDate}"/>)
@@ -49,6 +49,7 @@
     <form action="${pageContext.request.contextPath}/SPZServlet/removeState" method="post">
      <input type="hidden" name="spzstateid" value="${item.id}"/>
      <input type="hidden" name="spzid" value="${spz.id}"/>
+     <input type="hidden" name="userid" value="${user.id}"/>
      <input type="submit" value="smazat posledni stav" onsubmit="return confirm('Opravdu smazat posledni stav?');"/>
     </form>
  </c:if>
