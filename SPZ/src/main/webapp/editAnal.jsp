@@ -12,12 +12,14 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title><f:message key="header"/> <c:out value="${spz.id}"/><c:if test="${not empty spz.issuer}">(${spz.issuer})</c:if></title>
+        <title><f:message key="titleAnalysis"/> <c:out value="${spz.id}"/><c:if test="${not empty spz.issuer}">(${spz.issuer})</c:if></title>
     </head>
     <body>
     
-    <h1><f:message key="header"/></h1>
-    <jsp:include page="editcommon.jsp"/>
+    <h1><f:message key="titleAnalysis"/></h1>
+    <table>
+      <jsp:include page="editcommon.jsp"/>
+    </table>
     <c:if test="${user.role!=0}">
         <c:set var="jsp" value="./editAnal.jsp"/>
         <form action="${pageContext.request.contextPath}/SPZServlet/editspz" method="post">
@@ -25,24 +27,24 @@
             <input type="hidden" name="newstate" value="REFINE"/>
             <input type="hidden" name="spzid" value="${spz.id}"/>
             <input type="hidden" name="userid" value="${user.id}"/>
-            <input type="submit" value="Vratit zpet klientovi k doplneni"/>
+            <input type="submit" value="<f:message key='return'/>"/>
         </form>
         <form action="${pageContext.request.contextPath}/SPZServlet/spzsolution" method="post">
             <input type="hidden" name="state" value="ANALYSIS"/>
             <input type="hidden" name="newstate" value="ANALYSIS"/>
             <input type="hidden" name="spzid" value="${spz.id}"/>
             <input type="hidden" name="userid" value="${user.id}"/>
-            <input type="submit" value="Navrhnout reseni"/>
+            <input type="submit" value="<f:message key='proposeSol'/>"/>
         </form>
         <form action="${pageContext.request.contextPath}/SPZServlet/changeanalyst" method="post">
             <input type="hidden" name="state" value="ANALYSIS"/>
             <input type="hidden" name="newstate" value="ANALYSIS"/>
             <input type="hidden" name="spzid" value="${spz.id}"/>
             <input type="hidden" name="userid" value="${user.id}"/>
-            <input type="submit" value="Zmenit analytika"/>
+            <input type="submit" value="<f:message key='changeAnalyst'/>"/>
         </form>
         <form action="${pageContext.request.contextPath}/SPZServlet/delete" method="post">
-            <input type="submit" value="Zrusit"/>
+            <input type="submit" value="<f:message key='cancel'/>"/>
             <input type="hidden" name="newstate" value="CANCELED"/>
             <input type="hidden" name="spzid" value="${spz.id}"/>
             <input type="hidden" name="userid" value="${user.id}"/>
