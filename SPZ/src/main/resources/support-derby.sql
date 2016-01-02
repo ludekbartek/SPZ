@@ -83,8 +83,8 @@ create table SUSER.SpzStateNote
 create table SUSER.NoteIssuer
 (   
     id int primary key not null generated always as identity,
-    noteId int,
-    userId int
+    noteId bigint,
+    userId bigint
 );
 
 create table SUSER.configuration
