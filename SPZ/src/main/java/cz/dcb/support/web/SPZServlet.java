@@ -1153,9 +1153,10 @@ public class SPZServlet extends HttpServlet {
         if(spzStates.size()>1){
             Spzstate current = stateManager.getCurrentState(spz);
             if(current == null){
-                request.setAttribute("user", user);
+                current = spzStates.get(0);
+                /*request.setAttribute("user", user);
                 request.setAttribute("error", "Nelze ziskat aktualni stav pro SPZ "+spz.getId());
-                listSpz(request, response);
+                listSpz(request, response);*/
             }
             current.setCurrentstate(0);
             previous = spzStates.get(1);
