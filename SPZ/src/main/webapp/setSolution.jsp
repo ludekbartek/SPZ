@@ -18,7 +18,9 @@
     <body>
         <h1><f:message key="stateChange"/></h1>
         <div><f:message key="stateChangeHeader"/></div>
-        <jsp:include page="editcommon.jsp"/>
+        <table>
+            <jsp:include page="editcommon.jsp"/>
+        </table>
         <div class="text"><f:message key="infoState"/>:</div>
         <form action="${pageContext.request.contextPath}/SPZServlet/editspz" method="post">
             <input type="hidden" name="state" value="ANALYSIS"/>
@@ -26,7 +28,6 @@
             <input type="hidden" name="jsp" value="listSpz.jsp"/>
             <input type="hidden" name="spzid" value="${spz.id}"/>
             <input type="hidden" name="userid" value="${user.id}"/>
-            SPZ id:<c:out value="${spz.id}"/>
             <div class="areainput">
                 <f:message key="revLabel"/>:
                 <textarea name="revisedsolutiondescription"></textarea>
