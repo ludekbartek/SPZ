@@ -52,7 +52,8 @@
                 <input type="hidden" name="userid" value="${user.id}"/>
                 <input type="submit" value="<f:message key='cancel'/>"/>
             </form>
-            <jsp:include page="listHistory.jsp"/>
+            
         </c:if>
+            <jsp:include page="listHistory.jsp"/>
     </body>
 </html>
