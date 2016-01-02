@@ -267,7 +267,7 @@ public class SPZServlet extends HttpServlet {
                 default:
                     StringBuilder errorMesg = new StringBuilder("Invalid action").append(action).append(". Using list instead.");
                     LOGGER.log(Level.INFO,errorMesg.toString());
-                    listSpz(request,response);
+                    dispError(request, response, "Neplatna akce: " + action);
                     
             }
             
@@ -409,7 +409,8 @@ public class SPZServlet extends HttpServlet {
         if(request.getParameterMap().containsKey("newstate")){
             
             changeState(spz,request,response);
-            request.getRequestDispatcher("./listSPZ.jsp").forward(request, response);
+            request.setAttribute("user", userWeb);
+            request.getRequestDispatcher("/listSPZ.jsp").forward(request, response);
             return;
         }
         SPZWebEntity spzEnt = spzToEntity(spz);
@@ -468,8 +469,7 @@ public class SPZServlet extends HttpServlet {
                 jspName="/editInstalled.jsp";
                 break;
             default:
-                request.setAttribute("error", "Neznamy stav SPZ: "+currentState);
-                listSpz(request, response);
+                dispError(request, response, "Neznamy stav SPZ: "+currentState);
                 return;
               
         }
@@ -1360,7 +1360,7 @@ public class SPZServlet extends HttpServlet {
         }
         //Spz spz = requestParamsToSpz(request.getParameterMap());
         SPZWebEntity entity = spzToEntity(spz);
-        User user = getUserByParameter(request);
+        UserWebEntity user = requestToUserWebEntity(request);
         request.setAttribute("spz", entity);
         request.setAttribute("user", user);
         request.getRequestDispatcher("/setSolution.jsp").forward(request, response);
@@ -1721,6 +1721,11 @@ public class SPZServlet extends HttpServlet {
 
     private double getSpzManDays() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    private void dispError(HttpServletRequest request, HttpServletResponse response, String message) throws ServletException, IOException {
+        request.setAttribute("error",message);
+        request.getRequestDispatcher("/error.jsp").forward(request, response);
     }
 
     
