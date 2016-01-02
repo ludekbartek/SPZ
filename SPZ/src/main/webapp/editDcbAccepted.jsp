@@ -51,5 +51,6 @@
                         <input type="submit" value="<f:message key='startImplButton'/>"/>
                     </form>
                 </c:if>
+                <jsp:include page="listHistory.jsp"/>
     </body>
 </html>
