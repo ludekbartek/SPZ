@@ -15,7 +15,9 @@
     <body>
         <h1>Informace o SPZ</h1>
         <c:set var="jsp" value="./editSpec.jsp"/>
-        <jsp:include page="editcommon.jsp"/>
+        <table>
+            <jsp:include page="editcommon.jsp"/>
+        </table>
         <c:if test="${user.role==1}">
             <form action="${pageContext.request.contextPath}/SPZServlet/delete" method="post">
                 <input type="hidden" name="spzid" value="${spz.id}"/>
