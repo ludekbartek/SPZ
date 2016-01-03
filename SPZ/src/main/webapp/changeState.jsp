@@ -31,7 +31,14 @@
             <input type='hidden' name='userid' value='${user.id}'/>
             <input type='hidden' name="state" value='${spzState}'/>
             <input type="hidden" name="newstate" value="${newState}"/>
-            <input type="checkbox" name="external"/><label for="external"><f:message key="externalNote"/></label>
+            <c:choose>
+                <c:when test="${user.role!=0}">
+                    <input type="checkbox" name="external"/><label for="external"><f:message key="externalNote"/></label>
+                </c:when>
+                <c:otherwise>
+                    <input type="hidden" name="external" value="1"/>
+                </c:otherwise>
+            </c:choose>
             <br/>
             <c:if test="${!empty developers}">
                 <label for="developer"><f:message key="developer"/></label>
