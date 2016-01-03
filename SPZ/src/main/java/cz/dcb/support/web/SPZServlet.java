@@ -265,6 +265,8 @@ public class SPZServlet extends HttpServlet {
                             break;
                 case "/install":install(request,response);
                             break;
+                case "/acceptspz":confirm(request,response);
+                            break;
                 default:
                     StringBuilder errorMesg = new StringBuilder("Invalid action").append(action).append(". Using list instead.");
                     LOGGER.log(Level.INFO,errorMesg.toString());
@@ -466,10 +468,10 @@ public class SPZServlet extends HttpServlet {
                 jspName = "/reAnal.jsp";
                 break;
             case "RECLAIMED":
-                jspName = "/reclaimed.jsp";
+                jspName = "/editRecl.jsp";
                 break;
             case "CONFIRMED":
-                jspName = "/confirmed.jsp";
+                jspName = "/editConf.jsp";
                 break;
             case "CANCELED":
                 jspName = "/editCanceled.jsp";
@@ -1733,6 +1735,13 @@ public class SPZServlet extends HttpServlet {
         gotoJspWithSpzUserChange(request, response, "/changeStateInstall.jsp");
     }
     
+    private void confirm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        Spz spz = getSpzByParameter(request);
+        request.setAttribute("newState", "CONFIRMED");
+        request.setAttribute("state", "INSTALLED");
+        gotoJspWithSpzUserChange(request, response, "/changeState.jsp");
+    }
+    
     private void gotoJspWithSpzUserChange(HttpServletRequest request,HttpServletResponse response,String jsp) throws ServletException, IOException{
         Spz spz = getSpzByParameter(request);
         User user = getUserByParameter(request);
@@ -1749,14 +1758,16 @@ public class SPZServlet extends HttpServlet {
         return manager.findDevelopers();
     }
 
-    private double getSpzManDays() {
+    /*private double getSpzManDays() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+    }*/
 
     private void dispError(HttpServletRequest request, HttpServletResponse response, String message) throws ServletException, IOException {
         request.setAttribute("error",message);
         request.getRequestDispatcher("/error.jsp").forward(request, response);
     }
+
+    
 
     
 }
