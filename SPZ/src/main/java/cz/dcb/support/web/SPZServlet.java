@@ -83,6 +83,7 @@ import java.sql.SQLException;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Properties;
+import java.util.ResourceBundle;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.servlet.annotation.MultipartConfig;
@@ -266,6 +267,8 @@ public class SPZServlet extends HttpServlet {
                 case "/install":install(request,response);
                             break;
                 case "/acceptspz":confirm(request,response);
+                            break;
+                case "/invoicespz":invoice(request,response);
                             break;
                 default:
                     StringBuilder errorMesg = new StringBuilder("Invalid action").append(action).append(". Using list instead.");
@@ -477,7 +480,7 @@ public class SPZServlet extends HttpServlet {
                 jspName = "/editCanceled.jsp";
                 break;
             case "INVOICED":
-                jspName = "/invoiced.jsp";
+                jspName = "/editInvoiced.jsp";
                 break;
             case "ACCEPTED":
                 jspName="/editAccepted.jsp";
@@ -941,13 +944,15 @@ public class SPZServlet extends HttpServlet {
      * @return Converted Spz state
      */
     private SpzStateWebEntity spzStateToSpzWebEntity(Spzstate state) {
+        ResourceBundle states = ResourceBundle.getBundle("changeState");
         UserManager userMan = new UserJpaController(emf);
         SpzStateWebEntity entity = new SpzStateWebEntity();
         entity.setId(state.getId());
         entity.setAssumedManDays(state.getAssumedmandays());
         entity.setMandays(state.getMandays());
         entity.setClassType(state.getClasstype());
-        entity.setCode(STATES[SpzStates.valueOf(state.getCode()).ordinal()]);
+        entity.setCode(states.getString(state.getCode()));
+//entity.setCode(STATES[SpzStates.valueOf(state.getCode()).ordinal()]);
         entity.setCurrentState(Long.valueOf(state.getCurrentstate()));
         entity.setIssueDate(new Date(state.getTs().longValue()));
         entity.setReleaseNotes(state.getReleasenotes());
@@ -1742,6 +1747,12 @@ public class SPZServlet extends HttpServlet {
         gotoJspWithSpzUserChange(request, response, "/changeState.jsp");
     }
     
+    private void invoice(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        Spz spz=getSpzByParameter(request);
+        request.setAttribute("newState", "INVOICED");
+        gotoJspWithSpzUserChange(request, response, "/changeState.jsp");
+    }    
+    
     private void gotoJspWithSpzUserChange(HttpServletRequest request,HttpServletResponse response,String jsp) throws ServletException, IOException{
         Spz spz = getSpzByParameter(request);
         User user = getUserByParameter(request);
@@ -1767,7 +1778,4 @@ public class SPZServlet extends HttpServlet {
         request.getRequestDispatcher("/error.jsp").forward(request, response);
     }
 
-    
-
-    
 }
