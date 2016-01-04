@@ -196,8 +196,26 @@ public class SpzStatesJpaController implements Serializable, SpzStatesManager {
     }
 
     @Override
+    public Spzstates getCurrentSpzstatesEntity(Spz spz) {
+        Spzstates result = null;
+        EntityManager em = getEntityManager();
+        try{
+            Query query = em.createQuery("select spzstat from Spzstates spzstat  where spzstat.spzid=:spzid order by spzstat.id desc");
+            query.setParameter("spzid", spz.getId());
+            List<Spzstates> resultList = query.getResultList();
+            result = resultList.get(0);
+        }finally{
+            if(em!=null){
+                em.close();
+            }
+        }
+        return result;
+    }
+    @Override
     public void create(Spzstates spzstates, EntityManager em) {
         em.persist(spzstates);
     }
+
+   
 
 }

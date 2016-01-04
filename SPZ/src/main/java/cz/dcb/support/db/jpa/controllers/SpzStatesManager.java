@@ -39,6 +39,8 @@ public interface SpzStatesManager {
     List<Spzstate> findSpzstates(Spz spz);
 
     Spzstate getCurrentState(Spz spz);
+    
+    Spzstates getCurrentSpzstatesEntity(Spz spz);
 
     public void create(Spzstates states, EntityManager em);
     
