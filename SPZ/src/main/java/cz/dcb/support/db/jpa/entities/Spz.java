@@ -42,8 +42,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Spz.findByImplementationacceptdate", query = "SELECT s FROM Spz s WHERE s.implementationacceptdate = :implementationacceptdate"),
     @NamedQuery(name = "Spz.findByTs", query = "SELECT s FROM Spz s WHERE s.ts = :ts"),
     @NamedQuery(name = "Spz.findByCategory", query="Select s From Spz s WHERE s.category = :category"),
-    @NamedQuery(name = "Spz.findByAssumedmandays", query = "SELECT s FROM Spzstate s WHERE s.assumedmandays = :assumedmandays"),
-    @NamedQuery(name = "Spz.findByMandays", query = "SELECT s FROM Spzstate s WHERE s.mandays = :mandays")})
+    @NamedQuery(name = "Spz.findByAssumedmandays", query = "SELECT s FROM Spz s WHERE s.assumedManDays = :assumedmandays"),
+    @NamedQuery(name = "Spz.findByMandays", query = "SELECT s FROM Spz s WHERE s.manDays = :mandays")})
 
 public class Spz implements Serializable {
     private static final long serialVersionUID = 1L;

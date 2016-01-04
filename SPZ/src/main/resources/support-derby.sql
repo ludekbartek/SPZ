@@ -11,6 +11,8 @@ create table SUSER.Spz
     implementationAcceptDate timestamp, /*datum akceptace opravy*/
     ts bigint,/*casove razitko, cas vytvoreni zaznamu v DB*/
     category smallint /*kategorie SPZ - 0 = nestandardni,1 = standardni*/
+    assumedManDays double, /*Odhad pracnosti v clovekodnech*/
+    manDays double /*Skutecna pracnost v clovekodnech*/
 );
 
 create table SUSER.SpzState 
@@ -21,8 +23,6 @@ create table SUSER.SpzState
     issuer_login varchar(32),
     revisedRequestDescription varchar(9000),
     solutionDescription varchar(9000),
-    assumedManDays double,
-    manDays double,
     releaseNotes varchar(9000),
     classType smallint,
     idate date,

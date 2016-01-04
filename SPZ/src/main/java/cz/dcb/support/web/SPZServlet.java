@@ -1296,6 +1296,7 @@ public class SPZServlet extends HttpServlet {
             String strOutOfDevel = request.getParameter("outofdevel");
             realWorkload += Double.parseDouble(strOutOfDevel);
             spz.setManDays(realWorkload);
+            
         }
         if(request.getParameterMap().containsKey("estimatedworkload")){
             String estWork = request.getParameter("estimatedworkload");
@@ -1323,6 +1324,7 @@ public class SPZServlet extends HttpServlet {
             /*newStates.setSpzid(spz.getId());
             newStates.setStateid(newState.getId());*/
             statesManager.create(newStates);
+            spzManager.edit(spz);
             entMan.getTransaction().commit();
         }catch(Exception ex){
             entMan.getTransaction().rollback();
@@ -1338,6 +1340,7 @@ public class SPZServlet extends HttpServlet {
                 stateManager.edit(currentState);
             }
             statesManager.edit(newStates);
+            spzManager.edit(spz);
         } catch (Exception ex) {
             LOGGER.log(Level.SEVERE, "Error setting the state id in SpzStates.", ex);
             request.setAttribute("error", "Chyba pri zmene stavu. Nelze nastavit id stavu.");
