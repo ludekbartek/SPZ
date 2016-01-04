@@ -41,7 +41,10 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Spz.findByRequestdescription", query = "SELECT s FROM Spz s WHERE s.requestdescription = :requestdescription"),
     @NamedQuery(name = "Spz.findByImplementationacceptdate", query = "SELECT s FROM Spz s WHERE s.implementationacceptdate = :implementationacceptdate"),
     @NamedQuery(name = "Spz.findByTs", query = "SELECT s FROM Spz s WHERE s.ts = :ts"),
-    @NamedQuery(name = "Spz.findByCategory", query="Select s From Spz s WHERE s.category = :category")})
+    @NamedQuery(name = "Spz.findByCategory", query="Select s From Spz s WHERE s.category = :category"),
+    @NamedQuery(name = "Spz.findByAssumedmandays", query = "SELECT s FROM Spzstate s WHERE s.assumedmandays = :assumedmandays"),
+    @NamedQuery(name = "Spz.findByMandays", query = "SELECT s FROM Spzstate s WHERE s.mandays = :mandays")})
+
 public class Spz implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -76,6 +79,10 @@ public class Spz implements Serializable {
     private BigInteger ts;
     @Column(name="CATEGORY")
     private short category; //1 - standardni, 0 - nestandardni
+    @Column(name = "MANDAYS",precision = 52)
+    private Double manDays; // skutecna pracnost v clovekohodinach
+    @Column(name = "ASSUMEDMANDAYS",precision = 52)
+    private Double assumedManDays;
 
     public Spz() {
     }
@@ -172,6 +179,23 @@ public class Spz implements Serializable {
         this.category = category;
     }
 
+    public Double getManDays() {
+        return manDays;
+    }
+
+    public void setManDays(Double manDays) {
+        this.manDays = manDays;
+    }
+
+    public Double getAssumedManDays() {
+        return assumedManDays;
+    }
+
+    public void setAssumedManDays(Double assumedManDays) {
+        this.assumedManDays = assumedManDays;
+    }
+
+    
     @Override
     public int hashCode() {
         int hash = 0;

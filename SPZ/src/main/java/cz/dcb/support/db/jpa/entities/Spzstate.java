@@ -37,8 +37,6 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Spzstate.findByIssuerLogin", query = "SELECT s FROM Spzstate s WHERE s.issuerLogin = :issuerLogin"),
     @NamedQuery(name = "Spzstate.findByRevisedrequestdescription", query = "SELECT s FROM Spzstate s WHERE s.revisedrequestdescription = :revisedrequestdescription"),
     @NamedQuery(name = "Spzstate.findBySolutiondescription", query = "SELECT s FROM Spzstate s WHERE s.solutiondescription = :solutiondescription"),
-    @NamedQuery(name = "Spzstate.findByAssumedmandays", query = "SELECT s FROM Spzstate s WHERE s.assumedmandays = :assumedmandays"),
-    @NamedQuery(name = "Spzstate.findByMandays", query = "SELECT s FROM Spzstate s WHERE s.mandays = :mandays"),
     @NamedQuery(name = "Spzstate.findByReleasenotes", query = "SELECT s FROM Spzstate s WHERE s.releasenotes = :releasenotes"),
     @NamedQuery(name = "Spzstate.findByClasstype", query = "SELECT s FROM Spzstate s WHERE s.classtype = :classtype"),
     @NamedQuery(name = "Spzstate.findByIdate", query = "SELECT s FROM Spzstate s WHERE s.idate = :idate"),
@@ -69,13 +67,6 @@ public class Spzstate implements Serializable {
     @Size(max = 9000)
     @Column(name = "SOLUTIONDESCRIPTION", length = 9000)
     private String solutiondescription;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
-    /** Predpokladana pracnost (clovekohodin)*/
-    @Column(name = "ASSUMEDMANDAYS", precision = 52)
-    private Double assumedmandays;
-    /** Skutecna pracnost (clovekohodin) */
-    @Column(name = "MANDAYS", precision = 52)
-    private Double mandays;
     @Size(max = 9000)
     /** Poznamka k vydani */
     @Column(name = "RELEASENOTES", length = 9000)
@@ -143,22 +134,6 @@ public class Spzstate implements Serializable {
 
     public void setSolutiondescription(String solutiondescription) {
         this.solutiondescription = solutiondescription;
-    }
-
-    public Double getAssumedmandays() {
-        return assumedmandays;
-    }
-
-    public void setAssumedmandays(Double assumedmandays) {
-        this.assumedmandays = assumedmandays;
-    }
-
-    public Double getMandays() {
-        return mandays;
-    }
-
-    public void setMandays(Double mandays) {
-        this.mandays = mandays;
     }
 
     public String getReleasenotes() {
