@@ -822,11 +822,11 @@ public class SPZServlet extends HttpServlet {
         if(current!=null){
             user = userManger.findUserByLogin(current.getIssuerLogin());
             entity.setSpzState(current.getCode());
-            Double mandays = current.getMandays();
+            Double mandays = spz.getManDays();
             if(mandays!=null)
-                entity.setWorkLoadReal(current.getMandays());
+                entity.setWorkLoadReal(spz.getManDays());
             else entity.setWorkLoadReal(0.0);
-            mandays = current.getAssumedmandays();
+            mandays = spz.getAssumedManDays();
             if(mandays!=null){
                 entity.setWorkLoadEstimation(mandays);
             }else{
@@ -948,8 +948,6 @@ public class SPZServlet extends HttpServlet {
         UserManager userMan = new UserJpaController(emf);
         SpzStateWebEntity entity = new SpzStateWebEntity();
         entity.setId(state.getId());
-        entity.setAssumedManDays(state.getAssumedmandays());
-        entity.setMandays(state.getMandays());
         entity.setClassType(state.getClasstype());
         entity.setCode(states.getString(state.getCode()));
 //entity.setCode(STATES[SpzStates.valueOf(state.getCode()).ordinal()]);
@@ -1158,27 +1156,24 @@ public class SPZServlet extends HttpServlet {
         });
         Spzstate previous = null;
         if(spzStates.size()>1){
-            Spzstate current = stateManager.getCurrentState(spz);
-            if(current == null){
-                current = spzStates.get(0);
-                /*request.setAttribute("user", user);
-                request.setAttribute("error", "Nelze ziskat aktualni stav pro SPZ "+spz.getId());
-                listSpz(request, response);*/
-            }
-            current.setCurrentstate(0);
-            previous = spzStates.get(1);
-            previous.setCurrentstate(1);
-            previous.setIdate(new GregorianCalendar().getTime());
-            try {
-                stateManager.edit(previous);
-                
-            } catch (Exception ex) {
-                Logger.getLogger(SPZServlet.class.getName()).log(Level.SEVERE, "Error deleting current state flag.", ex);
-                request.setAttribute("error", "Nepodarilo se zrusit priznak aktualniho stavu.");
-                request.setAttribute("user", user);
+            Spzstates current = statesManager.getCurrentSpzstatesEntity(spz);
+            try{
+                statesManager.destroy(current.getId());
+                stateManager.destroy(current.getStateid());
+                previous = spzStates.get(1);
+                previous.setCurrentstate(1);
+                previous.setIdate(new GregorianCalendar().getTime());
                 listSpz(request, response);
                 return;
+            }catch(NonexistentEntityException nee){
+                String errorMsg = String.format("Unable to remove Spzstates entity with id: %d.",current.getId());
+                LOGGER.log(Level.SEVERE, errorMsg);
+                dispError(request, response, errorMsg);
+                return;
             }
+            
+            
+            
         }
         Spzstates newState = new Spzstates();
         newState.setSpzid(spzId);
@@ -1250,14 +1245,11 @@ public class SPZServlet extends HttpServlet {
             }
         }
         Spzstate spzState = new Spzstate();
-        spzState.setAssumedmandays(currentState.getAssumedmandays());
         spzState.setClasstype(currentState.getClasstype());
         spzState.setCode(currentState.getCode());
         spzState.setCurrentstate(1);
-        spzState.setAssumedmandays(0.0);
         spzState.setIdate(currentState.getIdate());
         spzState.setIssuerLogin(currentState.getIssuerLogin());
-        spzState.setMandays(currentState.getMandays());
         spzState.setReleasenotes(currentState.getReleasenotes());
         spzState.setRevisedrequestdescription(currentState.getRevisedrequestdescription());
         spzState.setTs(BigInteger.valueOf(new GregorianCalendar().getTimeInMillis()));
@@ -1303,12 +1295,12 @@ public class SPZServlet extends HttpServlet {
         if(request.getParameterMap().containsKey("outofdevel")){
             String strOutOfDevel = request.getParameter("outofdevel");
             realWorkload += Double.parseDouble(strOutOfDevel);
-            newState.setMandays(realWorkload);
+            spz.setManDays(realWorkload);
         }
         if(request.getParameterMap().containsKey("estimatedworkload")){
             String estWork = request.getParameter("estimatedworkload");
             double estimation = Double.parseDouble(estWork);
-            newState.setAssumedmandays(estimation);
+            spz.setAssumedManDays(estimation);
         }
         User user = getUserByParameter(request);
         newState.setIdate(new GregorianCalendar().getTime());
@@ -1376,7 +1368,7 @@ public class SPZServlet extends HttpServlet {
         try{
             if(request.getParameterMap().containsKey("estimatedworkload")){
                  Double estWorkLoad = Double.parseDouble(request.getParameter("estimatedworkload"));
-                 spzState.setAssumedmandays(estWorkLoad);
+                 spz.setAssumedManDays(estWorkLoad);
             }
         }catch(NumberFormatException ex){
             LOGGER.log(Level.INFO,"Nezadana nebo neplatna hodnota odhadu pracnosti.");
@@ -1556,6 +1548,7 @@ public class SPZServlet extends HttpServlet {
         note.setExternalnote(external);
         if(noteText==null){
             request.setAttribute("error", "Missing note description.");
+            request.setAttribute("user", user);
             //request.getRequestDispatcher("/editPost.jsp").forward(request, response);
             editSpz(request, response);
             return;
@@ -1579,6 +1572,7 @@ public class SPZServlet extends HttpServlet {
             return;
         }
         request.setAttribute("spz", spzToEntity(spz));
+        request.setAttribute("user", user);
         request.getRequestDispatcher("/editPost.jsp").forward(request, response);
         
     }

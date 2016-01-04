@@ -26,8 +26,6 @@ public class SpzStateWebEntity {
     private User issuer;
     private String revisedRequestDescription;
     private String solutionDescription;
-    private Double mandays;
-    private Double assumedManDays;
     private String releaseNotes;
     private Short classType;
     private Date issueDate;
@@ -81,22 +79,6 @@ public class SpzStateWebEntity {
 
     public void setSolutionDescription(String solutionDescription) {
         this.solutionDescription = solutionDescription;
-    }
-
-    public Double getMandays() {
-        return mandays;
-    }
-
-    public void setMandays(Double mandays) {
-        this.mandays = mandays;
-    }
-
-    public Double getAssumedManDays() {
-        return assumedManDays;
-    }
-
-    public void setAssumedManDays(Double assumedManDays) {
-        this.assumedManDays = assumedManDays;
     }
 
     public String getReleaseNotes() {
