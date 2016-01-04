@@ -120,7 +120,7 @@ public class DBUtils {
     
     public static Spzstate createSpzState(){
         Spzstate state = new Spzstate();
-        state.setAssumedmandays(1.5);
+//        state.setAssumedmandays(1.5);
         state.setCode("Started");
         state.setIssuerLogin(createUser().getLogin());
         
@@ -303,13 +303,13 @@ public class DBUtils {
         Spzstate state = new Spzstate();
         Calendar cal = new GregorianCalendar();
         
-        state.setAssumedmandays(2.0);
+//        state.setAssumedmandays(2.0);
         state.setClasstype((short)1);
         state.setCode("Some code");
         state.setCurrentstate(0);
         state.setIdate(cal.getTime());
         state.setIssuerLogin("someLogin");
-        state.setMandays(2.0);
+  //      state.setMandays(2.0);
         state.setReleasenotes("Some notes");
         state.setRevisedrequestdescription("some text");
         state.setSolutiondescription("Short solution");

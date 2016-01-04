@@ -111,7 +111,7 @@ public class SpzstateManagerTest {
         
         List<Spzstate> values = createSpzstate(MAX_COUNT);
         for(Spzstate state:values){
-            state.setAssumedmandays(3.0);
+            //state.setAssumedManDays(3.0);
             state.setClasstype((short)2);
             state.setIdate(cal.getTime());
             manager.edit(state);
