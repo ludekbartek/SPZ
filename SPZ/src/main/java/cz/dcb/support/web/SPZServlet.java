@@ -34,6 +34,7 @@ import cz.dcb.support.db.jpa.controllers.exceptions.NonexistentEntityException;
 import cz.dcb.support.db.jpa.entities.Attachment;
 import cz.dcb.support.db.jpa.entities.Spz;
 import cz.dcb.support.db.jpa.entities.SpzStates;
+import cz.dcb.support.db.jpa.entities.Spzanalyst;
 import cz.dcb.support.db.jpa.entities.Spzissuer;
 import cz.dcb.support.db.jpa.entities.Spznote;
 import cz.dcb.support.db.jpa.entities.Spzstate;
@@ -804,11 +805,19 @@ public class SPZServlet extends HttpServlet {
         SpzIssuerManager issuerManager = new SpzIssuerJpaController(emf);
         SpzStateManager stateManager = new SpzStateJpaController(emf);
         SpzStatesManager statesManager = new SpzStatesJpaController(emf);
+        SpzAnalystManager analystManager = new SpzAnalystJpaController(emf);
         UserManager userManger = new UserJpaController(emf);
         List<SpzStateWebEntity> history;
         
+        int analystId = analystManager.findSpzanalystUserId(spz.getId());
         SPZWebEntity entity;
         entity = new SPZWebEntity();
+        if(analystId>-1){
+            User user = userManger.findUser(analystId);
+            if(user!=null){
+                entity.setAnalyst(user.getName());
+            }
+        }
         entity.setId(spz.getId());
         entity.setShortName(spz.getShortName());
         entity.setReqNumber(spz.getReqnumber());
@@ -1580,7 +1589,7 @@ public class SPZServlet extends HttpServlet {
         
     }
 
-    private void changeAnalyst(HttpServletRequest request, HttpServletResponse response){
+    private void changeAnalyst(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
         RolesManager rolesMan = new RolesJpaController(emf);
         UserAccessManager accessMan = new UserAccessJpaController(emf);
         SpzAnalystManager analystManager = new SpzAnalystJpaController(emf);
@@ -1588,17 +1597,32 @@ public class SPZServlet extends HttpServlet {
         SpzManager spzManager = new SpzJpaController(emf);
         //SpzAnalystManager spzAnalystManager = new SpzAnalystJpaController(emf);
         int spzId = getSpzId(request.getParameterMap());
-        
-        try {
-            request.getRequestDispatcher("./editAnalyst.jsp").forward(request, response);
-        } catch (ServletException | IOException ex) {
+        Spz spz = spzManager.findSpz(spzId);
+        UserWebEntity user = requestToUserWebEntity(request);
+        SPZWebEntity spzWeb = spzToEntity(spz);
+        if(!request.getParameterMap().containsKey("analyst")){
+            List<UserWebEntity> analysts=getAnalysts();
             try {
-                request.setAttribute("error", "Nelze zmenit analytika (vice viz log).");
-                LOGGER.log(Level.SEVERE,"Chyba pri prechodu na editAnalyst.jsp:",ex);
-                listSpz(request, response);
-            } catch (ServletException | IOException ex1) {
-                Logger.getLogger(SPZServlet.class.getName()).log(Level.SEVERE, null, ex1);
+                request.setAttribute("analysts", analysts);
+                request.setAttribute("user", user);
+                request.setAttribute("spz", spzWeb);
+                request.getRequestDispatcher("/editAnalyst.jsp").forward(request, response);
+            } catch (ServletException | IOException ex) {
+                try {
+                    request.setAttribute("error", "Nelze zmenit analytika (vice viz log).");
+                    LOGGER.log(Level.SEVERE,"Chyba pri prechodu na editAnalyst.jsp:",ex);
+                    listSpz(request, response);
+                } catch (ServletException | IOException ex1) {
+                    Logger.getLogger(SPZServlet.class.getName()).log(Level.SEVERE, null, ex1);
+                }
             }
+        }else{
+            setAnalyst(spz,request.getParameter("analyst"));
+            List<Spz> spzs = spzManager.findSpzEntities();
+            List<SPZWebEntity> spzEntities = spzToEntities(spzs);
+            request.setAttribute("spz", spzEntities);
+            request.setAttribute("user", user);
+            listSpz(request,response);
         }
     }
 
@@ -1773,6 +1797,25 @@ public class SPZServlet extends HttpServlet {
     private void dispError(HttpServletRequest request, HttpServletResponse response, String message) throws ServletException, IOException {
         request.setAttribute("error",message);
         request.getRequestDispatcher("/error.jsp").forward(request, response);
+    }
+
+    private List<UserWebEntity> getAnalysts() {
+        UserAccessManager accessManager = new UserAccessJpaController(emf);
+        List<User> developers = accessManager.findDevelopers();
+        List<UserWebEntity> users = new ArrayList<>();
+        for(User user:developers){
+            users.add(userToEntity(user));
+        }
+        return users;
+    }
+
+    private void setAnalyst(Spz spz, String analystId) {
+        int analystIdInt = Integer.parseInt(analystId);
+        SpzAnalystManager analystManager = new SpzAnalystJpaController(emf);
+        Spzanalyst spzAnalyst = new Spzanalyst();
+        spzAnalyst.setSpzid(spz.getId());
+        spzAnalyst.setUserid(analystIdInt);
+        analystManager.create(spzAnalyst);
     }
 
 }
