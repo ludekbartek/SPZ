@@ -19,7 +19,9 @@
             Pozadujete 'Schvalit reseni' na SPZ:
         </div>
         <c:set var="jsp" value="./acceptSol.jsp"/>
+        <table>
         <jsp:include page="editcommon.jsp"/>
+        </table>
         <h2>Informace pro stav 'Schvalit reseni:'</h2>
         <form action='${pageContext.request.contextPath}/SPZServlet/editspz' method="post">
             <label for='note'>Poznamka:</label>
