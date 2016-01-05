@@ -7,6 +7,7 @@ package cz.dcb.support.db.jpa.controllers;
 
 import cz.dcb.support.db.jpa.controllers.exceptions.NonexistentEntityException;
 import cz.dcb.support.db.jpa.entities.Spzanalyst;
+import cz.dcb.support.db.jpa.entities.User;
 import java.util.List;
 import javax.persistence.EntityManager;
 
@@ -31,5 +32,7 @@ public interface SpzAnalystManager {
     EntityManager getEntityManager();
 
     int getSpzanalystCount();
+
+    public int findSpzanalystUserId(Integer spzId);
     
 }

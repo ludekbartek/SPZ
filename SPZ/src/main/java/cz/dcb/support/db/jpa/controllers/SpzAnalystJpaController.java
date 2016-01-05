@@ -142,5 +142,22 @@ public class SpzAnalystJpaController implements Serializable, SpzAnalystManager 
             em.close();
         }
     }
+
+    @Override
+    public int findSpzanalystUserId(Integer spzId) {
+        EntityManager em = getEntityManager();
+        int analystId=-1;
+        try{
+            Query query = em.createQuery("select analyst.userid from Spzanalyst analyst where analyst.spzid=:spzid");
+            query.setParameter("spzid", spzId);
+            List<Integer> results = query.getResultList();
+            if(!results.isEmpty()){
+                    analystId = results.get(0);
+            }
+        }finally{
+            em.close();
+        }
+        return analystId;
+    }
     
 }
