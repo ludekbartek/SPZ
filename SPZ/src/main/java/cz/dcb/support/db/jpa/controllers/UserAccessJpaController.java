@@ -8,6 +8,7 @@ package cz.dcb.support.db.jpa.controllers;
 import cz.dcb.support.db.jpa.controllers.exceptions.NonexistentEntityException;
 import cz.dcb.support.db.jpa.entities.User;
 import cz.dcb.support.db.jpa.entities.Useraccess;
+import cz.dcb.support.web.entities.Roles;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -177,6 +178,20 @@ public class UserAccessJpaController implements Serializable, UserAccessManager 
     @Override
     public List<User> findDevelopersForConfiguration(int configId) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public List<Useraccess> userWithAccess(Roles role) {
+        EntityManager em = getEntityManager();
+        List<Useraccess> userAccessList;
+        try{
+            Query query = em.createQuery("select ua from Useraccess ua where ua.role=:role");
+            query.setParameter("role", role.toString().toLowerCase());
+            userAccessList = query.getResultList();
+        }finally{
+            em.close();
+        }
+        return userAccessList;
     }
     
 }
