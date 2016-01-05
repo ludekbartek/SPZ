@@ -46,7 +46,7 @@ public class SPZWebEntity {
      private String relNotes;
      private String solutionInfo;
      private List<SpzStateWebEntity> history;
-
+     
     public String getSolutionInfo() {
         return solutionInfo;
     }
