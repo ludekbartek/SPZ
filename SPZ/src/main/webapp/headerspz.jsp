@@ -8,6 +8,7 @@
 <%@taglib prefix="f" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <jsp:include page="projectHeader"/>
+&gt;&gt;
 <form action="${pageContext.request.pageContent}/SPZServlet/" method="post">
     <input type="hidden" name="projectid" value="${spz.projectId}"/>
     <input type="hidden" name="configid" value="${spz.configId}"/>
