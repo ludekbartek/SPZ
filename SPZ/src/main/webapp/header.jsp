@@ -9,7 +9,7 @@
 <%@taglib prefix="f" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <f:setBundle basename="headers"/>
 <div class="header"><f:message key="header"/></div>
-<form action="${pageContext.request.pageContent}/SPZServlet/listProjects" method="post">
+<form action="${pageContext.request.contextPath}/SPZServlet/listProjects" method="post">
     <input type="submit" value="<f:message key='projects'/>"/>
     <input type="hidden" name="userid" value="${user.id}"/>
 </form>
