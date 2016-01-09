@@ -9,8 +9,9 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <jsp:include page="projectHeader"/>
 &gt;&gt;
-<form action="${pageContext.request.pageContent}/SPZServlet/" method="post">
+<form action="${pageContext.request.pageContent}/SPZServlet/listspz" method="post">
     <input type="hidden" name="projectid" value="${spz.projectId}"/>
     <input type="hidden" name="configid" value="${spz.configId}"/>
     <input type="submit" value="${spz.configName}"/>
+    <input type="hidden" name="userid" value="${user.id}"/>
 </form>
