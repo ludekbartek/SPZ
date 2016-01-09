@@ -23,8 +23,8 @@
             </div>
         </c:if>
         <div id="heading" style="width: 100%">
-            <span class="actions" style="float:left;">
-                <form action="${pageContext.request.contextPath}/listspz">
+<!--            <span class="actions" style="float:left;">-->
+                <form action="${pageContext.request.contextPath}/listspz" style="leftfloat">
                     <span class="filter" style="text-align: center;width:10%;float:left;">
                         <span class="title">Filtr:</span>
                         <span class="selector">
@@ -47,21 +47,15 @@
                     </span>
                     <input type="submit" value="Hledej"/>
                 </form>
-            </span>            
-            <span class="actions" style="float:right">
-                <form action="${pageContext.request.contextPath}/SPZServlet/reports" method="post">    
+                <form action="${pageContext.request.contextPath}/SPZServlet/reports" method="post" class="rightfloat">    
                     <input type="hidden" name="userid" value="${user.id}"/>
                     <input type="submit" value='<f:message key="reports"/>'/>
                 </form>
-            </span>            
-            <span class="actions" style="float:right;">
-                <form action="${pageContext.request.contextPath}/SPZServlet/addspz" method="post">
+                <form action="${pageContext.request.contextPath}/SPZServlet/addspz" method="post" class="rightfloat">
                     <!--<input type="hidden" name="action" value="/addspz"/>-->
                     <input type="hidden" name="userid" value="${user.id}"/>
                     <input type="submit" value='<f:message key="newSpz"/>'/>
                 </form>
-            </span>
-           
         </div>
         <br/>
         <div id="table">
