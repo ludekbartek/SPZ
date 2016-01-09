@@ -28,6 +28,7 @@
     <class>cz.dcb.support.db.jpa.entities.Useraccess</class>
     <class>cz.dcb.support.db.jpa.entities.Projectconfiguration</class>
     <class>cz.dcb.support.db.jpa.entities.Spzstate</class>
+    <class>cz.dcb.support.db.jpa.entities.Configurationspz</class>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:derby://localhost:1527/support"/>
