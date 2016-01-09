@@ -15,8 +15,7 @@
         <title><f:message key="header"/></title>
     </head>
     <body>
-        <!--<h1>System servisni podpory</h1>-->
-        <h1><f:message key="header"/></h1>
+        <jsp:include page="headerspz.jsp"/>
         <c:if test="${! empty error}">
             <div id="erorr" style="background-color: yellow;border-color: red;">
                 <c:out value="${error}"/>
