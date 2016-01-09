@@ -13,6 +13,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title><f:message key="header"/></title>
+        <link rel="stylesheet" href="styles/dcb.css" type="text/css"/>
     </head>
     <body>
         <jsp:include page="headerspz.jsp"/>
@@ -23,32 +24,31 @@
         </c:if>
         <div id="heading" style="width: 100%">
             <span class="actions" style="float:left;">
-           
-            <form action="${pageContext.request.contextPath}/listspz">
-            <span class="filter" style="text-align: center;width:10%;float:left;">
-                <span class="title">Filtr:</span>
-                <span class="selector">
-                    <select name="filter">
-                        <option></option>
-                    </select>
-                </span>
-            </span>
-            <span class="search" style="text-align: center;width:30%;float:left;">
-                <span>Hledany text:</span>
-                <span><input type="text" width="15" name="searched"/></span>
-            </span>
-            <span class="where" style="float:left;">
-                <span>V polich:</span>
-                <span>
-                    <select name="fields">
-                        <option></option>
-                    </select>
-                </span>
-            </span>
-                <input type="submit" value="Hledej"/>
-            </form>
-            </span>
-             <span class="actions" style="float:right">
+                <form action="${pageContext.request.contextPath}/listspz">
+                    <span class="filter" style="text-align: center;width:10%;float:left;">
+                        <span class="title">Filtr:</span>
+                        <span class="selector">
+                            <select name="filter">
+                                <option></option>
+                            </select>
+                        </span>
+                    </span>
+                    <span class="search" style="text-align: center;width:30%;float:left;">
+                        <span>Hledany text:</span>
+                        <span><input type="text" size="18" maxlength="18" name="searched"/></span>
+                    </span>
+                    <span class="where" style="float:left;">
+                        <span>V polich:</span>
+                        <span>
+                            <select name="fields">
+                                <option></option>
+                            </select>
+                        </span>
+                    </span>
+                    <input type="submit" value="Hledej"/>
+                </form>
+            </span>            
+            <span class="actions" style="float:right">
                 <form action="${pageContext.request.contextPath}/SPZServlet/reports" method="post">    
                     <input type="hidden" name="userid" value="${user.id}"/>
                     <input type="submit" value='<f:message key="reports"/>'/>
@@ -63,7 +63,7 @@
             </span>
            
         </div>
-                    <br/>
+        <br/>
         <div id="table">
         <table style="float:left;">
             <thead style="border-bottom: black solid;background-color: #cccccc">

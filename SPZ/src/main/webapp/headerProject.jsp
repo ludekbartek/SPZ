@@ -19,8 +19,10 @@
 </c:if>
 <jsp:include page="header.jsp"/>
 &gt;&gt;
+<span class="actions">
 <form action="${pageContext.request.contextPath}/SPZServlet/listConfigurations" method="post">
     <input type="hidden" name="projectid" value="${spz.projectid}"/>
     <input type="hidden" name="userid" value="${user.id}"/>
     <input type="submit" value="${projectName}"/>
 </form>
+</span>

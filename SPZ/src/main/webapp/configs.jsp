@@ -13,9 +13,38 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title><f:message key="confHeader"/>(${user.login})</title>
+        <link rel="stylesheet" href="styles/dcb.css" type="text/css"/>
+        
+        <c:if test="${cfgs.length<=1}">
+            <meta http-equiv="Refresh" content="0; URL=${pageContext.request.contextPath}/SPZServlet/listspz"/>
+        </c:if>
     </head>
     <body>
         <jsp:include page="headerProject.jsp"/>
         <h1><f:message key="installs"/></h1>
+        <table class="doubleValueList">
+            <thead>
+                <tr>
+                    <td><f:message key="code"/></td>
+                    <td><f:message key="desc"/></td>
+                </tr>
+            </thead>
+            <tbody>
+                <c:forEach var="cfg" items="${cfgs}">
+                    <tr>
+                        <td>
+                            <form action="${pageContext.request.contextPath}/SPZServlet/listSpz" method="post">
+                                <input type="hidden" name="userid" value="${user.id}"/>
+                                <input type="hidden" name="cfgid" value="${spz.configId}"/>
+                                <input type="submit" value="${cfg.id}"/>
+                            </form>
+                        </td>
+                        <td>
+                            <c:out value="${cfg.desc}"/>
+                        </td>
+                    </tr>
+                </c:forEach>
+            </tbody>
+        </table>
     </body>
 </html>

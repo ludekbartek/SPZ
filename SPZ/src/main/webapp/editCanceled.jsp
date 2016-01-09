@@ -13,6 +13,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Změna stavu SPZ</title>
+        <link rel="stylesheet" href="styles/dcb.css" type="text/css"/>
     </head>
     <body>
         <h1>Systém servisní podpory</h1>
@@ -98,24 +99,8 @@
                 </span>
             </span>
         </div>
-                <c:import url="listHistory.jsp"/>
-                <h2>Informace pro stav 'Zrušit'</h2>
-                <!--<form action="${pageContext.request.contextPath}/SPZServlet/cancelState">
-                    <input type='hidden' value="${spz.id}"/>
-                    <div>
-                        <label for='note'>Poznámka:</label>
-                        <textarea cols="40" rows="5" name="note">
-                        </textarea>
-                    </div>
-                    <div>
-                        <input type='checkbox' name='visible'/>Viditelná i pro zákazníka? 
-                    </div>
-                    <div>
-                        <input type='submit' value="Odeslat!"/>
-                    </div>
-                </form>-->
-                <jsp:include page="addNote.jsp"/>
-                <!--<h2>Historie SPZ</h2>-->
-                
+        <c:import url="listHistory.jsp"/>
+        <h2>Informace pro stav 'Zrušit'</h2>
+        <jsp:include page="addNote.jsp"/>
     </body>
 </html>

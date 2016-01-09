@@ -14,13 +14,14 @@ pri editaci pouze popisy (viz stara verze).
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
        <title>Nova SPZ</title>
-      <!-- <script>
+       <!-- <script>
            procedure copy(where, wh)
            {
                shortname.value=reqnumber.value;
            }
        </script>-->
       <script src="scripts/support-scripts.js"></script>
+      <link rel="stylesheet" href="styles/dcb.css" type="text/css"/>
        <style>
             h1{
                 text-align: center;

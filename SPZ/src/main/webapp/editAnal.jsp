@@ -13,6 +13,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title><f:message key="titleAnalysis"/> <c:out value="${spz.id}"/><c:if test="${not empty spz.issuer}">(${spz.issuer})</c:if></title>
+        <link rel="stylesheet" href="styles/dcb.css" type="text/css"/>
     </head>
     <body>
     

@@ -12,6 +12,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Informace os SPZ <c:out value="${spz.reqNumber}"/></title>
+        <link rel="stylesheet" href="styles/dcb.css" type="text/css"/>
     </head>
     <body>
         <h1>Informace o SPZ</h1>

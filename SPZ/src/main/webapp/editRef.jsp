@@ -19,6 +19,7 @@
             </c:choose>
             <c:out value="${spz.id}"/>
         </title>
+        <link rel="stylesheet" href="styles/dcb.css" type="text/css"/>
     </head>
     <body>
         <h1>

@@ -14,6 +14,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title><f:message key="stateChange"/> <c:out value="${spz.id}"/></title>
+        <link rel="stylesheet" href="styles/dcb.css" type="text/css"/>
     </head>
     <body>
         <h1><f:message key="stateChange"/></h1>

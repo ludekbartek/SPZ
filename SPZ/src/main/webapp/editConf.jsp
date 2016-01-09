@@ -13,6 +13,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title><f:message key="pageTitle"/> <c:out value="${spz.id}"/> (<c:out value="${user.login}"/>)</title>
+        <link rel="stylesheet" href="styles/dcb.css" type="text/css"/>
     </head>
     <body>
         <h1><f:message key="pageTitle"/></h1>

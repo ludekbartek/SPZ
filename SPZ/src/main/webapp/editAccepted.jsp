@@ -12,7 +12,8 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title><f:message key="spzInfoHeader"/> <c:out value="${spz.id}"/></title>
+        <title><f:message key="spzInfoHeader"/> <c:out value="${spz.id}"/></title><link rel="stylesheet" href="styles/lists.css" type="text/css"/>
+        <link rel="stylesheet" href="styles/dcb.cs" type="text/css"/>
     </head>
     <body>
         <h1><f:message key="spzInfoHeader"/></h1>

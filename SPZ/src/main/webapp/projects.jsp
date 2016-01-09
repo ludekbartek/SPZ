@@ -17,17 +17,26 @@
     <body>
         <jsp:include page="header.jsp"/>
         <h1><f:message key="projectsHeader"/></h1>
-        <table class="projects">
+        <table class="doubleValueList">
             <thead>
                 <tr>
-                    <td class="code"><f:message key="code"/></td>
+                    <td class="code">
+                        <f:message key="code"/>
+                        
+                    </td>
                     <td class="name"><f:message key="name"/></td>
                 </tr>
             </thead>
             <tbody>
                 <c:forEach var="project" items="${projects}">
                     <tr>
-                        <td class="code"><c:out value="${project.code}"/></td>
+                        <td class="code">
+                            <form action="${pageContext.request.contextPath}/SPZServlet/listConfs" method="post">
+                                <input type="submit" value="${project.code}"/>
+                                <input type="hidden" name="userid" value="${user.id}"/>
+                                <input type="hidden" name="projectId" value="${project.id}"/>
+                            </form>
+                        </td>
                         <td class="name"><c:out value="${project.name}"/></td>
                     </tr>
                 </c:forEach>
