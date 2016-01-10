@@ -22,6 +22,7 @@
         <link rel="stylesheet" href="styles/dcb.css" type="text/css"/>
     </head>
     <body>
+        <jsp:include page="headerspz.jsp"/>
         <h1>
             <c:choose>
                 <c:when test="${empty change}"><f:message key="spzInfoHeader"/></c:when>

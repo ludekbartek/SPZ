@@ -16,6 +16,7 @@
         <link rel="stylesheet" href="styles/dcb.css" type="text/css"/>
     </head>
     <body>
+        <jsp:include page="headerSpzEdit.jsp"/>
         <h1><f:message key="stateChangeHeader"/></h1>
         <div class="highlighted">
             <f:message key="request"/> '<f:message key="${newState}"/>' na SPZ:

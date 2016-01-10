@@ -39,6 +39,7 @@ pri editaci pouze popisy (viz stara verze).
     </head>
     
     <body>
+        <jsp:include page="headerspz.jsp"/>
         <h1>
             <c:choose>
                     <c:when test="${action=='add'}">

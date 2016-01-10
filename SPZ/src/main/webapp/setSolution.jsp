@@ -17,6 +17,7 @@
         <link rel="stylesheet" href="styles/dcb.css" type="text/css"/>
     </head>
     <body>
+        <jsp:include page="headerSpzEdit.jsp"/>
         <h1><f:message key="stateChange"/></h1>
         <div><f:message key="stateChangeHeader"/></div>
         <table>

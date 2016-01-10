@@ -16,6 +16,7 @@
         <link rel="stylesheet" href="styles/dcb.cs" type="text/css"/>
     </head>
     <body>
+        <jsp:include page="headerSpzEdit.jsp"/>
         <h1><f:message key="spzInfoHeader"/></h1>
         <table>
         <jsp:include page="editcommon.jsp"/>

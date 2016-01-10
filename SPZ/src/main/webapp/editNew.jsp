@@ -6,29 +6,35 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="f" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<f:setBundle basename="editNew"/>
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title><f:message key="pageTitle"/>(<c:out value="${user.id}"/></title>
         <link rel="stylesheet" href="styles/dcb.css" type="text/css"/>
     </head>
     <body>
-        <h1>System servisni podpory</h1>
-        <h2>Informace o SPZ</h2>
+        <jsp:include page="headerspz.jsp"/>
+        <h2><f:message key="pageTitle"/></h2>
         <table>
             <c:set var="jsp" value="./editNew.jsp"/>
             <%@include file="editcommon.jsp" %>
             <tr>
                 <td colspan="3">
                     <form action="${pageContext.request.contextPath}/SPZServlet/edit" method="post">
-                        <input type="submit" value="Predat k analyze"/>
+                        <input type="submit" value="<f:message key='submitAnal'/>"/>
                         <input type="hidden" name="state" value="new"/>
+                        <input type="hidden" name="userid" value="${user.id}"/>
+                        <input type="hidden" name="spzid" value="${spz.id}"/>
                         <input type="hidden" name="newState" value="analysis"/>
                     </form>
                     <form action="${pageContext.request.contextPath}/SPZServlet/delete" method="post">    
-                        <input type="submit" value="Zrusit"/>
+                        <input type="submit" value="<f:message key='cancel'/>"/>
                         <input type="hidden" name="state" value="new"/>
+                        <input type="hidden" name="userid" value="${user.id}"/>
+                        <input type="hidden" name="spzid" value="${spz.id}"/>
                         <input type="hidden" name="newState" value="canceled"/>
                     </form>
                 </td>

@@ -16,6 +16,7 @@
         <link rel="stylesheet" href="styles/dcb.css" type="text/css"/>
     </head>
     <body>
+        <jsp:include page="headerspz.jsp"/>
         <h1>Systém servisní podpory</h1>
         <h1>Změna stavu</h1>
         Požadujete 'Zrušit' na SPZ:

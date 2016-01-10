@@ -16,13 +16,14 @@
         <link rel="stylesheet" href="styles/dcb.css" type="text/css"/>
     </head>
     <body>
+        <jsp:include page="headerSpzEdit.jsp"/>
         <h1><f:message key="pagetitle"/></h1>
         <table>
             <jsp:include page="editcommon.jsp"/>
         </table>
         <form action="${pageContext.request.contextPath}/SPZServlet/changeAnalyst" method="post">
             <label for="desc"><f:message key="descLabel"/></label>
-            <textarea nam="desc" cols="80" rows="5"></textarea>
+            <textarea name="desc" cols="80" rows="5"></textarea>
             <label for="analyst"><f:message key="analystLabel"/></label>
             <select name="analyst">
                 <c:forEach var="analyst" items="${analysts}">

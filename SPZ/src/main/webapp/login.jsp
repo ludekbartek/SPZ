@@ -20,10 +20,10 @@
         <form action="${pageContext.request.contextPath}/SPZServlet/login" method="post">
             <label for="login">Uživatelské jméno:</label>
             <input type="hidden" name="action" value="login"/>
-            <input type="text" width="15" name="j_username"/>
+            <input type="text" size="15"  maxlength="15" name="j_username"/>
             <br/>
             <label for="passwd">Heslo:</label>
-            <input type="password" width="20" name="j_password"/>
+            <input type="password" size="20" maxlength="20" name="j_password"/>
             <br/>
             <input type="submit" value="Přihlásit"/>
         </form>

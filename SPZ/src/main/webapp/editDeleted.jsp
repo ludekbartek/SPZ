@@ -15,6 +15,7 @@
         <link rel="stylesheet" href="styles/dcb.css" type="text/css"/>
     </head>
     <body>
+        <jsp:include page="headerspz.jsp"/>
         <h1>Informace o SPZ</h1>
         <c:set var="jsp" value="./editDeleted.jsp"/>
         <jsp:include page="editcommon.jsp"/>

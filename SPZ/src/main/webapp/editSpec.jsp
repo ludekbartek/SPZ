@@ -4,17 +4,20 @@
     Author     : bar
 --%>
 
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="f" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+
+<f:setBundle basename="editSpec"/>
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Informace o SPZ <c:out value="${spz.id}"/> (<c:out value="${spz.issuer}"/>)</title>
+        <title><f:message key="pageTitle"/> <c:out value="${spz.id}"/> (<c:out value="${spz.issuer}"/>)</title>
         <link rel="stylesheet" href="styles/dcb.css" type="text/css"/>
     </head>
     <body>
-        <h1>Informace o SPZ</h1>
+        <h1><f:message key="pageTitle"/></h1>
         <c:set var="jsp" value="./editSpec.jsp"/>
         <table>
             <jsp:include page="editcommon.jsp"/>
@@ -25,7 +28,7 @@
                 <input type="hidden" name="state" value="SPECIFIED"/>
                 <input type="hidden" name="userid" value="${user.id}"/>
                 <input type="hidden" name="newState" value="CANCELED"/>
-                <input type="submit" value="Zrusit"/>
+                <input type="submit" value="<f:message key='cancel'/>"/>
             </form>
         </c:if>
         <c:if test="${user.role==0}">
@@ -34,13 +37,13 @@
                 <input type="hidden" name="userid" value="${user.id}"/>
                 <input type="hidden" name="state" value="SPECIFIED"/>
                 <input type="hidden" name="newState" value="RANALYSIS"/>
-                <input type="submit" value="Odeslat zpet k analyze (nesouhlasime s resenim)"/>
+                <input type="submit" value="<f:message key='submit'/>"/>
             </form>
             <form action="${pageContext.request.contextPath}/SPZServlet/acceptsolution" method="post">
                 <input type="hidden" name="spzid" value="${spz.id}"/>
                 <input type="hidden" name="userid" value="${user.id}"/>
                 <input type="hidden" name="state" value="SPECIFIED"/>
-                <input type="submit" value="Schvalit reseni"/>
+                <input type="submit" value="<f:message key='acceptSol'/>"/>
             </form>    
         </c:if>
         <jsp:include page="listHistory.jsp"/>
