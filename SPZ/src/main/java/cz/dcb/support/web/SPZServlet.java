@@ -10,13 +10,11 @@ import cz.dcb.support.db.jpa.controllers.AttachmentJpaController;
 import cz.dcb.support.db.jpa.controllers.AttachmentManager;
 import cz.dcb.support.db.jpa.controllers.AttachmentNoteJpaController;
 import cz.dcb.support.db.jpa.controllers.AttachmentNoteManager;
-import cz.dcb.support.db.jpa.controllers.ConfiguratinspzManager;
-import cz.dcb.support.db.jpa.controllers.ConfigurationJpaController;
-import cz.dcb.support.db.jpa.controllers.ConfigurationManager;
 import cz.dcb.support.db.jpa.controllers.ConfigurationSpzJpaController;
 import cz.dcb.support.db.jpa.controllers.ConfigurationSpzManager;
 import cz.dcb.support.db.jpa.controllers.ProjectConfigurationJpaController;
 import cz.dcb.support.db.jpa.controllers.ProjectConfigurationManager;
+import cz.dcb.support.db.jpa.controllers.ProjectJpaController;
 import cz.dcb.support.db.jpa.controllers.ProjectManager;
 import cz.dcb.support.db.jpa.controllers.RolesJpaController;
 import cz.dcb.support.db.jpa.controllers.RolesManager;
@@ -41,6 +39,7 @@ import cz.dcb.support.db.jpa.controllers.UserManager;
 import cz.dcb.support.db.jpa.controllers.exceptions.NonexistentEntityException;
 import cz.dcb.support.db.jpa.entities.Attachment;
 import cz.dcb.support.db.jpa.entities.Configuration;
+import cz.dcb.support.db.jpa.entities.Project;
 import cz.dcb.support.db.jpa.entities.Spz;
 import cz.dcb.support.db.jpa.entities.SpzStates;
 import cz.dcb.support.db.jpa.entities.Spzanalyst;
@@ -92,8 +91,10 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.Properties;
 import java.util.ResourceBundle;
+import java.util.Set;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.servlet.annotation.MultipartConfig;
@@ -1879,8 +1880,20 @@ public class SPZServlet extends HttpServlet {
         request.getRequestDispatcher("/listConfigs.jsp").forward(request, response);
     }
 
-    private void listProjects(HttpServletRequest request, HttpServletResponse response) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    private void listProjects(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        User user = getUserByParameter(request);
+        UserAccessManager accessMan = new UserAccessJpaController(emf);
+        ProjectConfigurationManager projConfMan = new ProjectConfigurationJpaController(emf);
+        ProjectManager projMan = new ProjectJpaController(emf);
+        List<Configuration> configs = accessMan.getConfigsForUser(user.getId());
+        Set<Project> projects = new HashSet<>();
+        for(Configuration config:configs){
+            Integer projId = projConfMan.getProjectIdFor(config.getId());
+            projects.add(projMan.findProject(projId));
+        }
+        request.setAttribute("projects", projects);
+        request.setAttribute("user", userToEntity(user));
+        request.getRequestDispatcher("/listProjects.jsp").forward(request, response);
     }
 
 }
