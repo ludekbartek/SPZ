@@ -45,8 +45,8 @@ public class SPZWebEntity {
      private String solution;
      private String relNotes;
      private String solutionInfo;
-     private int projectId;
-     private int configId;
+     private Integer projectId;
+     private Integer configId;
      private List<SpzStateWebEntity> history;
      
     public String getSolutionInfo() {
@@ -57,19 +57,19 @@ public class SPZWebEntity {
         this.solutionInfo = solutionInfo;
     }
 
-    public int getProjectId() {
+    public Integer getProjectId() {
         return projectId;
     }
 
-    public void setProjectId(int projectId) {
+    public void setProjectId(Integer projectId) {
         this.projectId = projectId;
     }
 
-    public int getConfigId() {
+    public Integer getConfigId() {
         return configId;
     }
 
-    public void setConfigId(int configId) {
+    public void setConfigId(Integer configId) {
         this.configId = configId;
     }
 
