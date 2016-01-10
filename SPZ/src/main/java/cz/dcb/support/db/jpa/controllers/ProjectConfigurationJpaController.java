@@ -7,6 +7,7 @@ package cz.dcb.support.db.jpa.controllers;
 
 import cz.dcb.support.db.jpa.controllers.exceptions.NonexistentEntityException;
 import cz.dcb.support.db.jpa.entities.Configuration;
+import cz.dcb.support.db.jpa.entities.Project;
 import cz.dcb.support.db.jpa.entities.Projectconfiguration;
 import java.io.Serializable;
 import java.util.List;
@@ -152,7 +153,8 @@ public class ProjectConfigurationJpaController implements Serializable, ProjectC
         try{
             Query query = em.createQuery("select projconf.projectid from Projectconfiguration projconf where PROJCONF.configurationid=:confId");
             query.setParameter("confId", confId);
-            projId = query.getFirstResult();
+            List<Integer> projectIds = query.getResultList();
+            projId = (projectIds.isEmpty()?null:projectIds.get(0));
         }finally{
             em.close();
         }
