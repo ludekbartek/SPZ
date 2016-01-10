@@ -6,6 +6,7 @@
 package cz.dcb.support.db.jpa.controllers;
 
 import cz.dcb.support.db.jpa.controllers.exceptions.NonexistentEntityException;
+import cz.dcb.support.db.jpa.entities.Configuration;
 import cz.dcb.support.db.jpa.entities.User;
 import cz.dcb.support.db.jpa.entities.Useraccess;
 import cz.dcb.support.web.entities.Roles;
@@ -41,5 +42,7 @@ public interface UserAccessManager {
     int getUseraccessCount();
 
     public List<Useraccess> userWithAccess(Roles roles);
+
+    public List<Configuration> getConfigsForUser(Integer id);
     
 }

@@ -6,6 +6,7 @@
 package cz.dcb.support.db.jpa.controllers;
 
 import cz.dcb.support.db.jpa.controllers.exceptions.NonexistentEntityException;
+import cz.dcb.support.db.jpa.entities.Configuration;
 import cz.dcb.support.db.jpa.entities.User;
 import cz.dcb.support.db.jpa.entities.Useraccess;
 import cz.dcb.support.web.entities.Roles;
@@ -192,6 +193,20 @@ public class UserAccessJpaController implements Serializable, UserAccessManager 
             em.close();
         }
         return userAccessList;
+    }
+
+    @Override
+    public List<Configuration> getConfigsForUser(Integer id) {
+        EntityManager em = getEntityManager();
+        List<Configuration> confs = null;
+        try{
+            Query query = em.createQuery("select conf from Configuration conf where conf.id in (select ua.configurationid from Useraccess ua where ua.userid=:userid)");
+            query.setParameter("userid", id);
+            confs = query.getResultList();
+        }finally{
+            em.close();
+        }
+        return confs;
     }
     
 }
