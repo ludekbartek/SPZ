@@ -6,6 +6,8 @@
 package cz.dcb.support.web.entities;
 
 import cz.dcb.support.db.exceptions.SPZException;
+import cz.dcb.support.db.jpa.entities.Configuration;
+import cz.dcb.support.db.jpa.entities.Project;
 import cz.dcb.support.db.jpa.entities.Spzstate;
 import cz.dcb.support.xml.HTMLTransformer;
 import java.util.Collections;
@@ -45,9 +47,27 @@ public class SPZWebEntity {
      private String solution;
      private String relNotes;
      private String solutionInfo;
-     private Integer projectId;
-     private Integer configId;
+     private Project project;
+     private Configuration config;
+     
      private List<SpzStateWebEntity> history;
+
+    public Project getProject() {
+        return project;
+    }
+
+    public void setProject(Project project) {
+        this.project = project;
+    }
+
+    public Configuration getConfig() {
+        return config;
+    }
+
+    public void setConfig(Configuration config) {
+        this.config = config;
+    }
+     
      
     public String getSolutionInfo() {
         return solutionInfo;
@@ -55,22 +75,6 @@ public class SPZWebEntity {
 
     public void setSolutionInfo(String solutionInfo) {
         this.solutionInfo = solutionInfo;
-    }
-
-    public Integer getProjectId() {
-        return projectId;
-    }
-
-    public void setProjectId(Integer projectId) {
-        this.projectId = projectId;
-    }
-
-    public Integer getConfigId() {
-        return configId;
-    }
-
-    public void setConfigId(Integer configId) {
-        this.configId = configId;
     }
 
     public String getRelNotes() {
