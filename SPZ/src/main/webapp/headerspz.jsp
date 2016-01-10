@@ -22,6 +22,7 @@
 <form action="${pageContext.request.contextPath}/SPZServlet/listspz" method="post">
     <input type="hidden" name="projectid" value="${spz.projectId}"/>
     <input type="hidden" name="configid" value="${spz.configId}"/>
+    <input type="hidden" name="spzid" value="${spz.id}"/>
     <input type="submit" value="${confName}"/>
     <input type="hidden" name="userid" value="${user.id}"/>
 </form>
