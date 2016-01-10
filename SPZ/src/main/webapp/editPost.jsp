@@ -7,17 +7,17 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="f" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<f:setBundle basename="editPost"/>
+<f:setBundle basename="editPost" var="loc"/>
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title><f:message key="pageTitle"/> (${user.login})</title>
+        <title><f:message key="pageTitle" bundle="${loc}"/> (${user.login})</title>
         <link rel="stylesheet" href="styles/dcb.css" type="text/css"/>
     </head>
     <body>
         <jsp:include page="headerspz.jsp"/>
-        <h2><f:message key="pageTitle"/></h2>
+        <h2><f:message key="pageTitle" bundle="${loc}"/></h2>
         <c:set var="jsp" value="./editPost.jsp"/>
         <table>
             <%@include file="editcommon.jsp" %>
@@ -25,7 +25,7 @@
                 <td colspan="3">
                     <c:if test="${user.role!='0'}">
                         <form action="${pageContext.request.contextPath}/SPZServlet/editSPZ" method="post">
-                            <input type="submit" value="<f:message key='submitAnal'/>"/>
+                            <input type="submit" value="<f:message key='submitAnal' bundle="${loc}"/>"/>
                             <input type="hidden" name="spzid" value="${spz.id}"/>
                             <input type="hidden" name="state" value="POSTED"/>
                             <input type="hidden" name="userid" value="${user.id}"/>
@@ -34,7 +34,7 @@
                     </c:if>
                     <form action="${pageContext.request.contextPath}/SPZServlet/delete" method="post">    
                         <input type="hidden" name="spzid" value="${spz.id}"/>
-                        <input type="submit" value="<f:message key='cancel'/>"/>
+                        <input type="submit" value="<f:message key='cancel' bundle="${loc}"/>"/>
                         <input type="hidden" name="newstate" value="CANCELED"/>
                         <input type="hidden" name="state" value="POSTED"/>
                         <input type="hidden" name="userid" value="${user.id}"/>
@@ -66,12 +66,11 @@
             
         </form>-->
         <jsp:include page="addNote.jsp"/>
-        <p style="text-align:right;">
+        <p style="text-align:right;"/>
             <form action="${pageContext.request.contextPath}/SPZServlet/updateSPZ" method="post">
-                <input type="button" value="Zmena SPZ"/>
+                <input type="submit" value="<f:message key='changeSPZ' bundle="${loc}"/>"/>
                 <input type="hidden" name="spzid" value="${spz.id}"/>
                 <input type="hidden" name="userid" value="${user.id}"/>
             </form>
-        </p>
     </body>
 </html>
