@@ -80,6 +80,13 @@ create table SUSER.SpzStateNote
     stateId int
 );
 
+create table SUSER.ConfigurationSpz
+(
+    id int primary key not null generated always as identity,
+    configurationid int,
+    spzid int
+);
+
 create table SUSER.NoteIssuer
 (   
     id int primary key not null generated always as identity,
