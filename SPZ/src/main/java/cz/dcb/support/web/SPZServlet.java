@@ -10,6 +10,14 @@ import cz.dcb.support.db.jpa.controllers.AttachmentJpaController;
 import cz.dcb.support.db.jpa.controllers.AttachmentManager;
 import cz.dcb.support.db.jpa.controllers.AttachmentNoteJpaController;
 import cz.dcb.support.db.jpa.controllers.AttachmentNoteManager;
+import cz.dcb.support.db.jpa.controllers.ConfiguratinspzManager;
+import cz.dcb.support.db.jpa.controllers.ConfigurationJpaController;
+import cz.dcb.support.db.jpa.controllers.ConfigurationManager;
+import cz.dcb.support.db.jpa.controllers.ConfigurationSpzJpaController;
+import cz.dcb.support.db.jpa.controllers.ConfigurationSpzManager;
+import cz.dcb.support.db.jpa.controllers.ProjectConfigurationJpaController;
+import cz.dcb.support.db.jpa.controllers.ProjectConfigurationManager;
+import cz.dcb.support.db.jpa.controllers.ProjectManager;
 import cz.dcb.support.db.jpa.controllers.RolesJpaController;
 import cz.dcb.support.db.jpa.controllers.RolesManager;
 import cz.dcb.support.db.jpa.controllers.SpzAnalystJpaController;
@@ -32,6 +40,7 @@ import cz.dcb.support.db.jpa.controllers.UserJpaController;
 import cz.dcb.support.db.jpa.controllers.UserManager;
 import cz.dcb.support.db.jpa.controllers.exceptions.NonexistentEntityException;
 import cz.dcb.support.db.jpa.entities.Attachment;
+import cz.dcb.support.db.jpa.entities.Configuration;
 import cz.dcb.support.db.jpa.entities.Spz;
 import cz.dcb.support.db.jpa.entities.SpzStates;
 import cz.dcb.support.db.jpa.entities.Spzanalyst;
@@ -270,6 +279,12 @@ public class SPZServlet extends HttpServlet {
                 case "/acceptspz":confirm(request,response);
                             break;
                 case "/invoicespz":invoice(request,response);
+                            break;
+                case "/listconfigurations":
+                            listConfigs(request,response);
+                            break;
+                case "/listprojects":
+                            listProjects(request,response);
                             break;
                 default:
                     StringBuilder errorMesg = new StringBuilder("Invalid action").append(action).append(". Using list instead.");
@@ -569,6 +584,10 @@ public class SPZServlet extends HttpServlet {
         List<Spz> spzs = spzManager.findSpzEntities();
         List<SPZWebEntity> entities = spzToEntities(spzs);
         UserWebEntity user = requestToUserWebEntity(request);
+        if(request.getParameter("spzid")!=null){
+            SPZWebEntity spz = spzToEntity(getSpzByParameter(request));
+            request.setAttribute("spz", spz);
+        }
         request.setAttribute("user", user);
         LOGGER.log(Level.INFO,String.format("userid: %d",user.getId()));
         request.setAttribute("spzs", entities);
@@ -806,6 +825,8 @@ public class SPZServlet extends HttpServlet {
         SpzStateManager stateManager = new SpzStateJpaController(emf);
         SpzStatesManager statesManager = new SpzStatesJpaController(emf);
         SpzAnalystManager analystManager = new SpzAnalystJpaController(emf);
+        ConfigurationSpzManager confSpzManager = new ConfigurationSpzJpaController(emf);
+        ProjectConfigurationManager projConfManager = new ProjectConfigurationJpaController(emf);
         UserManager userManger = new UserJpaController(emf);
         List<SpzStateWebEntity> history;
         
@@ -819,6 +840,13 @@ public class SPZServlet extends HttpServlet {
             }
         }
         entity.setId(spz.getId());
+        Integer confId = confSpzManager.getSpzConfiguration(spz.getId());
+        if(confId!=null){
+            entity.setConfigId(confSpzManager.getSpzConfiguration(spz.getId()));
+            if(entity.getConfigId()!=null){
+                 entity.setProjectId(projConfManager.getProjectIdFor(entity.getConfigId()));
+            }
+        }
         entity.setShortName(spz.getShortName());
         entity.setReqNumber(spz.getReqnumber());
         entity.setIssueDate(spz.getIssuedate());
@@ -1687,9 +1715,18 @@ public class SPZServlet extends HttpServlet {
         request.getRequestDispatcher("/acceptSol.jsp").forward(request, response);
     }
 
-    private Spz getSpzByParameter(HttpServletRequest request) throws NumberFormatException {
+    private Spz getSpzByParameter(HttpServletRequest request){
         String spzIdStr = request.getParameter("spzid");
-        int spzId = Integer.parseInt(spzIdStr);
+        if(spzIdStr==null){
+            return null;
+        }
+        int spzId=-1;
+        try{
+            spzId = Integer.parseInt(spzIdStr);
+        }catch(NumberFormatException nfe){
+            LOGGER.log(Level.SEVERE,"SPZ doesn't contain valid id: ",nfe);
+            return null;
+        }
         SpzManager spzMan = new SpzJpaController(emf);
         Spz spz = spzMan.findSpz(spzId);
         return spz;
@@ -1816,6 +1853,34 @@ public class SPZServlet extends HttpServlet {
         spzAnalyst.setSpzid(spz.getId());
         spzAnalyst.setUserid(analystIdInt);
         analystManager.create(spzAnalyst);
+    }
+
+    private void listConfigs(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        ConfigurationSpzManager confSpzMan = new ConfigurationSpzJpaController(emf);
+        ProjectConfigurationManager projConfMan = new ProjectConfigurationJpaController(emf);
+        Spz spz = getSpzByParameter(request);
+        User user = getUserByParameter(request);
+        List<Configuration> configs;
+        SPZWebEntity spzEnt = null;
+        if(spz!=null){
+            Integer confId = confSpzMan.getSpzConfiguration(spz.getId());
+            Integer projId = projConfMan.getProjectIdFor(confId);
+            configs = projConfMan.getProjectConfigurations(projId);
+            spzEnt = spzToEntity(spz);
+        }else{
+            UserAccessManager accessMan = new UserAccessJpaController(emf);
+            configs = accessMan.getConfigsForUser(user.getId());
+        }
+        request.setAttribute("user", userToEntity(user));
+        request.setAttribute("configs", configs);
+        if(spzEnt!=null){
+            request.setAttribute("spz", spzEnt);
+        }
+        request.getRequestDispatcher("/listConfigs.jsp").forward(request, response);
+    }
+
+    private void listProjects(HttpServletRequest request, HttpServletResponse response) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }
