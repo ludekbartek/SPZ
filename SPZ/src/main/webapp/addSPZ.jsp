@@ -9,11 +9,13 @@ pri editaci pouze popisy (viz stara verze).
 -->
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@taglib prefix="f" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<f:setBundle basename="addSpz"/>
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-       <title>Nova SPZ</title>
+        <title><f:message key="pageTitle"/></title>
        <!-- <script>
            procedure copy(where, wh)
            {
@@ -43,10 +45,10 @@ pri editaci pouze popisy (viz stara verze).
         <h1>
             <c:choose>
                     <c:when test="${action=='add'}">
-                        Nova SPZ
+                        <f:message key="pageTitle"/>
                     </c:when>
                     <c:otherwise>
-                        Uprava SPZ
+                        <f:message key="pageTitleUpd"/>
                     </c:otherwise>
             </c:choose>
         </h1>
@@ -60,69 +62,69 @@ pri editaci pouze popisy (viz stara verze).
             <form action="${pageContext.request.contextPath}/SPZServlet/addspz" method="post">
                 <input type="hidden" name="userid" value="${user.id}"/>
                 <div class="formItem">
-                    <span class="label"><label class="label" for="shortname">Nazev</label></span>
+                    <span class="label"><label class="label" for="shortname"><f:message key="label"/></label></span>
                     <span class="input"><input type="text" name="shortname" maxlength="50" size="50" value="<c:if test="${!empty spz.reqnumber}">${spz.reqnumber}</c:if>"></span>
                     <!--<input type="hidden" name="shortname"/>-->
                 </div>
                 <div class="formItem">
-                    <span class="label"><label for="contactperson">Kontakt</label></span>
+                    <span class="label"><label for="contactperson"><f:message key="contactperson"/></label></span>
                     <span class="input"><input type="text" name="contactperson" value="<c:if test="${!empty spz.contactperson}">${spz.contactperson}</c:if>"/></span>
                 </div>
                 <div class="formItem">
-                    <span class="label"><label class="label" for="requestdescription">Zadani</label></span>
+                    <span class="label"><label class="label" for="requestdescription"><f:message key="requestdecription"/></label></span>
                     <span class="input"><textarea name="requestdescription" rows="5" cols="80"></textarea></span>
                 </div>
                 <div class="formItem">
-                    <span class="label"><label for="reqtype">Typ:</label></span>
+                    <span class="label"><label for="reqtype"><f:message key="reqtype"/>:</label></span>
                     <span class="input">
                         <select name="reqtype">
-                            <option value="placeny">Placeny</option>
-                            <option value="neplaceny">Neplaceny</option>
+                            <option value="placeny"><f:message key="placeny"/></option>
+                            <option value="neplaceny"><f:message key="neplaceny"/></option>
                         </select>
                     </span>
                 </div>
                 <div class="formItem">
-                    <span class="label">Kategorie:</span>
+                    <span class="label"><f:message key="category"/>:</span>
                     <span class="input">
                         <select name="category">
-                            <option value="1" selected="true">Standardni</option>
-                            <option value="0">Nestandardni</option>
+                            <option value="1" selected><f:message key="standard"/></option>
+                            <option value="0"><f:message key="nonstandard"/></option>
                         </select>
                     </span>
                 </div>
                 <div class="formItem">
-                    <span class="label"><label for="priority">Priorita</label></span>
+                    <span class="label"><label for="priority"><f:message key="priority"/></label></span>
                     <span class="input">
                         <select name="priority">
-                            <option value="1" <c:if test="${priority=='1'}">selected="true"</c:if>>1</option>
-                            <option value="2" <c:if test="${priority=='2'}">selected="true"</c:if>>2</option>
-                            <option value="3" <c:if test="${priority=='3' or empty priority}">selected="true"</c:if>>3</option>
-                            <option value="4" <c:if test="${priority=='4'}">selected="true"</c:if>>4</option>
-                            <option value="5" <c:if test="${priority=='5'}">selected="true"</c:if>>5</option>
+                            <option value="1" <c:if test="${priority=='1'}">selected</c:if>>1</option>
+                            <option value="2" <c:if test="${priority=='2'}">selected</c:if>>2</option>
+                            <option value="3" <c:if test="${priority=='3' or empty priority}">selected</c:if>>3</option>
+                            <option value="4" <c:if test="${priority=='4'}">selected</c:if>>4</option>
+                            <option value="5" <c:if test="${priority=='5'}">selected</c:if>>5</option>
                         </select>
                     </span>
                 </div>
                         
                 <div class="formItem">
-                    <span class="label"><label for="desc">Poznamka</label></span>
+                    <span class="label"><label for="desc"><f:message key="desc"/></label></span>
                     <span class="input">
                         <textarea name="desc" cols="80" rows="5"></textarea>
                     </span>
                 </div>
                 <div class="formItem">
                     <input type="checkbox" id="ext" name="external" value="1"/>
-                    <label for="ext">Viditelna i pro zakaznika?</label>
+                    <label for="ext"><f:message key="ext"/></label>
                 </div>
                 <div class="file">
-                    <span class="label"><label for="file1">Soubor 1:</label></span>
+                    <span class="label"><label for="file1"><f:message key="file1"/></label></span>
                     <span class="input"><input type="file" name="file1"/></span>
                 </div>
                 <div class="file">
-                    <span class="label"><label for="file2">Soubor 2:</label></span>
+                    <span class="label"><label for="file2"><f:message key="file2"/>:</label></span>
                     <span class="input"><input type="file" name="file2"/></span>
                 </div>
-                        <span class="formItem"><input type="submit" value="Registrovat novou SPZ" onfocus="shortname.value = reqnumber.value;"/></span>
-        </form>
+                <span class="formItem"><input type="submit" value="<f:message key="register"/>" onfocus="shortname.value = reqnumber.value;"/></span>
+            </form>
         </div>
     </body>
 </html>
