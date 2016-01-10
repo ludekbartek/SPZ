@@ -71,7 +71,7 @@ pri editaci pouze popisy (viz stara verze).
                     <span class="input"><input type="text" name="contactperson" value="<c:if test="${!empty spz.contactperson}">${spz.contactperson}</c:if>"/></span>
                 </div>
                 <div class="formItem">
-                    <span class="label"><label class="label" for="requestdescription"><f:message key="requestdecription"/></label></span>
+                    <span class="label"><label class="label" for="requestdescription"><f:message key="requestdescription"/></label></span>
                     <span class="input"><textarea name="requestdescription" rows="5" cols="80"></textarea></span>
                 </div>
                 <div class="formItem">
