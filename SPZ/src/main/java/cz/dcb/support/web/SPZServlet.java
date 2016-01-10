@@ -10,6 +10,8 @@ import cz.dcb.support.db.jpa.controllers.AttachmentJpaController;
 import cz.dcb.support.db.jpa.controllers.AttachmentManager;
 import cz.dcb.support.db.jpa.controllers.AttachmentNoteJpaController;
 import cz.dcb.support.db.jpa.controllers.AttachmentNoteManager;
+import cz.dcb.support.db.jpa.controllers.ConfigurationJpaController;
+import cz.dcb.support.db.jpa.controllers.ConfigurationManager;
 import cz.dcb.support.db.jpa.controllers.ConfigurationSpzJpaController;
 import cz.dcb.support.db.jpa.controllers.ConfigurationSpzManager;
 import cz.dcb.support.db.jpa.controllers.ProjectConfigurationJpaController;
@@ -828,6 +830,7 @@ public class SPZServlet extends HttpServlet {
         SpzAnalystManager analystManager = new SpzAnalystJpaController(emf);
         ConfigurationSpzManager confSpzManager = new ConfigurationSpzJpaController(emf);
         ProjectConfigurationManager projConfManager = new ProjectConfigurationJpaController(emf);
+        ConfigurationManager confMan = new ConfigurationJpaController(emf);
         UserManager userManger = new UserJpaController(emf);
         List<SpzStateWebEntity> history;
         
@@ -843,9 +846,11 @@ public class SPZServlet extends HttpServlet {
         entity.setId(spz.getId());
         Integer confId = confSpzManager.getSpzConfiguration(spz.getId());
         if(confId!=null){
-            entity.setConfigId(confSpzManager.getSpzConfiguration(spz.getId()));
-            if(entity.getConfigId()!=null){
-                 entity.setProjectId(projConfManager.getProjectIdFor(entity.getConfigId()));
+            entity.setConfig(confMan.findConfiguration(confId));
+            if(entity.getConfig()!=null){
+                ProjectManager projManager = new ProjectJpaController(emf);
+                Integer projId = projConfManager.getProjectIdFor(confId);
+                entity.setProject(projManager.findProject(projId));
             }
         }
         entity.setShortName(spz.getShortName());
