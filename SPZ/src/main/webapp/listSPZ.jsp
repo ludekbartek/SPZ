@@ -47,7 +47,7 @@
                     </span>
                     <input type="submit" value="Hledej"/>
                 </form>
-                <form action="${pageContext.request.contextPath}/SPZServlet/reports" method="post" class="rightfloat">    
+                <form action="${pageContext.request.contextPath}/SPZServlet/reports" method="post" class="leftfloat">    
                     <input type="hidden" name="userid" value="${user.id}"/>
                     <input type="submit" value='<f:message key="reports"/>'/>
                 </form>
