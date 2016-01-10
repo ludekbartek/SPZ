@@ -158,7 +158,12 @@ public class ConfigurationSpzJpaController implements ConfiguratinspzManager, Co
         try{
             Query query = em.createQuery("select CONFSPZ.configurationid from Configurationspz CONFSPZ where  CONFSPZ.spzid =:spzid");
             query.setParameter("spzid", spzId);
-            confId = query.getFirstResult();
+            List<Integer> confIds = query.getResultList();
+            if(confIds.size()>0){
+               confId=confIds.get(0);
+            }else{
+                confId=null;
+            }
         }finally{
             em.close();
         }
