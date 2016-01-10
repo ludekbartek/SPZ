@@ -235,7 +235,7 @@ public class SPZServlet extends HttpServlet {
             //String action = request.getParameter("action");
             switch(action.toLowerCase()){
                 case "/login":authenticate(request,response);
-                              listSpz(request, response);
+                              listProjects(request, response);
                             break;
                 case "/addspz":addSpz(request,response);
                             break;
@@ -1740,9 +1740,15 @@ public class SPZServlet extends HttpServlet {
 
     private User getUserByParameter(HttpServletRequest request) {
         String userIdStr = request.getParameter("userid");
-        int userId = Integer.parseInt(userIdStr);
         UserManager userMan = new UserJpaController(emf);
-        User user = userMan.findUser(userId);
+        User user;
+        try{
+            int userId = Integer.parseInt(userIdStr);
+            user = userMan.findUser(userId);
+        }catch(NumberFormatException nfe){
+            user = userMan.findUserByLogin(request.getParameter("login"));
+        }
+        
         return user;
     }
 
