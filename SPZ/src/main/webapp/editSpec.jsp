@@ -17,6 +17,7 @@
         <link rel="stylesheet" href="styles/dcb.css" type="text/css"/>
     </head>
     <body>
+        <jsp:include page="headerspz.jsp"/>
         <h1><f:message key="pageTitle"/></h1>
         <c:set var="jsp" value="./editSpec.jsp"/>
         <table>
