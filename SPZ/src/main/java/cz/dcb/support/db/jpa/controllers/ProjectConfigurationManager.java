@@ -6,6 +6,7 @@
 package cz.dcb.support.db.jpa.controllers;
 
 import cz.dcb.support.db.jpa.controllers.exceptions.NonexistentEntityException;
+import cz.dcb.support.db.jpa.entities.Configuration;
 import cz.dcb.support.db.jpa.entities.Projectconfiguration;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -31,5 +32,9 @@ public interface ProjectConfigurationManager {
     EntityManager getEntityManager();
 
     int getProjectconfigurationCount();
+
+    public Integer getProjectIdFor(Integer confId);
+
+    public List<Configuration> getProjectConfigurations(Integer projId);
     
 }
