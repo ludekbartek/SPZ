@@ -12,7 +12,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title><f:message key="pageTitle"/>Informace o SPZ <c:out value="${spz.id}"/> (<c:out value="${spz.issuer}"/>)</title>
+        <title><f:message key="pageTitle"/> <c:out value="${spz.id}"/> (<c:out value="${spz.issuer}"/>)</title>
         <link rel="stylesheet" href="styles/dcb.css" type="text/css"/>
     </head>
     <body>
