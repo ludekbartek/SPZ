@@ -97,7 +97,7 @@
                         <c:out value="${item.priority}"/>
                     </td>
                     <td>
-                        <c:out value="${item.requestType}"/>
+                        <f:message key="${item.requestType}"/>
                     </td>
                     <td>
                         zde bude zadavatel
@@ -128,8 +128,8 @@
                     </td>
                     <td>
                         <c:choose>
-                            <c:when test="${item.category=='1'}">Standardni</c:when>
-                            <c:otherwise>Nestandardni</c:otherwise>
+                            <c:when test="${item.category=='1'}"><f:message key="standard"/></c:when>
+                            <c:otherwise><f:message key="nonstandard"/></c:otherwise>
                         </c:choose>
                     </td>
                     <td>
