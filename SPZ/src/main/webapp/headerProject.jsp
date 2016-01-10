@@ -13,15 +13,11 @@
                    url="jdbc:derby://localhost:1527/support"
                    user="suser"
                    password="suser"/>
-<c:set var="projectName" value="BT"/>
-<c:if test="${not empty $spz.projectid}">
-<sql:query sql='select name from SPZ.PROJECT where id=${spz.projectid}' var="projectName"/>
-</c:if>
 <jsp:include page="header.jsp"/>
 &gt;&gt;
 <form action="${pageContext.request.contextPath}/SPZServlet/listConfigurations" method="post">
-    <input type="hidden" name="projectid" value="${spz.projectid}"/>
+    <input type="hidden" name="projectid" value="${spz.project.id}"/>
     <input type="hidden" name="userid" value="${user.id}"/>
     <input type="hidden" name="spzid" value="${spz.id}"/>
-    <input type="submit" value="${projectName}"/>
+    <input type="submit" value="${spz.project.name}"/>
 </form>
