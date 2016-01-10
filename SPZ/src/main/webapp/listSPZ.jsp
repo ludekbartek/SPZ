@@ -16,7 +16,7 @@
         <link rel="stylesheet" href="styles/dcb.css" type="text/css"/>
     </head>
     <body>
-        <jsp:include page="headerspz.jsp"/>
+        <jsp:include page="headerProject.jsp"/>
         <c:if test="${! empty error}">
             <div id="erorr" style="background-color: yellow;border-color: red;">
                 <c:out value="${error}"/>
