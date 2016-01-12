@@ -101,6 +101,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.Part;
+import cz.dcb.support.db.jpa.controllers.ConfigurationspzManager;
+import cz.dcb.support.db.jpa.entities.Configurationspz;
 
 /**
  *
@@ -337,12 +339,31 @@ public class SPZServlet extends HttpServlet {
             SpzStateManager stateManager = new SpzStateJpaController(emf);
             SpzStatesManager statesManager = new SpzStatesJpaController(emf);
             UserWebEntity user = requestToUserWebEntity(request);
+            Configuration conf = getConfigurationFromRequest(request);
+            Project proj = getProjectFromRequest(request);
+            
+            if(conf==null|| user==null || proj==null){
+                request.setAttribute("error", "Missing either configuration or user id.");
+                if(conf!=null){
+                    request.setAttribute("config", conf);
+                }
+                if(user!=null){
+                    request.setAttribute("user", user);
+                }
+                if(proj!=null){
+                    request.setAttribute("project", proj);
+                }
+                dispError(request, response, "Request is missing either configid or userid.");
+                return;
+            }
             Spz spz = null;
             try {
                 spz = requestParamsToSpz(request.getParameterMap());
             } catch (SPZException ex) {
                 LOGGER.log(Level.SEVERE, "Chyba pri prevodu parametru na SPZ.", ex);
                 request.setAttribute("user", user);
+                request.setAttribute("config", conf);
+                request.setAttribute("project", proj);
                 request.setAttribute("errror", "Chyba pri prevodu parametru na SPZ:" + ex);
                 request.getRequestDispatcher("./addSPZ.jsp").forward(request, response);
                 return;
@@ -360,13 +381,20 @@ public class SPZServlet extends HttpServlet {
                 spz.setReqnumber(String.format("%05d",spz.getId()));
                 manager.edit(spz);
                 createNewState(state, spz, user.getLogin());
-
+                
                 stateManager.create(state);
                 state.setCurrentstate(1);
                 stateManager.edit(state);
                 Spzstates states = createSpzStates(spz,state);
                 statesManager.create(states,entMan);
                 transaction.commit();
+                try{
+                    createSpzConfiguration(spz,conf);
+                }catch(SPZException ex){
+                    LOGGER.log(Level.SEVERE,"Unable to add configuration - spz relation.",ex);
+                    dispError(request, response, "Unable to add configuration - spz relation");
+                    return;
+                }
                 
                 if(request.getParameterMap().containsKey("desc")){
                     request.setAttribute("jsp", "./list.jsp");
@@ -376,6 +404,9 @@ public class SPZServlet extends HttpServlet {
                 
                 List<Spz> spzs = manager.findSpzEntities();
                 request.setAttribute("spzs", spzToEntities(spzs));
+                request.setAttribute("user", user);
+                request.setAttribute("config", conf);
+                request.setAttribute("project", proj);
             }catch(Exception ex){
                 try {
                     manager.destroy(spz.getId());
@@ -401,8 +432,12 @@ public class SPZServlet extends HttpServlet {
         }else{
             request.setAttribute("action","add");
             Spz spz = null;
+            Project project = null;
+            Configuration conf = null;
             try{
                 spz = requestParamsToSpz(request.getParameterMap());
+                conf = getConfigurationFromRequest(request);
+                project = getProjectFromRequest(request);
             }catch(SPZException ex){
                 request.setAttribute("error", "Chyba pri prevodu parametru na SPZ: "+ex);
             }
@@ -412,6 +447,8 @@ public class SPZServlet extends HttpServlet {
             }
             UserWebEntity user = requestToUserWebEntity(request);
             request.setAttribute("user", user);
+            request.setAttribute("config",conf);
+            request.setAttribute("project", project);
             request.getRequestDispatcher("/addSPZ.jsp").forward(request,response);
             return;
         }
@@ -441,14 +478,20 @@ public class SPZServlet extends HttpServlet {
         SpzManager manager = new SpzJpaController(emf);
         SpzStateManager stateManager = new SpzStateJpaController(emf);
         Integer id = getSpzId(request.getParameterMap());
+        Configuration conf = getConfigurationFromRequest(request);
+        Project proj = getProjectFromRequest(request);
         User user = getUserByParameter(request);
         UserWebEntity userWeb = userToEntity(user);
         request.setAttribute("user", userWeb);
+        request.setAttribute("config", conf);
+        request.setAttribute("project", proj);
         spz = manager.findSpz(id);
         if(request.getParameterMap().containsKey("newstate")){
             
             changeState(spz,request,response);
             request.setAttribute("user", userWeb);
+            request.setAttribute("config", conf);
+            request.setAttribute("project", proj);
             listSpz(request, response);
             return;
         }
@@ -587,11 +630,16 @@ public class SPZServlet extends HttpServlet {
         List<Spz> spzs = spzManager.findSpzEntities();
         List<SPZWebEntity> entities = spzToEntities(spzs);
         UserWebEntity user = requestToUserWebEntity(request);
+        Project project = getProjectFromRequest(request);
+        Configuration conf = getConfigurationFromRequest(request);
+                
         if(request.getParameter("spzid")!=null){
             SPZWebEntity spz = spzToEntity(getSpzByParameter(request));
             request.setAttribute("spz", spz);
         }
         request.setAttribute("user", user);
+        request.setAttribute("project", project);
+        request.setAttribute("config", conf);
         LOGGER.log(Level.INFO,String.format("userid: %d",user.getId()));
         request.setAttribute("spzs", entities);
         request.getRequestDispatcher("/listSPZ.jsp").forward(request, response);
@@ -1431,8 +1479,12 @@ public class SPZServlet extends HttpServlet {
         //Spz spz = requestParamsToSpz(request.getParameterMap());
         SPZWebEntity entity = spzToEntity(spz);
         UserWebEntity user = requestToUserWebEntity(request);
+        Project proj = getProjectFromRequest(request);
+        Configuration conf = getConfigurationFromRequest(request);
         request.setAttribute("spz", entity);
         request.setAttribute("user", user);
+        request.setAttribute("project", proj);
+        request.setAttribute("config", conf);
         request.getRequestDispatcher("/setSolution.jsp").forward(request, response);
     }
 
@@ -1563,6 +1615,9 @@ public class SPZServlet extends HttpServlet {
         SpzStateNoteManager stateNoteManager = new SpzStateNoteJpaController(emf);
         SpzStateManager stateManager = new SpzStateJpaController(emf);
         SpzNoteManager noteManager = new SpzNoteJpaController(emf);
+        Project proj = getProjectFromRequest(request);
+        Configuration conf = getConfigurationFromRequest(request);
+        
         UserWebEntity user = requestToUserWebEntity(request);
         
         Spz spz = spzManager.findSpz(spzId);
@@ -1586,6 +1641,8 @@ public class SPZServlet extends HttpServlet {
                 jsp="./listSpz.jsp";
             }
             request.setAttribute("user", user);
+            request.setAttribute("config", conf);
+            request.setAttribute("project", proj);
             request.getRequestDispatcher(jsp).forward(request,response);
             return;
         }
@@ -1595,6 +1652,8 @@ public class SPZServlet extends HttpServlet {
         if(noteText==null){
             request.setAttribute("error", "Missing note description.");
             request.setAttribute("user", user);
+            request.setAttribute("project", proj);
+            request.setAttribute("config", conf);
             //request.getRequestDispatcher("/editPost.jsp").forward(request, response);
             editSpz(request, response);
             return;
@@ -1619,6 +1678,8 @@ public class SPZServlet extends HttpServlet {
         }
         request.setAttribute("spz", spzToEntity(spz));
         request.setAttribute("user", user);
+        request.setAttribute("project", proj);
+        request.setAttribute("config", conf);
         request.getRequestDispatcher("/editPost.jsp").forward(request, response);
         
     }
@@ -1633,13 +1694,19 @@ public class SPZServlet extends HttpServlet {
         int spzId = getSpzId(request.getParameterMap());
         Spz spz = spzManager.findSpz(spzId);
         UserWebEntity user = requestToUserWebEntity(request);
+        Project proj = getProjectFromRequest(request);
+        Configuration conf = getConfigurationFromRequest(request);
         SPZWebEntity spzWeb = spzToEntity(spz);
+        
         if(!request.getParameterMap().containsKey("analyst")){
             List<UserWebEntity> analysts=getAnalysts();
             try {
+                
                 request.setAttribute("analysts", analysts);
                 request.setAttribute("user", user);
                 request.setAttribute("spz", spzWeb);
+                request.setAttribute("project", proj);
+                request.setAttribute("config", conf);
                 request.getRequestDispatcher("/editAnalyst.jsp").forward(request, response);
             } catch (ServletException | IOException ex) {
                 try {
@@ -1656,6 +1723,8 @@ public class SPZServlet extends HttpServlet {
             List<SPZWebEntity> spzEntities = spzToEntities(spzs);
             request.setAttribute("spz", spzEntities);
             request.setAttribute("user", user);
+             request.setAttribute("project", proj);
+            request.setAttribute("config", conf);
             listSpz(request,response);
         }
     }
@@ -1670,6 +1739,9 @@ public class SPZServlet extends HttpServlet {
             userEnt = userMan.findUserByLogin(login);
         }else{
             String strId = request.getParameter("userid");
+            if(strId==null){
+                return null;
+            }
             int uId = Integer.parseInt(strId);
             userEnt = userMan.findUser(uId);
         }
@@ -1716,8 +1788,13 @@ public class SPZServlet extends HttpServlet {
         
         SPZWebEntity spzEnt = spzToEntity(spz);
         UserWebEntity userEnt = userToEntity(user);
+        Project proj = getProjectFromRequest(request);
+        Configuration conf = getConfigurationFromRequest(request);
+        
         request.setAttribute("spz", spzEnt);
         request.setAttribute("user", userEnt);
+        request.setAttribute("config", conf);
+        request.setAttribute("project", proj);
         request.getRequestDispatcher("/acceptSol.jsp").forward(request, response);
     }
 
@@ -1830,7 +1907,12 @@ public class SPZServlet extends HttpServlet {
         UserWebEntity userWeb = userToEntity(user);
         request.setAttribute("spz", spzWeb);
         request.setAttribute("user", userWeb);
+        Project proj = getProjectFromRequest(request);
+        Configuration conf =getConfigurationFromRequest(request);
+        
         request.setAttribute("change", true);
+        request.setAttribute("project", proj);
+        request.setAttribute("config", conf);
         request.getRequestDispatcher(jsp).forward(request, response);
     }
 
@@ -1870,10 +1952,12 @@ public class SPZServlet extends HttpServlet {
     private void listConfigs(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         ConfigurationSpzManager confSpzMan = new ConfigurationSpzJpaController(emf);
         ProjectConfigurationManager projConfMan = new ProjectConfigurationJpaController(emf);
+        Project project = getProjectFromRequest(request);
         Spz spz = getSpzByParameter(request);
         User user = getUserByParameter(request);
         List<Configuration> configs;
         SPZWebEntity spzEnt = null;
+        
         if(spz!=null){
             Integer confId = confSpzMan.getSpzConfiguration(spz.getId());
             Integer projId = projConfMan.getProjectIdFor(confId);
@@ -1883,12 +1967,15 @@ public class SPZServlet extends HttpServlet {
             UserAccessManager accessMan = new UserAccessJpaController(emf);
             configs = accessMan.getConfigsForUser(user.getId());
         }
-        request.setAttribute("user", userToEntity(user));
+        UserWebEntity userEnt = userToEntity(user);
+        request.setAttribute("user", userEnt);
         request.setAttribute("configs", configs);
+        request.setAttribute("project", project);
         if(spzEnt!=null){
             request.setAttribute("spz", spzEnt);
         }
         request.getRequestDispatcher("/listConfigs.jsp").forward(request, response);
+        return;
     }
 
     private void listProjects(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -1907,4 +1994,36 @@ public class SPZServlet extends HttpServlet {
         request.getRequestDispatcher("/listProjects.jsp").forward(request, response);
     }
 
+    private Project getProjectFromRequest(HttpServletRequest request) {
+        String projIdStr = request.getParameter("projectid");
+        if(projIdStr==null){
+            return null;
+        }
+        int projId = Integer.parseInt(projIdStr);
+        ProjectManager projectMan = new ProjectJpaController(emf);
+        return projectMan.findProject(projId);
+    }
+
+    private Configuration getConfigurationFromRequest(HttpServletRequest request) {
+        String confIdStr = request.getParameter("configid");
+        if(confIdStr==null){
+            return null;
+        }
+        int confId = Integer.parseInt(confIdStr);
+        ConfigurationManager confMan = new ConfigurationJpaController(emf);
+        return confMan.findConfiguration(confId);
+    }
+
+    private void createSpzConfiguration(Spz spz, Configuration conf) throws SPZException {
+        ConfigurationSpzManager confSpzMan = new ConfigurationSpzJpaController(emf);
+        Configurationspz confSpz = new Configurationspz();
+        confSpz.setConfigurationid(conf.getId());
+        confSpz.setSpzid(spz.getId());
+        try {
+            confSpzMan.create(confSpz);
+        } catch (Exception ex) {
+            Logger.getLogger(SPZServlet.class.getName()).log(Level.SEVERE, "Error adding Configuration Spz entity.", ex);
+            throw new SPZException("Unable to create spz-configuration relation entity.",ex);
+        }
+    }
 }
