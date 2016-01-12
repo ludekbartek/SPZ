@@ -23,7 +23,7 @@ import javax.persistence.criteria.Root;
  *
  * @author bar
  */
-public class ConfigurationSpzJpaController implements ConfiguratinspzManager, ConfigurationSpzManager {
+public class ConfigurationSpzJpaController implements ConfigurationspzManager, ConfigurationSpzManager {
 
     public ConfigurationSpzJpaController(EntityManagerFactory emf) {
         this.emf = emf;

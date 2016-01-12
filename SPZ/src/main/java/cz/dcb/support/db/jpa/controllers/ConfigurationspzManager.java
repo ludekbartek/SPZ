@@ -16,7 +16,7 @@ import javax.persistence.EntityManager;
  *
  * @author bar
  */
-public interface ConfiguratinspzManager extends Serializable {
+public interface ConfigurationspzManager extends Serializable {
 
     void create(Configurationspz configurationspz) throws PreexistingEntityException, Exception;
 
