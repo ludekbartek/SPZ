@@ -10,7 +10,7 @@ create table SUSER.Spz
     requestDescription varchar(9000), /*popis pozadavku*/
     implementationAcceptDate timestamp, /*datum akceptace opravy*/
     ts bigint,/*casove razitko, cas vytvoreni zaznamu v DB*/
-    category smallint /*kategorie SPZ - 0 = nestandardni,1 = standardni*/
+    category smallint, /*kategorie SPZ - 0 = nestandardni,1 = standardni*/
     assumedManDays double, /*Odhad pracnosti v clovekodnech*/
     manDays double /*Skutecna pracnost v clovekodnech*/
 );
