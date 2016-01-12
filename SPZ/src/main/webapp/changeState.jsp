@@ -33,6 +33,8 @@
             <input type='hidden' name='userid' value='${user.id}'/>
             <input type='hidden' name="state" value='${spzState}'/>
             <input type="hidden" name="newstate" value="${newState}"/>
+            <input type="hidden" name="configid" value="${config.id}"/>
+            <input type="hidden" name="projectid" value="${project.id}"/>
             <c:choose>
                 <c:when test="${user.role!=0}">
                     <input type="checkbox" name="external"/><label for="external"><f:message key="externalNote"/></label>

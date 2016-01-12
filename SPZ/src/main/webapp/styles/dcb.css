@@ -29,3 +29,15 @@ html{
 .rightfloat{
     float: right;
 }
+
+.doubleValueList{
+    width: 100%;
+}
+
+.id{
+    width: 20%;
+}
+
+.desc{
+    width: 80%;
+}

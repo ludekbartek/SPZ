@@ -30,6 +30,8 @@
                             <input type="hidden" name="state" value="POSTED"/>
                             <input type="hidden" name="userid" value="${user.id}"/>
                             <input type="hidden" name="newstate" value="ANALYSIS"/>
+                            <input type="hidden" name="projectid" value="${project.id}"/>
+                            <input type="hidden" name="configid" value="${config.id}"/>
                         </form>
                     </c:if>
                     <form action="${pageContext.request.contextPath}/SPZServlet/delete" method="post">    
@@ -38,6 +40,8 @@
                         <input type="hidden" name="newstate" value="CANCELED"/>
                         <input type="hidden" name="state" value="POSTED"/>
                         <input type="hidden" name="userid" value="${user.id}"/>
+                        <input type="hidden" name="projectid" value="${project.id}"/>
+                        <input type="hidden" name="configid" value="${config.id}"/>
                     </form>
                 </td>
             </tr>
@@ -68,9 +72,11 @@
         <jsp:include page="addNote.jsp"/>
         <p style="text-align:right;"/>
             <form action="${pageContext.request.contextPath}/SPZServlet/updateSPZ" method="post">
-                <input type="submit" value="<f:message key='changeSPZ' bundle="${loc}"/>"/>
+                <input type="submit" value="<f:message key='changeSpz' bundle="${loc}"/>"/>
                 <input type="hidden" name="spzid" value="${spz.id}"/>
                 <input type="hidden" name="userid" value="${user.id}"/>
+                <input type="hidden" name="projectid" value="${project.id}"/>
+                <input type="hidden" name="configid" value="${config.id}"/>
             </form>
     </body>
 </html>

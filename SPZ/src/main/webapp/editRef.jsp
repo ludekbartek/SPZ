@@ -55,12 +55,16 @@
                         <input type="submit" value="<f:message key='cancelButton'/>"/>
                         <input type="hidden" name="spzid" value="${spz.id}"/>
                         <input type="hidden" name="userid" value="${user.id}"/>
+                        <input type="hidden" name="configid" value="${config.id}"/>
+                        <input type="hidden" name="projectid" value="${project.id}"/>
                     </form>
                 </c:if>
                 <form action="${pageContext.request.contextPath}/SPZServlet/editref" method="post">
                     <input type="hidden" name="spzid" value="${spz.id}"/>
                     <input type="hidden" name="change" value="true"/>
                     <input type="hidden" name="userid" value="${user.id}"/>
+                    <input type="hidden" name="configid" value="${config.id}"/>
+                    <input type="hidden" name="projectid" value="${project.id}"/>
                     <c:choose>
                         <c:when test="${user.role==0}">
                             <input type="submit" value="<f:message key='submitRefineUserButton'/>"/>
@@ -80,6 +84,8 @@
                     <input type="hidden" name="newstate" value="ANALYSIS"/>
                     <textarea name="desc" class="desc" cols="80" rows="5"></textarea>
                     <input type="checkbox" name="external"/><label for="external"><f:message key="visible"/></label>
+                    <input type="hidden" name="configid" value="${config.id}"/>
+                    <input type="hidden" name="projectid" value="${project.id}"/>
                     <input type="submit" value="<f:message key='submit'/>"/>
                 </form>
             </c:otherwise>

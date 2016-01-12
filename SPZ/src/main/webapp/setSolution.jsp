@@ -30,6 +30,8 @@
             <input type="hidden" name="jsp" value="listSpz.jsp"/>
             <input type="hidden" name="spzid" value="${spz.id}"/>
             <input type="hidden" name="userid" value="${user.id}"/>
+            <input type="hidden" name="configid" value="${config.id}"/>
+            <input type="hidden" name="projectid" value="${project.id}"/>
             <div class="areainput">
                 <f:message key="revLabel"/>:
                 <textarea name="revisedsolutiondescription"></textarea>

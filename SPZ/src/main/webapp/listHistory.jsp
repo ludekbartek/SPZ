@@ -50,6 +50,8 @@
      <input type="hidden" name="spzstateid" value="${item.id}"/>
      <input type="hidden" name="spzid" value="${spz.id}"/>
      <input type="hidden" name="userid" value="${user.id}"/>
+     <input type="hidden" name="configid" value="${config.id}"/>
+     <input type="hidden" name="projectid" value="${project.id}"/>
      <input type="submit" value="smazat posledni stav" onsubmit="return confirm('Opravdu smazat posledni stav?');"/>
     </form>
  </c:if>

@@ -39,12 +39,16 @@
                 <input type="hidden" name="newState" value="DCB_ACCEPTED"/>
                 <input type="hidden" name="spzid" value="${spz.id}"/>
                 <input type="hidden" name="userid" value="${user.id}"/>
+                <input type="hidden" name="configid" value="${config.id}"/>
+                <input type="hidden" name="projectid" value="${project.id}"/>
                 <input type="submit" value="<f:message key='back'/>"/>
             </form>
                 <form action="${pageContext.request.contextPath}/SPZServlet/install" method="post">
                 <input type="hidden" name="state" value="RELEASED"/>
                 <input type="hidden" name="spzid" value="${spz.id}"/>
                 <input type="hidden" name="userid" value="${user.id}"/>
+                <input type="hidden" name="configid" value="${config.id}"/>
+                <input type="hidden" name="projectid" value="${project.id}"/>
                 <input type="submit" value="<f:message key='install'/>"/>
             </form>
             <form action="${pageContext.request.contextPath}/SPZServlet/delete" method="post">
@@ -52,6 +56,8 @@
                 <input type="hidden" name="newState" value="CANCELED"/>
                 <input type="hidden" name="spzid" value="${spz.id}"/>
                 <input type="hidden" name="userid" value="${user.id}"/>
+                <input type="hidden" name="configid" value="${config.id}"/>
+                <input type="hidden" name="projectid" value="${project.id}"/>
                 <input type="submit" value="<f:message key='cancel'/>"/>
             </form>
             

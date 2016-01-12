@@ -28,6 +28,8 @@
             <input type="hidden" name="newstate" value="REFINE"/>
             <input type="hidden" name="spzid" value="${spz.id}"/>
             <input type="hidden" name="userid" value="${user.id}"/>
+            <input type="hidden" name="configid" value="${config.id}"/>
+            <input type="hidden" name="projectid" value="${project.id}"/>
             <input type="submit" value="<f:message key='return'/>"/>
         </form>
         <form action="${pageContext.request.contextPath}/SPZServlet/spzsolution" method="post">
@@ -35,6 +37,8 @@
             <input type="hidden" name="newstate" value="ANALYSIS"/>
             <input type="hidden" name="spzid" value="${spz.id}"/>
             <input type="hidden" name="userid" value="${user.id}"/>
+            <input type="hidden" name="configid" value="${config.id}"/>
+            <input type="hidden" name="projectid" value="${project.id}"/>
             <input type="submit" value="<f:message key='proposeSol'/>"/>
         </form>
         <form action="${pageContext.request.contextPath}/SPZServlet/changeanalyst" method="post">
@@ -42,6 +46,8 @@
             <input type="hidden" name="newstate" value="ANALYSIS"/>
             <input type="hidden" name="spzid" value="${spz.id}"/>
             <input type="hidden" name="userid" value="${user.id}"/>
+            <input type="hidden" name="configid" value="${config.id}"/>
+            <input type="hidden" name="projectid" value="${project.id}"/>
             <input type="submit" value="<f:message key='changeAnalyst'/>"/>
         </form>
         <form action="${pageContext.request.contextPath}/SPZServlet/delete" method="post">
@@ -49,6 +55,8 @@
             <input type="hidden" name="newstate" value="CANCELED"/>
             <input type="hidden" name="spzid" value="${spz.id}"/>
             <input type="hidden" name="userid" value="${user.id}"/>
+            <input type="hidden" name="configid" value="${config.id}"/>
+            <input type="hidden" name="projectid" value="${project.id}"/>
             <input type="hidden" name="state" value="ANALYSIS"/>
         </form>
     </c:if>

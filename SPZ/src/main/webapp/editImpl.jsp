@@ -38,6 +38,8 @@
                     <input type="hidden" name="userid" value="${user.id}"/>
                     <input type="hidden" name="state" value="IMPLEMENTATION"/>
                     <input type="hidden" name="newState" value="IMPLEMENTATION"/>
+                    <input type="hidden" name="configid" value="${config.id}"/>
+                    <input type="hidden" name="projectid" value="${project.id}"/>
                     <input type="submit" value="<f:message key='changeDevBut'/>"/>
                 </form>
                 <form action="${pageContext.request.contextPath}/SPZServlet/refineImpl" method="post">
@@ -45,6 +47,8 @@
                     <input type="hidden" name="userid" value="${user.id}"/>
                     <input type="hidden" name="state" value="IMPLEMENTATION"/>
                     <input type="hidden" name="newState" value="IMPLREFINE"/>
+                    <input type="hidden" name="configid" value="${config.id}"/>
+                    <input type="hidden" name="projectid" value="${project.id}"/>
                     <input type="submit" value="<f:message key='refineBut'/>"/>
                 </form>
                 <c:if test="${user.role==1}">
@@ -53,6 +57,8 @@
                         <input type="hidden" name="userid" value="${user.id}"/>
                         <input type="hidden" name="state" value="IMPLEMENTATION"/>
                         <input type="hidden" name="newState" value="RELEASE"/>
+                        <input type="hidden" name="configid" value="${config.id}"/>
+                        <input type="hidden" name="projectid" value="${project.id}"/>
                         <input type="submit" value="<f:message key='releaseBut'/>"/>
                     </form>
                 </c:if>

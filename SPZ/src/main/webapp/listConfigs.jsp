@@ -30,6 +30,7 @@
                     <tr>
                         <td>
                             <form action="${pageContext.request.contextPath}/SPZServlet/listspz" method="post">
+                                <input type="hidden" name="projectid" value="${project.id}"/>
                                 <input type="hidden" name="configid" value="${conf.id}"/>
                                 <input type="hidden" name="userid" value="${user.id}"/>
                                 <input type="submit" value="${conf.code}"/>

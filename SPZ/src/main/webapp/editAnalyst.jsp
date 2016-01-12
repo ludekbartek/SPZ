@@ -34,6 +34,8 @@
             <input type="submit" value="<f:message key='submit'/>"/>
             <input type="hidden" name="userid" value="${user.id}"/>
             <input type="hidden" name="spzid" value="${spz.id}"/>
+            <input type="hidden" name="configid" value="${config.id}"/>
+            <input type="hidden" name="projectid" value="${project.id}"/>
         </form>
         <jsp:include page="listHistory.jsp"/>
     </body>

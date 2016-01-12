@@ -29,6 +29,8 @@
                 <input type="hidden" name="state" value="SPECIFIED"/>
                 <input type="hidden" name="userid" value="${user.id}"/>
                 <input type="hidden" name="newState" value="CANCELED"/>
+                <input type="hidden" name="configid" value="${config.id}"/>
+                <input type="hidden" name="projectid" value="${project.id}"/>
                 <input type="submit" value="<f:message key='cancel'/>"/>
             </form>
         </c:if>
@@ -38,12 +40,16 @@
                 <input type="hidden" name="userid" value="${user.id}"/>
                 <input type="hidden" name="state" value="SPECIFIED"/>
                 <input type="hidden" name="newState" value="RANALYSIS"/>
+                <input type="hidden" name="configid" value="${config.id}"/>
+                <input type="hidden" name="projectid" value="${project.id}"/>
                 <input type="submit" value="<f:message key='submit'/>"/>
             </form>
             <form action="${pageContext.request.contextPath}/SPZServlet/acceptsolution" method="post">
                 <input type="hidden" name="spzid" value="${spz.id}"/>
                 <input type="hidden" name="userid" value="${user.id}"/>
                 <input type="hidden" name="state" value="SPECIFIED"/>
+                <input type="hidden" name="configid" value="${config.id}"/>
+                <input type="hidden" name="projectid" value="${project.id}"/>
                 <input type="submit" value="<f:message key='acceptSol'/>"/>
             </form>    
         </c:if>

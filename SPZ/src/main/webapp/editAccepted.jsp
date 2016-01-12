@@ -39,6 +39,8 @@
             <form action="${pageContext.request.contextPath}/SPZServlet/acceptimpl" method="post">
                 <input type="hidden" name="spzid" value="${spz.id}"/>
                 <input type="hidden" name="userid" value="${user.id}"/>
+                <input type="hidden" name="configid" value="${config.id}"/>
+                <input type="hidden" name="projectid" value="${project.id}"/>
                 <input type="submit" value="<f:message key='acceptButton'/>"/>
             </form>
             
@@ -47,6 +49,8 @@
                 <input type="hidden" name="spzid" value="${spz.id}"/>
                 <input type="hidden" name="userid" value="${user.id}"/>
                 <input type="hidden" name="state" value="ACCEPTED"/>
+                <input type="hidden" name="configid" value="${config.id}"/>
+                <input type="hidden" name="projectid" value="${project.id}"/>
                 <input type="submit" value="<f:message key='cancel'/>"/>
             </form>
             
@@ -58,6 +62,8 @@
                     <input type="hidden" name="userid" value="${user.id}"/>
                     <input type="hidden" name="state" value="ACCEPTED"/>
                     <input type="hidden" name="newstate" value="DCB_ACCEPTED"/>
+                    <input type="hidden" name="configid" value="${config.id}"/>
+                    <input type="hidden" name="projectid" value="${project.id}"/>
                     <textarea name="desc" cols="80" rows="8"></textarea>
                     <input type="checkbox" name="external"/><label for="external"><f:message key="visible"/></label>
                     <input type="submit" value="<f:message key='submit'/>"/>

@@ -12,9 +12,9 @@
 <jsp:include page="headerProject.jsp"/>
 &gt;&gt;
 <form action="${pageContext.request.contextPath}/SPZServlet/listspz" method="post">
-    <input type="hidden" name="projectid" value="${spz.project.id}"/>
-    <input type="hidden" name="configid" value="${spz.config.id}"/>
+    <input type="hidden" name="projectid" value="${project.id}"/>
+    <input type="hidden" name="configid" value="${config.id}"/>
     <input type="hidden" name="spzid" value="${spz.id}"/>
-    <input type="submit" value="${spz.config.code}"/>
+    <input type="submit" value="${config.code}"/>
     <input type="hidden" name="userid" value="${user.id}"/>
 </form>

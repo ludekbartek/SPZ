@@ -32,14 +32,14 @@
             <tbody>
                 <c:forEach var="cfg" items="${cfgs}">
                     <tr>
-                        <td>
+                        <td class="id">
                             <form action="${pageContext.request.contextPath}/SPZServlet/listSpz" method="post">
                                 <input type="hidden" name="userid" value="${user.id}"/>
-                                <input type="hidden" name="cfgid" value="${spz.configId}"/>
+                                <input type="hidden" name="cfgid" value="${cfg.id}"/>
                                 <input type="submit" value="${cfg.id}"/>
                             </form>
                         </td>
-                        <td>
+                        <td class="desc">
                             <c:out value="${cfg.desc}"/>
                         </td>
                     </tr>

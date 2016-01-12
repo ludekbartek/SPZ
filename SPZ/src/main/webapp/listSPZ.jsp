@@ -16,7 +16,7 @@
         <link rel="stylesheet" href="styles/dcb.css" type="text/css"/>
     </head>
     <body>
-        <jsp:include page="headerProject.jsp"/>
+        <jsp:include page="headerspz.jsp"/>
         <c:if test="${! empty error}">
             <div id="erorr" style="background-color: yellow;border-color: red;">
                 <c:out value="${error}"/>
@@ -45,15 +45,19 @@
                             </select>
                         </span>
                     </span>
-                    <input type="submit" value="Hledej"/>
+                    <input type="submit" value="<f:message key='hledej'/>"/>
                 </form>
                 <form action="${pageContext.request.contextPath}/SPZServlet/reports" method="post" class="leftfloat">    
                     <input type="hidden" name="userid" value="${user.id}"/>
+                    <input type="hidden" name="configid" value="${config.id}"/>
+                    <input type="hidden" name="projectid" value="${project.id}"/>
                     <input type="submit" value='<f:message key="reports"/>'/>
                 </form>
                 <form action="${pageContext.request.contextPath}/SPZServlet/addspz" method="post" class="rightfloat">
                     <!--<input type="hidden" name="action" value="/addspz"/>-->
                     <input type="hidden" name="userid" value="${user.id}"/>
+                    <input type="hidden" name="configid" value="${config.id}"/>
+                    <input type="hidden" name="projectid" value="${project.id}"/>
                     <input type="submit" value='<f:message key="newSpz"/>'/>
                 </form>
         </div>
@@ -83,6 +87,8 @@
                         <form action="${pageContext.request.contextPath}/SPZServlet/editspz" method="POST">
                             <input type="hidden" name="spzid" value="${item.id}"/>
                             <input type="hidden" name="userid" value="${user.id}"/>
+                            <input type="hidden" name="configid" value="${config.id}"/>
+                            <input type="hidden" name="projectid" value="${project.id}"/>
                             <input type="hidden" name="reqNumber" value="${item.reqNumber}"/>
                             <input type="submit" value="${item.reqNumber}"/>
                             <input type="hidden" name="priority" value="${item.priority}"/>

@@ -49,6 +49,8 @@
                     <input type="hidden" name="newState" value="CONFIRMED"/>
                     <input type="hidden" name="spzid" value="${spz.id}"/>
                     <input type="hidden" name="userid" value="${user.id}"/>
+                    <input type="hidden" name="configid" value="${config.id}"/>
+                    <input type="hidden" name="projectid" value="${project.id}"/>
                     <input type="submit" value="<f:message key='acceptBut'/>"/>
                 </form>
                 <form action="${pageContext.request.contextPath}/SPZServlet/editspz" method="post">
@@ -56,6 +58,8 @@
                     <input type="hidden" name="newState" value="RECLAIMED"/>
                     <input type="hidden" name="spzid" value="${spz.id}"/>
                     <input type="hidden" name="userid" value="${user.id}"/>
+                    <input type="hidden" name="configid" value="${config.id}"/>
+                    <input type="hidden" name="projectid" value="${project.id}"/>
                     <input type="submit" value="<f:message key='reclaimBut'/>"/>
                 </form>
             </c:when>
@@ -65,6 +69,8 @@
                     <input type="hidden" name="newState" value="CANCELED"/>
                     <input type="hidden" name="spzid" value="${spz.id}"/>
                     <input type="hidden" name="userid" value="${user.id}"/>
+                    <input type="hidden" name="configid" value="${config.id}"/>
+                    <input type="hidden" name="projectid" value="${project.id}"/>
                     <input type="submit" value="<f:message key='cancel'/>"/>
                 </form>
             </c:otherwise>

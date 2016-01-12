@@ -39,18 +39,24 @@
                         <input type="hidden" name="userid" value="${user.id}"/>
                         <input type="hidden" name="change" value="true"/>
                         <input type="submit" value="<f:message key='releaseButton'/>"/>
+                        <input type="hidden" name="configid" value="${config.id}"/>
+                        <input type="hidden" name="projectid" value="${project.id}"/>
                     </form>
                     <form action="${pageContext.request.contextPath}/SPZServlet/delete" method="post">
                         <input type="hidden" name="spzid" value="${spz.id}"/>
                         <input type="hidden" name="userid" value="${spz.id}"/>
                         <input type="hidden" name="state" value="DCB_ACCEPTED"/>
                         <input type="button" value="<f:message key='cancelButton'/>"/>
+                        <input type="hidden" name="configid" value="${config.id}"/>
+                        <input type="hidden" name="projectid" value="${project.id}"/>
                     </form>
                     <form action="${pageContext.request.contextPath}/SPZServlet/startimpl" method="post">
                         <input type="hidden" name="spzid" value="${spz.id}"/>
                         <input type="hidden" name="userid" value="${user.id}"/>
                         <input type="hidden" name="change" value="true"/>
                         <input type="submit" value="<f:message key='startImplButton'/>"/>
+                        <input type="hidden" name="configid" value="${config.id}"/>
+                        <input type="hidden" name="projectid" value="${project.id}"/>
                     </form>
                 </c:if>
                 <jsp:include page="listHistory.jsp"/>
