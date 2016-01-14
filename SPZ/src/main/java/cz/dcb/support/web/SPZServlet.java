@@ -371,7 +371,7 @@ public class SPZServlet extends HttpServlet {
             Spzstate state = new Spzstate();
           //  createNewState(state,spz);
             spz.setIssuedate(new GregorianCalendar().getTime());
-              spz.setShortName(spz.getReqnumber());
+            //  spz.setShortName(spz.getReqnumber());
             try{
                 transaction.begin();
 
@@ -700,6 +700,9 @@ public class SPZServlet extends HttpServlet {
         }*/
        // spz.setShortname(parameterMap.get("shortname")[0]);
         
+        if(parameterMap.containsKey("shortname")){
+            spz.setShortName(parameterMap.get("shortname")[0]);
+        }
         String requestDescription;
         String strDescription = parameterMap.get("requestdescription")[0];
         if(strDescription.startsWith("<"))
@@ -719,7 +722,7 @@ public class SPZServlet extends HttpServlet {
 //        }
         spz.setRequestdescription(requestDescription);
         spz.setContactperson(parameterMap.get("contactperson")[0]);
-        if(parameterMap.containsKey("shortname")) spz.setShortName(parameterMap.get("shortname")[0]);
+        //if(parameterMap.containsKey("shortname")) spz.setShortName(parameterMap.get("shortname")[0]);
         Date issueDate = null;
         if(parameterMap.containsKey("issuedate")){
             String issueDateString = parameterMap.get("issuedate")[0];
