@@ -517,6 +517,7 @@ public class SPZServlet extends HttpServlet {
             if(request.getParameterMap().containsKey("analyst")){
                 setAnalyst(spz, request.getParameter("analyst"));
             }
+            updateSpz(spz,request);
             changeState(spz,request,response);
             request.setAttribute("user", userWeb);
             request.setAttribute("config", conf);
@@ -945,6 +946,8 @@ public class SPZServlet extends HttpServlet {
         if(current!=null){
             user = userManger.findUserByLogin(current.getIssuerLogin());
             entity.setSpzState(current.getCode());
+            entity.setSolution(current.getSolutiondescription());
+            entity.setRevised(current.getRevisedrequestdescription());
             Double mandays = spz.getManDays();
             if(mandays!=null)
                 entity.setWorkLoadReal(spz.getManDays());
@@ -967,6 +970,7 @@ public class SPZServlet extends HttpServlet {
             String issuerName = userManger.findUser(spzIssuerId).getName();
             entity.setIssuer(issuerName);
         }
+        
         entity.setRequestDescription(spz.getRequestdescription());
         entity.setKind(spz.getRequesttype());
         entity.setDate(getLastChangeDate(spz.getId(),stateManager));
@@ -2085,6 +2089,38 @@ public class SPZServlet extends HttpServlet {
         } catch (Exception ex) {
             Logger.getLogger(SPZServlet.class.getName()).log(Level.SEVERE, "Error adding Configuration Spz entity.", ex);
             throw new SPZException("Unable to create spz-configuration relation entity.",ex);
+        }
+    }
+
+    private void updateSpz(Spz spz, HttpServletRequest request) {
+        SpzStateManager stateMan = new SpzStateJpaController(emf);
+        SpzManager spzMan = new SpzJpaController(emf);
+        Map<String,String[]> params = request.getParameterMap();
+        Spzstate curr = stateMan.getCurrentState(spz);
+        boolean change = false;
+        if(params.containsKey("solutiondescription")){
+            curr.setSolutiondescription(request.getParameter("solutiondescription"));
+            change=true;
+        }
+        if(params.containsKey("revisedrequest")){
+            curr.setRevisedrequestdescription(request.getParameter("revisedrequest"));
+            change = true;
+        }
+        if(params.containsKey("estimatedworkload")){
+            Double estWork=Double.parseDouble(request.getParameter("estimatedworkload"));
+            spz.setAssumedManDays(estWork);
+            try {
+                spzMan.edit(spz);
+            } catch (Exception ex) {
+                Logger.getLogger(SPZServlet.class.getName()).log(Level.SEVERE, "Error updating SPZ: ", ex);
+            }
+        }
+        if(change){
+            try {
+                stateMan.edit(curr);
+            } catch (Exception ex) {
+                Logger.getLogger(SPZServlet.class.getName()).log(Level.SEVERE, "Error updating current state.", ex);
+            }
         }
     }
 
