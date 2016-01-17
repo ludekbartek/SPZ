@@ -34,7 +34,7 @@
             <input type="hidden" name="projectid" value="${project.id}"/>
             <div class="areainput">
                 <f:message key="revLabel"/>:
-                <textarea name="revisedsolutiondescription"><c:if test="${not empty spz.requestDescription}"><c:out value="${spz.requestDescription}"/></c:if></textarea>
+                <textarea name="revisedrequest"><c:if test="${not empty spz.requestDescription}"><c:out value="${spz.requestDescription}"/></c:if></textarea>
             </div>
             <div class="areainput">
                 <f:message key="solDesc"/>:
