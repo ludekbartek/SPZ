@@ -18,7 +18,7 @@
             </tr>
             <tr>
                 <td class="label"><f:message key="name"/>:</td>
-                <td class="highligh-value"><c:out value="${spz.shortName}" /></td>
+                <td class="highlight-value"><c:out value="${spz.shortName}"/></td>
                 <td class="label"><f:message key="typ"/>:</td>
                 <td><f:message key="${spz.requestType}"/></td>
             </tr>
@@ -42,7 +42,12 @@
             </tr>
             <tr>
                 <td class="label"><f:message key="analytik"/>:</td>
-                <td colspan="3"><c:if test="${!empty spz.analyst}"><c:out value="${spz.analyst}"/></c:if></td>
+                <td colspan="3">
+                    <c:choose>
+                        <c:when test="${!empty spz.analyst}"><c:out value="${spz.analyst}"/></c:when>
+                        <c:otherwise><c:out value="neprirazen"/></c:otherwise>
+                    </c:choose>
+                </td>
             </tr>
             <tr>
                 <td class="label"><f:message key="vyvojar"/>:</td>
