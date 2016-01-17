@@ -239,51 +239,77 @@ public class SPZServlet extends HttpServlet {
                 case "/login":authenticate(request,response);
                               listProjects(request, response);
                             break;
-                case "/addspz":addSpz(request,response);
+                case "/acceptspzreq":
+                            acceptSpz(request,response);
                             break;
-                case "/listspz":listSpz(request,response);
+                case "/addspz":
+                            addSpz(request,response);
                             break;
-                case "/editspz":editSpz(request,response);
+                case "/listspz":
+                            listSpz(request,response);
                             break;
-                case "/spzsolution":getSpzSolution(request,response);
+                case "/editspz":
+                            editSpz(request,response);
                             break;
-                case "/updatespz":updateSPZ(request,response);
+                case "/spzsolution":
+                            getSpzSolution(request,response);
                             break;
-                case "/adduser":addUser(request,response);
+                case "/updatespz":
+                            updateSPZ(request,response);
                             break;
-                case "/addnote":addNote(request,response);
+                case "/adduser":
+                            addUser(request,response);
                             break;
-                case "/edituser":editUser(request,response);
+                case "/addnote":
+                            addNote(request,response);
                             break;
-                case "/addattachment":addAttachment(request,response);
+                case "/edituser":
+                            editUser(request,response);
                             break;
-                case "/editattachment":editAttachment(request,response);
+                case "/addattachment":
+                            addAttachment(request,response);
                             break;
-                case "/addproject":addProject(request,response);
+                case "/editattachment":
+                            editAttachment(request,response);
                             break;
-                case "/editproject":editProject(request,response);
+                case "/addproject":
+                            addProject(request,response);
                             break;
-                case "/delete":deleteSpz(request,response);
+                case "/editproject":
+                            editProject(request,response);
                             break;
-                case "/removestate":deleteSpzState(request,response);
+                case "/delete":
+                            deleteSpz(request,response);
                             break;
-                case "/changeanalyst":changeAnalyst(request,response);
+                case "/removestate":
+                            deleteSpzState(request,response);
                             break;
-                case "/acceptsolution":acceptSolution(request,response);
+                case "/changeanalyst":
+                            changeAnalyst(request,response);
                             break;
-                case "/editref":refineSolution(request,response);
+                case "/acceptsolution":
+                            acceptSolution(request,response);
                             break;
-                case "/acceptimpl":acceptImpl(request,response);
+                case "/editref":
+                            refineSolution(request,response);
                             break;
-                case "/releaseversion":releaseVersion(request,response);
+                case "/acceptimpl":
+                            acceptImpl(request,response);
                             break;
-                case "/startimpl":startImplementation(request,response);
+                case "/releaseversion":
+                            releaseVersion(request,response);
                             break;
-                case "/install":install(request,response);
+                case "/startimpl":
+                            startImplementation(request,response);
                             break;
-                case "/acceptspz":confirm(request,response);
+                case "/install":
+                            install(request,response);
                             break;
-                case "/invoicespz":invoice(request,response);
+                case "/acceptspz":
+                            confirm(request,response);
+                            break;
+                case "/invoicespz":
+                            invoice(request,response);
                             break;
                 case "/listconfigurations":
                             listConfigs(request,response);
@@ -488,6 +514,9 @@ public class SPZServlet extends HttpServlet {
         spz = manager.findSpz(id);
         if(request.getParameterMap().containsKey("newstate")){
             
+            if(request.getParameterMap().containsKey("analyst")){
+                setAnalyst(spz, request.getParameter("analyst"));
+            }
             changeState(spz,request,response);
             request.setAttribute("user", userWeb);
             request.setAttribute("config", conf);
@@ -1801,6 +1830,35 @@ public class SPZServlet extends HttpServlet {
         request.getRequestDispatcher("/acceptSol.jsp").forward(request, response);
     }
 
+    private void acceptSpz(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        Map<String,String[]> parameterMap = request.getParameterMap();
+        if(!parameterMap.containsKey("spzid")){
+            request.setAttribute("error", "Chybi parametr s spzid.");
+            listSpz(request, response);
+            return;
+        }
+        
+        Spz spz = getSpzByParameter(request);
+        
+        if(!parameterMap.containsKey("userid")){
+            request.setAttribute("error", "Chybi parametr s userid.");
+            listSpz(request, response);
+        }
+        User user = getUserByParameter(request);
+        
+        SPZWebEntity spzEnt = spzToEntity(spz);
+        UserWebEntity userEnt = userToEntity(user);
+        Project proj = getProjectFromRequest(request);
+        Configuration conf = getConfigurationFromRequest(request);
+        request.setAttribute("config", conf);
+        request.setAttribute("project", proj);
+        request.setAttribute("user", userEnt);
+        request.setAttribute("spz", spzEnt);
+        request.setAttribute("newState", "ANALYSIS");
+        request.setAttribute("analysts", getAnalysts());
+        request.getRequestDispatcher("/setAnalyst.jsp").forward(request, response);
+        
+    }
     private Spz getSpzByParameter(HttpServletRequest request){
         String spzIdStr = request.getParameter("spzid");
         if(spzIdStr==null){
@@ -2029,4 +2087,6 @@ public class SPZServlet extends HttpServlet {
             throw new SPZException("Unable to create spz-configuration relation entity.",ex);
         }
     }
+
+    
 }
