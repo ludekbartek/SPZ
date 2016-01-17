@@ -21,8 +21,8 @@
         <h1><f:message key="pageTitle"/></h1>
         <c:set var="jsp" value="./editSpec.jsp"/>
         <table class="infotable">
-            <jsp:include page="editcommon.jsp"/>
-            <tr>
+            <jsp:include page="editcommonspec.jsp"/>
+            <!--<tr>
                 <td class="label"><f:message key="revisedReq"/>:</td>
                 <td colspan="3"><c:out value="${spz.revisedRequest}"/></td>
             </tr>
@@ -33,9 +33,9 @@
             <tr>
                 <td class="label"><f:message key="workLoadEst"/>:</td>
                 
-                <td colspan="3"><c:out value="${spz.workLoadEstimation}"/> <f:message key="manHours"/> 
+                <td colspan="3"><f:formatNumber minFractionDigits="2" maxFractionDigits="2" value="${spz.workLoadEstimation}"/> <f:message key="manHours"/> 
                     (<f:formatNumber minFractionDigits="2" maxFractionDigits="2" value="${spz.workLoadEstimation/8.0}"/> <f:message key="manDays"/>)</td>
-            </tr>
+            </tr>-->
         </table>
         <c:if test="${user.role==1}">
             <form action="${pageContext.request.contextPath}/SPZServlet/delete" method="post">
