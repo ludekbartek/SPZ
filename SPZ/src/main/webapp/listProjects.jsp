@@ -13,15 +13,16 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title><f:message key="projectList"/>(<c:out value="${user.login}"/>)</title>
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/styles/dcb.css" type="text/css"/>
     </head>
     <body>
         <jsp:include page="header.jsp"/>
         <h1><f:message key="availProjects"/></h1>
-        <table>
+        <table  class="fullwidthtable">
             <thead>
                 <tr>
-                    <td><f:message key="code"/></td>
-                    <td><f:message key="desc"/></td>
+                    <td class="code"><f:message key="code"/></td>
+                    <td class="desc"><f:message key="desc"/></td>
                 </tr>
             </thead>
             <tbody>
