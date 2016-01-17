@@ -14,14 +14,28 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title><f:message key="pageTitle"/> <c:out value="${spz.id}"/> (<c:out value="${spz.issuer}"/>)</title>
-        <link rel="stylesheet" href="styles/dcb.css" type="text/css"/>
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/styles/dcb.css" type="text/css"/>
     </head>
     <body>
         <jsp:include page="headerspz.jsp"/>
         <h1><f:message key="pageTitle"/></h1>
         <c:set var="jsp" value="./editSpec.jsp"/>
-        <table>
+        <table class="infotable">
             <jsp:include page="editcommon.jsp"/>
+            <tr>
+                <td class="label"><f:message key="revisedReq"/>:</td>
+                <td colspan="3"><c:out value="${spz.revisedRequest}"/></td>
+            </tr>
+            <tr>
+                <td class="label"><f:message key="solProp"/>:</td>
+                <td colspan="3"><c:out value="${spz.solution}"/></td>
+            </tr>
+            <tr>
+                <td class="label"><f:message key="workLoadEst"/>:</td>
+                
+                <td colspan="3"><c:out value="${spz.workLoadEstimation}"/> <f:message key="manHours"/> 
+                    (<f:formatNumber minFractionDigits="2" maxFractionDigits="2" value="${spz.workLoadEstimation/8.0}"/> <f:message key="manDays"/>)</td>
+            </tr>
         </table>
         <c:if test="${user.role==1}">
             <form action="${pageContext.request.contextPath}/SPZServlet/delete" method="post">
