@@ -18,10 +18,10 @@
     <body>
         <jsp:include page="headerSpzEdit.jsp"/>
         <h1><f:message key="pagetitle"/></h1>
-        <table>
+        <table class="infotable">
             <jsp:include page="editcommon.jsp"/>
         </table>
-        <form action="${pageContext.request.contextPath}/SPZServlet/changeAnalyst" method="post">
+            <form action="${pageContext.request.contextPath}/SPZServlet/changeAnalyst" method="post">
             <label for="desc"><f:message key="descLabel"/></label>
             <textarea name="desc" cols="80" rows="5"></textarea>
             <label for="analyst"><f:message key="analystLabel"/></label>
@@ -36,7 +36,7 @@
             <input type="hidden" name="spzid" value="${spz.id}"/>
             <input type="hidden" name="configid" value="${config.id}"/>
             <input type="hidden" name="projectid" value="${project.id}"/>
-        </form>
+         </form>
         <jsp:include page="listHistory.jsp"/>
     </body>
 </html>
