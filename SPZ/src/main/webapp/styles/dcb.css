@@ -11,6 +11,11 @@ html{
     background-image: url(images/DCB_4.jpg);
 }
 
+body{
+    width: 100%;
+}
+
+
 #heading{
     text-align: center;
     font-size: xx-large;
@@ -32,6 +37,41 @@ html{
 
 .doubleValueList{
     width: 100%;
+}
+
+.infotable{
+    border: solid;
+    border-width: thin;
+    border-color: black;
+}
+
+.label{
+    font-weight: bold;
+}
+
+.highlight-value{
+    font-weight: bold;
+}
+
+table{
+    width: 100%;
+}
+
+thead{
+    border-bottom: black solid;
+    background-color: #cccccc;
+}
+
+.fullwidthtable{
+    width: 100%;
+}
+
+.code{
+    width: 20%;
+}
+
+.desc{
+    width: 80%;
 }
 
 .id{
