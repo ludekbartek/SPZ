@@ -13,12 +13,12 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title><f:message key="confList"/><c:out value="${user.login}"/></title>
-        <link rel="stylesheet" href="styles/dcb.css" type="text/css"/>
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/styles/dcb.css" type="text/css"/>
     </head>
     <body>
         <jsp:include page="headerProject.jsp"/>
         <h1><f:message key="availConfs"/></h1>
-        <table style="width: 100%;">
+        <table class="fullwidthtable">
             <thead>
                 <tr>
                     <td style="width: 20%;"><f:message key="code"/></td>
