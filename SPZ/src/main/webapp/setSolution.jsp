@@ -14,13 +14,13 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title><f:message key="stateChange"/> <c:out value="${spz.id}"/></title>
-        <link rel="stylesheet" href="styles/dcb.css" type="text/css"/>
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/styles/dcb.css" type="text/css"/>
     </head>
     <body>
         <jsp:include page="headerSpzEdit.jsp"/>
         <h1><f:message key="stateChange"/></h1>
         <div><f:message key="stateChangeHeader"/></div>
-        <table>
+        <table class="infotable">
             <jsp:include page="editcommon.jsp"/>
         </table>
         <div class="text"><f:message key="infoState"/>:</div>
@@ -34,7 +34,7 @@
             <input type="hidden" name="projectid" value="${project.id}"/>
             <div class="areainput">
                 <f:message key="revLabel"/>:
-                <textarea name="revisedsolutiondescription"></textarea>
+                <textarea name="revisedsolutiondescription"><c:if test="${not empty spz.requestDescription}"><c:out value="${spz.requestDescription}"/></c:if></textarea>
             </div>
             <div class="areainput">
                 <f:message key="solDesc"/>:
