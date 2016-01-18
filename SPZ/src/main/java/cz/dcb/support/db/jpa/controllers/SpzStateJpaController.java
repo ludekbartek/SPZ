@@ -208,6 +208,45 @@ public class SpzStateJpaController implements Serializable, SpzStateManager {
         return notes;
     }
 
+    @Override
+    public String getSolution(Spz spz) {
+        String solution = null;
+        EntityManager em = getEntityManager();
+        try{
+            
+            Query query = em.createQuery("select state.solutiondescription from Spzstate state where state.code='SPECIFIED' and state.solutiondescription is not null and state.id in (select spzstats.stateid from Spzstates spzstats where spzstats.spzid=:spzid)");
+            query.setParameter("spzid", spz.getId());
+            List<String> solDescs = query.getResultList();
+            if(!solDescs.isEmpty()){
+                solution = solDescs.get(0);
+            }
+            
+        }finally{
+            if(em.isOpen()){
+                em.close();
+            }
+        }
+        return solution;
+    }
+
+    @Override
+    public String getRevisedDescription(Spz spz) {
+        String revRequest = null;
+        EntityManager em = getEntityManager();
+        try{
+            
+            Query query = em.createQuery("select state.revisedrequestdescription from Spzstate state where state.code='SPECIFIED' and state.revisedrequestdescription is not null and state.id in (select spzstats.stateid from Spzstates spzstats where spzstats.spzid=:spzid)");
+            query.setParameter("spzid", spz.getId());
+            List<String> revRequests = query.getResultList();
+            if(!revRequests.isEmpty()){
+                revRequest = revRequests.get(0);
+            }
+        }finally{
+            em.close();
+        }
+        return revRequest;
+    }
+
     
 
 }

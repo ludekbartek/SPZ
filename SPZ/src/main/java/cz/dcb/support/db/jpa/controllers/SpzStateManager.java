@@ -43,4 +43,8 @@ public interface SpzStateManager {
 
     public void create(Spzstate state,EntityManager em);
 
+    public String getSolution(Spz spz);
+
+    public String getRevisedDescription(Spz spz);
+
 }
