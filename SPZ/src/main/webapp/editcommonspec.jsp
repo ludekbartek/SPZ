@@ -11,7 +11,7 @@
 <jsp:include page="editcommon.jsp"/>
 <tr>
     <td class="label"><f:message key="revisedReq"/>:</td>
-    <td colspan="3"><c:out value="${spz.revisedRequest}"/></td>
+    <td colspan="3"><c:out value="${spz.revised}"/></td>
 </tr>
 <tr>
     <td class="label"><f:message key="solProp"/>:</td>
