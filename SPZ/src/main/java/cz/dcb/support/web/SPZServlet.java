@@ -517,8 +517,8 @@ public class SPZServlet extends HttpServlet {
             if(request.getParameterMap().containsKey("analyst")){
                 setAnalyst(spz, request.getParameter("analyst"));
             }
-            updateSpz(spz,request);
             changeState(spz,request,response);
+            updateSpz(spz,request);
             request.setAttribute("user", userWeb);
             request.setAttribute("config", conf);
             request.setAttribute("project", proj);
@@ -940,7 +940,14 @@ public class SPZServlet extends HttpServlet {
         entity.setContactPerson(spz.getContactperson());
         entity.setReqNumber(spz.getReqnumber());
         entity.setRequestType(spz.getRequesttype());
-
+        String solution = stateManager.getSolution(spz);
+        String revDesc = stateManager.getRevisedDescription(spz);
+        if(solution!=null){
+            entity.setSolution(solution);
+        }
+        if(revDesc!=null){
+            entity.setRevised(revDesc);
+        }
         Spzstate current = statesManager.getCurrentState(spz);
         User user = null;
         if(current!=null){
