@@ -42,7 +42,6 @@ public class SPZWebEntity {
      private Short category;
      private String requestType;
      private Date implementationAcceptDate;
-     private Spzstate revisedRequest;
      private String revised;
      private String solution;
      private String relNotes;
@@ -109,14 +108,6 @@ public class SPZWebEntity {
 
     public void setCategory(Short category) {
         this.category = category;
-    }
-
-    public Spzstate getRevisedRequest() {
-        return revisedRequest;
-    }
-
-    public void setRevisedRequest(Spzstate revisedRequest) {
-        this.revisedRequest = revisedRequest;
     }
      
     public List<SpzStateWebEntity> getHistory() {
