@@ -62,5 +62,6 @@
                         <input type="submit" value="<f:message key='releaseBut'/>"/>
                     </form>
                 </c:if>
+                    <jsp:include page="listHistory.jsp"/>
     </body>
 </html>
