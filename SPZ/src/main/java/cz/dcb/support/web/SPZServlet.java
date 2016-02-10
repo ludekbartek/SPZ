@@ -287,6 +287,9 @@ public class SPZServlet extends HttpServlet {
                 case "/changeanalyst":
                             changeAnalyst(request,response);
                             break;
+                case "/changedevel":
+                            changeDeveloper(request,response);
+                            break;
                 case "/acceptsolution":
                             acceptSolution(request,response);
                             break;
@@ -2129,6 +2132,55 @@ public class SPZServlet extends HttpServlet {
                 Logger.getLogger(SPZServlet.class.getName()).log(Level.SEVERE, "Error updating current state.", ex);
             }
         }
+    }
+
+    private void changeDeveloper(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        RolesManager rolesMan = new RolesJpaController(emf);
+        UserAccessManager accessMan = new UserAccessJpaController(emf);
+        SpzAnalystManager analystManager = new SpzAnalystJpaController(emf);
+        UserManager userManager = new UserJpaController(emf);
+        SpzManager spzManager = new SpzJpaController(emf);
+        //SpzAnalystManager spzAnalystManager = new SpzAnalystJpaController(emf);
+        int spzId = getSpzId(request.getParameterMap());
+        Spz spz = spzManager.findSpz(spzId);
+        UserWebEntity user = requestToUserWebEntity(request);
+        Project proj = getProjectFromRequest(request);
+        Configuration conf = getConfigurationFromRequest(request);
+        SPZWebEntity spzWeb = spzToEntity(spz);
+        
+        if(!request.getParameterMap().containsKey("developer")){
+            List<UserWebEntity> developers=getDevelopers();
+            try {
+                
+                request.setAttribute("developers", developers);
+                request.setAttribute("user", user);
+                request.setAttribute("spz", spzWeb);
+                request.setAttribute("project", proj);
+                request.setAttribute("config", conf);
+                request.getRequestDispatcher("/editDeveloper.jsp").forward(request, response);
+            } catch (ServletException | IOException ex) {
+                try {
+                    request.setAttribute("error", "Nelze zmenit analytika (vice viz log).");
+                    LOGGER.log(Level.SEVERE,"Chyba pri prechodu na editAnalyst.jsp:",ex);
+                    listSpz(request, response);
+                } catch (ServletException | IOException ex1) {
+                    Logger.getLogger(SPZServlet.class.getName()).log(Level.SEVERE, null, ex1);
+                }
+            }
+        }else{
+            setAnalyst(spz,request.getParameter("developer"));
+            List<Spz> spzs = spzManager.findSpzEntities();
+            List<SPZWebEntity> spzEntities = spzToEntities(spzs);
+            request.setAttribute("spz", spzEntities);
+            request.setAttribute("user", user);
+             request.setAttribute("project", proj);
+            request.setAttribute("config", conf);
+            listSpz(request,response);
+        }
+    }
+
+    private List<UserWebEntity> getDevelopers() {
+        return getAnalysts();
     }
 
     
