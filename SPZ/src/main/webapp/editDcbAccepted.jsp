@@ -22,7 +22,7 @@
             <jsp:include page="editcommon.jsp"/>
             <tr>
                 <td class="label"><f:message key="revised"/></td>
-                <td class="value" rowspan="3"><c:out value="${spz.revisedRequest}" escapeXml="true"/></td>
+                <td class="value" rowspan="3"><c:out value="${spz.revised}" escapeXml="true"/></td>
             </tr>
             <tr>
                 <td class="label"><f:message key="solution"/></td>
