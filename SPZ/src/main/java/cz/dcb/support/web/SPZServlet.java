@@ -520,6 +520,9 @@ public class SPZServlet extends HttpServlet {
             if(request.getParameterMap().containsKey("analyst")){
                 setAnalyst(spz, request.getParameter("analyst"));
             }
+            if(request.getParameterMap().containsKey("developer")){
+                setDeveloper(spz,request.getParameter("developer"));
+            }
             changeState(spz,request,response);
             updateSpz(spz,request);
             request.setAttribute("user", userWeb);
@@ -925,6 +928,12 @@ public class SPZServlet extends HttpServlet {
             User user = userManger.findUser(analystId);
             if(user!=null){
                 entity.setAnalyst(user.getName());
+            }
+        }
+        if(spz.getDeveloperId()>0){
+            User user = userManger.findUser(spz.getDeveloperId());
+            if(user!=null){
+                entity.setDeveloper(user.getName());
             }
         }
         entity.setId(spz.getId());
@@ -2181,6 +2190,12 @@ public class SPZServlet extends HttpServlet {
 
     private List<UserWebEntity> getDevelopers() {
         return getAnalysts();
+    }
+
+    private void setDeveloper(Spz spz, String parameter) {
+        UserManager userManager = new UserJpaController(emf);
+        User user = userManager.findUserByLogin(parameter);
+        spz.setDeveloperId(user.getId());
     }
 
     
