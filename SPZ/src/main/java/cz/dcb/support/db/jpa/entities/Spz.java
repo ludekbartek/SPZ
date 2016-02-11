@@ -83,6 +83,8 @@ public class Spz implements Serializable {
     private Double manDays; // skutecna pracnost v clovekohodinach
     @Column(name = "ASSUMEDMANDAYS",precision = 52)
     private Double assumedManDays;
+    @Column(name="DEVELOPERID")
+    private int developerId;
 
     public Spz() {
     }
@@ -91,6 +93,16 @@ public class Spz implements Serializable {
         this.id = id;
     }
 
+    public int getDeveloperId() {
+        return developerId;
+    }
+
+    public void setDeveloperId(int developerId) {
+        this.developerId = developerId;
+    }
+
+    
+    
     public Integer getId() {
         return id;
     }
