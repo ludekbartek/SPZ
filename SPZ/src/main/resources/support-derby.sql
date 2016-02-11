@@ -12,7 +12,8 @@ create table SUSER.Spz
     ts bigint,/*casove razitko, cas vytvoreni zaznamu v DB*/
     category smallint, /*kategorie SPZ - 0 = nestandardni,1 = standardni*/
     assumedManDays double, /*Odhad pracnosti v clovekodnech*/
-    manDays double /*Skutecna pracnost v clovekodnech*/
+    manDays double, /*Skutecna pracnost v clovekodnech*/
+    developerId int /*ID vyvojare SPZ*/
 );
 
 create table SUSER.SpzState 
