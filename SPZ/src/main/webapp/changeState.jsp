@@ -48,7 +48,7 @@
                 <label for="developer"><f:message key="developer"/></label>
                 <select name="developer">
                     <c:forEach var="developer" items="${developers}">
-                        <option><c:out value="${developer.name}"/></option>
+                        <option value="${developer.login}"><c:out value="${developer.name}"/></option>
                     </c:forEach>
                 </select>
             </c:if>
