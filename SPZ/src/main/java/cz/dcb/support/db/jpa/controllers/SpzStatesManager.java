@@ -27,6 +27,8 @@ public interface SpzStatesManager {
     void edit(Spzstates spzstates) throws NonexistentEntityException, Exception;
 
     Spzstates findSpzstates(Integer id);
+    
+    String findSpzSolution(Integer id);
 
     List<Spzstates> findSpzstatesEntities();
 

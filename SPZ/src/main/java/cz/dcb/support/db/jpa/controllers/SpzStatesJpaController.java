@@ -216,6 +216,22 @@ public class SpzStatesJpaController implements Serializable, SpzStatesManager {
         em.persist(spzstates);
     }
 
+    @Override
+    public String findSpzSolution(Integer id) {
+        EntityManager em = getEntityManager();
+        String solutinDesc = null;
+        try{
+            Query query = em.createQuery("select state.solutiondescription from Spzstate state where state.solutiondescription != '' and state.id in (select states.stateid from Spzstates states where states.spzid=:spzid)");
+            query.setParameter("spzid", id);
+            solutinDesc = (String)query.getSingleResult();
+        }finally{
+            if(em!=null){
+                em.close();
+            }
+        }
+        return solutinDesc;
+    }
+
    
 
 }
