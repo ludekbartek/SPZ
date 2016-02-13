@@ -24,6 +24,10 @@
         <c:set var="jsp" value="./acceptSol.jsp"/>
         <table>
         <jsp:include page="editcommon.jsp"/>
+        <tr>
+            <td><f:message key="solutionInfo"/></td>
+            <td colspan="3"><c:out value="${spz.solution}"/></td>
+        </tr>
         </table>
         <h2><f:message key="reqInfo"/>:</h2>
         <form action='${pageContext.request.contextPath}/SPZServlet/editspz' method="post">

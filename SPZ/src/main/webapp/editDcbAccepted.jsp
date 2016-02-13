@@ -30,7 +30,11 @@
             </tr>
             <tr>
                 <td class="label"><f:message key="estWorkLoad"/></td>
-                <td class="value"><c:out value="${spz.workLoadEstimation}"/></td>
+                <td class="value">
+                    <c:out value="${spz.workLoadEstimation}"/> <f:message key="manHours"/>
+                    (<f:formatNumber maxFractionDigits="2" value="${spz.workLoadEstimation / 8.0}"/>
+                    <f:message key="manDays"/>)
+                </td>
             </tr>
         </table>
                 <c:if test="${user.role!=0}">
