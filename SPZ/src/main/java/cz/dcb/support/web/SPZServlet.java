@@ -919,7 +919,7 @@ public class SPZServlet extends HttpServlet {
         ProjectConfigurationManager projConfManager = new ProjectConfigurationJpaController(emf);
         ConfigurationManager confMan = new ConfigurationJpaController(emf);
         UserManager userManger = new UserJpaController(emf);
-        List<SpzStateWebEntity> history;
+        List<SpzStateWebEntity> history=null;
         
         int analystId = analystManager.findSpzanalystUserId(spz.getId());
         SPZWebEntity entity;
@@ -962,10 +962,17 @@ public class SPZServlet extends HttpServlet {
         }
         Spzstate current = statesManager.getCurrentState(spz);
         User user = null;
+        List<Spzstate> statesHistory = statesManager.findSpzstates(spz);
+        history = spzStatesToSpzStateWebEntities(statesHistory);
         if(current!=null){
             user = userManger.findUserByLogin(current.getIssuerLogin());
             entity.setSpzState(current.getCode());
-            entity.setSolution(current.getSolutiondescription());
+            solution = statesManager.findSpzSolution(spz.getId());
+            
+            if(solution==null){
+                solution=findSolution(history);
+            }
+            entity.setSolution(solution);
             entity.setRevised(current.getRevisedrequestdescription());
             Double mandays = spz.getManDays();
             if(mandays!=null)
@@ -981,7 +988,7 @@ public class SPZServlet extends HttpServlet {
         
         }
         entity.setIssuer((user!=null?user.getName():"Nenastaven"));
-        history = spzStatesToSpzStateWebEntities(statesManager.findSpzstates(spz));
+        
         entity.setHistory(history);
         
         Integer spzIssuerId = issuerManager.findSpzIssuerIdBySpzId(spz.getId());
@@ -2196,6 +2203,14 @@ public class SPZServlet extends HttpServlet {
         UserManager userManager = new UserJpaController(emf);
         User user = userManager.findUserByLogin(parameter);
         spz.setDeveloperId(user.getId());
+    }
+
+    private String findSolution(List<SpzStateWebEntity> history) {
+        String solution = null;
+        for(SpzStateWebEntity webEnt:history){
+                solution=webEnt.getSolutionDescription();
+        }
+        return solution;
     }
 
     
