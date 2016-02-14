@@ -425,12 +425,22 @@ public class SPZServlet extends HttpServlet {
                     return;
                 }
                 
+                Spznote note = null;
                 if(request.getParameterMap().containsKey("desc")){
-                    request.setAttribute("jsp", "./list.jsp");
-                    addNote(request, response,spz.getId());
+                    String desc = request.getParameter("desc");
+                    Short external=0;
+                    if(request.getParameterMap().containsKey("external")){
+                        String ext = request.getParameter("external");
+                        external = Short.parseShort(ext);
+                    }
+                    note = createSpzNote(spz,desc,external,user);
+                    Spzstatenote spzStateNote = new Spzstatenote();
+                    SpzStateNoteManager stateNoteMan = new SpzStateNoteJpaController(emf);
+                    spzStateNote.setNoteid(note.getId());
+                    spzStateNote.setStateid(state.getId());
+                    stateNoteMan.create(spzStateNote);
                 }
                 createSpzIssuer(spz, user);
-                
                 List<Spz> spzs = manager.findSpzEntities();
                 request.setAttribute("spzs", spzToEntities(spzs));
                 request.setAttribute("user", user);
@@ -2213,6 +2223,20 @@ public class SPZServlet extends HttpServlet {
                 solution=webEnt.getSolutionDescription();
         }
         return solution;
+    }
+
+    private Spznote createSpzNote(Spz spz, String description, Short external, UserWebEntity user) {
+        Spznote spzNote = new Spznote();
+        SpzNoteManager spzNoteMan = new SpzNoteJpaController(emf);
+        spzNote.setNotetext(description);
+        spzNote.setExternalnote(external);
+        spzNote.setIssuer(user.getName());
+        
+        Calendar cal = new GregorianCalendar();
+        spzNote.setNotedate(cal.getTime());
+        spzNote.setTs(BigInteger.valueOf(cal.getTimeInMillis()));
+        spzNoteMan.create(spzNote);
+        return spzNote;
     }
 
     
