@@ -19,24 +19,21 @@
              (<f:formatDate type="both" dateStyle="LONG" timeStyle="SHORT" value="${item.issueDate}"/>)
              <c:forEach items="${item.notes}" var="note">
                  <div class="note">
-                     <c:choose>
-                         <c:when test="${empty noteIssuer}">
-                             Nezadan
-                         </c:when>
-                         <c:otherwise>
-                             <c:out value="${note.noteIssuer.name}"/>
-                         </c:otherwise>
-                     </c:choose> 
-                     (<f:formatDate type="both" dateStyle="LONG" timeStyle="SHORT" value="${note.noteDate}"/>)
-                     <c:if test="${note.external!=1}">
-                         <div class="note-header">
-                             #########<f:message key="internal"/>#########
-                         </div>
-                             
+                     <c:if test="${not empty note.noteIssuer}">
+                         <c:out value="${note.noteIssuer}"/>
                      </c:if>
-                     <div class="notetext">
-                        <c:out value="${note.noteText}" escapeXml="false"/> 
-                     </div>
+                     (<f:formatDate type="both" dateStyle="LONG" timeStyle="SHORT" value="${note.noteDate}"/>)
+                     <c:choose>
+                         <c:when test="${note.external!=0 || user.role!=0}">
+                            <div class="note-header">
+                                     #########<f:message key="internal"/>#########
+                            </div>
+                            <div class="notetext">
+                                <c:out value="${note.noteText}" escapeXml="false"/> 
+                            </div>
+                         </c:when>
+                     </c:choose>
+                     
                  </div>
             </c:forEach>
              <!--(<c:out value="${item.issueDate}"/>)-->
@@ -44,6 +41,7 @@
          <div class="body">
              <c:out value="${item.revisedRequestDescription}" escapeXml="false"/>
          </div>
+             <hr/>
 </c:forEach>
 <c:if test="${item.code!='Registrovaná'}">
     <form action="${pageContext.request.contextPath}/SPZServlet/removeState" method="post">
