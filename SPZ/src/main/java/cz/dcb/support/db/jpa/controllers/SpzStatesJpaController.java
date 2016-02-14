@@ -223,7 +223,10 @@ public class SpzStatesJpaController implements Serializable, SpzStatesManager {
         try{
             Query query = em.createQuery("select state.solutiondescription from Spzstate state where state.solutiondescription != '' and state.id in (select states.stateid from Spzstates states where states.spzid=:spzid)");
             query.setParameter("spzid", id);
-            solutinDesc = (String)query.getSingleResult();
+            List<String> solDescList = query.getResultList();
+            if(solDescList.size()>0){
+                solutinDesc = solDescList.get(0);
+            }
         }finally{
             if(em!=null){
                 em.close();
