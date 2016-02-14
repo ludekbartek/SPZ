@@ -71,8 +71,8 @@ create table SUSER.SpzNote
     externalNote smallint,
     noteDate timestamp,
     notetext varchar(8000),
-    issuer varchar(100),
-    ts bigint
+    ts bigint,
+    issuer varchar(100)
 );
 
 create table SUSER.SpzStateNote
