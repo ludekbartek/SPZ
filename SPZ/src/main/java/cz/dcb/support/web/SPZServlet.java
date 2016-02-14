@@ -1589,6 +1589,7 @@ public class SPZServlet extends HttpServlet {
         entity.setNoteDate(note.getNotedate());
         entity.setNoteText(note.getNotetext());
         entity.setExternal(note.getExternalnote());
+        entity.setNoteIssuer(note.getIssuer());
         AttachmentNoteManager manager= new AttachmentNoteJpaController(emf);
         List<Attachment> attachments = manager.getAttachmentsForNote(note.getId());
         
@@ -1723,6 +1724,7 @@ public class SPZServlet extends HttpServlet {
         note.setNotetext(noteText);
         note.setNotedate(new GregorianCalendar().getTime());
         note.setExternalnote(external);
+        note.setIssuer(user.getName());
         note.setTs(BigInteger.valueOf(new GregorianCalendar().getTimeInMillis()));
         noteManager.create(note);
         stateNote.setNoteid(note.getId());
