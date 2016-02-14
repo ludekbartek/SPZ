@@ -53,6 +53,16 @@ public class Spznote implements Serializable {
     private String notetext;
     @Column(name = "TS")
     private BigInteger ts;
+    @Column(name = "ISSUER", length = 100)
+    private String issuer;
+
+    public String getIssuer() {
+        return issuer;
+    }
+
+    public void setIssuer(String issuer) {
+        this.issuer = issuer;
+    }
 
     public Spznote() {
     }
