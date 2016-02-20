@@ -24,7 +24,7 @@
                      </c:if>
                      (<f:formatDate type="both" dateStyle="LONG" timeStyle="SHORT" value="${note.noteDate}"/>)
                      <c:choose>
-                         <c:when test="${note.external!=0 || user.role!=0}">
+                         <c:when test="${note.external==1 || user.role!=0}">
                             <div class="note-header">
                                      #########<f:message key="internal"/>#########
                             </div>
