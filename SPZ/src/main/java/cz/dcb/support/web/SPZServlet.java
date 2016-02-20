@@ -103,6 +103,7 @@ import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.Part;
 import cz.dcb.support.db.jpa.controllers.ConfigurationspzManager;
 import cz.dcb.support.db.jpa.entities.Configurationspz;
+import cz.dcb.support.db.jpa.entities.Projectconfiguration;
 
 /**
  *
@@ -183,6 +184,18 @@ public class SPZServlet extends HttpServlet {
             } catch (IOException ex) {
                 LOGGER.log(Level.SEVERE, null, ex);
             }
+        }
+        if(!checkProject()){
+            Project project = createProject();
+            Configuration config = createConfig();
+            addConfig(project,config);
+            User projectManager = createUser("Pepa Manager","manager");
+            User developer = createUser("Tonda Vyvojar","analyst");
+            User client = createUser("Franta Uzivatel","user");
+            
+            createAccess(config,Roles.PROJECT_MANAGER,projectManager);
+            createAccess(config,Roles.ANALYST,developer);
+            createAccess(config,Roles.CLIENT,client);
         }
             
     }
@@ -2237,6 +2250,95 @@ public class SPZServlet extends HttpServlet {
         spzNote.setTs(BigInteger.valueOf(cal.getTimeInMillis()));
         spzNoteMan.create(spzNote);
         return spzNote;
+    }
+
+    /* Pomocne metody pro 1. etapu*/
+    
+    /**
+     * Kontrola existence potrebnych entit v databazi
+     */
+    private boolean checkProject() {
+        ProjectManager manager = new ProjectJpaController(emf);
+        List<Project> projects = manager.findProjectEntities();
+        return !projects.isEmpty();
+    }
+
+    /**
+     * Vytvoreni testovaciho projektu
+     * 
+     * @return testovaci projekt 
+     */
+    private Project createProject() {
+        ProjectManager manager = new ProjectJpaController(emf);
+        Project project = new Project();
+        project.setDescription("Testovaci projekt");
+        project.setName("bt");
+        Calendar cal = new GregorianCalendar();
+        project.setTs(BigInteger.valueOf(cal.getTimeInMillis()));
+        manager.create(project);
+        return project;
+    }
+
+    /**
+     * Vytvoreni testovaci konfigurace
+     * @return testovaci konfigurace
+     */
+    private Configuration createConfig() {
+        ConfigurationManager manager = new ConfigurationJpaController(emf);
+        Configuration config = new Configuration();
+        config.setCode("cfg1");
+        config.setDescription("Testovaci konfigurace");
+        Calendar cal = new GregorianCalendar();
+        config.setTs(BigInteger.valueOf(cal.getTimeInMillis()));
+        manager.create(config);
+        return config;
+    }
+
+    /**
+     * Pridani testovaci konfigurace do testovaciho projektu
+     * @param project projekt
+     * @param config konfigurace
+     */
+    private void addConfig(Project project, Configuration config) {
+        ProjectConfigurationManager manager = new ProjectConfigurationJpaController(emf);
+        Projectconfiguration projectConf = new Projectconfiguration();
+        projectConf.setConfigurationid(config.getId());
+        projectConf.setProjectid(project.getId());
+        manager.create(projectConf);
+    }
+
+    /**
+     * Vytvoreni uzivatel
+     * @param name Cele jmeno
+     * @param role role
+     * @param login uzivatelske jmeno
+     * @return novy uzivatel s danymi parametry
+     */
+    private User createUser(String name, String login) {
+        UserManager manager = new  UserJpaController(emf);
+        User user = new User();
+        user.setName(name);
+        user.setLogin(login);
+        manager.create(user);
+        return user;
+        
+    }
+
+    /**
+     * Vytvori pristup uzivatele k dane konfiguraci
+     * @param config konfigurace
+     * @param role role v projektu
+     * @param user uzivatel
+     */
+    private void createAccess(Configuration config, Roles role, User user) {
+        UserAccessManager manager = new UserAccessJpaController(emf);
+        Useraccess access = new Useraccess();
+        access.setConfigurationid(config.getId());
+        access.setRole(role.toString());
+        access.setUserid(user.getId());
+        Calendar cal = new GregorianCalendar();
+        access.setTs(BigInteger.valueOf(cal.getTimeInMillis()));
+        manager.create(access);
     }
 
     
