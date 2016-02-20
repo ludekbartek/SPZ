@@ -19,6 +19,8 @@ import cz.dcb.support.db.jpa.controllers.SpzNoteJpaController;
 import cz.dcb.support.db.jpa.controllers.SpzNoteManager;
 import cz.dcb.support.db.jpa.controllers.SpzStateJpaController;
 import cz.dcb.support.db.jpa.controllers.SpzStateManager;
+import cz.dcb.support.db.jpa.controllers.SpzStatesJpaController;
+import cz.dcb.support.db.jpa.controllers.SpzStatesManager;
 import cz.dcb.support.db.jpa.controllers.UserJpaController;
 import cz.dcb.support.db.jpa.controllers.UserManager;
 import cz.dcb.support.db.jpa.controllers.exceptions.NonexistentEntityException;
@@ -328,9 +330,12 @@ public class DBUtils {
         Spzstate state = createSpzState();
         stateManager.create(state);
         
+        
+        SpzStatesManager statesManager = new SpzStatesJpaController(emf);
         Spzstates value = new Spzstates();
         value.setSpzid(spz.getId());
         value.setStateid(state.getId());
+        statesManager.create(value);
        
         return value;
     }
@@ -342,6 +347,8 @@ public class DBUtils {
         stateManager.create(state);
         value.setSpzid(spz.getId());
         value.setStateid(state.getId());
+        SpzStatesManager statesManager = new SpzStatesJpaController(DBUtils.getEntityManagerFactory());
+        statesManager.create(value);
         return value;
     }
 }
