@@ -1951,7 +1951,7 @@ public class SPZServlet extends HttpServlet {
         entity.setLogin(user.getLogin());
         entity.setName(user.getName());
         List<Useraccess> roles = getUserRoles(user.getId());
-        switch(roles.get(0).getRole()){
+        switch(roles.get(0).getRole().toLowerCase()){
             case "client":entity.setRole(Roles.CLIENT.ordinal());
                           break;
             case "analyst":
