@@ -81,3 +81,7 @@ thead{
 .desc{
     width: 80%;
 }
+
+.debug{
+    visibility: hidden;
+}
