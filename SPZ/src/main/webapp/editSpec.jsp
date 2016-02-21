@@ -37,7 +37,10 @@
                     (<f:formatNumber minFractionDigits="2" maxFractionDigits="2" value="${spz.workLoadEstimation/8.0}"/> <f:message key="manDays"/>)</td>
             </tr>--%>
         </table>
-        <c:if test="${user.role==1}">
+        <span class="debug">
+            User: <c:out value="${user.name}"/> (id:<c:out value="${user.id}"/>, role:<c:out value="${user.role}"/>)
+        </span>
+            <%-- <c:if test="${user.role!=0}">--%>
             <form action="${pageContext.request.contextPath}/SPZServlet/delete" method="post">
                 <input type="hidden" name="spzid" value="${spz.id}"/>
                 <input type="hidden" name="state" value="SPECIFIED"/>
@@ -47,7 +50,7 @@
                 <input type="hidden" name="projectid" value="${project.id}"/>
                 <input type="submit" value="<f:message key='cancel'/>"/>
             </form>
-        </c:if>
+        <%-- </c:if> --%>
         <c:if test="${user.role==0}">
             <form action="${pageContext.request.contextPath}/SPZServlet/editspz" method="post">
                 <input type="hidden" name="spzid" value="${spz.id}"/>
