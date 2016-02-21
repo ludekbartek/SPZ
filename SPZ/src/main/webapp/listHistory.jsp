@@ -10,7 +10,7 @@
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <f:setBundle basename="list"/>
 <h2>Historie SPZ</h2>
-<div class="debug">Name:${user.name} (id:<c:out value="${user.id}"/>)<br/>Role:<c:out value="${user.role}"/></div>
+<span class="debug">Name:${user.name} (id:<c:out value="${user.id}"/>)<br/>Role:<c:out value="${user.role}"/></span>
 <c:forEach items="${spz.history}" var="item">
     <div class="state-header"><c:out value="${item.code}"/> <f:formatDate type="both" dateStyle="LONG" timeStyle="short" value="${item.issueDate}"/>
          <c:out value="${item.issuer.name}"/>
@@ -26,7 +26,7 @@
                      (<f:formatDate type="both" dateStyle="LONG" timeStyle="SHORT" value="${note.noteDate}"/>)
                      <c:choose>
                          <c:when test="${note.external==1 || user.role!=0}">
-                            <div class="debug">External:<c:out value="${note.external==1}"/></div>
+                            <span class="debug">External:<c:out value="${note.external==1}"/></span>
                             <c:if test="${note.external==0}">
                                 <div class="note-header">
                                      #########<f:message key="internal"/>#########
