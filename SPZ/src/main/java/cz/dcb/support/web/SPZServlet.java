@@ -104,6 +104,9 @@ import javax.servlet.http.Part;
 import cz.dcb.support.db.jpa.controllers.ConfigurationspzManager;
 import cz.dcb.support.db.jpa.entities.Configurationspz;
 import cz.dcb.support.db.jpa.entities.Projectconfiguration;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.Arrays;
 
 /**
  *
@@ -632,9 +635,22 @@ public class SPZServlet extends HttpServlet {
      * @param request http request containing required data
      * @param response http response 
      */
-    private void editUser(HttpServletRequest request, HttpServletResponse response) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-        
+    private void editUser(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        if(!authenticate(request)){
+            dispError(request,response,"Uzivatele nelze autentizovat.");
+        }
+        if(!checkUserParameters(request)){
+            Integer userId = getUserId(request);
+            if(userId==null){
+                dispError(request, response, "Chybi user id.");
+                return;
+            }
+            UserManager man = new UserJpaController(emf);
+            User user=man.findUser(userId);
+            UserWebEntity userWeb = userToEntity(user);
+            request.setAttribute("user",userWeb);
+            request.getRequestDispatcher("/useredit.jsp").forward(request, response);
+        }
     }
 
     /**
@@ -2341,5 +2357,45 @@ public class SPZServlet extends HttpServlet {
         manager.create(access);
     }
 
-    
+    private boolean authenticate(HttpServletRequest request) {
+        boolean md5Avail = true;
+        User user = null;
+        String strId = request.getParameter("userid");
+        if(strId==null){
+            return false;
+        }
+        UserManager userMan = new UserJpaController(emf);
+        MessageDigest md5 =  null;
+        try {
+        
+            md5 = MessageDigest.getInstance("MD5");
+            } catch (NoSuchAlgorithmException ex) {
+                LOGGER.log(Level.SEVERE,"Chybi MD5. Pouzivam otevrene heslo.");
+                md5Avail= false;
+            }  
+        int id = Integer.parseInt(strId);
+        user = userMan.findUser(id);
+        String login = request.getParameter("login");
+        String oldPasswd = request.getParameter("password");
+        if(user.getPassword()==null){
+            return true;
+        }
+        if( md5Avail){
+            return Arrays.equals(user.getPassword().getBytes(), md5.digest(oldPasswd.getBytes()));
+        }
+        return user.getPassword().equals(oldPasswd);
+    }
+
+    private boolean checkUserParameters(HttpServletRequest request) {
+        return request.getParameter("login")!=null && 
+               request.getParameter("name")!=null &&
+               request.getParameter("password")!=null;
+    }
+
+    private Integer getUserId(HttpServletRequest request) {
+        String userId = request.getParameter("userid");
+        if(userId == null)
+            return null;
+        return Integer.parseInt(userId);
+    }
 }
