@@ -2,4 +2,5 @@
 <Context antiJARLocking="true" path="/SPZ">
   <Resource auth="Container" driverClassName="com.mysql.jdbc.Driver" maxActive="20" maxIdle="10" maxWait="-1" name="jdbc/support" password="" type="javax.sql.DataSource" url="jdbc:mysql://localhost:3306/support?zeroDateTimeBehavior=convertToNull" username="root"/>
   <Resource auth="Container" driverClassName="org.apache.derby.jdbc.ClientDriver" maxActive="20" maxIdle="10" maxWait="-1" name="jdbc/derby-support" password="suser" type="javax.sql.DataSource" url="jdbc:derby://localhost:1527/support" username="suser"/>
+  <Resource auth="Container" driverClassName="org.apache.derby.jdbc.EmbeddedDriver" maxActive="20" maxIdle="10" maxWait="-1" name="support" password="suser" type="javax.sql.DataSource" url="jdbc:derby:support;create=true" username="suser"/>
 </Context>
