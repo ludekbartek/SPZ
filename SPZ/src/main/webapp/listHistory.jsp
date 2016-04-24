@@ -11,13 +11,14 @@
 <f:setBundle basename="list"/>
 <h2>Historie SPZ</h2>
 <span class="debug">Name:${user.name} (id:<c:out value="${user.id}"/>)<br/>Role:<c:out value="${user.role}"/></span>
+
 <c:forEach items="${spz.history}" var="item">
     <div class="state-header"><c:out value="${item.code}"/> <f:formatDate type="both" dateStyle="LONG" timeStyle="short" value="${item.issueDate}"/>
          <c:out value="${item.issuer.name}"/>
     </div>
          <div  class="state-body">
-             <c:out value="${item.issuer.name}"/>
-             (<f:formatDate type="both" dateStyle="LONG" timeStyle="SHORT" value="${item.issueDate}"/>)
+             <%--<c:out value="${item.issuer.name}"/>
+(<f:formatDate type="both" dateStyle="LONG" timeStyle="SHORT" value="${item.issueDate}"/>)--%>
              <c:forEach items="${item.notes}" var="note">
                  <div class="note">
                      <c:if test="${not empty note.noteIssuer}">
@@ -40,11 +41,31 @@
                      
                  </div>
             </c:forEach>
-             <!--(<c:out value="${item.issueDate}"/>)-->
+             
+            <c:if test="${not empty spz.workLoadEstimation}">
+                 <div class="state-item">
+                    <f:message key="estwork"/>: 
+                    <f:formatNumber minFractionDigits="1" maxFractionDigits="1" value="${spz.workLoadEstimation}"/>
+                    <f:message key="manhours"/>
+                 </div>
+            </c:if>
+             <c:if test="${not empty spz.revised}">
+                <div class="state-item">
+                     <f:message key="revisedsol"/>:
+                     <c:out escapeXml="false" value="${spz.revised}"/>
+                </div>
+             </c:if>
+             <c:if test="${not empty $spz.solution}">
+                 <div class="state-item"> 
+                     <f:message key="solution"/>:
+                     <c:out escapeXml="false" value="${spz.solution}"/>
+                 </div>
+             </c:if> 
+            <%--(<c:out value="${item.issueDate}"/>)--%>
          </div>
-         <div class="body">
+         <%--<div class="body">
              <c:out value="${item.revisedRequestDescription}" escapeXml="false"/>
-         </div>
+         </div>--%>
              <hr/>
 </c:forEach>
 <c:if test="${item.code!='Registrovaná'}">
