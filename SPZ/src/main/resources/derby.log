@@ -1,0 +1,19 @@
+----------------------------------------------------------------
+Mon Mar 07 21:40:13 CET 2016:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.11.1.2 - (1629631): instance a816c00e-0153-52cf-0a3c-000002eb7890 
+on database directory /home/bar/work/dcb/SPZ-derby/SPZ/src/main/resources/support with class loader sun.misc.Launcher$AppClassLoader@5e2de80c 
+Loaded from file:/usr/local/jdk1.8.0_71/db/lib/derby.jar
+java.vendor=Oracle Corporation
+java.runtime.version=1.8.0_71-b15
+user.dir=/home/bar/work/dcb/SPZ-derby/SPZ/src/main/resources
+os.name=Linux
+os.arch=amd64
+os.version=4.4.3-300.fc23.x86_64
+derby.system.home=null
+Database Class Loader started - derby.database.classpath=''
+----------------------------------------------------------------
+Mon Mar 07 21:40:38 CET 2016: Shutting down Derby engine
+----------------------------------------------------------------
+Mon Mar 07 21:40:39 CET 2016:
+Shutting down instance a816c00e-0153-52cf-0a3c-000002eb7890 on database directory /home/bar/work/dcb/SPZ-derby/SPZ/src/main/resources/support with class loader sun.misc.Launcher$AppClassLoader@5e2de80c 
+----------------------------------------------------------------
