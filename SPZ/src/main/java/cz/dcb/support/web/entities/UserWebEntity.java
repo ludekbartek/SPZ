@@ -13,6 +13,9 @@ public class UserWebEntity {
    private long id;
    private String name;
    private String login;
+   private String company;
+   private String phone;
+   private String fax;
    private int role;
 
     public long getId() {
@@ -45,6 +48,14 @@ public class UserWebEntity {
 
     public void setRole(int role) {
         this.role = role;
+    }
+
+    public String getCompany() {
+        return company;
+    }
+
+    public void setCompany(String company) {
+        this.company = company;
     }
 
     @Override
