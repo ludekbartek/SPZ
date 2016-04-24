@@ -1,0 +1,133 @@
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=windows-1250">
+		<title>
+			Změna osobních údajů a hesla
+		</title>
+		<link rel="stylesheet" href="Zmena_osobnich_udaju_a_hesla_soubory/style.css" type="text/css">
+	</head>
+	<body topmargin="0" leftmargin="0">
+		<table class="titlehead">
+			<tbody><tr>
+				<td>
+					<table class="titlehead">
+						<tbody><tr>
+							<td width="50px"><img src="Zmena_osobnich_udaju_a_hesla_soubory/logo.gif"></td>
+							<td><table class="titlehead">
+								<tbody><tr><td class="title">Uživatelé systému servisní podpory</td></tr>
+								<tr><td class="navigace">
+									<a href="https://spz.dcb.cz/projects/">Projects</a></td></tr>
+							</tbody></table></td>
+							<td class="username">
+								bar (Ludek Bartek)
+							</td>
+						</tr>
+					</tbody></table>
+				</td>
+			</tr>
+			<tr height="*">
+				<td valign="top"><table class="admin">
+					<tbody><tr>
+						<td background="Zmena_osobnich_udaju_a_hesla_soubory/bg1.html" align="top" valign="top" width="150">
+							
+
+
+
+
+	
+		<form action="functions" method="post">
+			<input name="__ts" value="1461483607246" type="hidden">
+			<table class="functions" cellspacing="1">
+				
+					<tbody><tr><td><input name="listusers" value="Seznam uživatelů" type="submit"></td></tr>
+					<tr><td><input name="adduser" value="Nový uživatel" type="submit"></td></tr>
+				
+				<tr><td><input name="displayuser" value="Změna osobních údajů a hesla" type="submit"></td></tr>
+			</tbody></table>
+		</form>
+	
+
+
+
+
+
+						</td>
+						<td valign="top" width="*">
+							<table class="admin" cellspacing="1">
+								<tbody><tr>
+									<td valign="top">
+										
+										
+
+
+
+
+
+
+
+
+	
+		
+		
+			<h2>Změna osobních údajů</h2>
+			<form name="funcbar" action="savechangepwd" method="POST">
+				<input name="__ts" value="1461483607286" type="hidden">
+				<input name="loginname" value="btAdmin" type="hidden">
+				<table>
+				<tbody><tr><td>Přihlašovací jméno: </td><td><input name="loginname" value="btAdmin" disabled="disabled" type="text"></td></tr>
+				<tr><td>Jméno a příjmení: </td><td><input name="name" value="Administrator Administratorovic" type="text"></td></tr>
+				<tr><td>Email: </td><td><input name="email" value="nikdo@nikde.cz" type="text"></td></tr>
+				<tr><td>Firma: </td><td><input name="company" value="BT" type="text"></td></tr>
+				<tr><td>Tel: </td><td><input name="tel" value=" " type="text"></td></tr>
+				<tr><td>Fax: </td><td><input name="fax" value=" " type="text"></td></tr>
+				<tr><td>Heslo uživatele 'bar': </td><td><input name="oldpassword" type="password"></td></tr>
+				<tr><td>Nové heslo: </td><td><input name="newpassword" type="password"></td></tr>
+				<tr><td>Potvrzení hesla: </td><td><input name="confpassword" type="password"></td></tr>
+				</tbody></table>
+				<input value="Uložit" name="chpw" type="submit">
+			</form>
+			<form action="savechangeroles" method="POST">
+
+				<h2>Změna rolí</h2>
+				<input name="__ts" value="1461483607316" type="hidden">
+				<input name="loginname" value="btAdmin" type="hidden">
+				<table>
+
+					<tbody><tr><td>Přihlašovací jméno: </td><td><input name="loginname" value="btAdmin" disabled="disabled" type="text"></td></tr>
+					<tr><td>Heslo uživatele 'bar': </td><td><input name="oldpassword" type="password"></td></tr>
+					
+						<tr><td>Super User</td><td>
+						<input name="role_SA" value="true" checked="checked" type="radio">Yes
+						<input name="role_SA" value="false" type="radio">No
+						</td></tr>
+					
+						<tr><td>Normální uživatel</td><td>
+						<input name="role_USER" value="true" checked="checked" type="radio">Yes
+						<input name="role_USER" value="false" type="radio">No
+						</td></tr>
+					
+				</tbody></table>
+				<input value="Uložit" name="chroles" type="submit">
+			</form>
+
+		
+	
+
+
+
+
+									</td>
+								</tr>
+								<tr>
+									<td valign="bottom"></td>
+								</tr>
+							</tbody></table>
+						</td>
+					</tr>
+				</tbody></table>
+				</td>
+			</tr>
+		</tbody></table>
+	
+
+
+</body></html>

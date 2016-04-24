@@ -1,0 +1,711 @@
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=windows-1250">
+		<title>Definice konfigurace</title>
+		<link rel="stylesheet" href="Definice_konfigurace_soubory/style.css" type="text/css">
+	</head>
+	<body>
+		<table class="titlehead">
+			<tbody><tr>
+				<td>
+					<table class="titlehead">
+						<tbody><tr>
+							<td width="50px"><img src="Definice_konfigurace_soubory/logo.gif"></td>
+							<td><table class="titlehead">
+								<tbody><tr><td class="title">Administrace systému servisní podpory</td></tr>
+								<tr><td class="navigace">
+									<a href="https://spz.dcb.cz/projects/">Projects</a></td></tr>
+							</tbody></table></td>
+							<td class="username">
+								bar (Ludek Bartek)
+							</td>
+						</tr>
+					</tbody></table>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<table class="titlehead">
+						<tbody><tr>
+							<td style="width: 30%" valign="top">
+
+
+
+
+
+
+	<form name="smazat" method="post">
+		<input name="code" type="hidden">
+	</form>
+	<script language="javascript">
+		function deleteit(akce, kod, otazka) {
+			if (confirm(otazka)) {
+				smazat.code.value = kod;
+				smazat.action=akce;
+				smazat.submit();
+			}
+		}
+	</script>
+	<h2>Projekty</h2>
+	<ol>
+		
+			<li>
+				<a href="https://spz.dcb.cz/administration/+/"> </a>
+				<img src="Definice_konfigurace_soubory/del.gif" alt="Smazat" class="del" onclick='deleteit("/administration/delproj.jsp"," ","Opravdu smazat projekt  ?")' height="21" width="20">
+				<ol>
+					
+				</ol>
+			</li>
+		
+			<li>
+				<a href="https://spz.dcb.cz/administration/Alfa/">Alfa</a>
+				<img src="Definice_konfigurace_soubory/del.gif" alt="Smazat" class="del" onclick='deleteit("/administration/delproj.jsp","Alfa","Opravdu smazat projekt Alfa?")' height="21" width="20">
+				<ol>
+					
+						<li>
+							<a href="https://spz.dcb.cz/administration/Alfa/Allianz/">Allianz</a>
+				<img src="Definice_konfigurace_soubory/del.gif" alt="Smazat" class="del" onclick='deleteit("/administration/Alfa/delconf.jsp","Allianz","Opravdu smazat configuraci Alfa/Allianz?")' height="21" width="20">
+						</li>
+					
+				</ol>
+			</li>
+		
+			<li>
+				<a href="https://spz.dcb.cz/administration/BT/">BT</a>
+				<img src="Definice_konfigurace_soubory/del.gif" alt="Smazat" class="del" onclick='deleteit("/administration/delproj.jsp","BT","Opravdu smazat projekt BT?")' height="21" width="20">
+				<ol>
+					
+						<li>
+							<a href="https://spz.dcb.cz/administration/BT/cfg1/">cfg1</a>
+				<img src="Definice_konfigurace_soubory/del.gif" alt="Smazat" class="del" onclick='deleteit("/administration/BT/delconf.jsp","cfg1","Opravdu smazat configuraci BT/cfg1?")' height="21" width="20">
+						</li>
+					
+				</ol>
+			</li>
+		
+			<li>
+				<a href="https://spz.dcb.cz/administration/Incredit/">Incredit</a>
+				<img src="Definice_konfigurace_soubory/del.gif" alt="Smazat" class="del" onclick='deleteit("/administration/delproj.jsp","Incredit","Opravdu smazat projekt Incredit?")' height="21" width="20">
+				<ol>
+					
+						<li>
+							<a href="https://spz.dcb.cz/administration/Incredit/EGAP/">EGAP</a>
+				<img src="Definice_konfigurace_soubory/del.gif" alt="Smazat" class="del" onclick='deleteit("/administration/Incredit/delconf.jsp","EGAP","Opravdu smazat configuraci Incredit/EGAP?")' height="21" width="20">
+						</li>
+					
+						<li>
+							<a href="https://spz.dcb.cz/administration/Incredit/Cvicna/">Cvicna</a>
+				<img src="Definice_konfigurace_soubory/del.gif" alt="Smazat" class="del" onclick='deleteit("/administration/Incredit/delconf.jsp","Cvicna","Opravdu smazat configuraci Incredit/Cvicna?")' height="21" width="20">
+						</li>
+					
+						<li>
+							<a href="https://spz.dcb.cz/administration/Incredit/+/"> </a>
+				<img src="Definice_konfigurace_soubory/del.gif" alt="Smazat" class="del" onclick='deleteit("/administration/Incredit/delconf.jsp"," ","Opravdu smazat configuraci Incredit/ ?")' height="21" width="20">
+						</li>
+					
+				</ol>
+			</li>
+		
+			<li>
+				<a href="https://spz.dcb.cz/administration/NewProject/">NewProject</a>
+				<img src="Definice_konfigurace_soubory/del.gif" alt="Smazat" class="del" onclick='deleteit("/administration/delproj.jsp","NewProject","Opravdu smazat projekt NewProject?")' height="21" width="20">
+				<ol>
+					
+						<li>
+							<a href="https://spz.dcb.cz/administration/NewProject/NewConfiguration/">NewConfiguration</a>
+				<img src="Definice_konfigurace_soubory/del.gif" alt="Smazat" class="del" onclick='deleteit("/administration/NewProject/delconf.jsp","NewConfiguration","Opravdu smazat configuraci NewProject/NewConfiguration?")' height="21" width="20">
+						</li>
+					
+						<li>
+							<a href="https://spz.dcb.cz/administration/NewProject/+/"> </a>
+				<img src="Definice_konfigurace_soubory/del.gif" alt="Smazat" class="del" onclick='deleteit("/administration/NewProject/delconf.jsp"," ","Opravdu smazat configuraci NewProject/ ?")' height="21" width="20">
+						</li>
+					
+				</ol>
+			</li>
+		
+	</ol>
+	<h2>Nový projekt</h2>
+	<form action="/administration/newproj.jsp" method="post">
+		Kód: <input name="code" type="text"><br><input value="Přidat" type="submit">
+	</form>
+
+&nbsp;</td>
+							<td style="width: 70%" valign="top">
+
+
+
+
+
+
+	<form name="smazatur" method="post">
+		<input name="login" type="hidden">
+		<input name="role" type="hidden">
+	</form>
+	<script language="javascript">
+		function deleteur(akce, login, role, otazka) {
+			if (confirm(otazka)) {
+				smazatur.login.value = login;
+				smazatur.role.value = role;
+				smazatur.action=akce;
+				smazatur.submit();
+			}
+		}
+	</script>
+	
+	<h1>Editace konfigurace Alfa/Allianz</h1>
+		<form action="updconf.jsp" method="post" accept-charset="windows-1250">
+			Popis:<br>
+			<textarea name="desc" class="smalldesc">Penzijní fond Allianz</textarea><br>
+		<input value="Změnit popis" type="submit">
+		</form>
+		<h2>Nový uživatel</h2>
+		<form action="adduaccess.jsp" method="post">
+		<table class="novaspz">
+			<tbody><tr>
+				<td>Login:</td>
+				<td><select name="login">
+						
+							<option selected="selected" value="btAdmin">Administrator Administratorovic (btAdmin)</option>
+						
+							<option value="moravec">Aleš Moravec (moravec)</option>
+						
+							<option value="bt">bt (bt)</option>
+						
+							<option value="dcbuser">DCB User (dcbuser)</option>
+						
+							<option value="divis">Diviš Martin (divis)</option>
+						
+							<option value="cikhartova">Gabriela Cikhartová (cikhartova)</option>
+						
+							<option value="chvatal">Chvátal Martin (chvatal)</option>
+						
+							<option value="klinecka">Ing. Anna Klinecká (klinecka)</option>
+						
+							<option value="Ambroz">Ing. Jiří Ambrož (Ambroz)</option>
+						
+							<option value="machanec">Ing. Machanec Tomáš (machanec)</option>
+						
+							<option value="semelova">Ing. Monika Semelová (semelova)</option>
+						
+							<option value="Caban">Ing. Petr Čaban (Caban)</option>
+						
+							<option value="sikorova">Jarmila Sikorová (sikorova)</option>
+						
+							<option value="jindrichova">Jindřichová Vlasta (jindrichova)</option>
+						
+							<option value="hejkova">Jitka Hejková (hejkova)</option>
+						
+							<option value="vavrinkova">Jitka Vavřínková (vavrinkova)</option>
+						
+							<option value="popelkova">Kateřina Popelková (popelkova)</option>
+						
+							<option value="sitenska">Květoslava Sitenská (sitenska)</option>
+						
+							<option value="jurnickova">Lucie Jurníčková (jurnickova)</option>
+						
+							<option value="bar">Ludek Bartek (bar)</option>
+						
+							<option value="malinak">Maliňák Jiří (malinak)</option>
+						
+							<option value="lehotska">Marie Lehotská (lehotska)</option>
+						
+							<option value="studena">Milada Studená (studena)</option>
+						
+							<option value="labant">Milan Labant (labant)</option>
+						
+							<option value="marzinova">Miroslava Marzinová (marzinova)</option>
+						
+							<option value="jelinek">Ota Jelínek (jelinek)</option>
+						
+							<option value="pernicova">Pernicová Jana (pernicova)</option>
+						
+							<option value="perina">Peřina Karel (perina)</option>
+						
+							<option value="scholler">Petr Scholler (scholler)</option>
+						
+							<option value="cernohorska">Petra Černohorská (cernohorska)</option>
+						
+							<option value="sch">sch (sch)</option>
+						
+							<option value="sa">Super User (sa)</option>
+						
+							<option value="zalfaa">Support AZPF (zalfaa)</option>
+						
+							<option value="lehotsky">Štefan Lehotský (lehotsky)</option>
+						
+							<option value="kolinek">Tomáš Kolínek (kolinek)</option>
+						
+							<option value="bt_developer">Vyvojar BT (bt_developer)</option>
+						
+							<option value="pelaj">Zákazník (pelaj)</option>
+						
+							<option value="egap">Zákazník EGAP (egap)</option>
+						
+							<option value="herynek">Zbyněk Herynek (herynek)</option>
+						
+							<option value="vostrovska">Zdeňka Vostrovská (vostrovska)</option>
+						
+					</select></td>
+            </tr>
+			<tr>
+				<td>Role:</td>
+				<td><select name="role">
+						<option selected="selected" value="AN">Analytik</option>
+						<option value="PM">Projektový manažer</option>
+						<option value="SU">Supervisor</option>
+						<option value="DV">Vývojář</option>
+						<option value="CL">Zákazník</option>
+					</select></td>
+			</tr>
+		</tbody></table>		
+		<input value="Přidat uživatele" type="submit">
+		</form>
+		<h2>Uživatelé</h2>
+		<table class="list">
+			<tbody><tr>
+				<th>Login</th>
+				<th>Jméno</th>
+				<th>Role</th>
+				<th></th>
+			</tr>
+			
+				<tr>
+					<td>lehotsky</td>
+					<td>Štefan Lehotský</td>
+					<td>Analytik</td>
+					<td style="text-align: center">
+						<img src="Definice_konfigurace_soubory/del.gif" alt="Smazat" class="del" onclick='deleteur("/administration/Alfa/Allianz/deluaccess.jsp",
+								"lehotsky",
+								"AN",
+								"Opravdu smazat uživatele Štefan Lehotský (lehotsky) z role Analytik?")' height="21" width="20">
+					</td>
+				</tr>
+			
+				<tr>
+					<td>lehotsky</td>
+					<td>Štefan Lehotský</td>
+					<td>Vývojář</td>
+					<td style="text-align: center">
+						<img src="Definice_konfigurace_soubory/del.gif" alt="Smazat" class="del" onclick='deleteur("/administration/Alfa/Allianz/deluaccess.jsp",
+								"lehotsky",
+								"DV",
+								"Opravdu smazat uživatele Štefan Lehotský (lehotsky) z role Vývojář?")' height="21" width="20">
+					</td>
+				</tr>
+			
+				<tr>
+					<td>zalfaa</td>
+					<td>Support AZPF</td>
+					<td>Zákazník</td>
+					<td style="text-align: center">
+						<img src="Definice_konfigurace_soubory/del.gif" alt="Smazat" class="del" onclick='deleteur("/administration/Alfa/Allianz/deluaccess.jsp",
+								"zalfaa",
+								"CL",
+								"Opravdu smazat uživatele Support AZPF (zalfaa) z role Zákazník?")' height="21" width="20">
+					</td>
+				</tr>
+			
+				<tr>
+					<td>Ambroz</td>
+					<td>Ing. Jiří Ambrož</td>
+					<td>Zákazník</td>
+					<td style="text-align: center">
+						<img src="Definice_konfigurace_soubory/del.gif" alt="Smazat" class="del" onclick='deleteur("/administration/Alfa/Allianz/deluaccess.jsp",
+								"Ambroz",
+								"CL",
+								"Opravdu smazat uživatele Ing. Jiří Ambrož (Ambroz) z role Zákazník?")' height="21" width="20">
+					</td>
+				</tr>
+			
+				<tr>
+					<td>Caban</td>
+					<td>Ing. Petr Čaban</td>
+					<td>Zákazník</td>
+					<td style="text-align: center">
+						<img src="Definice_konfigurace_soubory/del.gif" alt="Smazat" class="del" onclick='deleteur("/administration/Alfa/Allianz/deluaccess.jsp",
+								"Caban",
+								"CL",
+								"Opravdu smazat uživatele Ing. Petr Čaban (Caban) z role Zákazník?")' height="21" width="20">
+					</td>
+				</tr>
+			
+				<tr>
+					<td>lehotska</td>
+					<td>Marie Lehotská</td>
+					<td>Analytik</td>
+					<td style="text-align: center">
+						<img src="Definice_konfigurace_soubory/del.gif" alt="Smazat" class="del" onclick='deleteur("/administration/Alfa/Allianz/deluaccess.jsp",
+								"lehotska",
+								"AN",
+								"Opravdu smazat uživatele Marie Lehotská (lehotska) z role Analytik?")' height="21" width="20">
+					</td>
+				</tr>
+			
+				<tr>
+					<td>kolinek</td>
+					<td>Tomáš Kolínek</td>
+					<td>Analytik</td>
+					<td style="text-align: center">
+						<img src="Definice_konfigurace_soubory/del.gif" alt="Smazat" class="del" onclick='deleteur("/administration/Alfa/Allianz/deluaccess.jsp",
+								"kolinek",
+								"AN",
+								"Opravdu smazat uživatele Tomáš Kolínek (kolinek) z role Analytik?")' height="21" width="20">
+					</td>
+				</tr>
+			
+				<tr>
+					<td>dcbuser</td>
+					<td>DCB User</td>
+					<td>Supervisor</td>
+					<td style="text-align: center">
+						<img src="Definice_konfigurace_soubory/del.gif" alt="Smazat" class="del" onclick='deleteur("/administration/Alfa/Allianz/deluaccess.jsp",
+								"dcbuser",
+								"SU",
+								"Opravdu smazat uživatele DCB User (dcbuser) z role Supervisor?")' height="21" width="20">
+					</td>
+				</tr>
+			
+				<tr>
+					<td>scholler</td>
+					<td>Petr Scholler</td>
+					<td>Analytik</td>
+					<td style="text-align: center">
+						<img src="Definice_konfigurace_soubory/del.gif" alt="Smazat" class="del" onclick='deleteur("/administration/Alfa/Allianz/deluaccess.jsp",
+								"scholler",
+								"AN",
+								"Opravdu smazat uživatele Petr Scholler (scholler) z role Analytik?")' height="21" width="20">
+					</td>
+				</tr>
+			
+				<tr>
+					<td>sitenska</td>
+					<td>Květoslava Sitenská</td>
+					<td>Zákazník</td>
+					<td style="text-align: center">
+						<img src="Definice_konfigurace_soubory/del.gif" alt="Smazat" class="del" onclick='deleteur("/administration/Alfa/Allianz/deluaccess.jsp",
+								"sitenska",
+								"CL",
+								"Opravdu smazat uživatele Květoslava Sitenská (sitenska) z role Zákazník?")' height="21" width="20">
+					</td>
+				</tr>
+			
+				<tr>
+					<td>studena</td>
+					<td>Milada Studená</td>
+					<td>Zákazník</td>
+					<td style="text-align: center">
+						<img src="Definice_konfigurace_soubory/del.gif" alt="Smazat" class="del" onclick='deleteur("/administration/Alfa/Allianz/deluaccess.jsp",
+								"studena",
+								"CL",
+								"Opravdu smazat uživatele Milada Studená (studena) z role Zákazník?")' height="21" width="20">
+					</td>
+				</tr>
+			
+				<tr>
+					<td>klinecka</td>
+					<td>Ing. Anna Klinecká</td>
+					<td>Zákazník</td>
+					<td style="text-align: center">
+						<img src="Definice_konfigurace_soubory/del.gif" alt="Smazat" class="del" onclick='deleteur("/administration/Alfa/Allianz/deluaccess.jsp",
+								"klinecka",
+								"CL",
+								"Opravdu smazat uživatele Ing. Anna Klinecká (klinecka) z role Zákazník?")' height="21" width="20">
+					</td>
+				</tr>
+			
+				<tr>
+					<td>sikorova</td>
+					<td>Jarmila Sikorová</td>
+					<td>Vývojář</td>
+					<td style="text-align: center">
+						<img src="Definice_konfigurace_soubory/del.gif" alt="Smazat" class="del" onclick='deleteur("/administration/Alfa/Allianz/deluaccess.jsp",
+								"sikorova",
+								"DV",
+								"Opravdu smazat uživatele Jarmila Sikorová (sikorova) z role Vývojář?")' height="21" width="20">
+					</td>
+				</tr>
+			
+				<tr>
+					<td>sikorova</td>
+					<td>Jarmila Sikorová</td>
+					<td>Analytik</td>
+					<td style="text-align: center">
+						<img src="Definice_konfigurace_soubory/del.gif" alt="Smazat" class="del" onclick='deleteur("/administration/Alfa/Allianz/deluaccess.jsp",
+								"sikorova",
+								"AN",
+								"Opravdu smazat uživatele Jarmila Sikorová (sikorova) z role Analytik?")' height="21" width="20">
+					</td>
+				</tr>
+			
+				<tr>
+					<td>semelova</td>
+					<td>Ing. Monika Semelová</td>
+					<td>Zákazník</td>
+					<td style="text-align: center">
+						<img src="Definice_konfigurace_soubory/del.gif" alt="Smazat" class="del" onclick='deleteur("/administration/Alfa/Allianz/deluaccess.jsp",
+								"semelova",
+								"CL",
+								"Opravdu smazat uživatele Ing. Monika Semelová (semelova) z role Zákazník?")' height="21" width="20">
+					</td>
+				</tr>
+			
+				<tr>
+					<td>kolinek</td>
+					<td>Tomáš Kolínek</td>
+					<td>Projektový manažer</td>
+					<td style="text-align: center">
+						<img src="Definice_konfigurace_soubory/del.gif" alt="Smazat" class="del" onclick='deleteur("/administration/Alfa/Allianz/deluaccess.jsp",
+								"kolinek",
+								"PM",
+								"Opravdu smazat uživatele Tomáš Kolínek (kolinek) z role Projektový manažer?")' height="21" width="20">
+					</td>
+				</tr>
+			
+				<tr>
+					<td>kolinek</td>
+					<td>Tomáš Kolínek</td>
+					<td>Vývojář</td>
+					<td style="text-align: center">
+						<img src="Definice_konfigurace_soubory/del.gif" alt="Smazat" class="del" onclick='deleteur("/administration/Alfa/Allianz/deluaccess.jsp",
+								"kolinek",
+								"DV",
+								"Opravdu smazat uživatele Tomáš Kolínek (kolinek) z role Vývojář?")' height="21" width="20">
+					</td>
+				</tr>
+			
+				<tr>
+					<td>scholler</td>
+					<td>Petr Scholler</td>
+					<td>Projektový manažer</td>
+					<td style="text-align: center">
+						<img src="Definice_konfigurace_soubory/del.gif" alt="Smazat" class="del" onclick='deleteur("/administration/Alfa/Allianz/deluaccess.jsp",
+								"scholler",
+								"PM",
+								"Opravdu smazat uživatele Petr Scholler (scholler) z role Projektový manažer?")' height="21" width="20">
+					</td>
+				</tr>
+			
+				<tr>
+					<td>scholler</td>
+					<td>Petr Scholler</td>
+					<td>Vývojář</td>
+					<td style="text-align: center">
+						<img src="Definice_konfigurace_soubory/del.gif" alt="Smazat" class="del" onclick='deleteur("/administration/Alfa/Allianz/deluaccess.jsp",
+								"scholler",
+								"DV",
+								"Opravdu smazat uživatele Petr Scholler (scholler) z role Vývojář?")' height="21" width="20">
+					</td>
+				</tr>
+			
+				<tr>
+					<td>lehotska</td>
+					<td>Marie Lehotská</td>
+					<td>Projektový manažer</td>
+					<td style="text-align: center">
+						<img src="Definice_konfigurace_soubory/del.gif" alt="Smazat" class="del" onclick='deleteur("/administration/Alfa/Allianz/deluaccess.jsp",
+								"lehotska",
+								"PM",
+								"Opravdu smazat uživatele Marie Lehotská (lehotska) z role Projektový manažer?")' height="21" width="20">
+					</td>
+				</tr>
+			
+				<tr>
+					<td>vostrovska</td>
+					<td>Zdeňka Vostrovská</td>
+					<td>Zákazník</td>
+					<td style="text-align: center">
+						<img src="Definice_konfigurace_soubory/del.gif" alt="Smazat" class="del" onclick='deleteur("/administration/Alfa/Allianz/deluaccess.jsp",
+								"vostrovska",
+								"CL",
+								"Opravdu smazat uživatele Zdeňka Vostrovská (vostrovska) z role Zákazník?")' height="21" width="20">
+					</td>
+				</tr>
+			
+				<tr>
+					<td>jurnickova</td>
+					<td>Lucie Jurníčková</td>
+					<td>Zákazník</td>
+					<td style="text-align: center">
+						<img src="Definice_konfigurace_soubory/del.gif" alt="Smazat" class="del" onclick='deleteur("/administration/Alfa/Allianz/deluaccess.jsp",
+								"jurnickova",
+								"CL",
+								"Opravdu smazat uživatele Lucie Jurníčková (jurnickova) z role Zákazník?")' height="21" width="20">
+					</td>
+				</tr>
+			
+				<tr>
+					<td>labant</td>
+					<td>Milan Labant</td>
+					<td>Zákazník</td>
+					<td style="text-align: center">
+						<img src="Definice_konfigurace_soubory/del.gif" alt="Smazat" class="del" onclick='deleteur("/administration/Alfa/Allianz/deluaccess.jsp",
+								"labant",
+								"CL",
+								"Opravdu smazat uživatele Milan Labant (labant) z role Zákazník?")' height="21" width="20">
+					</td>
+				</tr>
+			
+				<tr>
+					<td>cikhartova</td>
+					<td>Gabriela Cikhartová</td>
+					<td>Zákazník</td>
+					<td style="text-align: center">
+						<img src="Definice_konfigurace_soubory/del.gif" alt="Smazat" class="del" onclick='deleteur("/administration/Alfa/Allianz/deluaccess.jsp",
+								"cikhartova",
+								"CL",
+								"Opravdu smazat uživatele Gabriela Cikhartová (cikhartova) z role Zákazník?")' height="21" width="20">
+					</td>
+				</tr>
+			
+				<tr>
+					<td>hejkova</td>
+					<td>Jitka Hejková</td>
+					<td>Zákazník</td>
+					<td style="text-align: center">
+						<img src="Definice_konfigurace_soubory/del.gif" alt="Smazat" class="del" onclick='deleteur("/administration/Alfa/Allianz/deluaccess.jsp",
+								"hejkova",
+								"CL",
+								"Opravdu smazat uživatele Jitka Hejková (hejkova) z role Zákazník?")' height="21" width="20">
+					</td>
+				</tr>
+			
+				<tr>
+					<td>marzinova</td>
+					<td>Miroslava Marzinová</td>
+					<td>Zákazník</td>
+					<td style="text-align: center">
+						<img src="Definice_konfigurace_soubory/del.gif" alt="Smazat" class="del" onclick='deleteur("/administration/Alfa/Allianz/deluaccess.jsp",
+								"marzinova",
+								"CL",
+								"Opravdu smazat uživatele Miroslava Marzinová (marzinova) z role Zákazník?")' height="21" width="20">
+					</td>
+				</tr>
+			
+				<tr>
+					<td>popelkova</td>
+					<td>Kateřina Popelková</td>
+					<td>Zákazník</td>
+					<td style="text-align: center">
+						<img src="Definice_konfigurace_soubory/del.gif" alt="Smazat" class="del" onclick='deleteur("/administration/Alfa/Allianz/deluaccess.jsp",
+								"popelkova",
+								"CL",
+								"Opravdu smazat uživatele Kateřina Popelková (popelkova) z role Zákazník?")' height="21" width="20">
+					</td>
+				</tr>
+			
+				<tr>
+					<td>cernohorska</td>
+					<td>Petra Černohorská</td>
+					<td>Zákazník</td>
+					<td style="text-align: center">
+						<img src="Definice_konfigurace_soubory/del.gif" alt="Smazat" class="del" onclick='deleteur("/administration/Alfa/Allianz/deluaccess.jsp",
+								"cernohorska",
+								"CL",
+								"Opravdu smazat uživatele Petra Černohorská (cernohorska) z role Zákazník?")' height="21" width="20">
+					</td>
+				</tr>
+			
+				<tr>
+					<td>scholler</td>
+					<td>Petr Scholler</td>
+					<td>Analytik</td>
+					<td style="text-align: center">
+						<img src="Definice_konfigurace_soubory/del.gif" alt="Smazat" class="del" onclick='deleteur("/administration/Alfa/Allianz/deluaccess.jsp",
+								"scholler",
+								"AN",
+								"Opravdu smazat uživatele Petr Scholler (scholler) z role Analytik?")' height="21" width="20">
+					</td>
+				</tr>
+			
+				<tr>
+					<td>scholler</td>
+					<td>Petr Scholler</td>
+					<td>Projektový manažer</td>
+					<td style="text-align: center">
+						<img src="Definice_konfigurace_soubory/del.gif" alt="Smazat" class="del" onclick='deleteur("/administration/Alfa/Allianz/deluaccess.jsp",
+								"scholler",
+								"PM",
+								"Opravdu smazat uživatele Petr Scholler (scholler) z role Projektový manažer?")' height="21" width="20">
+					</td>
+				</tr>
+			
+				<tr>
+					<td>scholler</td>
+					<td>Petr Scholler</td>
+					<td>Vývojář</td>
+					<td style="text-align: center">
+						<img src="Definice_konfigurace_soubory/del.gif" alt="Smazat" class="del" onclick='deleteur("/administration/Alfa/Allianz/deluaccess.jsp",
+								"scholler",
+								"DV",
+								"Opravdu smazat uživatele Petr Scholler (scholler) z role Vývojář?")' height="21" width="20">
+					</td>
+				</tr>
+			
+				<tr>
+					<td>vavrinkova</td>
+					<td>Jitka Vavřínková</td>
+					<td>Analytik</td>
+					<td style="text-align: center">
+						<img src="Definice_konfigurace_soubory/del.gif" alt="Smazat" class="del" onclick='deleteur("/administration/Alfa/Allianz/deluaccess.jsp",
+								"vavrinkova",
+								"AN",
+								"Opravdu smazat uživatele Jitka Vavřínková (vavrinkova) z role Analytik?")' height="21" width="20">
+					</td>
+				</tr>
+			
+				<tr>
+					<td>vavrinkova</td>
+					<td>Jitka Vavřínková</td>
+					<td>Vývojář</td>
+					<td style="text-align: center">
+						<img src="Definice_konfigurace_soubory/del.gif" alt="Smazat" class="del" onclick='deleteur("/administration/Alfa/Allianz/deluaccess.jsp",
+								"vavrinkova",
+								"DV",
+								"Opravdu smazat uživatele Jitka Vavřínková (vavrinkova) z role Vývojář?")' height="21" width="20">
+					</td>
+				</tr>
+			
+				<tr>
+					<td>vavrinkova</td>
+					<td>Jitka Vavřínková</td>
+					<td>Projektový manažer</td>
+					<td style="text-align: center">
+						<img src="Definice_konfigurace_soubory/del.gif" alt="Smazat" class="del" onclick='deleteur("/administration/Alfa/Allianz/deluaccess.jsp",
+								"vavrinkova",
+								"PM",
+								"Opravdu smazat uživatele Jitka Vavřínková (vavrinkova) z role Projektový manažer?")' height="21" width="20">
+					</td>
+				</tr>
+			
+				<tr>
+					<td>moravec</td>
+					<td>Aleš Moravec</td>
+					<td>Analytik</td>
+					<td style="text-align: center">
+						<img src="Definice_konfigurace_soubory/del.gif" alt="Smazat" class="del" onclick='deleteur("/administration/Alfa/Allianz/deluaccess.jsp",
+								"moravec",
+								"AN",
+								"Opravdu smazat uživatele Aleš Moravec (moravec) z role Analytik?")' height="21" width="20">
+					</td>
+				</tr>
+			
+		</tbody></table>
+
+	
+
+&nbsp;</td>
+						</tr>
+					</tbody></table>
+				</td>
+			</tr>
+		</tbody></table>
+	
+
+
+
+</body></html>
