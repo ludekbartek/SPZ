@@ -16,6 +16,7 @@ public class UserWebEntity {
    private String company;
    private String phone;
    private String fax;
+   private String email;
    private int role;
 
     public long getId() {
@@ -56,6 +57,30 @@ public class UserWebEntity {
 
     public void setCompany(String company) {
         this.company = company;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getFax() {
+        return fax;
+    }
+
+    public void setFax(String fax) {
+        this.fax = fax;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     @Override
