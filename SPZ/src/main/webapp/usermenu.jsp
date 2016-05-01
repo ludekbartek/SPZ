@@ -1,5 +1,3 @@
-<%-- any content can be specified here e.g.: --%>
-<%@page contentType="text/html" pageEncoding="UTF-8" %>
 <%@taglib prefix="f" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <f:setBundle basename="useraction"/>
 <div id="menu">

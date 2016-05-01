@@ -5,6 +5,7 @@
  */
 package cz.dcb.support.web;
 
+import cz.dcb.support.db.entities.usermanagement.UserAccess;
 import cz.dcb.support.db.exceptions.SPZException;
 import cz.dcb.support.db.jpa.controllers.AttachmentJpaController;
 import cz.dcb.support.db.jpa.controllers.AttachmentManager;
@@ -638,18 +639,29 @@ public class SPZServlet extends HttpServlet {
     private void editUser(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         if(!authenticate(request)){
             dispError(request,response,"Uzivatele nelze autentizovat.");
-        }
+        }UserManager man = new UserJpaController(emf);
         if(!checkUserParameters(request)){
             Integer userId = getUserId(request);
             if(userId==null){
                 dispError(request, response, "Chybi user id.");
                 return;
             }
-            UserManager man = new UserJpaController(emf);
             User user=man.findUser(userId);
             UserWebEntity userWeb = userToEntity(user);
             request.setAttribute("user",userWeb);
             request.getRequestDispatcher("/useredit.jsp").forward(request, response);
+        }else{
+            UserAccessManager accessMan = new UserAccessJpaController(emf);
+            User user=requestParamsToUser(request);
+            try {
+                man.edit(user);
+                UserWebEntity userEnt = userToEntity(user);
+                request.setAttribute("user", userEnt);
+                listProjects(request, response);
+            } catch (Exception ex) {
+                Logger.getLogger(SPZServlet.class.getName()).log(Level.SEVERE, "Unable to edit user: ", ex);
+                dispError(request, response, "Unable to edit user: "+ex);
+            }
         }
     }
 
@@ -1963,9 +1975,15 @@ public class SPZServlet extends HttpServlet {
 
     private UserWebEntity userToEntity(User user) {
         UserWebEntity entity = new UserWebEntity();
+        
         entity.setId(user.getId());
         entity.setLogin(user.getLogin());
         entity.setName(user.getName());
+        entity.setCompany(user.getCompany());
+        entity.setEmail(user.getEmail());
+        entity.setFax(user.getFax());
+        entity.setPhone(user.getTel());
+        
         List<Useraccess> roles = getUserRoles(user.getId());
         switch(roles.get(0).getRole().toLowerCase()){
             case "client":entity.setRole(Roles.CLIENT.ordinal());
@@ -2377,8 +2395,12 @@ public class SPZServlet extends HttpServlet {
         user = userMan.findUser(id);
         String login = request.getParameter("login");
         String oldPasswd = request.getParameter("password");
-        if(user.getPassword()==null){
-            return true;
+//        if(user.getPassword()==null){
+//            return true;
+//        }
+        String passwd = user.getPassword();
+        if(passwd==null || passwd.isEmpty()){
+            return oldPasswd == null || oldPasswd.isEmpty();
         }
         if( md5Avail){
             return Arrays.equals(user.getPassword().getBytes(), md5.digest(oldPasswd.getBytes()));
@@ -2388,8 +2410,8 @@ public class SPZServlet extends HttpServlet {
 
     private boolean checkUserParameters(HttpServletRequest request) {
         return request.getParameter("login")!=null && 
-               request.getParameter("name")!=null &&
-               request.getParameter("password")!=null;
+               request.getParameter("name")!=null;/* &&
+               request.getParameter("password")!=null;*/
     }
 
     private Integer getUserId(HttpServletRequest request) {
@@ -2397,5 +2419,49 @@ public class SPZServlet extends HttpServlet {
         if(userId == null)
             return null;
         return Integer.parseInt(userId);
+    }
+
+    private User requestParamsToUser(HttpServletRequest request) {
+        User user = new User();
+        String val = request.getParameter("userid");
+        if(val==null){
+            return null;
+        }
+        int id = Integer.parseInt(val);
+        user.setId(id);
+        val = request.getParameter("login");
+        if(val==null){
+            return null;
+        }
+        user.setLogin(val);
+        val = request.getParameter("name");
+        if(val==null){
+            return null;
+        }
+        user.setName(val);
+        val = request.getParameter("newPassword");
+        if(val!=null){
+            String val1=request.getParameter("newPasswordRe");
+            if(val1!=null && val.compareTo(val1)==0){
+                user.setPassword(val);
+            }
+        }
+        val = request.getParameter("company");
+        if(val!=null){
+            user.setCompany(val);
+        }
+        val = request.getParameter("phone");
+        if(val!=null){
+            user.setTel(val);
+        }
+        val = request.getParameter("fax");
+        if(val!=null){
+            user.setFax(val);
+        }
+        val = request.getParameter("email");
+        if(val!=null){
+            user.setEmail(val);
+        }
+        return user;
     }
 }
