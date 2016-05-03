@@ -108,6 +108,7 @@ import cz.dcb.support.db.jpa.entities.Projectconfiguration;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
+import javax.persistence.NoResultException;
 
 /**
  *
@@ -193,13 +194,15 @@ public class SPZServlet extends HttpServlet {
             Project project = createProject();
             Configuration config = createConfig();
             addConfig(project,config);
-            User projectManager = createUser("Pepa Manager","manager");
-            User developer = createUser("Tonda Vyvojar","analyst");
-            User client = createUser("Franta Uzivatel","user");
+            User projectManager = createUser("Pepa Manager",(short)Roles.PROJECT_MANAGER.ordinal(),"manager");
+            User developer = createUser("Tonda Vyvojar",(short)Roles.ANALYST.ordinal(),"analyst");
+            User client = createUser("Franta Uzivatel",(short)Roles.CLIENT.ordinal(),"user");
+            User admin = createUser("Honza Korinek",(short)Roles.ADMIN.ordinal(),"admin");
             
             createAccess(config,Roles.PROJECT_MANAGER,projectManager);
             createAccess(config,Roles.ANALYST,developer);
             createAccess(config,Roles.CLIENT,client);
+            createAccess(config, Roles.ADMIN, admin);
         }
             
     }
@@ -253,7 +256,11 @@ public class SPZServlet extends HttpServlet {
             String action = request.getPathInfo();
             //String action = request.getParameter("action");
             switch(action.toLowerCase()){
-                case "/login":authenticate(request,response);
+                case "/login":try{
+                                authenticate(request,response);
+                              }catch(NoResultException ex){
+                                dispError(request, response, "Chyba autentizace: "+ex);
+                              }
                               listProjects(request, response);
                             break;
                 case "/acceptspzreq":
@@ -1873,6 +1880,8 @@ public class SPZServlet extends HttpServlet {
                 case "analyst":
                     user.setRole(Roles.ANALYST.ordinal());
                     break;
+                case "admin":
+                    user.setRole(Roles.ADMIN.ordinal());
                 default:
                     user.setRole(Roles.PROJECT_MANAGER.ordinal());
             }
@@ -2348,11 +2357,12 @@ public class SPZServlet extends HttpServlet {
      * @param login uzivatelske jmeno
      * @return novy uzivatel s danymi parametry
      */
-    private User createUser(String name, String login) {
+    private User createUser(String name,short role, String login) {
         UserManager manager = new  UserJpaController(emf);
         User user = new User();
         user.setName(name);
         user.setLogin(login);
+        user.setClassType(role);
         manager.create(user);
         return user;
         
