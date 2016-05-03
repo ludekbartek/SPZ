@@ -10,5 +10,5 @@ package cz.dcb.support.web.entities;
  * @author bar
  */
 public enum Roles {
-    CLIENT, ANALYST, PROJECT_MANAGER
+    CLIENT, ANALYST, PROJECT_MANAGER, ADMIN
 }
