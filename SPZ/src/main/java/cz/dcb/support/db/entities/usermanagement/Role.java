@@ -13,5 +13,6 @@ public class Role {
     public static final int UNDEF =-1;
     public static final int CLIENT = 0;
     public static final int ANALYST=1;
-    public static final int ADMIN=2;
+    public static final int PROJECT_MANAGER=2;
+    public static final int ADMIN=3;
 };
