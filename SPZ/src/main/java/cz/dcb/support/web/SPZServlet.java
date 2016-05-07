@@ -344,6 +344,9 @@ public class SPZServlet extends HttpServlet {
                 case "/listprojects":
                             listProjects(request,response);
                             break;
+                case "/editroles":
+                            editRoles(request,response);
+                            break;
                 default:
                     StringBuilder errorMesg = new StringBuilder("Invalid action").append(action).append(". Using list instead.");
                     LOGGER.log(Level.INFO,errorMesg.toString());
@@ -1994,12 +1997,18 @@ public class SPZServlet extends HttpServlet {
         entity.setPhone(user.getTel());
         
         List<Useraccess> roles = getUserRoles(user.getId());
+        if(user.getLogin().equalsIgnoreCase("admin")){
+            entity.setRole(Roles.ADMIN.ordinal());
+            return entity;
+        }
         switch(roles.get(0).getRole().toLowerCase()){
             case "client":entity.setRole(Roles.CLIENT.ordinal());
                           break;
             case "analyst":
             case "developer":entity.setRole(Roles.ANALYST.ordinal());
                           break;
+            case "admin":
+                entity.setRole(Roles.ADMIN.ordinal());
             default:entity.setRole(Roles.PROJECT_MANAGER.ordinal());
         }
         return entity;    
@@ -2472,6 +2481,39 @@ public class SPZServlet extends HttpServlet {
         if(val!=null){
             user.setEmail(val);
         }
+        
+        val = request.getParameter("superuser");
+        if(val!=null && val.equalsIgnoreCase("yes")){
+            user.setClassType((short)Roles.ADMIN.ordinal());
+        }
         return user;
+    }
+
+    private void editRoles(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        if(!authenticate(request)){
+            dispError(request,response,"Uzivatele nelze autentizovat.");
+        }
+        UserManager man = new UserJpaController(emf);
+        Integer id = getUserId(request);
+        User user=man.findUser(id);
+        String strSUser = request.getParameter("superuser");
+        if(strSUser!=null){
+            if(strSUser.compareToIgnoreCase("yes")==0){
+                user.setClassType((short)Roles.ADMIN.ordinal());
+            }else{
+                String strUser = request.getParameter("regularuser");
+                if(strUser!=null && strUser.compareToIgnoreCase("yes")==0){
+                    user.setClassType((short)Roles.CLIENT.ordinal());
+                }
+                    
+            } 
+            try {
+                man.edit(user);
+            } catch (Exception ex) {
+                Logger.getLogger(SPZServlet.class.getName()).log(Level.SEVERE, "Pokus o zmenu tridy neexistujiciho uzivatele.", ex);
+            }
+        }
+        listProjects(request, response);
+        
     }
 }
