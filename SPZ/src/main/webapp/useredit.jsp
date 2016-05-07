@@ -98,7 +98,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td rowspan="2">
+                        <td colspan="2">
                             <input type="submit" value="<f:message key='submit'/>"/>
                         </td>
                     </tr>
@@ -139,9 +139,14 @@
                                 <f:message key="regularuser"/>:
                             </td>
                             <td>
-                                <input type="radio" name="role_user" value="yes"/><f:message key="yes"/>
+                                <input type="radio" name="role_user" value="yes" <c:if test='${user.role=="3"}'>checked</c:if>/><f:message key="yes"/>
                                 &nbsp;
-                                <input type="radio" name="role_user" value="no"/><f:message key="no"/>
+                                <input type="radio" name="role_user" value="no" <c:if test='${user.role=="0"}'>checked</c:if>/><f:message key="no"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                <input type="submit" value="<f:message key='submit'/>"/>
                             </td>
                         </tr>
                     </table>
