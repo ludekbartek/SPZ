@@ -78,7 +78,7 @@
                             <f:message key="oldpassword"/> '<c:out value="${user.login}"/>':
                         </td>
                         <td>
-                            <input type='password' name='password'/>
+                            <input type='password' name='password' value=""/>
                         </td>
                     </tr>
                     <tr>
@@ -86,7 +86,7 @@
                             <f:message key="newPasswd"/>:
                         </td>
                         <td>
-                            <input type="password" name="newPassword"/>
+                            <input type="password" name="newPassword" value=""/>
                         </td>
                     </tr>
                     <tr>
@@ -94,7 +94,7 @@
                             <f:message key="newPasswdRe"/>:
                         </td>
                         <td>
-                            <input type="password" name="retypePasswd"/>
+                            <input type="password" name="retypePasswd" value=""/>
                         </td>
                     </tr>
                     <tr>
@@ -104,7 +104,7 @@
                     </tr>
                 </table>
             </form>
-            <c:if test="${user.role!=0}">
+            <c:if test="${user.role==3}">
                 <form action="${pageContext.request.contextPath}/SPZServlet/editRoles" method="post">
                     <input type="hidden" name="userid" value="${user.id}"/>
                     <table>
@@ -129,9 +129,9 @@
                                 <f:message key="superUser"/>:
                             </td>
                             <td>
-                                <input type="radio" name="superuser" value="yes"/><f:message key="yes"/>
+                                <input type="radio" name="superuser" value="yes" <c:if test='${user.role=="3"}'>checked</c:if>/><f:message key="yes"/>
                                 &nbsp;
-                                <input type="radio" name="superuser" value="no"/><f:message key="no"/>
+                                <input type="radio" name="superuser" value="no" <c:if test='${user.role!="3"}'>checked</c:if>/><f:message key="no"/>
                             </td>
                         </tr>
                         <tr>
@@ -139,9 +139,9 @@
                                 <f:message key="regularuser"/>:
                             </td>
                             <td>
-                                <input type="radio" name="role_user" value="yes" <c:if test='${user.role=="3"}'>checked</c:if>/><f:message key="yes"/>
+                                <input type="radio" name="role_user" value="yes" <c:if test='${user.role!="3"}'>checked</c:if>/><f:message key="yes"/>
                                 &nbsp;
-                                <input type="radio" name="role_user" value="no" <c:if test='${user.role=="0"}'>checked</c:if>/><f:message key="no"/>
+                                <input type="radio" name="role_user" value="no" <c:if test='${user.role=="3"}'>checked</c:if>/><f:message key="no"/>
                             </td>
                         </tr>
                         <tr>

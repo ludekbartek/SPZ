@@ -2486,6 +2486,12 @@ public class SPZServlet extends HttpServlet {
         if(val!=null && val.equalsIgnoreCase("yes")){
             user.setClassType((short)Roles.ADMIN.ordinal());
         }
+        else{
+            val = request.getParameter("role_user");
+            if(val!=null && val.equalsIgnoreCase("yes")){
+                user.setClassType((short)Roles.CLIENT.ordinal());
+            }
+        }
         return user;
     }
 
@@ -2501,7 +2507,7 @@ public class SPZServlet extends HttpServlet {
             if(strSUser.compareToIgnoreCase("yes")==0){
                 user.setClassType((short)Roles.ADMIN.ordinal());
             }else{
-                String strUser = request.getParameter("regularuser");
+                String strUser = request.getParameter("role_user");
                 if(strUser!=null && strUser.compareToIgnoreCase("yes")==0){
                     user.setClassType((short)Roles.CLIENT.ordinal());
                 }
