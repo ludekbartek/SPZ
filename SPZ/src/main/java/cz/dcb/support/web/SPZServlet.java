@@ -347,6 +347,9 @@ public class SPZServlet extends HttpServlet {
                 case "/editroles":
                             editRoles(request,response);
                             break;
+                case "/listusers":
+                            listUsers(request,response);
+                            break;
                 default:
                     StringBuilder errorMesg = new StringBuilder("Invalid action").append(action).append(". Using list instead.");
                     LOGGER.log(Level.INFO,errorMesg.toString());
@@ -2521,5 +2524,27 @@ public class SPZServlet extends HttpServlet {
         }
         listProjects(request, response);
         
+    }
+
+    private void listUsers(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        if(!authenticate(request)){
+            dispError(request, response, "User not authenticated.");
+        }
+        User user = getUserByParameter(request);
+        if(user==null){
+            dispError(request, response, "No authenticated user.");
+        }
+        if(user.getClassType()!=Roles.ADMIN.ordinal()){
+            dispError(request, response, "User has no permision.");
+        }
+        
+        UserManager userMan = new UserJpaController(emf);
+        List<User> users =userMan.findUserEntities();
+        List<UserWebEntity> userEntities = new ArrayList<>();
+        for(User userEnt:users){
+            userEntities.add(userToEntity(userEnt));
+        }
+        request.setAttribute("users", userEntities);
+        request.getRequestDispatcher("/usersList.jsp").forward(request, response);
     }
 }
