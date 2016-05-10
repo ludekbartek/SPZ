@@ -109,6 +109,8 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import javax.persistence.NoResultException;
+import org.apache.derby.iapi.security.SecurityUtil;
+import org.eclipse.persistence.internal.libraries.asm.tree.InsnList;
 
 /**
  *
@@ -398,6 +400,10 @@ public class SPZServlet extends HttpServlet {
             SpzStateManager stateManager = new SpzStateJpaController(emf);
             SpzStatesManager statesManager = new SpzStatesJpaController(emf);
             UserWebEntity user = requestToUserWebEntity(request);
+            if(user==null){
+                dispError(request, response, "Nelze prevest uzivatele.");
+                return;
+            }
             Configuration conf = getConfigurationFromRequest(request);
             Project proj = getProjectFromRequest(request);
             
@@ -515,6 +521,10 @@ public class SPZServlet extends HttpServlet {
                 request.setAttribute("error", "Nektera polozka chybi nebo ma neplatnou hodnotu" );
             }
             UserWebEntity user = requestToUserWebEntity(request);
+            if(user==null){
+                dispError(request, response, "Nelze prevest uzivatele.");
+                return;
+            }
             request.setAttribute("user", user);
             request.setAttribute("config",conf);
             request.setAttribute("project", project);
@@ -640,8 +650,52 @@ public class SPZServlet extends HttpServlet {
      * @param request http request containing required data
      * @param response http response 
      */
-    private void addUser(HttpServletRequest request, HttpServletResponse response) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    private void addUser(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        if(!authenticate(request)){
+            dispError(request, response, "Unable to authenticate addUser request");
+            return;
+        }
+        Map<String,String[]> params = request.getParameterMap();
+        String strId = request.getParameter("userid");
+        int id = Integer.parseInt(strId);
+        UserManager userMan = new UserJpaController(emf);
+        if(!params.containsKey("login")){
+            User user = userMan.findUser(id);
+            UserWebEntity userEnt = userToEntity(user);
+            request.setAttribute("user", user);
+            request.getRequestDispatcher("/userAdd.jsp").forward(request,response);
+            return;
+        }
+        if(!checkUserParameters(request)){
+            User user = requestParamsToUser(request);
+            UserWebEntity userEnt = userToEntity(user);
+            request.setAttribute("error", "Chybi nektere udaje.");
+            request.setAttribute("user", id);
+            request.setAttribute("newUser", userEnt);
+            request.setAttribute("error","Chybi zakladni udaje o uzivateli.");
+            request.getRequestDispatcher("/userAdd.jsp").forward(request, response);
+            return;
+        }
+     
+                
+        User user = requestParamsToUser(request);
+        try {
+            MessageDigest  md5 = MessageDigest.getInstance("md5");
+            String md5Passwd = new String(md5.digest(user.getPassword().getBytes()));
+            user.setPassword(md5Passwd);
+        } catch (NoSuchAlgorithmException ex) {
+            Logger.getLogger(SPZServlet.class.getName()).log(Level.SEVERE, "Hesla jsou ukladana jako plaintext.", ex);
+        }
+        userMan.create(user);
+        User sUser = userMan.findUser(id);
+        List<User> users=userMan.findUserEntities();
+        List<UserWebEntity> userEnts = new ArrayList<>();
+        for(User userItem:users){
+            userEnts.add(userToEntity(userItem));
+        }
+        request.setAttribute("user",userToEntity(sUser));
+        request.setAttribute("users", userEnts);
+        request.getRequestDispatcher("/usersList.jsp").forward(request, response);
     }
 
     /**
@@ -659,6 +713,9 @@ public class SPZServlet extends HttpServlet {
                 dispError(request, response, "Chybi user id.");
                 return;
             }
+            String strEdId = request.getParameter("editedUserId");
+            int editedUserId = Integer.parseInt(strEdId);
+            User edited=man.findUser(editedUserId);
             User user=man.findUser(userId);
             UserWebEntity userWeb = userToEntity(user);
             request.setAttribute("user",userWeb);
@@ -730,6 +787,9 @@ public class SPZServlet extends HttpServlet {
         List<Spz> spzs = spzManager.findSpzEntities();
         List<SPZWebEntity> entities = spzToEntities(spzs);
         UserWebEntity user = requestToUserWebEntity(request);
+        if(user==null){
+            dispError(request, response, "listSpz: Nelze ziskat uzivatele.");
+        }
         Project project = getProjectFromRequest(request);
         Configuration conf = getConfigurationFromRequest(request);
                 
@@ -1363,6 +1423,9 @@ public class SPZServlet extends HttpServlet {
         SpzStatesManager statesManager = new SpzStatesJpaController(emf);
         Spz spz = manager.findSpz(spzId);
         UserWebEntity user = requestToUserWebEntity(request);
+        if(user==null){
+            dispError(request, response, "Nelze ziskat uzivatele.");
+        }
         List<Spzstate> spzStates = statesManager.findSpzstates(spz);
         Collections.sort(spzStates,new Comparator<Spzstate>() {
 
@@ -1455,6 +1518,9 @@ public class SPZServlet extends HttpServlet {
             request.setAttribute("error", "Nelze zmenit priznak aktualniho stavu.");
             try {
                 UserWebEntity user = requestToUserWebEntity(request);
+                if(user == null){
+                    dispError(request, response, "Nelze ziskat info o uzivateli.");
+                }
                 listSpz(request, response);
             } catch (ServletException | IOException ex1) {
                 Logger.getLogger(SPZServlet.class.getName()).log(Level.SEVERE, null, ex1);
@@ -1478,6 +1544,10 @@ public class SPZServlet extends HttpServlet {
         statesManager.create(states);
         try {
             UserWebEntity user = requestToUserWebEntity(request);
+            if(user==null){
+                dispError(request, response, "Nelze ziskat info o uzivateli.");
+                return;
+            }
             listSpz(request, response);
         } catch (ServletException | IOException ex) {
             Logger.getLogger(SPZServlet.class.getName()).log(Level.SEVERE, null, ex);
@@ -1865,6 +1935,9 @@ public class SPZServlet extends HttpServlet {
         if(request.getParameterMap().containsKey("login")){
             String login = request.getParameter("login");
             userEnt = userMan.findUserByLogin(login);
+            if(userEnt==null){
+                return null;
+            }
         }else{
             String strId = request.getParameter("userid");
             if(strId==null){
@@ -2006,19 +2079,21 @@ public class SPZServlet extends HttpServlet {
         }
         
         List<Useraccess> roles = getUserRoles(user.getId());
-        if(user.getLogin().equalsIgnoreCase("admin")){
-            entity.setRole(Roles.ADMIN.ordinal());
-            return entity;
-        }
-        switch(roles.get(0).getRole().toLowerCase()){
-            case "client":entity.setRole(Roles.CLIENT.ordinal());
-                          break;
-            case "analyst":
-            case "developer":entity.setRole(Roles.ANALYST.ordinal());
-                          break;
-            case "admin":
+        if(!roles.isEmpty()){
+            if(user.getLogin().equalsIgnoreCase("admin")){
                 entity.setRole(Roles.ADMIN.ordinal());
-            default:entity.setRole(Roles.PROJECT_MANAGER.ordinal());
+                return entity;
+            }
+            switch(roles.get(0).getRole().toLowerCase()){
+                case "client":entity.setRole(Roles.CLIENT.ordinal());
+                              break;
+                case "analyst":
+                case "developer":entity.setRole(Roles.ANALYST.ordinal());
+                              break;
+                case "admin":
+                    entity.setRole(Roles.ADMIN.ordinal());
+                default:entity.setRole(Roles.PROJECT_MANAGER.ordinal());
+            }
         }
         return entity;    
         
@@ -2246,6 +2321,10 @@ public class SPZServlet extends HttpServlet {
         int spzId = getSpzId(request.getParameterMap());
         Spz spz = spzManager.findSpz(spzId);
         UserWebEntity user = requestToUserWebEntity(request);
+        if(user==null){
+            dispError(request, response, "Neni takovy uzivatel.");
+            return;
+        }
         Project proj = getProjectFromRequest(request);
         Configuration conf = getConfigurationFromRequest(request);
         SPZWebEntity spzWeb = spzToEntity(spz);
