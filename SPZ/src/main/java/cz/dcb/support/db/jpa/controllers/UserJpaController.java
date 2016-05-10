@@ -164,9 +164,11 @@ public class UserJpaController implements Serializable, UserManager {
         
         Query q = getEntityManager().createQuery("select usr from User usr where usr.login=:login");
         q.setParameter("login", login);
-        User user = (User)q.getSingleResult();
-        
-        return user;
+        List<User> users=(List<User>)q.getResultList();
+        if(users.isEmpty()){
+            return null;
+        }
+        return users.get(0);
     }
     
 }
