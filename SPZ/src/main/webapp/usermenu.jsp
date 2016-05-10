@@ -9,11 +9,13 @@
             <form action="${pageContext.request.contextPath}/SPZServlet/adduser" method="post">
                 <input type="hidden" name="projectid" value="${project.id}"/>
                 <input type="hidden" name="userid" value="${user.id}"/>
+                <input type="hidden" name="source" value="${requestScope['javax.servlet.forward.path_info']}"/>
                 <input type="submit" value="<f:message key='addusers'/>"/>
             </form>
             <form action="${pageContext.request.contextPath}/SPZServlet/edituser" method="post">
                 <input type="hidden" name="projectid" value="${project.id}"/>
                 <input type="hidden" name="userid" value="${user.id}"/>
+                <input type="hidden" name="source" value="${requestScope['javax.servlet.forward.path_info']}"/>
                 <input type="submit" value="<f:message key='editusers'/>"/>
             </form>
         </div>

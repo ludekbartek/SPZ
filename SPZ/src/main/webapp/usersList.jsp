@@ -45,6 +45,7 @@
                             <form action="${pageContext.request.contextPath}/SPZServlet/edituser">
                                 <input type="hidden" name="userid" value="${user.id}"/>
                                 <input type="hidden" name="editedUserId" value="${userItem.id}"/>
+                                <input type="hidden" name="source" value="${requestScope['javax.servlet.forward.path_info']}"/>
                                 <input type="submit" value="${userItem.login}"/>
                             </form> 
                         </td>
@@ -52,10 +53,10 @@
                             <c:out value="${userItem.name}"/>
                         </td>
                         <td>
-                            <c:if test="${user.classType==0}">Yes</c:if>
+                            <c:if test="${userItem.classType=='3'}">Yes</c:if>
                         </td>
                         <td>
-                            <c:if test="${user.classType==3}">Yes</c:if>
+                            <c:if test="${userItem.classType=='0'}">Yes</c:if>
                         </td>
                     </tr>
                 </c:forEach>

@@ -18,6 +18,7 @@ public class UserWebEntity {
    private String fax;
    private String email;
    private int role;
+   private int classType;
 
     public long getId() {
         return id;
@@ -81,6 +82,14 @@ public class UserWebEntity {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public int getClassType() {
+        return classType;
+    }
+
+    public void setClassType(int classType) {
+        this.classType = classType;
     }
 
     @Override

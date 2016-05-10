@@ -1998,6 +1998,12 @@ public class SPZServlet extends HttpServlet {
         entity.setEmail(user.getEmail());
         entity.setFax(user.getFax());
         entity.setPhone(user.getTel());
+        Short classType = user.getClassType();
+        if(classType!=null){
+            entity.setClassType(classType);
+        }else{
+            entity.setClassType(-1);
+        }
         
         List<Useraccess> roles = getUserRoles(user.getId());
         if(user.getLogin().equalsIgnoreCase("admin")){
@@ -2544,7 +2550,11 @@ public class SPZServlet extends HttpServlet {
         for(User userEnt:users){
             userEntities.add(userToEntity(userEnt));
         }
+        Integer currentId = getUserId(request);
+        User current = userMan.findUser(currentId);
+        UserWebEntity curEnt = userToEntity(user);
         request.setAttribute("users", userEntities);
+        request.setAttribute("user", curEnt);
         request.getRequestDispatcher("/usersList.jsp").forward(request, response);
     }
 }

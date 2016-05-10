@@ -107,6 +107,11 @@
             <c:if test="${user.role==3}">
                 <form action="${pageContext.request.contextPath}/SPZServlet/editRoles" method="post">
                     <input type="hidden" name="userid" value="${user.id}"/>
+                    <br/>
+                    Called from: <c:out value="${requestScope['javax.servlet.forward.path_info']}"/>
+                    <br/>
+                    Query URI: <c:out value="${requestScope['javax.servlet.forward.request_uri']}"/>
+                    <br/>
                     <table>
                         <tr>
                             <td class="highlighted">
