@@ -23,7 +23,7 @@
             <c:if test="${not empty error}">
                 <div id="erorr"><c:out value="${error}"/></div>
             </c:if>
-            <form action="${pageContext.request.contextPath}/SPZServlet/adduser">
+            <form action="${pageContext.request.contextPath}/SPZServlet/adduser" method="post">
                 <input type="hidden" name="userid" value="${user.id}"/>
                 <c:if test="${not empty projectid}">
                     <input type="hidden" name="projectid" value="${project.id}"/>
@@ -40,6 +40,10 @@
                     <tr>
                         <td><f:message key="email"/>:</td>
                         <td><input type="email" name="email" <c:if test="${not empty newUser}">value="<c:out value='${newUser.email}'/>"</c:if>/></td>
+                    </tr>
+                    <tr>
+                        <td><f:message key="company"/>:</td>
+                        <td><input type="text" name="company"/></td>
                     </tr>
                     <tr>
                         <td><f:message key="phone"/>:</td>
