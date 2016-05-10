@@ -42,7 +42,7 @@
                 <c:forEach var="userItem" items="${users}">
                     <tr>
                         <td>
-                            <form action="${pageContext.request.contextPath}/SPZServlet/edituser">
+                            <form action="${pageContext.request.contextPath}/SPZServlet/edituser" method="post">
                                 <input type="hidden" name="userid" value="${user.id}"/>
                                 <input type="hidden" name="editedUserId" value="${userItem.id}"/>
                                 <input type="hidden" name="source" value="${requestScope['javax.servlet.forward.path_info']}"/>
