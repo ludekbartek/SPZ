@@ -679,6 +679,7 @@ public class SPZServlet extends HttpServlet {
      
                 
         User user = requestParamsToUser(request);
+        user.setClassType((short)Roles.CLIENT.ordinal());
         try {
             MessageDigest  md5 = MessageDigest.getInstance("md5");
             String md5Passwd = new String(md5.digest(user.getPassword().getBytes()));
@@ -706,7 +707,10 @@ public class SPZServlet extends HttpServlet {
     private void editUser(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         if(!authenticate(request)){
             dispError(request,response,"Uzivatele nelze autentizovat.");
-        }UserManager man = new UserJpaController(emf);
+        }
+        
+        UserManager man = new UserJpaController(emf);
+        
         if(!checkUserParameters(request)){
             Integer userId = getUserId(request);
             if(userId==null){
@@ -714,14 +718,29 @@ public class SPZServlet extends HttpServlet {
                 return;
             }
             String strEdId = request.getParameter("editedUserId");
-            int editedUserId = Integer.parseInt(strEdId);
-            User edited=man.findUser(editedUserId);
-            User user=man.findUser(userId);
+            User edited,user;
+            if(strEdId!=null){
+               int editedUserId = Integer.parseInt(strEdId);
+                edited=man.findUser(editedUserId);
+                user=man.findUser(userId);
+                request.setAttribute("editedUser", userToEntity(edited));
+            }else{
+               edited = man.findUser(userId);
+               user=edited;
+            }
+            
             UserWebEntity userWeb = userToEntity(user);
             request.setAttribute("user",userWeb);
             request.getRequestDispatcher("/useredit.jsp").forward(request, response);
         }else{
             UserAccessManager accessMan = new UserAccessJpaController(emf);
+            String passwd = request.getParameter("newPassword");
+            String passwdRe = request.getParameter("retypePasswd");
+            if(passwd.compareTo(passwdRe)!=0){
+                UserWebEntity userWeb = userToEntity(requestParamsToUser(request));
+                request.setAttribute("user", userWeb);
+                request.getRequestDispatcher("/useredit.jsp").forward(request, response);
+            }
             User user=requestParamsToUser(request);
             try {
                 man.edit(user);
@@ -2509,8 +2528,10 @@ public class SPZServlet extends HttpServlet {
         if(passwd==null || passwd.isEmpty()){
             return oldPasswd == null || oldPasswd.isEmpty();
         }
+        byte[] entered=md5.digest(oldPasswd.getBytes());
+        byte[] pass=user.getPassword().getBytes();
         if( md5Avail){
-            return Arrays.equals(user.getPassword().getBytes(), md5.digest(oldPasswd.getBytes()));
+            return Arrays.equals(pass,entered);
         }
         return user.getPassword().equals(oldPasswd);
     }
@@ -2546,11 +2567,21 @@ public class SPZServlet extends HttpServlet {
             return null;
         }
         user.setName(val);
+        MessageDigest md5 = null;
+        try {
+            md5=MessageDigest.getInstance("md5");
+        } catch (NoSuchAlgorithmException ex) {
+            Logger.getLogger(SPZServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
         val = request.getParameter("newPassword");
         if(val!=null){
-            String val1=request.getParameter("newPasswordRe");
+            String val1=request.getParameter("retypePasswd");
             if(val1!=null && val.compareTo(val1)==0){
-                user.setPassword(val);
+                if(md5!=null){
+                    user.setPassword(new String(md5.digest(val.getBytes())));
+                }else{
+                    user.setPassword(val);
+                }
             }
         }
         val = request.getParameter("company");
@@ -2580,6 +2611,7 @@ public class SPZServlet extends HttpServlet {
                 user.setClassType((short)Roles.CLIENT.ordinal());
             }
         }
+        
         return user;
     }
 
@@ -2619,8 +2651,8 @@ public class SPZServlet extends HttpServlet {
         if(user==null){
             dispError(request, response, "No authenticated user.");
         }
-        if(user.getClassType()!=Roles.ADMIN.ordinal()){
-            dispError(request, response, "User has no permision.");
+        if(user.getClassType()==null||user.getClassType()!=Roles.ADMIN.ordinal()){
+            dispError(request, response, "Uzivatel nema opravneni pro tuto akci.");
         }
         
         UserManager userMan = new UserJpaController(emf);
