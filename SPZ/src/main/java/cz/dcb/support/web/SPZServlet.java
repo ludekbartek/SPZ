@@ -5,7 +5,6 @@
  */
 package cz.dcb.support.web;
 
-import cz.dcb.support.db.entities.usermanagement.UserAccess;
 import cz.dcb.support.db.exceptions.SPZException;
 import cz.dcb.support.db.jpa.controllers.AttachmentJpaController;
 import cz.dcb.support.db.jpa.controllers.AttachmentManager;
@@ -102,15 +101,13 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.Part;
-import cz.dcb.support.db.jpa.controllers.ConfigurationspzManager;
 import cz.dcb.support.db.jpa.entities.Configurationspz;
 import cz.dcb.support.db.jpa.entities.Projectconfiguration;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
+import java.util.HashMap;
 import javax.persistence.NoResultException;
-import org.apache.derby.iapi.security.SecurityUtil;
-import org.eclipse.persistence.internal.libraries.asm.tree.InsnList;
 
 /**
  *
@@ -126,7 +123,7 @@ import org.eclipse.persistence.internal.libraries.asm.tree.InsnList;
 public class SPZServlet extends HttpServlet {
     private static final Logger LOGGER = Logger.getLogger(SPZServlet.class.getName());
     private final EntityManagerFactory emf = Persistence.createEntityManagerFactory("support_JPA");
-   
+    private static final Set<User> autheticatedUsers = new HashSet<>();
     private static Path attachDir; 
     private static final String STATES[] ={"Registrovaná","Nová","Probíhá analýza",
         "Změněna", "Specifikována","Probíhá implementace","Přijata ze strany DCB",
@@ -380,6 +377,7 @@ public class SPZServlet extends HttpServlet {
             User user = getUserByLogin(login);
             UserWebEntity userWeb = userToEntity(user);
             request.setAttribute("userid",userWeb.getId());
+            SPZServlet.autheticatedUsers.add(user);
             //request.getRequestDispatcher("/SPZServlet/listspz").forward(request, response);
             return;
         }
@@ -713,6 +711,7 @@ public class SPZServlet extends HttpServlet {
         
         if(!checkUserParameters(request)){
             Integer userId = getUserId(request);
+            
             if(userId==null){
                 dispError(request, response, "Chybi user id.");
                 return;
@@ -728,7 +727,7 @@ public class SPZServlet extends HttpServlet {
                edited = man.findUser(userId);
                user=edited;
             }
-            
+            SPZServlet.autheticatedUsers.remove(edited);
             UserWebEntity userWeb = userToEntity(user);
             request.setAttribute("user",userWeb);
             request.getRequestDispatcher("/useredit.jsp").forward(request, response);
@@ -2519,6 +2518,9 @@ public class SPZServlet extends HttpServlet {
             }  
         int id = Integer.parseInt(strId);
         user = userMan.findUser(id);
+        if(SPZServlet.autheticatedUsers.contains(user)){
+                return true;
+        }
         String login = request.getParameter("login");
         String oldPasswd = request.getParameter("password");
 //        if(user.getPassword()==null){
@@ -2528,12 +2530,18 @@ public class SPZServlet extends HttpServlet {
         if(passwd==null || passwd.isEmpty()){
             return oldPasswd == null || oldPasswd.isEmpty();
         }
-        byte[] entered=md5.digest(oldPasswd.getBytes());
-        byte[] pass=user.getPassword().getBytes();
+        String entered=new String(md5.digest(oldPasswd.getBytes()));
+        String pass=user.getPassword();
+        boolean auth;
         if( md5Avail){
-            return Arrays.equals(pass,entered);
+            auth=entered.equals(pass);
+        }else{
+            auth = user.getPassword().equals(oldPasswd);
         }
-        return user.getPassword().equals(oldPasswd);
+        if(auth){
+            SPZServlet.autheticatedUsers.add(user);
+        }
+        return auth;
     }
 
     private boolean checkUserParameters(HttpServletRequest request) {
