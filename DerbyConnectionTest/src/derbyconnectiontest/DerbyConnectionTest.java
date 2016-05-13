@@ -24,12 +24,23 @@ public class DerbyConnectionTest {
     public static void main(String[] args) throws SQLException {
         try(Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/support","suser","suser")){
             PreparedStatement stat = con.prepareStatement("select * from SUSER.USER_");
+            PreparedStatement schemas = con.prepareStatement("select * from SYS.SYSSCHEMAS where SCHEMANAME='SUSER'");
+            PreparedStatement tables = con.prepareStatement("select * from SYS.SYSTABLES where SCHEMAID=?");
             ResultSet res = stat.executeQuery();
             while(res.next()){
                 System.out.println(String.format("%s:%s", res.getString("name"),res.getString("login")));
             } 
+            res = schemas.executeQuery();
+            while(res.next()){
+                String id=res.getString("SCHEMAID");
+                String schema = res.getString("SCHEMANAME");
+                tables.setString(1, id);
+                res = tables.executeQuery();
+                while(res.next()){
+                    System.out.println(String.format("%s.%s",schema,res.getString("TABLENAME")));
+                }
+            }
         }
-        
-    }
     
+    }
 }
