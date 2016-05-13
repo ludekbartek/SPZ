@@ -1,154 +1,91 @@
-create table SUSER.Spz
-(
-    id int primary key not null generated always as identity, /*Primarni klic*/
-    reqNumber varchar(10), /*cislo spz [0-9]{10} - uklada se poslednich 10 cisel z klice, zatim maji delku 5 */
-    priority smallint, /*priorita SPZ 1-4*/
-    issueDate timestamp, /* Casove razitko, obsahuje cas vytvoreni SPZ v milisekundach od zacatku ery*/
-    contactPerson varchar(32), /*Jmeno kontaktni osoby*/
-    requestType varchar(32), /*typ pozadavku*/
-    shortName varchar(50), /*strucny nazev pozadavku, v seznamu pole popis*/
-    requestDescription varchar(9000), /*popis pozadavku*/
-    implementationAcceptDate timestamp, /*datum akceptace opravy*/
-    ts bigint,/*casove razitko, cas vytvoreni zaznamu v DB*/
-    category smallint, /*kategorie SPZ - 0 = nestandardni,1 = standardni*/
-    assumedManDays double, /*Odhad pracnosti v clovekodnech*/
-    manDays double, /*Skutecna pracnost v clovekodnech*/
-    developerId int /*ID vyvojare SPZ*/
-);
+-- ============================
 
-create table SUSER.SpzState 
-(
-    id int primary key not null generated  always as identity,
-    code varchar(50),
-    ts bigint,
-    issuer_login varchar(32),
-    revisedRequestDescription varchar(9000),
-    solutionDescription varchar(9000),
-    releaseNotes varchar(9000),
-    classType smallint,
-    idate date,
-    currentState int 
-);
+-- This file was created using Derby's dblook utility.
+-- Timestamp: 2016-05-13 16:37:55.486
+-- Source database is: support
+-- Connection URL is: jdbc:derby://localhost:1527/support;user=suser;password=suser;
+-- appendLogs: false
 
-create table SUSER.SpzStates
-(
-    id int primary key not null generated always as identity,
-    spzId int,
-    stateId int
-);
+-- ----------------------------------------------
+-- DDL Statements for schemas
+-- ----------------------------------------------
 
-create table SUSER.SpzIssuer
-(
-    id int primary key not null generated always as identity,
-    spzId int,
-    userId int
-);
+CREATE SCHEMA "SUSER";
 
-create table SUSER.SpzAnalyst
-(
-    id int primary key not null generated always as identity,
-    spzId int,
-    userId int
-);
+-- ----------------------------------------------
+-- DDL Statements for tables
+-- ----------------------------------------------
 
-create table SUSER.User_
-(
-    id int primary key not null generated always as identity,
-    login varchar(32),
-    name varchar(50),
-    password varchar(512),
-    email varchar(50),
-    company varchar(50),
-    tel varchar(50),
-    fax varchar(50),
-    class_type smallint,
-    ts bigint
-);
+CREATE TABLE "SUSER"."SPZISSUER" ("ID" INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1), "SPZID" INTEGER, "USERID" INTEGER);
 
-create table SUSER.SpzNote
-(
-    id int primary key not null generated always as identity,
-    externalNote smallint,
-    noteDate timestamp,
-    notetext varchar(8000),
-    ts bigint,
-    issuer varchar(100)
-);
+CREATE TABLE "SUSER"."PROJECTCONFIGURATION" ("ID" INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1), "PROJECTID" INTEGER, "CONFIGURATIONID" INTEGER);
 
-create table SUSER.SpzStateNote
-(
-    id int primary key not null generated always as identity,
-    noteId int,
-    stateId int
-);
+CREATE TABLE "SUSER"."ATTACHMENT" ("ID" INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1), "DATE" TIMESTAMP, "CONTENT" VARCHAR(255), "LOCATION" VARCHAR(255), "TYPE" VARCHAR(255), "TS" BIGINT);
 
-create table SUSER.ConfigurationSpz
-(
-    id int primary key not null generated always as identity,
-    configurationid int,
-    spzid int
-);
+CREATE TABLE "SUSER"."NOTEISSUER" ("ID" INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1), "NOTEID" INTEGER, "USERID" INTEGER);
 
-create table SUSER.NoteIssuer
-(   
-    id int primary key not null generated always as identity,
-    noteId bigint,
-    userId bigint
-);
+CREATE TABLE "SUSER"."USERACCESS" ("ID" INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1), "ROLE_" VARCHAR(32), "TS" BIGINT, "USERID" INTEGER, "CONFIGURATIONID" INTEGER);
 
-create table SUSER.configuration
-(
-    id int primary key not null generated always as identity,
-    code varchar(32),
-    description varchar(255),
-    seqnumber bigint,
-    ts bigint
-);
+CREATE TABLE "SUSER"."USER_" ("ID" INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1), "LOGIN" VARCHAR(32), "NAME" VARCHAR(50), "PASSWORD" VARCHAR(512), "EMAIL" VARCHAR(50), "COMPANY" VARCHAR(50), "TEL" VARCHAR(50), "FAX" VARCHAR(50), "CLASS_TYPE" SMALLINT, "TS" BIGINT);
 
-create table SUSER.ProjectConfiguration
-(
-    id int primary key not null generated always as identity,
-    projectId int,
-    configurationId int
-);
+CREATE TABLE "SUSER"."SPZSTATES" ("ID" INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1), "SPZID" INTEGER, "STATEID" INTEGER);
 
-create table SUSER.UserAccess
-(
-    id int primary key not null generated always as identity,
-    role_ varchar(32),
-    ts bigint,
-    userId int,
-    configurationId int
-);
+CREATE TABLE "SUSER"."SPZ" ("ID" INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1), "REQNUMBER" VARCHAR(10), "PRIORITY" SMALLINT, "ISSUEDATE" TIMESTAMP, "CONTACTPERSON" VARCHAR(32), "REQUESTTYPE" VARCHAR(32), "SHORTNAME" VARCHAR(50), "REQUESTDESCRIPTION" VARCHAR(9000), "IMPLEMENTATIONACCEPTDATE" TIMESTAMP, "TS" BIGINT, "CATEGORY" SMALLINT NOT NULL DEFAULT 0, "MANDAYS" DOUBLE, "ASSUMEDMANDAYS" DOUBLE, "DEVELOPERID" INTEGER);
 
-create table SUSER.Project
-(
-    id int primary key not null generated always as identity,
-    name varchar(32),
-    description varchar(255),
-    ts bigint
-);
+CREATE TABLE "SUSER"."SPZANALYST" ("ID" INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1), "SPZID" INTEGER, "USERID" INTEGER);
 
-create table SUSER.Attachment
-(
-    id int primary key not null generated always as identity,
-    date timestamp,
-    content varchar(255),
-    location varchar(255),
-    type varchar(255),
-    ts bigint
-);
+CREATE TABLE "SUSER"."CONFIGURATIONSPZ" ("ID" INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1), "CONFIGURATIONID" INTEGER, "SPZID" INTEGER);
 
-create table SUSER.AttachmentNote
-(
-    id int primary key not null generated always as identity,
-    attachmentId int,
-    spznoteId int
-);
+CREATE TABLE "SUSER"."SPZSTATE" ("ID" INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1), "CODE" VARCHAR(50), "TS" BIGINT, "ISSUER_LOGIN" VARCHAR(32), "REVISEDREQUESTDESCRIPTION" VARCHAR(9000), "SOLUTIONDESCRIPTION" VARCHAR(9000), "RELEASENOTES" VARCHAR(9000), "CLASSTYPE" SMALLINT, "IDATE" DATE, "CURRENTSTATE" INTEGER);
 
-create table SUSER.Roles
-(
-    id int primary key not null generated always as identity,
-    userId int,
-    role_  varchar(32)
-);
+CREATE TABLE "SUSER"."ROLES" ("ID" INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1), "USERID" INTEGER, "ROLE_" VARCHAR(32));
+
+CREATE TABLE "SUSER"."SPZSTATENOTE" ("ID" INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1), "NOTEID" INTEGER, "STATEID" INTEGER);
+
+CREATE TABLE "SUSER"."SPZNOTE" ("ID" INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1), "EXTERNALNOTE" SMALLINT, "NOTEDATE" TIMESTAMP, "NOTETEXT" VARCHAR(8000), "TS" BIGINT, "ISSUER" VARCHAR(100));
+
+CREATE TABLE "SUSER"."ATTACHMENTNOTE" ("ID" INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1), "ATTACHMENTID" INTEGER, "SPZNOTEID" INTEGER);
+
+CREATE TABLE "SUSER"."CONFIGURATION" ("ID" INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1), "CODE" VARCHAR(32), "DESCRIPTION" VARCHAR(255), "SEQNUMBER" BIGINT, "TS" BIGINT);
+
+CREATE TABLE "SUSER"."PROJECT" ("ID" INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1), "NAME" VARCHAR(32), "DESCRIPTION" VARCHAR(255), "TS" BIGINT);
+
+-- ----------------------------------------------
+-- DDL Statements for keys
+-- ----------------------------------------------
+
+-- PRIMARY/UNIQUE
+ALTER TABLE "SUSER"."ATTACHMENTNOTE" ADD CONSTRAINT "SQL150728083221820" PRIMARY KEY ("ID");
+
+ALTER TABLE "SUSER"."USER_" ADD CONSTRAINT "SQL150728083220240" PRIMARY KEY ("ID");
+
+ALTER TABLE "SUSER"."ATTACHMENT" ADD CONSTRAINT "SQL150728083221650" PRIMARY KEY ("ID");
+
+ALTER TABLE "SUSER"."SPZANALYST" ADD CONSTRAINT "SQL150728083220070" PRIMARY KEY ("ID");
+
+ALTER TABLE "SUSER"."PROJECT" ADD CONSTRAINT "SQL150728083221470" PRIMARY KEY ("ID");
+
+ALTER TABLE "SUSER"."ROLES" ADD CONSTRAINT "SQL150728083222000" PRIMARY KEY ("ID");
+
+ALTER TABLE "SUSER"."USERACCESS" ADD CONSTRAINT "SQL150728083221300" PRIMARY KEY ("ID");
+
+ALTER TABLE "SUSER"."CONFIGURATIONSPZ" ADD CONSTRAINT "SQL160110093452690" PRIMARY KEY ("ID");
+
+ALTER TABLE "SUSER"."SPZSTATES" ADD CONSTRAINT "SQL150728083219720" PRIMARY KEY ("ID");
+
+ALTER TABLE "SUSER"."PROJECTCONFIGURATION" ADD CONSTRAINT "SQL150728083221130" PRIMARY KEY ("ID");
+
+ALTER TABLE "SUSER"."SPZSTATE" ADD CONSTRAINT "SQL150728083219510" PRIMARY KEY ("ID");
+
+ALTER TABLE "SUSER"."CONFIGURATION" ADD CONSTRAINT "SQL150728083220930" PRIMARY KEY ("ID");
+
+ALTER TABLE "SUSER"."SPZISSUER" ADD CONSTRAINT "SQL160102175025730" PRIMARY KEY ("ID");
+
+ALTER TABLE "SUSER"."SPZ" ADD CONSTRAINT "SQL150728083219300" PRIMARY KEY ("ID");
+
+ALTER TABLE "SUSER"."NOTEISSUER" ADD CONSTRAINT "SQL150728083220770" PRIMARY KEY ("ID");
+
+ALTER TABLE "SUSER"."SPZSTATENOTE" ADD CONSTRAINT "SQL150728083220590" PRIMARY KEY ("ID");
+
+ALTER TABLE "SUSER"."SPZNOTE" ADD CONSTRAINT "SQL150728083220420" PRIMARY KEY ("ID");
+
