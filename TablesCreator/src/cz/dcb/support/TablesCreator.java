@@ -27,7 +27,7 @@ public class TablesCreator {
      */
     public static void main(String[] args) throws SQLException, IOException, ClassNotFoundException {
         //Class.forName("org.apache.derby.jdbc.ClientDriver");
-        try(Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/support","suser","suser")){
+        try(Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/support;create=true","suser","suser")){
             BufferedReader reader = new BufferedReader(new InputStreamReader(TablesCreator.class.getResourceAsStream("/cz/dcb/support/support-derby.sql")));
             String line;
             Statement stat = con.createStatement();
