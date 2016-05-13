@@ -19,18 +19,39 @@
         </div>
         <f:setBundle basename="useraction"/>
         <jsp:include page="usermenu.jsp"/>
-        <div id="content">
+        <c:choose>
+            <c:when test="${not empty editedUser}">
+                <c:set var="usr" value="${editedUser}"/>
+            </c:when>
+            <c:otherwise>
+                <c:set var="usr" value="${user}"/>
+            </c:otherwise>
+        </c:choose>
+        <div id="content">      <c:out value="${usr.login}"/>
+                                <input type="hidden" name="login" value="${usr.login}"/>
+                                
             <h2><f:message key="persDataChange"/></h2>
             <form action="${pageContext.request.contextPath}/SPZServlet/edituser" method="post">
-                <input type="hidden" name="userid" value="${user.id}"/>
+                <input type="hidden" name="userid" value="${usr.id}"/>
+                <c:if test="${not empty token}">
+                    <input type="hidden" name="token" value="${token}"/>
+                </c:if>
+                    <c:choose>
+                        <c:when test="${not empty editedUser}">
+                            <input type="hidden" name="editedUserId" value="${editedUser.id}"/>
+                        </c:when>
+                        <c:otherwise>
+                            <input type="hidden" name="userId" value="${user.id}"/>
+                        </c:otherwise>
+                    </c:choose>
                 <table class="bordless">
                     <tr>
                         <td class="highlighted">
                             <f:message key="userlogin"/>:
                         </td>
                         <td>
-                            <c:out value="${user.login}"/>
-                            <input type="hidden" name="login" value="${user.login}"/>
+                            <c:out value="${usr.login}"/>
+                            <input type="hidden" name="login" value="${usr.login}"/>
                         </td>
                     </tr>
                     <tr>
@@ -38,7 +59,7 @@
                             <f:message key="fullname"/>:
                         </td>
                         <td>
-                            <input type="text" name="name" value="<c:out value='${user.name}'/>"/>
+                            <input type="text" name="name" value="<c:out value='${usr.name}'/>"/>
                         </td>
                     </tr>
                     <tr>
@@ -46,7 +67,7 @@
                             <f:message key="email"/>:
                         </td>
                         <td>
-                            <input type="email" name="email" value="<c:out value='${user.email}'/>"/>
+                            <input type="email" name="email" value="<c:out value='${usr.email}'/>"/>
                         </td>
                     </tr>
                     <tr>
@@ -54,7 +75,7 @@
                             <f:message key="company"/>:
                         </td>
                         <td>
-                            <input type="text" name="company" value="<c:out value='${user.company}'/>"/>
+                            <input type="text" name="company" value="<c:out value='${usr.company}'/>"/>
                         </td>
                     </tr>
                     <tr>
@@ -62,7 +83,7 @@
                             <f:message key="phone"/>:
                         </td>
                         <td>
-                            <input type="tel" name="phone" value='<c:out value="${user.phone}"/>'/>
+                            <input type="tel" name="phone" value='<c:out value="${usr.phone}"/>'/>
                         </td>
                     </tr>
                     <tr>
@@ -70,7 +91,7 @@
                             <f:message key="fax"/>:
                         </td>
                         <td>
-                            <input type="tel" name="fax" value='<c:out value="${user.fax}"/>'/>
+                            <input type="tel" name="fax" value='<c:out value="${usr.fax}"/>'/>
                         </td>
                     </tr>
                     <tr>
@@ -104,21 +125,34 @@
                     </tr>
                 </table>
             </form>
-            <c:if test="${user.role==3}">
+                        <!-- User roles:
+                                     0 - klient/uzivatel
+                                     1 - analytik
+                                     2 - projekovy manazer
+                                     3 - administrator
+                                -->
+            <c:if test="${user.classType=='3'}">
                 <form action="${pageContext.request.contextPath}/SPZServlet/editRoles" method="post">
                     <input type="hidden" name="userid" value="${user.id}"/>
-                    <br/>
+                    Edited user id:<c:out value="${editedUser.id}"/><br/>
+                    <c:if test="${not empty editedUser}">
+                        <input type="hidden" name="editeduserid" value="${editedUser.id}"/>
+                    </c:if>
+                    <c:if test="${not empty token}">
+                        <input type="hidden" name="token" value="${token}"/>
+                    </c:if>
+                    <!--<br/>
                     Called from: <c:out value="${requestScope['javax.servlet.forward.path_info']}"/>
                     <br/>
                     Query URI: <c:out value="${requestScope['javax.servlet.forward.request_uri']}"/>
-                    <br/>
+                    <br/>-->
                     <table>
                         <tr>
                             <td class="highlighted">
                                 <f:message key="userlogin"/>:
                             </td>
                             <td>
-                                <c:out value="${user.login}"/>
+                                <c:out value="${usr.login}"/>
                             </td>
                         </tr>
                         <tr>
@@ -134,9 +168,15 @@
                                 <f:message key="superUser"/>:
                             </td>
                             <td>
-                                <input type="radio" name="superuser" value="yes" <c:if test='${user.role=="3"}'>checked</c:if>/><f:message key="yes"/>
+                                <!-- User roles:
+                                     0 - klient/uzivatel
+                                     1 - analytik
+                                     2 - projekovy manazer
+                                     3 - administrator
+                                -->
+                                <input type="radio" name="superuser" value="yes" <c:if test='${usr.role=="3"}'>checked</c:if>/><f:message key="yes"/>
                                 &nbsp;
-                                <input type="radio" name="superuser" value="no" <c:if test='${user.role!="3"}'>checked</c:if>/><f:message key="no"/>
+                                <input type="radio" name="superuser" value="no" <c:if test='${usr.role!="3"}'>checked</c:if>/><f:message key="no"/>
                             </td>
                         </tr>
                         <tr>
@@ -144,9 +184,15 @@
                                 <f:message key="regularuser"/>:
                             </td>
                             <td>
-                                <input type="radio" name="role_user" value="yes" <c:if test='${user.role!="3"}'>checked</c:if>/><f:message key="yes"/>
+                                <!-- User roles:
+                                     0 - klient/uzivatel
+                                     1 - analytik
+                                     2 - projekovy manazer
+                                     3 - administrator
+                                -->
+                                <input type="radio" name="role_user" value="yes" <c:if test='${usr.role=="0"}'>checked</c:if>/><f:message key="yes"/>
                                 &nbsp;
-                                <input type="radio" name="role_user" value="no" <c:if test='${user.role=="3"}'>checked</c:if>/><f:message key="no"/>
+                                <input type="radio" name="role_user" value="no" <c:if test='${usr.role!="0"}'>checked</c:if>/><f:message key="no"/>
                             </td>
                         </tr>
                         <tr>

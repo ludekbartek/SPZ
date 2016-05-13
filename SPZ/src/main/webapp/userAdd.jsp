@@ -25,6 +25,9 @@
             </c:if>
             <form action="${pageContext.request.contextPath}/SPZServlet/adduser" method="post">
                 <input type="hidden" name="userid" value="${user.id}"/>
+                <c:if test="${not empty token}">
+                    <input type="hidden" name="token" value="${token}"/>
+                </c:if>
                 <c:if test="${not empty projectid}">
                     <input type="hidden" name="projectid" value="${project.id}"/>
                 </c:if>

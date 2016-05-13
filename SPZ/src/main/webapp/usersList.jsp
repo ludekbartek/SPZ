@@ -44,7 +44,7 @@
                         <td>
                             <form action="${pageContext.request.contextPath}/SPZServlet/edituser" method="post">
                                 <input type="hidden" name="userid" value="${user.id}"/>
-                                <input type="hidden" name="editedUserId" value="${userItem.id}"/>
+                                <input type="hidden" name="editeduserid" value="${userItem.id}"/>
                                 <input type="hidden" name="source" value="${requestScope['javax.servlet.forward.path_info']}"/>
                                 <input type="submit" value="${userItem.login}"/>
                             </form> 

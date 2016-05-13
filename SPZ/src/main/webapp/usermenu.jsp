@@ -6,12 +6,14 @@
         <form action="${pageContext.request.contextPath}/SPZServlet/listusers" method="post">
             <input type="hidden" name="projectid" value="${project.id}"/>
             <input type="hidden" name="userid" value="${user.id}"/>
+            <input type="hidden" name="token" value="${token}"/>
             <input type="submit" value="<f:message key='listusers'/>"/>
         </form>
 
         <form action="${pageContext.request.contextPath}/SPZServlet/adduser" method="post">
             <input type="hidden" name="projectid" value="${project.id}"/>
             <input type="hidden" name="userid" value="${user.id}"/>
+            <input type="hidden" name="token" value="${token}"/>
             <input type="hidden" name="source" value="${requestScope['javax.servlet.forward.path_info']}"/>
             <input type="submit" value="<f:message key='addusers'/>"/>
         </form>
@@ -19,6 +21,9 @@
     <form action="${pageContext.request.contextPath}/SPZServlet/edituser" method="post">
         <input type="hidden" name="projectid" value="${project.id}"/>
         <input type="hidden" name="userid" value="${user.id}"/>
+        <c:if test="${not empty token}">
+            <input type="hidden" name="token" value="${token}"/>
+        </c:if>
         <input type="hidden" name="source" value="${requestScope['javax.servlet.forward.path_info']}"/>
         <input type="submit" value="<f:message key='editusers'/>"/>
     </form>

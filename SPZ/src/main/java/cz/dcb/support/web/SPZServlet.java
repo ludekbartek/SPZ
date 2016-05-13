@@ -125,6 +125,7 @@ public class SPZServlet extends HttpServlet {
     private final EntityManagerFactory emf = Persistence.createEntityManagerFactory("support_JPA");
     private static final Set<User> autheticatedUsers = new HashSet<>();
     private static Path attachDir; 
+    private String token;
     private static final String STATES[] ={"Registrovaná","Nová","Probíhá analýza",
         "Změněna", "Specifikována","Probíhá implementace","Přijata ze strany DCB",
         "Uvolněná","Instalovana", "Změna implementace", "Nová implementace", "Probíhá nová analýza",
@@ -665,7 +666,7 @@ public class SPZServlet extends HttpServlet {
             return;
         }
         if(!checkUserParameters(request)){
-            User user = requestParamsToUser(request);
+            User user = requestParamsToUser(request,false);
             UserWebEntity userEnt = userToEntity(user);
             request.setAttribute("error", "Chybi nektere udaje.");
             request.setAttribute("user", id);
@@ -676,7 +677,7 @@ public class SPZServlet extends HttpServlet {
         }
      
                 
-        User user = requestParamsToUser(request);
+        User user = requestParamsToUser(request,false);
         user.setClassType((short)Roles.CLIENT.ordinal());
         try {
             MessageDigest  md5 = MessageDigest.getInstance("md5");
@@ -708,42 +709,69 @@ public class SPZServlet extends HttpServlet {
         }
         
         UserManager man = new UserJpaController(emf);
-        
+        Date tokenSource = new Date();
+        String tokenValue = tokenSource.getTime()+"";
         if(!checkUserParameters(request)){
-            Integer userId = getUserId(request);
+
+            Integer userId =null;
+            if(request.getParameterMap().containsKey("userid")){
+                userId = Integer.parseInt(request.getParameter("userid"));
+            }
             
             if(userId==null){
                 dispError(request, response, "Chybi user id.");
                 return;
             }
-            String strEdId = request.getParameter("editedUserId");
-            User edited,user;
+            String strEdId = request.getParameter("editeduserid");
+            User edited,user=man.findUser(userId);
+            
             if(strEdId!=null){
                int editedUserId = Integer.parseInt(strEdId);
                 edited=man.findUser(editedUserId);
-                user=man.findUser(userId);
-                request.setAttribute("editedUser", userToEntity(edited));
+                
             }else{
                edited = man.findUser(userId);
-               user=edited;
+              // user=edited;
             }
-            SPZServlet.autheticatedUsers.remove(edited);
+            SPZServlet.autheticatedUsers.remove(user);
+            
+            request.setAttribute("editedUser", userToEntity(edited));
             UserWebEntity userWeb = userToEntity(user);
             request.setAttribute("user",userWeb);
+            request.setAttribute("token",tokenValue);
+            token = tokenValue;
             request.getRequestDispatcher("/useredit.jsp").forward(request, response);
         }else{
             UserAccessManager accessMan = new UserAccessJpaController(emf);
             String passwd = request.getParameter("newPassword");
             String passwdRe = request.getParameter("retypePasswd");
             if(passwd.compareTo(passwdRe)!=0){
-                UserWebEntity userWeb = userToEntity(requestParamsToUser(request));
+                UserWebEntity userWeb = userToEntity(requestParamsToUser(request,false));
                 request.setAttribute("user", userWeb);
+                
+                request.setAttribute("token", tokenValue);
+                token = tokenValue;
                 request.getRequestDispatcher("/useredit.jsp").forward(request, response);
             }
-            User user=requestParamsToUser(request);
+            User user=requestParamsToUser(request, false);
+            int userId = user.getId();
+            if(request.getParameterMap().containsKey("editeduserid")){
+                int uid = Integer.parseInt(request.getParameter("editeduserid"));
+                userId=uid;
+            }
+            User user1 = man.findUser(userId);
+            user1.setName(user.getName());
+            user1.setCompany(user.getCompany());
+            user1.setEmail(user.getEmail());
+            user1.setFax(user.getFax());
+            String passwdTest=user.getPassword();
+            if(!passwdTest.isEmpty()){
+                user1.setPassword(passwdTest);
+            }
+            user1.setTel(user.getTel());
             try {
-                man.edit(user);
-                UserWebEntity userEnt = userToEntity(user);
+                man.edit(user1);
+                UserWebEntity userEnt = userToEntity(user1);
                 request.setAttribute("user", userEnt);
                 listProjects(request, response);
             } catch (Exception ex) {
@@ -2507,6 +2535,11 @@ public class SPZServlet extends HttpServlet {
         if(strId==null){
             return false;
         }
+        String tokenValue=request.getParameter("token");
+        if(tokenValue!=null && tokenValue.equals(token)){
+            token = null;
+            return true;
+        }
         UserManager userMan = new UserJpaController(emf);
         MessageDigest md5 =  null;
         try {
@@ -2527,8 +2560,13 @@ public class SPZServlet extends HttpServlet {
 //            return true;
 //        }
         String passwd = user.getPassword();
-        if(passwd==null || passwd.isEmpty()){
-            return oldPasswd == null || oldPasswd.isEmpty();
+        String emptyPasswd = "";
+        byte[] emptyPasswdHash = md5.digest(emptyPasswd.getBytes());
+        if(passwd==null || passwd.isEmpty()|| md5.digest(emptyPasswd.getBytes()).equals(passwd)){
+            return true;
+        }
+        if(oldPasswd==null || oldPasswd.isEmpty()){
+            return false;
         }
         String entered=new String(md5.digest(oldPasswd.getBytes()));
         String pass=user.getPassword();
@@ -2550,16 +2588,17 @@ public class SPZServlet extends HttpServlet {
                request.getParameter("password")!=null;*/
     }
 
-    private Integer getUserId(HttpServletRequest request) {
-        String userId = request.getParameter("userid");
-        if(userId == null)
-            return null;
-        return Integer.parseInt(userId);
-    }
+//    private Integer getUserId(HttpServletRequest request) {
+//        String userId = request.getParameter("userid");
+//        if(userId == null)
+//            return null;
+//        return Integer.parseInt(userId);
+//    }
 
-    private User requestParamsToUser(HttpServletRequest request) {
+    private User requestParamsToUser(HttpServletRequest request, boolean edited) {
         User user = new User();
-        String val = request.getParameter("userid");
+        
+        String val = request.getParameter((edited?"editeduserid":"userid"));
         if(val==null){
             return null;
         }
@@ -2628,21 +2667,33 @@ public class SPZServlet extends HttpServlet {
             dispError(request,response,"Uzivatele nelze autentizovat.");
         }
         UserManager man = new UserJpaController(emf);
-        Integer id = getUserId(request);
-        User user=man.findUser(id);
+        User user = null;
+        if(request.getParameterMap().containsKey("userid")){
+            Integer id = Integer.parseInt(request.getParameter("userid"));
+            user = man.findUser(id);
+        }
+        User editedUser=null;
+        if(request.getParameterMap().containsKey("editeduserid")){
+            Integer id = Integer.parseInt(request.getParameter("editeduserid"));
+            editedUser = man.findUser(id);
+        }
         String strSUser = request.getParameter("superuser");
+        
+        if(editedUser == null){
+            editedUser = user;
+        }
+        
         if(strSUser!=null){
             if(strSUser.compareToIgnoreCase("yes")==0){
-                user.setClassType((short)Roles.ADMIN.ordinal());
+                editedUser.setClassType((short)Roles.ADMIN.ordinal());
             }else{
                 String strUser = request.getParameter("role_user");
                 if(strUser!=null && strUser.compareToIgnoreCase("yes")==0){
-                    user.setClassType((short)Roles.CLIENT.ordinal());
+                    editedUser.setClassType((short)Roles.CLIENT.ordinal());
                 }
-                    
             } 
             try {
-                man.edit(user);
+                man.edit(editedUser);
             } catch (Exception ex) {
                 Logger.getLogger(SPZServlet.class.getName()).log(Level.SEVERE, "Pokus o zmenu tridy neexistujiciho uzivatele.", ex);
             }
@@ -2669,11 +2720,15 @@ public class SPZServlet extends HttpServlet {
         for(User userEnt:users){
             userEntities.add(userToEntity(userEnt));
         }
-        Integer currentId = getUserId(request);
-        User current = userMan.findUser(currentId);
-        UserWebEntity curEnt = userToEntity(user);
-        request.setAttribute("users", userEntities);
-        request.setAttribute("user", curEnt);
-        request.getRequestDispatcher("/usersList.jsp").forward(request, response);
+        if(request.getParameterMap().containsKey("userid")){
+            Integer currentId = Integer.parseInt(request.getParameter("userid"));
+            User current = userMan.findUser(currentId);
+            UserWebEntity curEnt = userToEntity(user);
+            request.setAttribute("users", userEntities);
+            request.setAttribute("user", curEnt);
+            request.getRequestDispatcher("/usersList.jsp").forward(request, response);
+            return;
+        }
+        dispError(request, response, "User id parameter missing.");
     }
 }
