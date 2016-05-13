@@ -32,7 +32,7 @@
                                 
             <h2><f:message key="persDataChange"/></h2>
             <form action="${pageContext.request.contextPath}/SPZServlet/edituser" method="post">
-                <input type="hidden" name="userid" value="${usr.id}"/>
+                <input type="hidden" name="userid" value="${user.id}"/>
                 <c:if test="${not empty token}">
                     <input type="hidden" name="token" value="${token}"/>
                 </c:if>
