@@ -7,17 +7,18 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="f" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<f:setBundle basename="useraction"/>
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title><f:message key="useredititle"/></title>
     </head>
     <body>
         <div id="heading">
+            <h1><f:message key="usereditheader"/></h1>
         <jsp:include page="header.jsp"/>
         </div>
-        <f:setBundle basename="useraction"/>
         <jsp:include page="usermenu.jsp"/>
         <c:choose>
             <c:when test="${not empty editedUser}">
