@@ -12,7 +12,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title><f:message key="useredititle"/></title>
+        <title><f:message key="useredittitle"/></title>
     </head>
     <body>
         <div id="heading">
@@ -175,9 +175,12 @@
                                      2 - projekovy manazer
                                      3 - administrator
                                 -->
-                                <input type="radio" name="superuser" value="yes" <c:if test='${usr.role=="3"}'>checked</c:if>/><f:message key="yes"/>
+                                <br/>
+                                Role: <c:out value="${usr.classType}"/>
+                                <br/>
+                                <input type="radio" name="superuser" value="yes" <c:if test='${usr.classType=="3"}'>checked</c:if>/><f:message key="yes"/>
                                 &nbsp;
-                                <input type="radio" name="superuser" value="no" <c:if test='${usr.role!="3"}'>checked</c:if>/><f:message key="no"/>
+                                <input type="radio" name="superuser" value="no" <c:if test='${usr.classType!="3"}'>checked</c:if>/><f:message key="no"/>
                             </td>
                         </tr>
                         <tr>
@@ -191,9 +194,9 @@
                                      2 - projekovy manazer
                                      3 - administrator
                                 -->
-                                <input type="radio" name="role_user" value="yes" <c:if test='${usr.role=="0"}'>checked</c:if>/><f:message key="yes"/>
+                                <input type="radio" name="role_user" value="yes" <c:if test='${usr.classType=="0"}'>checked</c:if>/><f:message key="yes"/>
                                 &nbsp;
-                                <input type="radio" name="role_user" value="no" <c:if test='${usr.role!="0"}'>checked</c:if>/><f:message key="no"/>
+                                <input type="radio" name="role_user" value="no" <c:if test='${usr.classType!="0"}'>checked</c:if>/><f:message key="no"/>
                             </td>
                         </tr>
                         <tr>
