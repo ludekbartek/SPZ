@@ -24,6 +24,9 @@ public class TablesCreator {
 
     /**
      * @param args the command line arguments
+     * @throws java.sql.SQLException
+     * @throws java.io.IOException
+     * @throws java.lang.ClassNotFoundException
      */
     public static void main(String[] args) throws SQLException, IOException, ClassNotFoundException {
         //Class.forName("org.apache.derby.jdbc.ClientDriver");
@@ -36,7 +39,7 @@ public class TablesCreator {
                 try{
                     stat.execute(line);
                 }catch(SQLSyntaxErrorException ex){
-                    Logger.getAnonymousLogger().log(Level.SEVERE, "SQL Syntax error "+line);
+                    Logger.getAnonymousLogger().log(Level.SEVERE, "SQL Syntax error {0}", line);
                 }
             }
         }
