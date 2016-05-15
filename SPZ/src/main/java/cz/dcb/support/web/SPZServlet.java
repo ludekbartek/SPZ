@@ -254,9 +254,12 @@ public class SPZServlet extends HttpServlet {
             }
 //            System.out.println("Action: " + request.getParameter("action"));
             String action = request.getPathInfo();
+            LOGGER.log(Level.INFO,"Performing {0} with parameters {1}",new Object[]{action,request.getParameterNames().toString()});
             //String action = request.getParameter("action");
             switch(action.toLowerCase()){
-                case "/login":try{
+                case "/login":
+                              
+                              try{
                                 authenticate(request,response);
                               }catch(NoResultException ex){
                                 dispError(request, response, "Chyba autentizace: "+ex);
@@ -741,6 +744,7 @@ public class SPZServlet extends HttpServlet {
             request.setAttribute("token",tokenValue);
             token = tokenValue;
             request.getRequestDispatcher("/useredit.jsp").forward(request, response);
+            return;
         }else{
             UserAccessManager accessMan = new UserAccessJpaController(emf);
             String passwd = request.getParameter("newPassword");
@@ -752,6 +756,7 @@ public class SPZServlet extends HttpServlet {
                 request.setAttribute("token", tokenValue);
                 token = tokenValue;
                 request.getRequestDispatcher("/useredit.jsp").forward(request, response);
+                return;
             }
             User user=requestParamsToUser(request, false);
             int userId = user.getId();
@@ -835,6 +840,7 @@ public class SPZServlet extends HttpServlet {
         UserWebEntity user = requestToUserWebEntity(request);
         if(user==null){
             dispError(request, response, "listSpz: Nelze ziskat uzivatele.");
+            return;
         }
         Project project = getProjectFromRequest(request);
         Configuration conf = getConfigurationFromRequest(request);
@@ -2698,6 +2704,9 @@ public class SPZServlet extends HttpServlet {
                 Logger.getLogger(SPZServlet.class.getName()).log(Level.SEVERE, "Pokus o zmenu tridy neexistujiciho uzivatele.", ex);
             }
         }
+        if(user!=null){
+            SPZServlet.autheticatedUsers.add(user);
+        }
         listProjects(request, response);
         
     }
@@ -2705,13 +2714,16 @@ public class SPZServlet extends HttpServlet {
     private void listUsers(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         if(!authenticate(request)){
             dispError(request, response, "User not authenticated.");
+            return;
         }
         User user = getUserByParameter(request);
         if(user==null){
             dispError(request, response, "No authenticated user.");
+            return;
         }
         if(user.getClassType()==null||user.getClassType()!=Roles.ADMIN.ordinal()){
             dispError(request, response, "Uzivatel nema opravneni pro tuto akci.");
+            return;
         }
         
         UserManager userMan = new UserJpaController(emf);
@@ -2723,6 +2735,7 @@ public class SPZServlet extends HttpServlet {
         if(request.getParameterMap().containsKey("userid")){
             Integer currentId = Integer.parseInt(request.getParameter("userid"));
             User current = userMan.findUser(currentId);
+            SPZServlet.autheticatedUsers.add(current);
             UserWebEntity curEnt = userToEntity(user);
             request.setAttribute("users", userEntities);
             request.setAttribute("user", curEnt);
