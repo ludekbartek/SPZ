@@ -660,16 +660,19 @@ public class SPZServlet extends HttpServlet {
         Map<String,String[]> params = request.getParameterMap();
         String strId = request.getParameter("userid");
         int id = Integer.parseInt(strId);
+        
         UserManager userMan = new UserJpaController(emf);
         if(!params.containsKey("login")){
             User user = userMan.findUser(id);
             UserWebEntity userEnt = userToEntity(user);
+            SPZServlet.autheticatedUsers.add(user);
             request.setAttribute("user", user);
             request.getRequestDispatcher("/userAdd.jsp").forward(request,response);
             return;
         }
         if(!checkUserParameters(request)){
             User user = requestParamsToUser(request,false);
+            SPZServlet.autheticatedUsers.add(user);
             UserWebEntity userEnt = userToEntity(user);
             request.setAttribute("error", "Chybi nektere udaje.");
             request.setAttribute("user", id);
@@ -681,13 +684,15 @@ public class SPZServlet extends HttpServlet {
      
                 
         User user = requestParamsToUser(request,false);
-        user.setClassType((short)Roles.CLIENT.ordinal());
-        try {
-            MessageDigest  md5 = MessageDigest.getInstance("md5");
-            String md5Passwd = new String(md5.digest(user.getPassword().getBytes()));
-            user.setPassword(md5Passwd);
-        } catch (NoSuchAlgorithmException ex) {
-            Logger.getLogger(SPZServlet.class.getName()).log(Level.SEVERE, "Hesla jsou ukladana jako plaintext.", ex);
+        user.setClassType((short)-1);
+        if(user.getPassword()!=null){
+            try {
+                MessageDigest  md5 = MessageDigest.getInstance("md5");
+                String md5Passwd = new String(md5.digest(user.getPassword().getBytes()));
+                user.setPassword(md5Passwd);
+            } catch (NoSuchAlgorithmException ex) {
+                Logger.getLogger(SPZServlet.class.getName()).log(Level.SEVERE, "Hesla jsou ukladana jako plaintext.", ex);
+            }
         }
         userMan.create(user);
         User sUser = userMan.findUser(id);
@@ -725,8 +730,11 @@ public class SPZServlet extends HttpServlet {
                 dispError(request, response, "Chybi user id.");
                 return;
             }
+            
             String strEdId = request.getParameter("editeduserid");
             User edited,user=man.findUser(userId);
+            
+            SPZServlet.autheticatedUsers.add(user);
             
             if(strEdId!=null){
                int editedUserId = Integer.parseInt(strEdId);
@@ -749,8 +757,11 @@ public class SPZServlet extends HttpServlet {
             UserAccessManager accessMan = new UserAccessJpaController(emf);
             String passwd = request.getParameter("newPassword");
             String passwdRe = request.getParameter("retypePasswd");
+            User user = requestParamsToUser(request, false);
+            SPZServlet.autheticatedUsers.add(user);
+            
             if(passwd.compareTo(passwdRe)!=0){
-                UserWebEntity userWeb = userToEntity(requestParamsToUser(request,false));
+                UserWebEntity userWeb = userToEntity(user);
                 request.setAttribute("user", userWeb);
                 
                 request.setAttribute("token", tokenValue);
@@ -758,7 +769,6 @@ public class SPZServlet extends HttpServlet {
                 request.getRequestDispatcher("/useredit.jsp").forward(request, response);
                 return;
             }
-            User user=requestParamsToUser(request, false);
             int userId = user.getId();
             if(request.getParameterMap().containsKey("editeduserid")){
                 int uid = Integer.parseInt(request.getParameter("editeduserid"));
