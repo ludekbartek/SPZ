@@ -27,6 +27,7 @@ public class DerbyConnectionTest {
             PreparedStatement schemas = con.prepareStatement("select * from SYS.SYSSCHEMAS where SCHEMANAME='SUSER'");
             PreparedStatement tables = con.prepareStatement("select * from SYS.SYSTABLES where SCHEMAID=?");
             ResultSet res = stat.executeQuery();
+            
             while(res.next()){
                 System.out.println(String.format("%s:%s", res.getString("name"),res.getString("login")));
             } 
