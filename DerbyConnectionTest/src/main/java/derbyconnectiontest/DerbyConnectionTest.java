@@ -10,6 +10,8 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -41,6 +43,8 @@ public class DerbyConnectionTest {
                     System.out.println(String.format("%s.%s",schema,res.getString("TABLENAME")));
                 }
             }
+        }catch(java.sql.SQLException ex){
+            Logger.getAnonymousLogger().log(Level.INFO,"Chyba pri overovani dostupnosti DB:{0}",ex.getMessage());
         }
     
     }
