@@ -671,11 +671,13 @@ public class SPZServlet extends HttpServlet {
             return;
         }
         if(!checkUserParameters(request)){
-            User user = requestParamsToUser(request,false);
-            SPZServlet.autheticatedUsers.add(user);
-            UserWebEntity userEnt = userToEntity(user);
+            User newUser = requestParamsToUser(request,false);
+            SPZServlet.autheticatedUsers.add(newUser);
+            User user = userMan.findUser(id);
+            UserWebEntity userEnt = userToEntity(newUser);
+            UserWebEntity currentUser = userToEntity(user);
             request.setAttribute("error", "Chybi nektere udaje.");
-            request.setAttribute("user", id);
+            request.setAttribute("user", currentUser);
             request.setAttribute("newUser", userEnt);
             request.setAttribute("error","Chybi zakladni udaje o uzivateli.");
             request.getRequestDispatcher("/userAdd.jsp").forward(request, response);
@@ -784,6 +786,8 @@ public class SPZServlet extends HttpServlet {
                 user1.setPassword(passwdTest);
             }
             user1.setTel(user.getTel());
+            User users[] = {user,user1};
+            LOGGER.log(Level.INFO,"Setting {1} to {2}", users);
             try {
                 man.edit(user1);
                 UserWebEntity userEnt = userToEntity(user1);
