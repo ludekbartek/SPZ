@@ -9,6 +9,8 @@ import cz.dcb.support.db.jpa.controllers.exceptions.NonexistentEntityException;
 import cz.dcb.support.db.jpa.entities.User;
 import java.io.Serializable;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
@@ -23,6 +25,7 @@ import javax.persistence.criteria.Root;
  */
 public class UserJpaController implements Serializable, UserManager {
 
+    private static final Logger LOGGER = Logger.getLogger(UserJpaController.class.getName());
     public UserJpaController(EntityManagerFactory emf) {
         this.emf = emf;
     }
@@ -36,6 +39,7 @@ public class UserJpaController implements Serializable, UserManager {
     @Override
     public void create(User user) {
         EntityManager em = null;
+        LOGGER.log(Level.INFO,"Adding user {0}",user);
         try {
             em = getEntityManager();
             em.getTransaction().begin();
@@ -50,6 +54,7 @@ public class UserJpaController implements Serializable, UserManager {
 
     @Override
     public void edit(User user) throws NonexistentEntityException, Exception {
+        LOGGER.log(Level.INFO,"Editing user {0}",user);
         if(user == null || user.getLogin()==null){
             throw new NullPointerException("User or login is null.");
         }
