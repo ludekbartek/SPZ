@@ -748,7 +748,7 @@ public class SPZServlet extends HttpServlet {
             }
             SPZServlet.autheticatedUsers.remove(user);
             
-            request.setAttribute("editedUser", userToEntity(edited));
+            request.setAttribute("editeduser", userToEntity(edited));
             UserWebEntity userWeb = userToEntity(user);
             request.setAttribute("user",userWeb);
             request.setAttribute("token",tokenValue);
@@ -759,8 +759,17 @@ public class SPZServlet extends HttpServlet {
             UserAccessManager accessMan = new UserAccessJpaController(emf);
             String passwd = request.getParameter("newPassword");
             String passwdRe = request.getParameter("retypePasswd");
-            User user = requestParamsToUser(request, false);
-            SPZServlet.autheticatedUsers.add(user);
+            User user = requestParamsToUser(request, true);
+            String strAuthUserId = request.getParameter("userid");
+            User authenticated;
+            if(strAuthUserId!=null){
+                int authUserId = Integer.parseInt(strAuthUserId);
+                authenticated = man.findUser(authUserId);
+                
+            }else{
+                authenticated = user;
+            }
+            SPZServlet.autheticatedUsers.add(authenticated);
             
             if(passwd.compareTo(passwdRe)!=0){
                 UserWebEntity userWeb = userToEntity(user);
@@ -2620,10 +2629,14 @@ public class SPZServlet extends HttpServlet {
         
         String val = request.getParameter((edited?"editeduserid":"userid"));
         if(val==null){
-            return null;
+            if(edited){
+                val= request.getParameter("userid");
+            }else{
+                return null;
+            }
+            
         }
-        int id = Integer.parseInt(val);
-        user.setId(id);
+        user.setId(Integer.parseInt(val));
         val = request.getParameter("login");
         if(val==null){
             return null;
@@ -2688,6 +2701,7 @@ public class SPZServlet extends HttpServlet {
         }
         UserManager man = new UserJpaController(emf);
         User user = null;
+        String editedId = request.getParameter("editeduserid");
         if(request.getParameterMap().containsKey("userid")){
             Integer id = Integer.parseInt(request.getParameter("userid"));
             user = man.findUser(id);
@@ -2697,11 +2711,12 @@ public class SPZServlet extends HttpServlet {
             Integer id = Integer.parseInt(request.getParameter("editeduserid"));
             editedUser = man.findUser(id);
         }
-        String strSUser = request.getParameter("superuser");
         
         if(editedUser == null){
             editedUser = user;
         }
+        
+        String strSUser = request.getParameter("superuser");
         
         if(strSUser!=null){
             if(strSUser.compareToIgnoreCase("yes")==0){

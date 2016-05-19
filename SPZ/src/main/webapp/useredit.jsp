@@ -21,8 +21,8 @@
         </div>
         <jsp:include page="usermenu.jsp"/>
         <c:choose>
-            <c:when test="${not empty editedUser}">
-                <c:set var="usr" value="${editedUser}"/>
+            <c:when test="${not empty editeduser}">
+                <c:set var="usr" value="${editeduser}"/>
             </c:when>
             <c:otherwise>
                 <c:set var="usr" value="${user}"/>
@@ -37,9 +37,12 @@
                 <c:if test="${not empty token}">
                     <input type="hidden" name="token" value="${token}"/>
                 </c:if>
+                    <br/>
+                    editedUserId: <c:out value="${editeduser.id}"/>
+                    <br/>
                     <c:choose>
-                        <c:when test="${not empty editedUser}">
-                            <input type="hidden" name="editedUserId" value="${editedUser.id}"/>
+                        <c:when test="${not empty editeduser}">
+                            <input type="hidden" name="editeduserid" value="${editeduser.id}"/>
                         </c:when>
                         <c:otherwise>
                             <input type="hidden" name="userId" value="${user.id}"/>
@@ -135,10 +138,8 @@
             <c:if test="${user.classType=='3'}">
                 <form action="${pageContext.request.contextPath}/SPZServlet/editRoles" method="post">
                     <input type="hidden" name="userid" value="${user.id}"/>
-                    Edited user id:<c:out value="${editedUser.id}"/><br/>
-                    <c:if test="${not empty editedUser}">
-                        <input type="hidden" name="editeduserid" value="${editedUser.id}"/>
-                    </c:if>
+                    Edited user id:<c:out value="${usr.id}"/><br/>
+                    <input type="hidden" name="editeduserid" value="${usr.id}"/>
                     <c:if test="${not empty token}">
                         <input type="hidden" name="token" value="${token}"/>
                     </c:if>
