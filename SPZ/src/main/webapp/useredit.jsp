@@ -28,18 +28,14 @@
                 <c:set var="usr" value="${user}"/>
             </c:otherwise>
         </c:choose>
-        <div id="content">      <c:out value="${usr.login}"/>
-                                <input type="hidden" name="login" value="${usr.login}"/>
-                                
+        <div id="content">     
+            <input type="hidden" name="login" value="${usr.login}"/>
             <h2><f:message key="persDataChange"/></h2>
             <form action="${pageContext.request.contextPath}/SPZServlet/edituser" method="post">
                 <input type="hidden" name="userid" value="${user.id}"/>
                 <c:if test="${not empty token}">
                     <input type="hidden" name="token" value="${token}"/>
                 </c:if>
-                    <br/>
-                    editedUserId: <c:out value="${editeduser.id}"/>
-                    <br/>
                     <c:choose>
                         <c:when test="${not empty editeduser}">
                             <input type="hidden" name="editeduserid" value="${editeduser.id}"/>
@@ -138,7 +134,6 @@
             <c:if test="${user.classType=='3'}">
                 <form action="${pageContext.request.contextPath}/SPZServlet/editRoles" method="post">
                     <input type="hidden" name="userid" value="${user.id}"/>
-                    Edited user id:<c:out value="${usr.id}"/><br/>
                     <input type="hidden" name="editeduserid" value="${usr.id}"/>
                     <c:if test="${not empty token}">
                         <input type="hidden" name="token" value="${token}"/>
