@@ -1,0 +1,170 @@
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=windows-1250">
+		<title>Definice projektu</title>
+		<link rel="stylesheet" href="Definice_projektu_soubory/style.css" type="text/css">
+	</head>
+	<body>
+		<table class="titlehead">
+			<tbody><tr>
+				<td>
+					<table class="titlehead">
+						<tbody><tr>
+							<td width="50px"><img src="Definice_projektu_soubory/logo.gif"></td>
+							<td><table class="titlehead">
+								<tbody><tr><td class="title">Administrace systému servisní podpory</td></tr>
+								<tr><td class="navigace">
+									<a href="https://spz.dcb.cz/projects/">Projects</a></td></tr>
+							</tbody></table></td>
+							<td class="username">
+								bar (Ludek Bartek)
+							</td>
+						</tr>
+					</tbody></table>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<table class="titlehead">
+						<tbody><tr>
+							<td style="width: 30%" valign="top">
+
+
+
+
+
+
+	<form name="smazat" method="post">
+		<input name="code" type="hidden">
+	</form>
+	<script language="javascript">
+		function deleteit(akce, kod, otazka) {
+			if (confirm(otazka)) {
+				smazat.code.value = kod;
+				smazat.action=akce;
+				smazat.submit();
+			}
+		}
+	</script>
+	<h2>Projekty</h2>
+	<ol>
+		
+			<li>
+				<a href="https://spz.dcb.cz/administration/+/"> </a>
+				<img src="Definice_projektu_soubory/del.gif" alt="Smazat" class="del" onclick='deleteit("/administration/delproj.jsp"," ","Opravdu smazat projekt  ?")' height="21" width="20">
+				<ol>
+					
+				</ol>
+			</li>
+		
+			<li>
+				<a href="https://spz.dcb.cz/administration/Alfa/">Alfa</a>
+				<img src="Definice_projektu_soubory/del.gif" alt="Smazat" class="del" onclick='deleteit("/administration/delproj.jsp","Alfa","Opravdu smazat projekt Alfa?")' height="21" width="20">
+				<ol>
+					
+						<li>
+							<a href="https://spz.dcb.cz/administration/Alfa/Allianz/">Allianz</a>
+				<img src="Definice_projektu_soubory/del.gif" alt="Smazat" class="del" onclick='deleteit("/administration/Alfa/delconf.jsp","Allianz","Opravdu smazat configuraci Alfa/Allianz?")' height="21" width="20">
+						</li>
+					
+				</ol>
+			</li>
+		
+			<li>
+				<a href="https://spz.dcb.cz/administration/BT/">BT</a>
+				<img src="Definice_projektu_soubory/del.gif" alt="Smazat" class="del" onclick='deleteit("/administration/delproj.jsp","BT","Opravdu smazat projekt BT?")' height="21" width="20">
+				<ol>
+					
+						<li>
+							<a href="https://spz.dcb.cz/administration/BT/cfg1/">cfg1</a>
+				<img src="Definice_projektu_soubory/del.gif" alt="Smazat" class="del" onclick='deleteit("/administration/BT/delconf.jsp","cfg1","Opravdu smazat configuraci BT/cfg1?")' height="21" width="20">
+						</li>
+					
+				</ol>
+			</li>
+		
+			<li>
+				<a href="https://spz.dcb.cz/administration/Incredit/">Incredit</a>
+				<img src="Definice_projektu_soubory/del.gif" alt="Smazat" class="del" onclick='deleteit("/administration/delproj.jsp","Incredit","Opravdu smazat projekt Incredit?")' height="21" width="20">
+				<ol>
+					
+						<li>
+							<a href="https://spz.dcb.cz/administration/Incredit/EGAP/">EGAP</a>
+				<img src="Definice_projektu_soubory/del.gif" alt="Smazat" class="del" onclick='deleteit("/administration/Incredit/delconf.jsp","EGAP","Opravdu smazat configuraci Incredit/EGAP?")' height="21" width="20">
+						</li>
+					
+						<li>
+							<a href="https://spz.dcb.cz/administration/Incredit/Cvicna/">Cvicna</a>
+				<img src="Definice_projektu_soubory/del.gif" alt="Smazat" class="del" onclick='deleteit("/administration/Incredit/delconf.jsp","Cvicna","Opravdu smazat configuraci Incredit/Cvicna?")' height="21" width="20">
+						</li>
+					
+						<li>
+							<a href="https://spz.dcb.cz/administration/Incredit/+/"> </a>
+				<img src="Definice_projektu_soubory/del.gif" alt="Smazat" class="del" onclick='deleteit("/administration/Incredit/delconf.jsp"," ","Opravdu smazat configuraci Incredit/ ?")' height="21" width="20">
+						</li>
+					
+				</ol>
+			</li>
+		
+	</ol>
+	<h2>Nový projekt</h2>
+	<form action="/administration/newproj.jsp" method="post">
+		Kód: <input name="code" type="text"><br><input value="Přidat" type="submit">
+	</form>
+
+&nbsp;</td>
+							<td style="width: 70%" valign="top">
+
+
+
+
+
+
+	
+	<h1>Editace projektu BT</h1>
+		<form action="updproj.jsp" method="post">
+			Popis:<br>
+			<textarea name="desc" class="smalldesc">Testovaci projekt pro vyvoj nove verze systemu support.</textarea><br>
+			<input value="Změnit popis" type="submit">
+		</form>
+		<h2>Konfigurace</h2><table>
+		
+		</table><table class="list">
+			<tbody><tr>
+				<th>Kód</th>
+				<th>Popis</th>
+				<th></th>
+			</tr>
+		
+			<tr>
+				<td><a href="https://spz.dcb.cz/administration/BT/cfg1/">cfg1</a></td>
+				<td>1. konfigurace</td>
+				<td>
+					<img src="Definice_projektu_soubory/del.gif" alt="Smazat" class="del" onclick='deleteit("/administration/BT/delconf.jsp","cfg1","Opravdu smazat konfiguraci BT/cfg1?")' height="21" width="20">
+				</td>
+			</tr>
+		
+		</tbody></table>
+		<h2>Nová konfigurace</h2>
+		<form action="newconf.jsp" method="post">
+		Kód: <input name="code"><br>
+		Popis:<textarea name="desc" class="smalldesc"></textarea><br>
+		<input value="Nová konfigurace" type="submit">
+		</form>
+	
+
+&nbsp;</td>
+						</tr>
+					</tbody></table>
+				</td>
+			</tr>
+		</tbody></table>
+	
+
+
+
+</body></html>
