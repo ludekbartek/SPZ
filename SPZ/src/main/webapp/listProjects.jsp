@@ -18,11 +18,22 @@
     <body>
         <jsp:include page="header.jsp"/>
         <h1><f:message key="availProjects"/></h1>
+        <div id="left">
+            <form action="${pageContext.request.contextPath}/SPZServlet/addProject" method="post">
+                <input type="hidden" name="userid" value="${user.id}"/>
+                <input type="submit" value="<f:message key='addProject'/>"/>
+            </form>
+        </div>
         <table  class="fullwidthtable">
             <thead>
                 <tr>
                     <td class="code"><f:message key="code"/></td>
                     <td class="desc"><f:message key="desc"/></td>
+                    
+                    <c:if test="${user.classType==3}">
+                        <td class="actions"><f:message key="projectActions"/></td>
+                        
+                    </c:if>
                 </tr>
             </thead>
             <tbody>
@@ -37,6 +48,13 @@
                         </td>
                         <td>
                             <c:out value="${project.description}"/>
+                        </td>
+                        <td>
+                            <form action="${pageContext.request.contextPath}/SPZServlet/editProject" method="post">
+                                <input type="hidden" name="projectid" value="${project.id}"/>
+                                <input type="hidden" name="userid" value="${user.id}"/>
+                                <input type="submit" value="<f:message key='editProject'/>"/>
+                            </form>
                         </td>
                     </tr>
                 </c:forEach>
