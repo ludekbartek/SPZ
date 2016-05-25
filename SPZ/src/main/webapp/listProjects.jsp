@@ -43,6 +43,8 @@
                         <td>
                             <c:out value="${project.description}"/>
                         </td>
+                        <%--Pouze pro admina --%>
+                        <c:if test="${user.classType==3}">
                         <td>
                             <form action="${pageContext.request.contextPath}/SPZServlet/editProject" method="post">
                                 <input type="hidden" name="projectid" value="${project.id}"/>
@@ -50,10 +52,14 @@
                                 <input type="submit" value="<f:message key='editProject'/>"/>
                             </form>
                         </td>
+                        </c:if>
+                        <%-- --%>
                     </tr>
                 </c:forEach>
             </tbody>
         </table>
+    <%-- Pouze pro admina --%>
+    <c:if test="${user.classType==3}">           
         <h1><f:message key="newProject"/></h1>
         <div id="left">
             <form action="${pageContext.request.contextPath}/SPZServlet/addProject" method="post">
@@ -69,6 +75,8 @@
                 <input type="submit" value="<f:message key='addProject'/>"/>
             </form>
         </div>
+    </c:if>
+    <%-- --%>
         
     </body>
 </html>
