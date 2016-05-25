@@ -723,10 +723,7 @@ public class SPZServlet extends HttpServlet {
         String tokenValue = tokenSource.getTime()+"";
         if(!checkUserParameters(request)){
 
-            Integer userId =null;
-            if(request.getParameterMap().containsKey("userid")){
-                userId = Integer.parseInt(request.getParameter("userid"));
-            }
+            Integer userId = getUserId(request);
             
             if(userId==null){
                 dispError(request, response, "Chybi user id.");
@@ -809,6 +806,14 @@ public class SPZServlet extends HttpServlet {
         }
     }
 
+    private Integer getUserId(HttpServletRequest request) throws NumberFormatException {
+        Integer userId =null;
+        if(request.getParameterMap().containsKey("userid")){
+            userId = Integer.parseInt(request.getParameter("userid"));
+        }
+        return userId;
+    }
+
     /**
      * Adds new attachment to an existing SPZ
      * @param request http request containing required data about attachment
@@ -833,8 +838,28 @@ public class SPZServlet extends HttpServlet {
      * @param request http request containing new project data 
      * @param response http response
      */
-    private void addProject(HttpServletRequest request, HttpServletResponse response) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    private void addProject(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        ProjectManager projMan = new ProjectJpaController(emf);
+        if(containsProjectInfo(request)){
+            Project project = requestToProject(request);
+            projMan.create(project);
+            listProjects(request, response);
+        }else{
+            Integer userId = getUserId(request);
+            if(userId == null){
+                dispError(request, response, "Add project: Missing user ID");
+                return;
+            }
+            UserManager  userMan = new UserJpaController(emf);
+            User user = userMan.findUser(userId);
+            if(user==null){
+                dispError(request,response,"Add project: No user with id "+userId+".");
+                return;
+            }
+            UserWebEntity userWeb = userToEntity(user);
+            request.setAttribute("user", userWeb);
+            request.getRequestDispatcher("/addProject.jsp").forward(request, response);
+        }
     }
 
     /**
@@ -2777,5 +2802,25 @@ public class SPZServlet extends HttpServlet {
             return;
         }
         dispError(request, response, "User id parameter missing.");
+    }
+
+    private boolean containsProjectInfo(HttpServletRequest request) {
+        return request.getParameter("description")!=null && request.getParameter("name")!=null;
+    }
+
+    private Project requestToProject(HttpServletRequest request) {
+        Project project = new Project();
+        String desc = request.getParameter("description");
+        String name = request.getParameter("name");
+        if(desc==null || name==null){
+            LOGGER.log(Level.SEVERE,"Missing description or name");
+            return null;
+        }
+        project.setDescription(desc);
+        project.setName(name);
+        Calendar cal = new GregorianCalendar();
+        long ts = cal.getTimeInMillis();
+        project.setTs(BigInteger.valueOf(ts));
+        return project;
     }
 }
