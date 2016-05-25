@@ -2310,11 +2310,16 @@ public class SPZServlet extends HttpServlet {
         UserAccessManager accessMan = new UserAccessJpaController(emf);
         ProjectConfigurationManager projConfMan = new ProjectConfigurationJpaController(emf);
         ProjectManager projMan = new ProjectJpaController(emf);
-        List<Configuration> configs = accessMan.getConfigsForUser(user.getId());
-        Set<Project> projects = new HashSet<>();
-        for(Configuration config:configs){
-            Integer projId = projConfMan.getProjectIdFor(config.getId());
-            projects.add(projMan.findProject(projId));
+        Set<Project> projects = null;
+        if(user.getClassType()!=Roles.ADMIN.ordinal()){
+            List<Configuration> configs = accessMan.getConfigsForUser(user.getId());
+            projects = new HashSet<>();
+            for(Configuration config:configs){
+                Integer projId = projConfMan.getProjectIdFor(config.getId());
+                projects.add(projMan.findProject(projId));
+            }
+        }else{
+            projects = new HashSet<>(projMan.findProjectEntities());
         }
         request.setAttribute("projects", projects);
         request.setAttribute("user", userToEntity(user));
