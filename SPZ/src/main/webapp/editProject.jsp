@@ -12,7 +12,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title><f:message key="projectDefinition"/><</title>
+        <title><f:message key="projectDefinition"/></title>
     </head>
     <body>
         <jsp:include page="headerProject.jsp"/>
@@ -51,7 +51,7 @@
             </ul>
         </div>
         <div id="content">
-            <h1><f:message key="projectEdit"/> <c:out value="${project.id}"/></h1>
+            <h1><f:message key="projectEdit"/> <c:out value="${project.name}"/></h1>
             <form action="${pageContext.request.contextPath}/SPZServlet/editProject" method="post">
                 <input type="hidden" name="projectid" value="${project.id}"/>
                 <input type="hidden" name="userid" value="${user.id}"/>
