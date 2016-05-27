@@ -58,6 +58,7 @@ import cz.dcb.support.web.entities.SPZWebEntity;
 import cz.dcb.support.web.entities.SpzNoteEntity;
 import cz.dcb.support.web.entities.SpzStateWebEntity;
 import cz.dcb.support.web.entities.UserWebEntity;
+import cz.dcb.support.web.entities.ConfigurationWebEntity;
 import cz.dcb.support.xml.HTMLTransformer;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -103,6 +104,7 @@ import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.Part;
 import cz.dcb.support.db.jpa.entities.Configurationspz;
 import cz.dcb.support.db.jpa.entities.Projectconfiguration;
+import cz.dcb.support.web.entities.ProjectWebEntity;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
@@ -868,8 +870,34 @@ public class SPZServlet extends HttpServlet {
      *                the modified information
      * @param response http response
      */
-    private void editProject(HttpServletRequest request, HttpServletResponse response) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    private void editProject(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        ProjectManager projMan = new ProjectJpaController(emf);
+        User user = requestParamsToUser(request, false);
+        
+            
+        request.setAttribute("userid", user.getId());
+        if(checkProjectParams(request)){
+            Project project = requestToProject(request);
+            try {
+                projMan.edit(project);
+                listProjects(request, response);
+            } catch (Exception ex) {
+                Logger.getLogger(SPZServlet.class.getName()).log(Level.SEVERE, "Error editing project "+project+": ", ex);
+                dispError(request, response, "Error editing project " + project+ ": "+ex.getMessage());
+                return;
+            }
+        }else{
+            ProjectConfigurationManager projConfMan = new ProjectConfigurationJpaController(emf);
+            request.setAttribute("userid", emf);
+            String projectIdStr = request.getParameter("projectid");
+            Integer projectId = Integer.parseInt(projectIdStr);
+            Project project = projMan.findProject(projectId);
+            List<Configuration> configs = projConfMan.getProjectConfigurations(projectId);
+            ProjectWebEntity webProject = projectToEntity(project,configs);
+            request.setAttribute("project", webProject);
+            request.getRequestDispatcher("/editProject.jsp").forward(request, response);
+            return ;
+        }
     }
 
     /**
@@ -2822,5 +2850,36 @@ public class SPZServlet extends HttpServlet {
         long ts = cal.getTimeInMillis();
         project.setTs(BigInteger.valueOf(ts));
         return project;
+    }
+
+    private boolean checkProjectParams(HttpServletRequest request) {
+        Map<String,String[]> params = request.getParameterMap();
+        return params.containsKey("projectid") && params.containsKey("projectCode") 
+            && params.containsKey("projectDesc");
+    }
+
+    private ProjectWebEntity projectToEntity(Project project, List<Configuration> configs) {
+        ProjectWebEntity proj = new ProjectWebEntity();
+        proj.setId(project.getId());
+        proj.setName(project.getName());
+        proj.setDescription(project.getDescription());
+        
+        if(configs!=null && configs.size()>0){
+            List<ConfigurationWebEntity> confs = new ArrayList<>();
+            for(Configuration conf:configs){
+                ConfigurationWebEntity webConf = configurationToEntity(conf);
+                confs.add(webConf);
+            }
+            proj.setConfigs(confs);
+        }
+        return proj;
+    }
+
+    private ConfigurationWebEntity configurationToEntity(Configuration conf) {
+        ConfigurationWebEntity webEnt = new ConfigurationWebEntity();
+        webEnt.setId(conf.getId());
+        webEnt.setName(conf.getCode());
+        webEnt.setDescription(conf.getDescription());
+        return webEnt;
     }
 }
