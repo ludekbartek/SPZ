@@ -11,7 +11,7 @@ import java.util.Objects;
  *
  * @author bar
  */
-class ConfigurationWebEntity {
+public class ConfigurationWebEntity {
     private Integer id;
     private String name;
     private String description;
