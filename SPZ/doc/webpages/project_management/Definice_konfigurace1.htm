@@ -1,0 +1,244 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- saved from url=(0042)https://spz.dcb.cz/administration/BT/cfg1/ -->
+<HTML><HEAD><META content="IE=5.0000" http-equiv="X-UA-Compatible">
+		 <TITLE>Definice konfigurace</TITLE>		 
+<META http-equiv="Content-Type" content="text/html; charset=windows-1250"><LINK 
+href="Definice_konfigurace1_files/style.css" rel="stylesheet" type="text/css">	 
+<META name="GENERATOR" content="MSHTML 11.00.10240.16847"></HEAD>	 
+<BODY>
+<TABLE class="titlehead">
+  <TBODY>
+  <TR>
+    <TD>
+      <TABLE class="titlehead">
+        <TBODY>
+        <TR>
+          <TD width="50"><IMG src="Definice_konfigurace1_files/logo.gif"></TD>
+          <TD>
+            <TABLE class="titlehead">
+              <TBODY>
+              <TR>
+                <TD class="title">Administrace systému servisní podpory</TD></TR>
+              <TR>
+                <TD class="navigace"><A 
+                  href="https://spz.dcb.cz/projects/">Projects</A></TD></TR></TBODY></TABLE></TD>
+          <TD class="username">								bar (Ludek Bartek)
+      							 </TD></TR></TBODY></TABLE></TD></TR>
+  <TR>
+    <TD></TD></TR>
+  <TR>
+    <TD>
+      <TABLE class="titlehead">
+        <TBODY>
+        <TR>
+          <TD valign="top" style="width: 30%;">
+            <FORM name="smazat" method="post"><INPUT name="code" type="hidden">
+            	 </FORM>
+<SCRIPT language="javascript">
+		function deleteit(akce, kod, otazka) {
+			if (confirm(otazka)) {
+				smazat.code.value = kod;
+				smazat.action=akce;
+				smazat.submit();
+			}
+		}
+	</SCRIPT>
+            	 
+            <H2>Projekty</H2>
+            <OL>
+              <LI><A href="https://spz.dcb.cz/administration/+/"></A>				 <IMG 
+              width="20" height="21" class="del" onclick='deleteit("/administration/delproj.jsp"," ","Opravdu smazat projekt  ?")' 
+              alt="Smazat" src="Definice_konfigurace1_files/del.gif">				 
+              <OL></OL></LI>
+              <LI><A href="https://spz.dcb.cz/administration/Alfa/">Alfa</A>
+              				 <IMG width="20" height="21" class="del" onclick='deleteit("/administration/delproj.jsp","Alfa","Opravdu smazat projekt Alfa?")' 
+              alt="Smazat" src="Definice_konfigurace1_files/del.gif">				 
+              <OL>
+                <LI><A 
+                href="https://spz.dcb.cz/administration/Alfa/Allianz/">Allianz</A>
+                				 <IMG width="20" height="21" class="del" onclick='deleteit("/administration/Alfa/delconf.jsp","Allianz","Opravdu smazat configuraci Alfa/Allianz?")' 
+                alt="Smazat" src="Definice_konfigurace1_files/del.gif">
+                						 </LI></OL></LI>
+              <LI><A href="https://spz.dcb.cz/administration/BT/">BT</A>
+              				 <IMG width="20" height="21" class="del" onclick='deleteit("/administration/delproj.jsp","BT","Opravdu smazat projekt BT?")' 
+              alt="Smazat" src="Definice_konfigurace1_files/del.gif">				 
+              <OL>
+                <LI><A 
+                href="https://spz.dcb.cz/administration/BT/cfg1/">cfg1</A>
+                				 <IMG width="20" height="21" class="del" onclick='deleteit("/administration/BT/delconf.jsp","cfg1","Opravdu smazat configuraci BT/cfg1?")' 
+                alt="Smazat" src="Definice_konfigurace1_files/del.gif">
+                						 </LI></OL></LI>
+              <LI><A 
+              href="https://spz.dcb.cz/administration/Incredit/">Incredit</A>
+              				 <IMG width="20" height="21" class="del" onclick='deleteit("/administration/delproj.jsp","Incredit","Opravdu smazat projekt Incredit?")' 
+              alt="Smazat" src="Definice_konfigurace1_files/del.gif">				 
+              <OL>
+                <LI><A 
+                href="https://spz.dcb.cz/administration/Incredit/EGAP/">EGAP</A>
+                				 <IMG width="20" height="21" class="del" onclick='deleteit("/administration/Incredit/delconf.jsp","EGAP","Opravdu smazat configuraci Incredit/EGAP?")' 
+                alt="Smazat" src="Definice_konfigurace1_files/del.gif">
+                						 </LI>
+                <LI><A 
+                href="https://spz.dcb.cz/administration/Incredit/Cvicna/">Cvicna</A>
+                				 <IMG width="20" height="21" class="del" onclick='deleteit("/administration/Incredit/delconf.jsp","Cvicna","Opravdu smazat configuraci Incredit/Cvicna?")' 
+                alt="Smazat" src="Definice_konfigurace1_files/del.gif">
+                						 </LI>
+                <LI><A href="https://spz.dcb.cz/administration/Incredit/+/"></A>
+                				 <IMG width="20" height="21" class="del" onclick='deleteit("/administration/Incredit/delconf.jsp"," ","Opravdu smazat configuraci Incredit/ ?")' 
+                alt="Smazat" src="Definice_konfigurace1_files/del.gif">
+                						 </LI></OL></LI></OL>
+            <H2>Nový projekt</H2>
+            <FORM action="/administration/newproj.jsp" method="post">		Kód: 
+<INPUT name="code" type="text"><BR><INPUT type="submit" value="Přidat">
+            	 </FORM>&nbsp;</TD>
+          <TD valign="top" style="width: 70%;">
+            <FORM name="smazatur" method="post"><INPUT name="login" type="hidden">
+            		 <INPUT name="role" type="hidden">	 </FORM>
+<SCRIPT language="javascript">
+		function deleteur(akce, login, role, otazka) {
+			if (confirm(otazka)) {
+				smazatur.login.value = login;
+				smazatur.role.value = role;
+				smazatur.action=akce;
+				smazatur.submit();
+			}
+		}
+	</SCRIPT>
+            		 
+            <H1>Editace konfigurace BT/cfg1</H1>
+            <FORM action="updconf.jsp" method="post" accept-charset="windows-1250">
+            			Popis:<BR><TEXTAREA name="desc" class="smalldesc">1. konfigurace</TEXTAREA><BR><INPUT type="submit" value="Změnit popis">
+            		 </FORM>
+            <H2>Nový uživatel</H2>
+            <FORM action="adduaccess.jsp" method="post">
+            <TABLE class="novaspz">
+              <TBODY>
+              <TR>
+                <TD>Login:</TD>
+                <TD><SELECT name="login"><OPTION 
+                    value="btAdmin">Administrator Administratorovic 
+                    (btAdmin)</OPTION>													 <OPTION value="moravec">Aleš 
+                    Moravec (moravec)</OPTION>													 <OPTION 
+                    value="bt">bt (bt)</OPTION>													 <OPTION value="dcbuser">DCB 
+                    User (dcbuser)</OPTION>													 <OPTION 
+                    value="divis">Diviš Martin (divis)</OPTION>						
+                    							 <OPTION value="cikhartova">Gabriela Cikhartová 
+                    (cikhartova)</OPTION>													 <OPTION 
+                    value="chvatal">Chvátal Martin (chvatal)</OPTION>						
+                    							 <OPTION value="klinecka">Ing. Anna Klinecká 
+                    (klinecka)</OPTION>													 <OPTION value="Ambroz">Ing. 
+                    Jiří Ambrož (Ambroz)</OPTION>													 <OPTION value="machanec">Ing. 
+                    Machanec Tomáš (machanec)</OPTION>													 <OPTION 
+                    value="semelova">Ing. Monika Semelová (semelova)</OPTION>
+                    													 <OPTION value="Caban">Ing. Petr Čaban 
+                    (Caban)</OPTION>													 <OPTION 
+                    value="sikorova">Jarmila Sikorová (sikorova)</OPTION>						
+                    							 <OPTION value="jindrichova">Jindřichová Vlasta 
+                    (jindrichova)</OPTION>													 <OPTION 
+                    value="hejkova">Jitka Hejková (hejkova)</OPTION>						
+                    							 <OPTION value="vavrinkova">Jitka Vavřínková 
+                    (vavrinkova)</OPTION>													 <OPTION 
+                    value="popelkova">Kateřina Popelková (popelkova)</OPTION>
+                    													 <OPTION value="sitenska">Květoslava Sitenská 
+                    (sitenska)</OPTION>													 <OPTION 
+                    value="jurnickova">Lucie Jurníčková (jurnickova)</OPTION>
+                    													 <OPTION value="bar">Ludek Bartek 
+                    (bar)</OPTION>													 <OPTION value="malinak">Maliňák 
+                    Jiří (malinak)</OPTION>													 <OPTION value="lehotska">Marie 
+                    Lehotská (lehotska)</OPTION>													 <OPTION value="studena">Milada 
+                    Studená (studena)</OPTION>													 <OPTION value="labant">Milan 
+                    Labant (labant)</OPTION>													 <OPTION value="marzinova">Miroslava 
+                    Marzinová (marzinova)</OPTION>													 <OPTION value="jelinek">Ota 
+                    Jelínek (jelinek)</OPTION>													 <OPTION value="pernicova">Pernicová 
+                    Jana (pernicova)</OPTION>													 <OPTION value="perina">Peřina 
+                    Karel (perina)</OPTION>													 <OPTION value="scholler">Petr 
+                    Scholler (scholler)</OPTION>													 <OPTION value="cernohorska">Petra 
+                    Černohorská (cernohorska)</OPTION>													 <OPTION 
+                    value="sch">sch (sch)</OPTION>													 <OPTION value="sa">Super 
+                    User (sa)</OPTION>													 <OPTION 
+                    value="zalfaa">Support AZPF (zalfaa)</OPTION>						
+                    							 <OPTION value="lehotsky">Štefan Lehotský 
+                    (lehotsky)</OPTION>													 <OPTION 
+                    value="kolinek">Tomáš Kolínek (kolinek)</OPTION>						
+                    							 <OPTION value="bt_developer">Vyvojar BT 
+                    (bt_developer)</OPTION>													 <OPTION 
+                    value="pelaj">Zákazník (pelaj)</OPTION>													 <OPTION 
+                    value="egap">Zákazník EGAP (egap)</OPTION>						
+                    							 <OPTION value="herynek">Zbyněk Herynek 
+                    (herynek)</OPTION>													 <OPTION 
+                    value="vostrovska">Zdeňka Vostrovská (vostrovska)</OPTION>
+                    											 </SELECT></TD></TR>
+              <TR>
+                <TD>Role:</TD>
+                <TD><SELECT name="role"><OPTION value="AN">Analytik</OPTION>
+                    						 <OPTION value="PM">Projektový manažer</OPTION>
+                    						 <OPTION value="SU">Supervisor</OPTION>						 <OPTION 
+                    value="DV">Vývojář</OPTION>						 <OPTION 
+                    value="CL">Zákazník</OPTION>
+					 </SELECT></TD></TR></TBODY></TABLE><INPUT type="submit" value="Přidat uživatele">
+            		 </FORM>
+            <H2>Uživatelé</H2>
+            <TABLE class="list">
+              <TBODY>
+              <TR>
+                <TH>Login</TH>
+                <TH>Jméno</TH>
+                <TH>Role</TH>
+                <TH></TH></TR>
+              <TR>
+                <TD>bt_developer</TD>
+                <TD>Vyvojar BT</TD>
+                <TD>Vývojář</TD>
+                <TD style="text-align: center;"><IMG width="20" height="21" 
+                  class="del" onclick='deleteur("/administration/BT/cfg1/deluaccess.jsp",&#10;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;"bt_developer",&#10;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;"DV",&#10;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;"Opravdu smazat uživatele Vyvojar BT (bt_developer) z role Vývojář?")' 
+                  alt="Smazat" src="Definice_konfigurace1_files/del.gif">
+                					 </TD></TR>
+              <TR>
+                <TD>bt</TD>
+                <TD>bt</TD>
+                <TD>Zákazník</TD>
+                <TD style="text-align: center;"><IMG width="20" height="21" 
+                  class="del" onclick='deleteur("/administration/BT/cfg1/deluaccess.jsp",&#10;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;"bt",&#10;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;"CL",&#10;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;"Opravdu smazat uživatele bt (bt) z role Zákazník?")' 
+                  alt="Smazat" src="Definice_konfigurace1_files/del.gif">
+                					 </TD></TR>
+              <TR>
+                <TD>bar</TD>
+                <TD>Ludek Bartek</TD>
+                <TD>Supervisor</TD>
+                <TD style="text-align: center;"><IMG width="20" height="21" 
+                  class="del" onclick='deleteur("/administration/BT/cfg1/deluaccess.jsp",&#10;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;"bar",&#10;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;"SU",&#10;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;"Opravdu smazat uživatele Ludek Bartek (bar) z role Supervisor?")' 
+                  alt="Smazat" src="Definice_konfigurace1_files/del.gif">
+                					 </TD></TR>
+              <TR>
+                <TD>bar</TD>
+                <TD>Ludek Bartek</TD>
+                <TD>Analytik</TD>
+                <TD style="text-align: center;"><IMG width="20" height="21" 
+                  class="del" onclick='deleteur("/administration/BT/cfg1/deluaccess.jsp",&#10;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;"bar",&#10;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;"AN",&#10;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;"Opravdu smazat uživatele Ludek Bartek (bar) z role Analytik?")' 
+                  alt="Smazat" src="Definice_konfigurace1_files/del.gif">
+                					 </TD></TR>
+              <TR>
+                <TD>bar</TD>
+                <TD>Ludek Bartek</TD>
+                <TD>Vývojář</TD>
+                <TD style="text-align: center;"><IMG width="20" height="21" 
+                  class="del" onclick='deleteur("/administration/BT/cfg1/deluaccess.jsp",&#10;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;"bar",&#10;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;"DV",&#10;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;"Opravdu smazat uživatele Ludek Bartek (bar) z role Vývojář?")' 
+                  alt="Smazat" src="Definice_konfigurace1_files/del.gif">
+                					 </TD></TR>
+              <TR>
+                <TD>bar</TD>
+                <TD>Ludek Bartek</TD>
+                <TD>Projektový manažer</TD>
+                <TD style="text-align: center;"><IMG width="20" height="21" 
+                  class="del" onclick='deleteur("/administration/BT/cfg1/deluaccess.jsp",&#10;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;"bar",&#10;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;"PM",&#10;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;"Opravdu smazat uživatele Ludek Bartek (bar) z role Projektový manažer?")' 
+                  alt="Smazat" src="Definice_konfigurace1_files/del.gif">
+                					 </TD></TR>
+              <TR>
+                <TD>btAdmin</TD>
+                <TD>Administrator Administratorovic</TD>
+                <TD>Projektový manažer</TD>
+                <TD style="text-align: center;"><IMG width="20" height="21" 
+                  class="del" onclick='deleteur("/administration/BT/cfg1/deluaccess.jsp",&#10;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;"btAdmin",&#10;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;"PM",&#10;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;"Opravdu smazat uživatele Administrator Administratorovic (btAdmin) z role Projektový manažer?")' 
+                  alt="Smazat" src="Definice_konfigurace1_files/del.gif">
+                					 </TD></TR></TBODY></TABLE>	
+  &nbsp;</TD></TR></TBODY></TABLE></TD></TR></TBODY></TABLE></BODY></HTML>
