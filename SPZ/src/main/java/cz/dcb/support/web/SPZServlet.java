@@ -872,7 +872,11 @@ public class SPZServlet extends HttpServlet {
      */
     private void editProject(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         ProjectManager projMan = new ProjectJpaController(emf);
-        User user = requestParamsToUser(request, false);
+//        User user = requestParamsToUser(request, false);
+        String userIdStr = request.getParameter("userid");
+        Integer userId = Integer.parseInt(userIdStr);
+        UserManager userMan = new UserJpaController(emf);
+        User user = userMan.findUser(userId);
         
             
         request.setAttribute("userid", user.getId());
@@ -892,7 +896,7 @@ public class SPZServlet extends HttpServlet {
             String projectIdStr = request.getParameter("projectid");
             Integer projectId = Integer.parseInt(projectIdStr);
             Project project = projMan.findProject(projectId);
-            List<Configuration> configs = projConfMan.getProjectConfigurations(projectId);
+            List<Configuration> configs = projConfMan.getProjectConfigurations(project.getId());
             ProjectWebEntity webProject = projectToEntity(project,configs);
             request.setAttribute("project", webProject);
             request.getRequestDispatcher("/editProject.jsp").forward(request, response);
