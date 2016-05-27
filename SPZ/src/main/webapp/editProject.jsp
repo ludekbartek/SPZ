@@ -19,7 +19,7 @@
         <div id="left">
             <ul>
                 <c:forEach var="projectItem" items="${projects}">
-                    <li><form action="${pageContext.request.contentPath}/SPZServlet/editProject" method="post">
+                    <li><form action="${pageContext.request.contextPath}/SPZServlet/editProject" method="post">
                             <input type="hidden" name="projectid" value="${projectItem.id}"/>
                             <input type="hidden" name="userid" value="${user.id}"/>
                             <div class="id">
@@ -36,7 +36,7 @@
                             <ul>
                                 <c:forEach var="config" items="${projectItem.configs}">
                                     <li>
-                                        <form action="${pageContext.request.contentPath}/SPZServlet/editConfig" method="post">
+                                        <form action="${pageContext.request.contextPath}/SPZServlet/editConfig" method="post">
                                             <input type="hidden" name="projectid" value="${projectItem.id}"/> 
                                             <input type="hidden" name="configid" value="${config.id}"/>
                                             <input type="hidden" name="userid" value="${user.id}"/>
@@ -52,7 +52,7 @@
         </div>
         <div id="content">
             <h1><f:message key="projectEdit"/> <c:out value="${project.id}"/></h1>
-            <form action="${pageContext.request.contentPath}/SPZServlet/editProject" method="post">
+            <form action="${pageContext.request.contextPath}/SPZServlet/editProject" method="post">
                 <input type="hidden" name="projectid" value="${project.id}"/>
                 <input type="hidden" name="userid" value="${user.id}"/>
                 <div class="id">
@@ -68,7 +68,7 @@
             <h2><f:message key="projectConfs"/></h2>
             <jsp:include page="listConfigs.jsp"/>
             <h2><f:message key="newConfig"/></h2>
-            <form action="${pageContext.request.contentPath}/SPZServlet/addConfig">
+            <form action="${pageContext.request.contextPath}/SPZServlet/addConfig">
                 <div class="confName">
                     <label for="confName"><f:message key="code"/>: </label>
                     <input type="text" name="confName" size="22"/>
