@@ -166,7 +166,7 @@ public class ProjectConfigurationJpaController implements Serializable, ProjectC
         EntityManager em = getEntityManager();
         List<Configuration> confs = null;
         try{
-            Query query = em.createQuery("select confs from Configuration confs where confs.id in (select projconf from Projectconfiguration projconf where projconf.projectid=:projid)");
+            Query query = em.createQuery("select confs from Configuration confs where confs.id in (select projconf.configurationid from Projectconfiguration projconf where projconf.projectid=:projid)");
             query.setParameter("projid", projId);
             confs = query.getResultList();
         }finally{
