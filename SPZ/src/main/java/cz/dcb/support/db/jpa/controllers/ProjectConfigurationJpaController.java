@@ -174,5 +174,20 @@ public class ProjectConfigurationJpaController implements Serializable, ProjectC
         }
         return confs;
     }
+
+    @Override
+    public Projectconfiguration getProjecConfiguration(Project project, Configuration config) {
+        EntityManager em = getEntityManager();
+        Projectconfiguration projCfg = null;
+        try{
+            Query query = em.createQuery("select projectconf from Projectconfiguration projectconf where projectconf.projectid = :projid and projectconf.configurationid = :confid");
+            query.setParameter("projid", project.getId());
+            query.setParameter("confid",config.getId());
+            projCfg = (Projectconfiguration) query.getSingleResult();
+        }finally{
+            em.close();
+        }
+        return projCfg;
+    }
     
 }
