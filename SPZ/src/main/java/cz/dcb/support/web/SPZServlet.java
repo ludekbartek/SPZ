@@ -355,6 +355,12 @@ public class SPZServlet extends HttpServlet {
                 case "/listusers":
                             listUsers(request,response);
                             break;
+                case "/addconfig":
+                            addConfig(request,response);
+                            break;
+                case "/deletecfg":
+                            removeConfig(request,response);
+                            break;
                 default:
                     StringBuilder errorMesg = new StringBuilder("Invalid action").append(action).append(". Using list instead.");
                     LOGGER.log(Level.INFO,errorMesg.toString());
@@ -881,8 +887,16 @@ public class SPZServlet extends HttpServlet {
             
         request.setAttribute("userid", user.getId());
         if(checkProjectParams(request)){
-            Project project = requestToProject(request);
+            String strProjId = request.getParameter("projectid");
+            if(strProjId==null || strProjId.isEmpty()){
+                dispError(request, response, "Edit Project: Parameter project id is missing or null: "+strProjId);
+                return;
+            }
+            Integer projectId = Integer.parseInt(strProjId);
+            Project project = projMan.findProject(projectId);
             try {
+                project.setDescription(request.getParameter("description"));
+                project.setName(request.getParameter("name"));
                 projMan.edit(project);
                 listProjects(request, response);
             } catch (Exception ex) {
@@ -892,7 +906,7 @@ public class SPZServlet extends HttpServlet {
             }
         }else{
             ProjectConfigurationManager projConfMan = new ProjectConfigurationJpaController(emf);
-            request.setAttribute("userid", emf);
+            request.setAttribute("user", user);
             String projectIdStr = request.getParameter("projectid");
             Integer projectId = Integer.parseInt(projectIdStr);
             Project project = projMan.findProject(projectId);
@@ -2072,10 +2086,11 @@ public class SPZServlet extends HttpServlet {
             }
         }else{
             String strId = request.getParameter("userid");
-            if(strId==null){
+            int uId = -1;
+            if(strId==null || strId.isEmpty()){
                 return null;
             }
-            int uId = Integer.parseInt(strId);
+            uId = Integer.parseInt(strId);
             userEnt = userMan.findUser(uId);
         }
         user.setId(userEnt.getId());
@@ -2858,8 +2873,8 @@ public class SPZServlet extends HttpServlet {
 
     private boolean checkProjectParams(HttpServletRequest request) {
         Map<String,String[]> params = request.getParameterMap();
-        return params.containsKey("projectid") && params.containsKey("projectCode") 
-            && params.containsKey("projectDesc");
+        return params.containsKey("projectid") && params.containsKey("name") 
+            && params.containsKey("description");
     }
 
     private ProjectWebEntity projectToEntity(Project project, List<Configuration> configs) {
@@ -2867,15 +2882,16 @@ public class SPZServlet extends HttpServlet {
         proj.setId(project.getId());
         proj.setName(project.getName());
         proj.setDescription(project.getDescription());
-        
+        List<ConfigurationWebEntity> confs = new ArrayList<>();
         if(configs!=null && configs.size()>0){
-            List<ConfigurationWebEntity> confs = new ArrayList<>();
+        
             for(Configuration conf:configs){
                 ConfigurationWebEntity webConf = configurationToEntity(conf);
                 confs.add(webConf);
             }
-            proj.setConfigs(confs);
         }
+        proj.setConfigs(confs);
+        
         return proj;
     }
 
@@ -2886,4 +2902,88 @@ public class SPZServlet extends HttpServlet {
         webEnt.setDescription(conf.getDescription());
         return webEnt;
     }
+
+    private void addConfig(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        ConfigurationManager confMan = new ConfigurationJpaController(emf);
+        ProjectConfigurationManager projConfMan = new ProjectConfigurationJpaController(emf);
+        if(!authenticate(request)){
+            dispError(request, response, "User is not authorised.");
+            return;
+        }
+        if(checkConfiguration(request)){
+            
+            String strProjectId = request.getParameter("projectid");
+            if(strProjectId==null || strProjectId.isEmpty()){
+                dispError(request, response, "/addConfig: Missing project id or project id is empty.");
+                return;
+            }
+            int projectId = Integer.parseInt(strProjectId);
+            Configuration config = requestToConfiguration(request);
+            confMan.create(config);
+            if(config.getId()!=null){
+                Projectconfiguration projConf = new Projectconfiguration();
+                projConf.setConfigurationid(config.getId());
+                projConf.setProjectid(projectId);
+                projConfMan.create(projConf);
+            }else{
+                dispError(request, response, "/addConfig: Unable to create ProjectConfiguration.");
+                return;
+            }
+            listProjects(request, response);
+        }
+        
+    }
+
+    private Configuration requestToConfiguration(HttpServletRequest request) {
+        Configuration config = new Configuration();
+        config.setCode(request.getParameter("confName"));
+        config.setDescription(request.getParameter("confDesc"));
+        return config;
+    }
+
+    private boolean checkConfiguration(HttpServletRequest request) {
+        Map<String,String[]> params = request.getParameterMap();
+        return params.containsKey("confName") && params.containsKey("confDesc");
+    }
+
+    private void removeConfig(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        try {
+            if(!authenticate(request)){
+                dispError(request, response, "Delete configuration: User not authorized.");
+                return;
+            }   if(!checkConfigurationToRemove(request)){
+                dispError(request, response, "Delete configuration: Missing some required parameters to remove configuration");
+                return;
+            }   String strProjId = request.getParameter("projectid");
+            String strConfProjId = request.getParameter("cfgid");
+            String strUserId = request.getParameter("userid");
+            Integer projId = Integer.parseInt(strProjId),
+                    confId = Integer.parseInt(strConfProjId),
+                    userId = Integer.parseInt(strUserId);
+            UserManager userMan = new UserJpaController(emf);
+            ProjectManager projMan = new ProjectJpaController(emf);
+            Project project = projMan.findProject(projId);
+            ProjectConfigurationManager projConfMan = new ProjectConfigurationJpaController(emf);
+            ConfigurationManager cfgMan = new ConfigurationJpaController(emf);
+            User user = userMan.findUser(userId);
+            Configuration config = cfgMan.findConfiguration(confId);
+            Projectconfiguration projConf = projConfMan.getProjecConfiguration(project, config);
+            cfgMan.destroy(config.getId());
+            projConfMan.destroy(projConf.getId());
+            request.setAttribute("user", userToEntity(user));
+            List<Configuration> configs = projConfMan.getProjectConfigurations(projId);
+            request.setAttribute("project", projectToEntity(project, configs));
+            listProjects(request, response);
+        } catch (NonexistentEntityException ex) {
+            Logger.getLogger(SPZServlet.class.getName()).log(Level.SEVERE, "Remove Config: Trying to remove non-existent projectconfiguration or configuration.", ex);
+            listProjects(request, response);
+        }
+    }
+
+    private boolean checkConfigurationToRemove(HttpServletRequest request) {
+        Map<String,String[]> params = request.getParameterMap();
+        return params.containsKey("projectid") && params.containsKey("userid") && params.containsKey("cfgid");
+    }
+
+    
 }
