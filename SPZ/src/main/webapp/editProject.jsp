@@ -57,18 +57,45 @@
                 <input type="hidden" name="userid" value="${user.id}"/>
                 <div class="id">
                     <label for="name"><f:message key="projectCode"/></label>
-                    <input type="text" name="name" value="<c:if test='${not empty $project}'>${project.name}</c:if>"/>
+                    <input type="text" name="name" value="<c:if test='${not empty project}'>${project.name}</c:if>"/>
                 </div>
                 <div id="desc">
                     <label for="description"><f:message key="projectDesc"/></label>
-                    <textarea name="description" cols="64" rows="4"><c:if test="${not empty $project}"><c:out value="${project.description}"/></c:if></textarea>
+                    <textarea name="description" cols="64" rows="4"><c:if test="${not empty project}"><c:out value="${project.description}"/></c:if></textarea>
                 </div>
                 <input type="submit" value="<f:message key='changeDesc'/>"/>
             </form>
             <h2><f:message key="projectConfs"/></h2>
-            <jsp:include page="listConfigs.jsp"/>
+            <c:if test="${not empty project.configs}">
+            
+            <table class="fullwidthtable">
+                <thead>
+                    <th><f:message key="code"/></th>
+                    <th><f:message key="desc"/></th>
+                    <th/>
+                </thead>
+                <tbody>
+                    <c:forEach var="config" items="${project.configs}">
+                        <tr>
+                            <td><c:out value="${config.name}"/></td>
+                            <td><c:out value="${config.description}"/></td>
+                            <td>
+                                <form action="${pageContext.request.contextPath}/SPZServlet/deleteCfg" method="post">
+                                    <input type="hidden" name="userid" value="${user.id}"/>
+                                    <input type="hidden" name="projectid" value="${project.id}"/>
+                                    <input type="hidden" name="cfgid" value="${config.id}"/>
+                                    <input type="submit" value="<f:message key='deletecfg'/>"/>
+                                </form>
+                            </td>
+                        </tr>
+                    </c:forEach>
+                </tbody>
+            </table>
+            </c:if>        
             <h2><f:message key="newConfig"/></h2>
-            <form action="${pageContext.request.contextPath}/SPZServlet/addConfig">
+            <form action="${pageContext.request.contextPath}/SPZServlet/addConfig" method="post">
+                <input type="hidden" name="userid" value="${user.id}"/>
+                <input type="hidden" name="projectid" value="${project.id}"/>
                 <div class="confName">
                     <label for="confName"><f:message key="code"/>: </label>
                     <input type="text" name="confName" size="22"/>
