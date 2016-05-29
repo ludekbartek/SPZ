@@ -1,5 +1,5 @@
 <%-- 
-    Document   : editConfig
+    Document   : editConfig - Uprava konfigurace a uzivatelskych prav
     Created on : May 29, 2016, 7:01:21 AM
     Author     : bar
 --%>
