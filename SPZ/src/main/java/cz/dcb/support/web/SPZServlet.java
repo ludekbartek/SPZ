@@ -632,7 +632,7 @@ public class SPZServlet extends HttpServlet {
                 jspName = "/editRecl.jsp";
                 break;
             case "CONFIRMED":
-                jspName = "/editConf.jsp";
+                jspName = "/editConfirmed.jsp";
                 break;
             case "CANCELED":
                 jspName = "/editCanceled.jsp";
