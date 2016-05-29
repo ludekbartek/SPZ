@@ -77,7 +77,14 @@
                 <tbody>
                     <c:forEach var="config" items="${project.configs}">
                         <tr>
-                            <td><c:out value="${config.name}"/></td>
+                            <td>
+                                <form action="${pageContext.request.contextPath}/SPZServlet/editConfig" method="post">
+                                    <input type="hidden" name="userid" value="${user.id}"/>
+                                    <input type="hidden" name="projectid" value="${project.id}"/>
+                                    <input type="hidden" name="configid" value="${config.id}"/>
+                                    <input type="submit" value="${config.name}"/>
+                                </form>
+                            </td>
                             <td><c:out value="${config.description}"/></td>
                             <td>
                                 <form action="${pageContext.request.contextPath}/SPZServlet/deleteCfg" method="post">
