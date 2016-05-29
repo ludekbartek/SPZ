@@ -1,5 +1,5 @@
 <%-- 
-    Document   : editConf
+    Document   : editConf - editace SPZ ve stavu prijata instalace
     Created on : Jan 3, 2016, 1:09:15 PM
     Author     : bar
 --%>
