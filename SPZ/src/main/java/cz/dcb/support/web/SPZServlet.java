@@ -5,6 +5,7 @@
  */
 package cz.dcb.support.web;
 
+import cz.dcb.support.db.entities.usermanagement.UserAccess;
 import cz.dcb.support.db.exceptions.SPZException;
 import cz.dcb.support.db.jpa.controllers.AttachmentJpaController;
 import cz.dcb.support.db.jpa.controllers.AttachmentManager;
@@ -222,7 +223,7 @@ public class SPZServlet extends HttpServlet {
        
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the value.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *  Gets info about the SPZs and forward them to the list.jsp to be displayed.
@@ -358,8 +359,17 @@ public class SPZServlet extends HttpServlet {
                 case "/addconfig":
                             addConfig(request,response);
                             break;
-                case "/deletecfg":
+                case "/deleteconfig":
                             removeConfig(request,response);
+                            break;
+                case "/editconfig":
+                            editConfig(request,response);
+                            break;
+                case "/addrole":
+                            addRole(request,response);
+                            break;
+                case "/deleterole":
+                            deleteRole(request,response);
                             break;
                 default:
                     StringBuilder errorMesg = new StringBuilder("Invalid action").append(action).append(". Using list instead.");
@@ -2983,6 +2993,201 @@ public class SPZServlet extends HttpServlet {
     private boolean checkConfigurationToRemove(HttpServletRequest request) {
         Map<String,String[]> params = request.getParameterMap();
         return params.containsKey("projectid") && params.containsKey("userid") && params.containsKey("cfgid");
+    }
+
+    private void editConfig(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        ProjectManager projManager = new ProjectJpaController(emf);
+        ProjectConfigurationManager projConfManager = new ProjectConfigurationJpaController(emf);
+        ConfigurationManager configManager = new ConfigurationJpaController(emf);
+        UserManager userMan = new UserJpaController(emf);
+        UserAccessManager userAccessMan = new UserAccessJpaController(emf);
+        
+        String strConfigId = request.getParameter("configid"),
+               strProjectId = request.getParameter("projectid"),
+               strUserId = request.getParameter("userid");
+        
+        if(strConfigId == null || strConfigId.isEmpty() ||
+           strProjectId ==  null || strProjectId.isEmpty()||
+           strUserId == null|| strUserId.isEmpty()){
+            dispError(request, response, "Edit Configuration: Some of the configid, projectid, userid parameter is missing.");
+            return;
+        }
+        
+        Integer configId = Integer.parseInt(strConfigId),
+                projectId = Integer.parseInt(strProjectId),
+                userId = Integer.parseInt(strUserId);
+        User user = userMan.findUser(userId);
+        Project project = projManager.findProject(projectId);
+        Configuration config = configManager.findConfiguration(configId);
+        
+        if(!checkConfigParams(request)){
+            List<Useraccess> userAccessWithRole = userAccessMan.findUseraccessForConfiguration(config);
+        
+            List<User> freeUsers = userMan.findUserEntities();
+            List<User> usersWithRole = userAccessMan.findUsersForConfig(config);
+            freeUsers.removeAll(usersWithRole);
+            List<UserWebEntity> users = usersToEntities(usersWithRole);
+            List<UserWebEntity> freeUserEntities = usersToEntities(freeUsers);
+            request.setAttribute("project", projectToEntity(project, new ArrayList<Configuration>()));
+            request.setAttribute("config", configurationToEntity(config));
+            request.setAttribute("user", user);
+            request.setAttribute("users", freeUserEntities);
+            request.setAttribute("usersWithRole", users);
+            request.getRequestDispatcher("/editConfig.jsp").forward(request, response);
+            return;
+        }else{
+            Configuration configuration = requestToConfig(request);
+            String strConfId= request.getParameter("configid");
+            if(strConfId==null || strConfId.isEmpty()){
+                dispError(request, response, "Edit Config: Missing id for configuration to edit.");
+                return;
+            }
+            Integer confId = Integer.parseInt(strConfId);
+            Configuration toEdit = configManager.findConfiguration(confId);
+            String value = configuration.getCode();
+            if(value!=null && !value.isEmpty()){
+                toEdit.setCode(configuration.getCode());
+            }
+            value = configuration.getDescription();
+            if(value!=null && !value.isEmpty()){
+                toEdit.setDescription(value);
+            }
+            try {
+                configManager.edit(toEdit);
+            } catch (Exception ex) {
+                Logger.getLogger(SPZServlet.class.getName()).log(Level.SEVERE, "Unable to edit configuration "+toEdit, ex);
+                dispError(request, response, "Unable to edit configuration "+toEdit);
+                return;
+            }
+            request.setAttribute("user", userToEntity(user));
+            List<Configuration> configs = projConfManager.getProjectConfigurations(projectId);
+            request.setAttribute("project", projectToEntity(project, configs));
+            listConfigs(request, response);
+            
+        }
+        
+        
+    }
+
+    private boolean checkConfigParams(HttpServletRequest request) {
+        Map<String,String[]> params = request.getParameterMap();
+        return params.containsKey("configid") && params.containsKey("desc");
+    }
+
+    private List<UserWebEntity> usersToEntities(List<User> users) {
+        List<UserWebEntity> usersEntities = new ArrayList<>();
+        for(User user:users){
+            usersEntities.add(userToEntity(user));
+        }
+        return usersEntities;
+    }
+
+    private Configuration requestToConfig(HttpServletRequest request) {
+        Configuration config = new Configuration();
+        config.setDescription(request.getParameter("description"));
+        return config;
+    }
+
+    private void addRole(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        if(checkAddRole(request)){
+            String strUserId = request.getParameter("userid"),
+                   strConfId = request.getParameter("configid"),
+                   strProjectId = request.getParameter("projectid"),
+                   strRole = request.getParameter("roleid"),
+                   strRoleUserId = request.getParameter("roleuserid");
+            
+            UserAccessManager accessMan = new UserAccessJpaController(emf);
+            Useraccess userAccess = new Useraccess();
+            UserManager userMan = new UserJpaController(emf);
+            
+            Integer confId = Integer.parseInt(strConfId);
+            Integer roleUserId = Integer.parseInt(strRoleUserId);
+            Integer role = Integer.parseInt(strRole);
+            Integer userId = Integer.parseInt(strUserId);
+            
+            User user = userMan.findUser(userId);
+            userAccess.setConfigurationid(confId);
+            userAccess.setUserid(roleUserId);
+            userAccess.setRole(Roles.values()[role].name());
+            Calendar cal = new GregorianCalendar();
+            userAccess.setTs(BigInteger.valueOf(cal.getTimeInMillis()));
+            accessMan.create(userAccess);
+            Integer projId = Integer.parseInt(strProjectId);
+            ProjectManager projMan = new ProjectJpaController(emf);
+            ProjectConfigurationManager projConfMan = new ProjectConfigurationJpaController(emf);
+            Project proj = projMan.findProject(projId);
+            List<Configuration> configs = projConfMan.getProjectConfigurations(projId);
+            List<ConfigurationWebEntity> confEntities = configsToEntities(configs);
+            request.setAttribute("project",projectToEntity(proj, configs));
+            request.setAttribute("user", userToEntity(user));
+            request.setAttribute("configs", confEntities);
+            listConfigs(request, response);
+        }else{
+            dispError(request, response, "Add Role: missing some mandatory parameters.");
+            return;
+        }
+    }
+
+    private boolean checkAddRole(HttpServletRequest request) {
+        {
+            Map<String,String[]> params = request.getParameterMap();
+            return params.containsKey("userid") && params.containsKey("configid")
+                   && params.containsKey("projectid") && params.containsKey("roleid") &&
+                    params.containsKey("roleuserid");
+        }
+    }
+
+    private List<ConfigurationWebEntity> configsToEntities(List<Configuration> configs) {
+        List<ConfigurationWebEntity> confs = new ArrayList<>();
+        for(Configuration conf:configs){
+            confs.add(configurationToEntity(conf));
+        }
+        return confs;
+    }
+
+    private void deleteRole(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        if(!checkRoleParamters(request)){
+            dispError(request, response, "Delete role: Missing some parameters");
+            return;
+        }
+        UserAccessManager userAccessMan = new UserAccessJpaController(emf);
+        String strRoleUserId = request.getParameter("roleuserid"),
+               strRole = request.getParameter("role"),
+               strConfId = request.getParameter("configid"),
+               strUserId = request.getParameter("userid"),
+               strProjectId = request.getParameter("projectid");
+        Integer roleUserId = Integer.parseInt(strRoleUserId),
+                role = Integer.parseInt(strRole),
+                confId = Integer.parseInt(strConfId),
+                userId = Integer.parseInt(strUserId),
+                projectId = Integer.parseInt(strProjectId);
+        ProjectConfigurationManager projConfMan = new ProjectConfigurationJpaController(emf);
+        List<Useraccess> accesses = userAccessMan.findUseraccessEntities(roleUserId,confId,Roles.values()[role].name());
+        try{
+            for(Useraccess access:accesses){
+                LOGGER.log(Level.INFO, "Delete Role: {0}", access);
+                userAccessMan.destroy(access.getId());
+            }
+        }catch(NonexistentEntityException nee){
+            LOGGER.log(Level.SEVERE,"Unable to delet user access." ,nee );
+        }
+        ProjectManager projMan = new ProjectJpaController(emf);
+        Project project = projMan.findProject(projectId);
+        UserManager userMan = new UserJpaController(emf);
+        User user = userMan.findUser(userId);
+        List<Configuration> configs = projConfMan.getProjectConfigurations(projectId);
+        request.setAttribute("project",projectToEntity(project, configs));
+        request.setAttribute("user",userToEntity(user));
+        listConfigs(request, response);
+    }
+
+    private boolean checkRoleParamters(HttpServletRequest request) {
+        Map<String,String[]> params = request.getParameterMap();
+        return params.containsKey("roleuserid") &&
+               params.containsKey("role") &&
+               params.containsKey("configid") &&
+               params.containsKey("userid") &&
+               params.containsKey("projectid");
     }
 
     
