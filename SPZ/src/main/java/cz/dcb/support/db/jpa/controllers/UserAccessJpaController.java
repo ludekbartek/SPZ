@@ -208,5 +208,50 @@ public class UserAccessJpaController implements Serializable, UserAccessManager 
         }
         return confs;
     }
-    
+
+    @Override
+    public List<Useraccess> findUseraccessForConfiguration(Configuration config) {
+        EntityManager em = getEntityManager();
+        List<Useraccess> userAccesses = null;
+        try{
+            Query query = em.createQuery("select useraccess from Useraccess useraccess where USERACCESS.configurationid = :confid");
+            query.setParameter("confid", config.getId());
+            userAccesses = query.getResultList();
+        }finally{
+            em.close();
+        }
+        return userAccesses;
+    }
+
+    @Override
+    public List<User> findUsersForConfig(Configuration config) {
+        List<User> users = null;
+        EntityManager em = getEntityManager();
+        try{
+            Query query = em.createQuery("select usr from User usr where usr.id in (select access.userid from Useraccess access where access.configurationid = :confid)");
+            query.setParameter("confid", config.getId());
+            users = query.getResultList();
+        }finally{
+            em.close();
+        }
+        return users;
+    }
+
+    @Override
+    public List<Useraccess> findUseraccessEntities(Integer userId, Integer confId, String role) {
+        List<Useraccess> result = null;
+        EntityManager em = getEntityManager();
+        try{
+            Query query = em.createQuery("select access from Useraccess access where access.userid =:userid and access.role = :role and ACCESS.configurationid = :confid");
+            query.setParameter("userid", userId);
+            query.setParameter("role", role);
+            query.setParameter("confid", confId);
+            result = query.getResultList();
+        }finally{
+            em.close();
+        }
+        return result;
+    }
+
+   
 }

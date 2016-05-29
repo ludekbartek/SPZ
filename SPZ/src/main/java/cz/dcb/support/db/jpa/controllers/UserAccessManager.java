@@ -44,5 +44,11 @@ public interface UserAccessManager {
     public List<Useraccess> userWithAccess(Roles roles);
 
     public List<Configuration> getConfigsForUser(Integer id);
-    
+
+    public List<Useraccess> findUseraccessForConfiguration(Configuration config);
+
+    public List<User> findUsersForConfig(Configuration config);
+
+    public List<Useraccess> findUseraccessEntities(Integer userId, Integer confId, String name);
+
 }
