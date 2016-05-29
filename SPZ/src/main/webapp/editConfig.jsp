@@ -56,9 +56,7 @@
                             <label for="description"><f:message key="desc"/>:</label>
                         </div>
                         <div class="input">
-                        <textarea cols="128" rows="4" name="description">
-                            <c:out value="${config.description}"/>
-                        </textarea>
+                        <textarea cols="128" rows="4" name="description"><c:out value="${config.description}"/></textarea>
                         </div>
                     </div>
                     <div class="submit">
@@ -68,17 +66,20 @@
             </div>
             <div class="addAccess">
                 <h2><f:message key="newUser"/></h2>
-                <form action="${pageContext.request.contextPath}/addRole">
+                <form action="${pageContext.request.contextPath}/SPZServlet/addRole" method="post">
+                    <input type="hidden" name="projectid" value="${project.id}"/>
+                    <input type="hidden" name="configid" value="${config.id}"/>
+                    <input type="hidden" name="userid" value="${user.id}"/>
                     <div class="input">
                         <label for="userSelect"><f:message key="login"/>:</label>
-                        <select name="userid">
-                            <c:forEach var="user" items="${users}">
-                                <option value="${user.id}"><c:out value="${user.name}"/> (<c:out value="${user.login}"/>)</option>
+                        <select name="roleuserid">
+                            <c:forEach var="currentUser" items="${users}">
+                                <option value="${currentUser.id}"><c:out value="${currentUser.name}"/> (<c:out value="${currentUser.login}"/>)</option>
                             </c:forEach>
                         </select>
                     </div>
                     <div class="input">
-                        <label for="roleSelect"><f:message key="role"/>:</label>
+                        <label for="roleid"><f:message key="role"/>:</label>
                         <select name="roleid">
                             <option value="3"><f:message key="admin"/></option>
                             <option value="2"><f:message key="projectManager"/></option>
@@ -103,17 +104,18 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <c:forEach var="user" items="${users}">
+                        <c:forEach var="currentUser" items="${usersWithRole}">
                             <tr>
-                                <td><c:out value="${user.login}"/></td>
-                                <td><c:out value="${user.name}"/></td>
-                                <td><f:message key="role${user.role}"/></td>
+                                <td><c:out value="${currentUser.login}"/></td>
+                                <td><c:out value="${currentUser.name}"/></td>
+                                <td><f:message key="role${currentUser.role}"/></td>
                                 <td>
-                                    <form action="${pageContext.request.contextPath}/deleteRole" method="post">
-                                        <input type="hidden" name="userid" value="${user.id}"/>
-                                        <input type="hidden" name="role" value="${user.role}"/>
+                                    <form action="${pageContext.request.contextPath}/SPZServlet/deleteRole" method="post">
+                                        <input type="hidden" name="roleuserid" value="${currentUser.id}"/>
+                                        <input type="hidden" name="role" value="${currentUser.role}"/>
                                         <input type="hidden" name="projectid" value="${project.id}"/>
                                         <input type="hidden" name="configid" value="${config.id}"/>
+                                        <input type="hidden" name="userid" value="${user.id}"/>
                                         <input type="submit" value="<f:message key='deleteRole'/>"/>
                                     </form>
                                 </td>
