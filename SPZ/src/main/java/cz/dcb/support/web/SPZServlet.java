@@ -235,8 +235,33 @@ public class SPZServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        String action = request.getPathInfo();
+        if(action.compareToIgnoreCase("getattach")==0){
+            String strUserId = request.getParameter("userid");
+            if(strUserId == null){
+                dispError(request, response, "doGet: request is missing mandatory attribute userid.");
+                return;
+            }
+            Integer userId = Integer.parseInt(strUserId);
+            UserManager userMan = new UserJpaController(emf);
+            User user = userMan.findUser(userId);
+            request.setAttribute("user", userToEntity(user));
+            String strAttachmentId = request.getParameter("attachmentId");
+            if(strAttachmentId==null){
+                dispError(request, response, "doGet: Action getattach is missing mandatory parameter attachmentId");
+                return;
+            }
+            Integer attachId = Integer.parseInt(strAttachmentId);
+            byte[] attachmentData = getAttachment(attachId);
+            response.setContentType("application/octetstream");
+            OutputStream out=response.getOutputStream();
+            out.write(attachmentData);
+            out.flush();
+            listProjects(request, response);
+            return;
+        }
         request.setAttribute("error", "Pouzita metoda get misto post.");
-        listSpz(request, response);
+        listProjects(request, response);
     }
 
     /**
@@ -3188,6 +3213,10 @@ public class SPZServlet extends HttpServlet {
                params.containsKey("configid") &&
                params.containsKey("userid") &&
                params.containsKey("projectid");
+    }
+
+    private byte[] getAttachment(Integer attachId) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     
