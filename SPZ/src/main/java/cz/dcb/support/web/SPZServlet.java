@@ -41,6 +41,7 @@ import cz.dcb.support.db.jpa.controllers.UserJpaController;
 import cz.dcb.support.db.jpa.controllers.UserManager;
 import cz.dcb.support.db.jpa.controllers.exceptions.NonexistentEntityException;
 import cz.dcb.support.db.jpa.entities.Attachment;
+import cz.dcb.support.db.jpa.entities.Attachmentnote;
 import cz.dcb.support.db.jpa.entities.Configuration;
 import cz.dcb.support.db.jpa.entities.Project;
 import cz.dcb.support.db.jpa.entities.Spz;
@@ -1940,6 +1941,7 @@ public class SPZServlet extends HttpServlet {
         String fileName = null;
         InputStream in = null;
         Part part1 = null,part2 = null, part3 = null;
+        Attachment attach1 = null, attach2 = null, attach3 = null;
         String header = request.getHeader("Content-type");
         if(header.contains("multipart")){
             try {
@@ -1956,6 +1958,9 @@ public class SPZServlet extends HttpServlet {
                 fileName = new StringBuilder(attachDir.toString()).append("/").append(part1.getSubmittedFileName()).toString();
                 try{
                     uploadFile(request, response, manager, fileName, in);
+                    attach1 = new Attachment();
+                    attach1.setLocation(fileName);
+                    attach1.setType(Files.probeContentType(new File(fileName).toPath()));
                 }catch(IOException ex){
                     displayError(request, fileName, ex, response);
                     return;
@@ -1971,6 +1976,9 @@ public class SPZServlet extends HttpServlet {
             try{
                 in = part2.getInputStream();
                 uploadFile(request,response,manager,fileName,in);
+                attach2 = new Attachment();
+                attach2.setLocation(fileName);
+                attach2.setType(Files.probeContentType(new File(fileName).toPath()));
             }catch(IOException ex){
                 displayError(request, fileName, ex, response);
                 return;
@@ -1983,6 +1991,9 @@ public class SPZServlet extends HttpServlet {
                 in = part3.getInputStream();
                 fileName = new StringBuilder(attachDir.toString()).append("/").append(part3.getSubmittedFileName()).toString();
                 uploadFile(request,response,manager,fileName,in);
+                attach3 = new Attachment();
+                attach3.setLocation(fileName);
+                attach3.setType(Files.probeContentType(new File(fileName).toPath()));
             }catch(IOException ex){
                 displayError(request, fileName, ex, response);
                 return;
@@ -2042,6 +2053,7 @@ public class SPZServlet extends HttpServlet {
         note.setIssuer(user.getName());
         note.setTs(BigInteger.valueOf(new GregorianCalendar().getTimeInMillis()));
         noteManager.create(note);
+        addAttachments(note,attach1,attach2,attach3);
         stateNote.setNoteid(note.getId());
         stateNote.setStateid(state.getId());
         stateNoteManager.create(stateNote);
@@ -3217,6 +3229,32 @@ public class SPZServlet extends HttpServlet {
 
     private byte[] getAttachment(Integer attachId) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    private void addAttachments(Spznote note, Attachment attach1, Attachment attach2, Attachment attach3) {
+        AttachmentManager attachMan = new AttachmentJpaController(emf);
+        AttachmentNoteManager attachNoteMan = new AttachmentNoteJpaController(emf);
+        if(attach1 != null){
+            attachMan.create(attach1);
+            Attachmentnote attachNote = new Attachmentnote();
+            attachNote.setAttachmentid(attach1.getId());
+            attachNote.setSpznoteid(note.getId());
+            attachNoteMan.create(attachNote);
+        }
+        if(attach2 != null){
+            attachMan.create(attach2);
+            Attachmentnote attachNote = new Attachmentnote();
+            attachNote.setAttachmentid(attach2.getId());
+            attachNote.setSpznoteid(note.getId());
+            attachNoteMan.create(attachNote);
+        }
+        if(attach3 != null){
+            attachMan.create(attach3);
+            Attachmentnote attachNote = new Attachmentnote();
+            attachNote.setAttachmentid(attach3.getId());
+            attachNote.setSpznoteid(note.getId());
+            attachNoteMan.create(attachNote);
+        }
     }
 
     
