@@ -5,6 +5,7 @@
  */
 package cz.dcb.support.web.entities;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -18,7 +19,7 @@ public class SpzNoteEntity {
     private String noteText;
     private short external;
     private String noteIssuer;
-    private List<AttachmentEntity> attachments;
+    private List<AttachmentEntity> attachments=new ArrayList<>();
 
     public Date getNoteDate() {
         return noteDate;
