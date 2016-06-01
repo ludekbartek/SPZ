@@ -49,8 +49,8 @@ DROP TABLE IF EXISTS `attachment`;
 CREATE TABLE `attachment` (
   `id` int(11) NOT NULL,
   `date` datetime NOT NULL,
-  `content` varchar(255) NOT NULL,
-  `location` varchar(255) NOT NULL,
+  `content` varchar(255) NOT NULL, /*jmeno souboru*/
+  `location` varchar(255) NOT NULL, /*absolutni cesta k souboru*/
   `type` varchar(255) NOT NULL,
   `spznote_id` int(11) NOT NULL,
   `ts` int(11) NOT NULL,
