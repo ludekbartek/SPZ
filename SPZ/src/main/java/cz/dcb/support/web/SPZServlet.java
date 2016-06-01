@@ -1523,10 +1523,10 @@ public class SPZServlet extends HttpServlet {
             request.getRequestDispatcher("/editPost.jsp").forward(request, response);*/
             return;
         }
-        Attachment file = requestToAttachment(request);
+        /*Attachment file = requestToAttachment(request);
         file.setContent(fileParam);
         file.setType(Files.probeContentType(Paths.get(fileParam)));
-        manager.create(file);
+        manager.create(file);*/
     }
     
     /**
@@ -1929,6 +1929,7 @@ public class SPZServlet extends HttpServlet {
 
     private AttachmentEntity attachmentToWebEntity(Attachment attachment) {
         AttachmentEntity entity = new AttachmentEntity();
+        entity.setId(attachment.getId());
         entity.setContent(attachment.getContent());
         entity.setDate(attachment.getDate());
         entity.setLocation(attachment.getLocation());
@@ -1941,6 +1942,7 @@ public class SPZServlet extends HttpServlet {
         String fileName = null;
         InputStream in = null;
         Part part1 = null,part2 = null, part3 = null;
+        Date date = new GregorianCalendar().getTime();
         Attachment attach1 = null, attach2 = null, attach3 = null;
         String header = request.getHeader("Content-type");
         if(header.contains("multipart")){
@@ -1952,7 +1954,7 @@ public class SPZServlet extends HttpServlet {
                 Logger.getLogger(SPZServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        if(part1 != null){
+        if(part1 != null && part1.getSubmittedFileName()!=null && !part1.getSubmittedFileName().isEmpty()){
             try{
                 in = part1.getInputStream();
                 fileName = new StringBuilder(attachDir.toString()).append("/").append(part1.getSubmittedFileName()).toString();
@@ -1960,7 +1962,9 @@ public class SPZServlet extends HttpServlet {
                     uploadFile(request, response, manager, fileName, in);
                     attach1 = new Attachment();
                     attach1.setLocation(fileName);
+                    attach1.setContent(part1.getSubmittedFileName());
                     attach1.setType(Files.probeContentType(new File(fileName).toPath()));
+                    attach1.setDate(date);
                 }catch(IOException ex){
                     displayError(request, fileName, ex, response);
                     return;
@@ -1970,7 +1974,7 @@ public class SPZServlet extends HttpServlet {
             }
         }
         
-        if(part2!=null){
+        if(part2!=null && part2.getSubmittedFileName()!=null && !part2.getSubmittedFileName().isEmpty()){
             fileName = new StringBuilder(attachDir.toString()).append("/").append(part2.getSubmittedFileName()).toString();
             
             try{
@@ -1978,14 +1982,16 @@ public class SPZServlet extends HttpServlet {
                 uploadFile(request,response,manager,fileName,in);
                 attach2 = new Attachment();
                 attach2.setLocation(fileName);
+                attach2.setContent(part2.getSubmittedFileName());
                 attach2.setType(Files.probeContentType(new File(fileName).toPath()));
+                attach2.setDate(date);
             }catch(IOException ex){
                 displayError(request, fileName, ex, response);
                 return;
             }
         }
         
-        if(part3!=null){
+        if(part3!=null && part3.getSubmittedFileName()!=null && !part3.getSubmittedFileName().isEmpty()){
             
             try{
                 in = part3.getInputStream();
@@ -1993,7 +1999,9 @@ public class SPZServlet extends HttpServlet {
                 uploadFile(request,response,manager,fileName,in);
                 attach3 = new Attachment();
                 attach3.setLocation(fileName);
+                attach3.setContent(part3.getSubmittedFileName());
                 attach3.setType(Files.probeContentType(new File(fileName).toPath()));
+                attach3.setDate(date);
             }catch(IOException ex){
                 displayError(request, fileName, ex, response);
                 return;
