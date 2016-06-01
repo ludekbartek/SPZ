@@ -35,6 +35,14 @@
                             </c:if>
                             <div class="notetext">
                                 <c:out value="${note.noteText}" escapeXml="false"/> 
+                                Pocet priloh: <c:out value="${fn:length(note.attachments)}"/>
+                                <c:if test="${fn:length(note.attachments) gt 0}">
+                                      <c:forEach var="attachment" items="${note.attachments}">
+                                          Attachment ID: <c:out value="${attachment.id}"/><br/>
+                                          Attachment content: <c:out value="${attachment.content}"/><br/>
+                                          <a href="${pageContext.request.contextPath}/SPZServlet/getattach?id=<c:out value='${attachment.id}'/>"><c:out value="${attachment.content}"/></a> 
+                                      </c:forEach>
+                                </c:if>
                             </div>
                          </c:when>
                      </c:choose>
