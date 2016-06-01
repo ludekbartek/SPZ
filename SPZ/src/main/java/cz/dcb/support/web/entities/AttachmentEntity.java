@@ -13,6 +13,7 @@ import java.util.List;
  * @author bar
  */
 public class AttachmentEntity {
+    private Integer id;
     private Date date;
     private String content;
     private String location;
@@ -58,6 +59,13 @@ public class AttachmentEntity {
     public void setNotes(List<SpzNoteEntity> notes) {
         this.notes = notes;
     }
-    
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
     
 }
