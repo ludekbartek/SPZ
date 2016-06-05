@@ -156,13 +156,14 @@ public class AttachmentNoteJpaController implements Serializable, AttachmentNote
         List<Attachment> attachments = null;
         List<Attachment> result = null;
         try{
-            Query queryIds = em.createQuery("select ATTACHNOTE.id from Attachmentnote attachnote where ATTACHNOTE.spznoteid = :noteid");
+            Query queryIds = em.createQuery("select ATTACHNOTE.attachmentid from Attachmentnote attachnote where ATTACHNOTE.spznoteid = :noteid");
+            queryIds.setParameter("noteid", id);
             List<Integer> attachmentNoteIds = queryIds.getResultList();
             result = new ArrayList<>();
             for(int ident :attachmentNoteIds){
                Query query;
                 query = em.createQuery("select ATTACHMENT from Attachment attachment where ATTACHMENT.id = :atid");
-               query.setParameter(":atid", ident);
+               query.setParameter("atid", ident);
                attachments = query.getResultList();
                result.addAll(attachments);
             }
