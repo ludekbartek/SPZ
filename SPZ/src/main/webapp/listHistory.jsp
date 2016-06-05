@@ -27,7 +27,6 @@
                      (<f:formatDate type="both" dateStyle="LONG" timeStyle="SHORT" value="${note.noteDate}"/>)
                      <c:choose>
                          <c:when test="${note.external==1 || user.role!=0}">
-                            <span class="debug">External:<c:out value="${note.external==1}"/></span>
                             <c:if test="${note.external==0}">
                                 <div class="note-header">
                                      #########<f:message key="internal"/>#########
@@ -35,12 +34,9 @@
                             </c:if>
                             <div class="notetext">
                                 <c:out value="${note.noteText}" escapeXml="false"/> 
-                                Pocet priloh: <c:out value="${fn:length(note.attachments)}"/>
                                 <c:if test="${fn:length(note.attachments) gt 0}">
                                       <c:forEach var="attachment" items="${note.attachments}">
-                                          Attachment ID: <c:out value="${attachment.id}"/><br/>
-                                          Attachment content: <c:out value="${attachment.content}"/><br/>
-                                          <a href="${pageContext.request.contextPath}/SPZServlet/getattach?id=<c:out value='${attachment.id}'/>"><c:out value="${attachment.content}"/></a> 
+                                          <a href="${pageContext.request.contextPath}/SPZServlet/getattach?attachmentId=<c:out value='${attachment.id}'/>&userid=<c:out value='${user.id}'/>&projectid=<c:out value='${project.id}'/>"/><c:out value="${attachment.content}"/></a> 
                                       </c:forEach>
                                 </c:if>
                             </div>
