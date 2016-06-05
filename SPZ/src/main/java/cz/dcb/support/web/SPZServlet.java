@@ -107,6 +107,7 @@ import javax.servlet.http.Part;
 import cz.dcb.support.db.jpa.entities.Configurationspz;
 import cz.dcb.support.db.jpa.entities.Projectconfiguration;
 import cz.dcb.support.web.entities.ProjectWebEntity;
+import java.io.FileInputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
@@ -262,6 +263,8 @@ public class SPZServlet extends HttpServlet {
                 }else{
                     response.setContentType("application/octetstream");
                 }
+                response.setContentLength(attachmentData.length);
+                response.setHeader("Content-Disposition","attachment;filename="+getAttachmentFileName(attachId));
                 OutputStream out=response.getOutputStream();
                 out.write(attachmentData);
                 out.flush();
@@ -1561,13 +1564,11 @@ public class SPZServlet extends HttpServlet {
             out = new FileOutputStream(fileName);
             
             try{
-                do{
-                    byte[] data = new byte[1024];
-                    count = in.read(data);
-                    if(count!=0){
-                        out.write(data);
-                    }
-                }while(count == 1024);
+                byte[] data = new byte[in.available()];
+                count = in.read(data);
+                if(count!=0){
+                    out.write(data);
+                }
             }finally{
                 try{
                     out.close();
@@ -3251,7 +3252,11 @@ public class SPZServlet extends HttpServlet {
         AttachmentManager attachMan = new AttachmentJpaController(emf);
         Attachment attach = attachMan.findAttachment(attachId);
         File attachFile = new File(attach.getLocation());
-        byte[] attachData=Files.readAllBytes(attachFile.toPath());
+        InputStream stream = new FileInputStream(attachFile);
+        byte[] attachData = new byte[stream.available()];
+               
+        stream.read(attachData);
+               
         return attachData;
     }
 
@@ -3285,6 +3290,12 @@ public class SPZServlet extends HttpServlet {
         AttachmentManager attachMan = new AttachmentJpaController(emf);
         Attachment attach = attachMan.findAttachment(attachId);
         return attach.getType();
+    }
+
+    private String getAttachmentFileName(Integer attachId) {
+        AttachmentManager attachMan = new AttachmentJpaController(emf);
+        Attachment attach = attachMan.findAttachment(attachId);
+        return attach.getContent();
     }
 
     
