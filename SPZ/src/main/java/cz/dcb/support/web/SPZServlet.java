@@ -237,7 +237,7 @@ public class SPZServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String action = request.getPathInfo();
-        if(action.compareToIgnoreCase("getattach")==0){
+        if(action.compareToIgnoreCase("/getattach")==0){
             String strUserId = request.getParameter("userid");
             if(strUserId == null){
                 dispError(request, response, "doGet: request is missing mandatory attribute userid.");
@@ -253,11 +253,23 @@ public class SPZServlet extends HttpServlet {
                 return;
             }
             Integer attachId = Integer.parseInt(strAttachmentId);
-            byte[] attachmentData = getAttachment(attachId);
-            response.setContentType("application/octetstream");
-            OutputStream out=response.getOutputStream();
-            out.write(attachmentData);
-            out.flush();
+            byte[] attachmentData = null;
+            try{
+                attachmentData = getAttachment(attachId);
+                String attachMime = getAttachmentMime(attachId);
+                if(attachMime!=null && !attachMime.isEmpty()){
+                    response.setContentType(attachMime);
+                }else{
+                    response.setContentType("application/octetstream");
+                }
+                OutputStream out=response.getOutputStream();
+                out.write(attachmentData);
+                out.flush();
+            }catch(IOException ex){
+                LOGGER.log(Level.SEVERE,"Unable to load attachment data: ",ex);
+                dispError(request, response, "doGet: Action getattach: unable to load attachment data: "+ex.getMessage());
+                return;
+            }
             listProjects(request, response);
             return;
         }
@@ -1908,9 +1920,9 @@ public class SPZServlet extends HttpServlet {
         entity.setNoteIssuer(note.getIssuer());
         AttachmentNoteManager manager= new AttachmentNoteJpaController(emf);
         List<Attachment> attachments = manager.getAttachmentsForNote(note.getId());
-        
         List<AttachmentEntity> atachmentsEntities = attachmentsToWebEntity(attachments);
-                
+        entity.setAttachments(atachmentsEntities);
+        
         return entity;
     }
 
@@ -3235,8 +3247,12 @@ public class SPZServlet extends HttpServlet {
                params.containsKey("projectid");
     }
 
-    private byte[] getAttachment(Integer attachId) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    private byte[] getAttachment(Integer attachId) throws IOException {
+        AttachmentManager attachMan = new AttachmentJpaController(emf);
+        Attachment attach = attachMan.findAttachment(attachId);
+        File attachFile = new File(attach.getLocation());
+        byte[] attachData=Files.readAllBytes(attachFile.toPath());
+        return attachData;
     }
 
     private void addAttachments(Spznote note, Attachment attach1, Attachment attach2, Attachment attach3) {
@@ -3263,6 +3279,12 @@ public class SPZServlet extends HttpServlet {
             attachNote.setSpznoteid(note.getId());
             attachNoteMan.create(attachNote);
         }
+    }
+
+    private String getAttachmentMime(Integer attachId) {
+        AttachmentManager attachMan = new AttachmentJpaController(emf);
+        Attachment attach = attachMan.findAttachment(attachId);
+        return attach.getType();
     }
 
     
