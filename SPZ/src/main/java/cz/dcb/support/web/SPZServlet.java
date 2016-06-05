@@ -1284,6 +1284,7 @@ public class SPZServlet extends HttpServlet {
         Spzstate current = statesManager.getCurrentState(spz);
         User user = null;
         List<Spzstate> statesHistory = statesManager.findSpzstates(spz);
+        
         history = spzStatesToSpzStateWebEntities(statesHistory);
         if(current!=null){
             user = userManger.findUserByLogin(current.getIssuerLogin());
@@ -1408,7 +1409,12 @@ public class SPZServlet extends HttpServlet {
             SpzStateWebEntity entity = spzStateToSpzWebEntity(state);
             result.add(entity);
         }
-        
+        Collections.sort(result, new Comparator<SpzStateWebEntity>() {
+            @Override
+            public int compare(SpzStateWebEntity o1, SpzStateWebEntity o2) {
+                return o2.getIssueDate().compareTo(o1.getIssueDate());
+            }
+        });
         return result;
     }
 
