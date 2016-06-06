@@ -511,6 +511,9 @@ public class SPZServlet extends HttpServlet {
                 stateManager.create(state);
                 state.setCurrentstate(1);
                 stateManager.edit(state);
+                if(hasAttachment(request)){
+                    addNote(request, response, spz.getId());
+                }
                 Spzstates states = createSpzStates(spz,state);
                 statesManager.create(states,entMan);
                 transaction.commit();
@@ -593,6 +596,33 @@ public class SPZServlet extends HttpServlet {
             return;
         }
         listSpz(request, response);
+    }
+
+    private boolean addSpzNote(HttpServletRequest request, HttpServletResponse response, Spz spz, Spzstate state) throws IOException, NumberFormatException, ServletException {
+        Spznote note = new Spznote();
+        String noteText = request.getParameter("note");
+        note.setNotetext(noteText);
+        String noteExt = request.getParameter("external");
+        if(noteExt!=null && !noteExt.isEmpty()){
+            note.setExternalnote((short)1);
+        }else{
+            note.setExternalnote((short)0);
+        }
+        UserManager userMan = new UserJpaController(emf);
+        String userIdStr = request.getParameter("userid");
+        if (userIdStr==null || userIdStr.isEmpty()) {
+            dispError(request, response, "Add SPZ: userid is missing.");
+            return false;
+        }
+        int userId = Integer.parseInt(userIdStr);
+        User issuer = userMan.findUser(userId);
+        note.setIssuer(issuer.getName());
+        Calendar cal = new GregorianCalendar();
+        note.setNotedate(cal.getTime());
+        note.setTs(BigInteger.valueOf(cal.getTimeInMillis()));
+        createSpzNote(spz,note,state);
+        addAttachments(note,request);
+        return true;
     }
 
     private void createSpzIssuer(Spz spz, UserWebEntity user) {
@@ -3302,6 +3332,29 @@ public class SPZServlet extends HttpServlet {
         AttachmentManager attachMan = new AttachmentJpaController(emf);
         Attachment attach = attachMan.findAttachment(attachId);
         return attach.getContent();
+    }
+
+    private boolean hasAttachment(HttpServletRequest request) {
+        Map<String,String[]> params = request.getParameterMap();
+        return (params.containsKey("file1")||(params.containsKey("file2"))||(params.containsKey("file3")))
+             || params.containsKey("note");
+    }
+
+    private void createSpzNote(Spz spz, Spznote note, Spzstate state) {
+        SpzStateNoteManager spzStateNoteMan = new SpzStateNoteJpaController(emf);
+        Spzstatenote stateNote = new Spzstatenote();
+        stateNote.setNoteid(note.getId());
+        stateNote.setStateid(state.getId());
+        spzStateNoteMan.create(stateNote);
+    }
+
+    private void addAttachments(Spznote note, HttpServletRequest request) {
+        String fileName1 = request.getParameter("file1"),
+               fileName2 = request.getParameter("file2"),
+               fileName3 = request.getParameter("file3");
+        if(fileName1!=null && !fileName1.isEmpty()){
+            
+        }
     }
 
     
