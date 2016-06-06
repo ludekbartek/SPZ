@@ -111,6 +111,7 @@ import java.io.FileInputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import javax.persistence.NoResultException;
 
@@ -511,9 +512,6 @@ public class SPZServlet extends HttpServlet {
                 stateManager.create(state);
                 state.setCurrentstate(1);
                 stateManager.edit(state);
-                if(hasAttachment(request)){
-                    addNote(request, response, spz.getId());
-                }
                 Spzstates states = createSpzStates(spz,state);
                 statesManager.create(states,entMan);
                 transaction.commit();
@@ -539,6 +537,10 @@ public class SPZServlet extends HttpServlet {
                     spzStateNote.setNoteid(note.getId());
                     spzStateNote.setStateid(state.getId());
                     stateNoteMan.create(spzStateNote);
+                    if(hasAttachment(request)){
+                        addNote(request, response, spz.getId());
+                    }
+
                 }
                 createSpzIssuer(spz, user);
                 List<Spz> spzs = manager.findSpzEntities();
@@ -3335,9 +3337,13 @@ public class SPZServlet extends HttpServlet {
     }
 
     private boolean hasAttachment(HttpServletRequest request) {
-        Map<String,String[]> params = request.getParameterMap();
-        return (params.containsKey("file1")||(params.containsKey("file2"))||(params.containsKey("file3")))
-             || params.containsKey("note");
+        try {
+            Map<String,String[]> params = request.getParameterMap();
+            Collection<Part> parts = request.getParts();
+            return parts.size()>0;
+        } catch (IOException | ServletException ex) {
+            return false;
+        }
     }
 
     private void createSpzNote(Spz spz, Spznote note, Spzstate state) {

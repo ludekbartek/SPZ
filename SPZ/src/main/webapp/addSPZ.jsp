@@ -59,7 +59,7 @@ pri editaci pouze popisy (viz stara verze).
             </p>
         </c:if>
         <div id="form" style="width: 100%;">
-            <form action="${pageContext.request.contextPath}/SPZServlet/addspz" method="post">
+            <form action="${pageContext.request.contextPath}/SPZServlet/addspz" method="post" enctype="multipart/form-data">
                 <input type="hidden" name="userid" value="${user.id}"/>
                 <input type="hidden" name="configid" value="${config.id}"/>
                 <input type="hidden" name="projectid" value="${project.id}"/>
@@ -118,12 +118,16 @@ pri editaci pouze popisy (viz stara verze).
                     <label for="ext"><f:message key="ext"/></label>
                 </div>
                 <div class="file">
-                    <span class="label"><label for="file1"><f:message key="file1"/></label></span>
-                    <span class="input"><input type="file" name="file1"/></span>
+                    <span class="label"><label for="soubor1"><f:message key="file1"/></label></span>
+                    <span class="input"><input type="file" name="soubor1"/></span>
                 </div>
                 <div class="file">
-                    <span class="label"><label for="file2"><f:message key="file2"/>:</label></span>
-                    <span class="input"><input type="file" name="file2"/></span>
+                    <span class="label"><label for="soubor2"><f:message key="file2"/>:</label></span>
+                    <span class="input"><input type="file" name="soubor2"/></span>
+                </div>
+                <div class="file">
+                    <span class="label"><label for="soubor3"><f:message key="file3"/>:</label></span>
+                    <span class="input"><input type="file" name="soubor3"/></span>
                 </div>
                 <span class="formItem"><input type="submit" value="<f:message key="register"/>" onfocus="shortname.value = reqnumber.value;"/></span>
             </form>
