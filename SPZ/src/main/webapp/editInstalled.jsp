@@ -38,7 +38,10 @@
             </tr>
             <tr>
                 <td class="label"><f:message key="realWorkLoad"/></td>
-                <td><c:out value="${spz.workLoadReal}"/></td>
+                <td>
+                    <c:if test="${not empty spz.workLoadReal}"><c:out value="${spz.workLoadReal}"/></c:if>
+                    <c:if test="${empty spz.workLoadReal}"><c:out value="${spz.workLoadEstimation}"/></c:if>
+                </td>
             </tr>
             
         </table>
