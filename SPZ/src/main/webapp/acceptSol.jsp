@@ -26,7 +26,7 @@
         <jsp:include page="editcommon.jsp"/>
         <tr>
             <td><f:message key="solutionInfo"/></td>
-            <td colspan="3"><c:out value="${spz.solution}"/></td>
+            <td colspan="3"><c:out escapeXml="false" value="${spz.solution}" /></td>
         </tr>
         </table>
         <h2><f:message key="reqInfo"/>:</h2>
