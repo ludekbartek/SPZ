@@ -37,7 +37,7 @@
             </div>
             <div class="textinput">
                 <label for="outofdevel"><f:message key="outofdevel"/></label>
-                <input type="text" name="outofdevel"/>
+                <input type="text" name="outofdevel" value="0.0"/>
             </div>
             <div class="areainput">
                 <label for='note'><f:message key="noteLabel"/></label>
