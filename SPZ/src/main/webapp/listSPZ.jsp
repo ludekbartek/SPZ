@@ -106,7 +106,7 @@
                         <f:message key="${item.requestType}"/>
                     </td>
                     <td>
-                        zde bude zadavatel
+                        <c:out value="${item.issuer}"/>
                     </td>
                     <td>
                         <c:out value="${item.contactPerson}"/>
