@@ -9,15 +9,18 @@
 <%@taglib prefix="f" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@taglib prefix="sql" uri="http://java.sun.com/jsp/jstl/sql" %>
 
-<sql:setDataSource driver="org.apache.derby.jdbc.ClientDriver" 
+<%-- <sql:setDataSource driver="org.apache.derby.jdbc.ClientDriver" 
                    url="jdbc:derby://localhost:1527/support"
                    user="suser"
                    password="suser"/>
+--%>
+
 <jsp:include page="header.jsp"/>
 &gt;&gt;
-<form action="${pageContext.request.contextPath}/SPZServlet/listConfigurations" method="post">
+<form action="${pageContext.request.contextPath}/SPZServlet/listConfigurations" method="post" class="navigationform">
     <input type="hidden" name="projectid" value="${project.id}"/>
     <input type="hidden" name="userid" value="${user.id}"/>
     <input type="hidden" name="spzid" value="${spz.id}"/>
-    <input type="submit" value="${project.name}"/>
+    <input type="submit" value="${project.name}" class="navbutton"/>
 </form>
+
