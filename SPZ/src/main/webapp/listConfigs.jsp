@@ -16,7 +16,9 @@
         <link rel="stylesheet" href="${pageContext.request.contextPath}/styles/dcb.css" type="text/css"/>
     </head>
     <body>
-        <jsp:include page="headerProject.jsp"/>
+        <div class="leftfloat">
+            <jsp:include page="headerProject.jsp"/>
+        </div>
         <h1><f:message key="availConfs"/></h1>
         <table class="fullwidthtable">
             <thead>
