@@ -3159,10 +3159,7 @@ public class SPZServlet extends HttpServlet {
             List<Configuration> configs = projConfManager.getProjectConfigurations(projectId);
             request.setAttribute("project", projectToEntity(project, configs));
             listConfigs(request, response);
-            
         }
-        
-        
     }
 
     private boolean checkConfigParams(HttpServletRequest request) {
