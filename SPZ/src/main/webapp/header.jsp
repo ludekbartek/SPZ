@@ -8,6 +8,7 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="f" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <f:setBundle basename="headers"/>
+<link rel="stylesheet" href="styles/dcb.css"/>
 <div class="rightfloat">
     <form action="${pageContext.request.contextPath}/SPZServlet/editUser" method="post">
         <input type="submit" value="<c:out value='${user.login} (${user.name})'/>"/>
@@ -18,7 +19,7 @@
 <div class="header"><f:message key="header"/></div>
 
 <div class="leftfloat">
-<form action="${pageContext.request.contextPath}/SPZServlet/listProjects" method="post">
+<form action="${pageContext.request.contextPath}/SPZServlet/listProjects" method="post" class="navigationform">
     <input type="submit" value="<f:message key='projects'/>"/>
     <input type="hidden" name="userid" value="${user.id}"/>
 </form>
