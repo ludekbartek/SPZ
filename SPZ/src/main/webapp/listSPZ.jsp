@@ -13,9 +13,12 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title><f:message key="header"/></title>
-        <link rel="stylesheet" href="styles/dcb.css" type="text/css"/>
+        <link rel="stylesheet" href="/SPZ/styles/dcb.css" type="text/css"/>
+        
     </head>
     <body>
+        <script type="text/javascript" src="/SPZ/scripts/support-scripts.js">
+        </script>
         <jsp:include page="headerspz.jsp"/>
         <c:if test="${! empty error}">
             <div id="erorr" style="background-color: yellow;border-color: red;">
@@ -24,12 +27,23 @@
         </c:if>
         <div id="heading" style="width: 100%">
 <!--            <span class="actions" style="float:left;">-->
-                <form action="${pageContext.request.contextPath}/listspz" style="leftfloat">
+                <form id="spzlist" action="${pageContext.request.contextPath}/SPZServlet/listspz" method="post" style="leftfloat">
+                    <input type="hidden" name="userid" value="${user.id}"/>
+                    <input type="hidden" name="projectid" value="${project.id}"/>
+                    <input type="hidden" name="configid" value="${config.id}"/>
                     <span class="filter" style="text-align: center;width:10%;float:left;">
                         <span class="title">Filtr:</span>
                         <span class="selector">
-                            <select name="filter">
-                                <option></option>
+                            Current filter: <c:out value="${filter}"/>
+                            <select name="filter" onchange="doPost(spzlist);">
+                                <option value="0" <c:if test="${filter == '0'}">SELECTED</c:if>>Všechny</option>
+                                <option value="1" <c:if test="${filter == '1'}">SELECTED</c:if>>Jen neuzavřené</option>
+                                <option value="2" <c:if test="${filter == '2'}">SELECTED</c:if>>Čekající na klienta</option>
+                                <option value="3" <c:if test="${filter == '3'}">SELECTED</c:if>>Čekající na implementaci</option>
+                                <option value="4" <c:if test="${filter == '4'}">SELECTED</c:if>>Instalované/Čeká na převzetí</option>
+                                <option value="5" <c:if test="${filter == '5'}">SELECTED</c:if>>Převzaté/Čeká na fakturaci</option>
+                                <option value="6" <c:if test="${filter == '6'}">SELECTED</c:if>>Jen vyřešené</option>
+                                <option value="7" <c:if test="${filter == '7'}">SELECTED</c:if>>Jen zrušené</option>
                             </select>
                         </span>
                     </span>
@@ -84,7 +98,8 @@
                 <tr>
                 
                     <td>
-                        <form action="${pageContext.request.contextPath}/SPZServlet/editspz" method="POST">
+                        <c:set var="formid" value="spz${item.reqNumber}"/>
+                        <form name="${formid}" action="${pageContext.request.contextPath}/SPZServlet/editspz" method="post">
                             <input type="hidden" name="spzid" value="${item.id}"/>
                             <input type="hidden" name="userid" value="${user.id}"/>
                             <input type="hidden" name="configid" value="${config.id}"/>
@@ -97,7 +112,9 @@
                             <input type="hidden" name="issuedate" value="${item.issueDate}"/>
                             <input type="hidden" name="shortName" value="${item.shortName}"/>
                             <input type="hidden" name="implementationAcceptDate" value="${item.implementationAcceptDate}"/>
+                            <a href="${pageContext.request.contextPath}/SPZServlet/editspz" onclick="doPost(<c:out value='${formid}'/>);"><c:out value="${item.reqNumber}"/></a>
                         </form>
+                            
                     </td>
                    <td>
                         <c:out value="${item.priority}"/>
