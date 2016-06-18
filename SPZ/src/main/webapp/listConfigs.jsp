@@ -13,7 +13,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title><f:message key="confList"/><c:out value="${user.login}"/></title>
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/styles/dcb.css" type="text/css"/>
+        <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/styles/dcb.css" />
     </head>
     <body>
         <div class="leftfloat">
