@@ -15,6 +15,6 @@
     <input type="hidden" name="projectid" value="${project.id}"/>
     <input type="hidden" name="configid" value="${config.id}"/>
     <input type="hidden" name="spzid" value="${spz.id}"/>
-    <input type="submit" value="${config.code}" class="navbutton"/>
+    <input type="submit" value="${config.code}" class="linkbutton"/>
     <input type="hidden" name="userid" value="${user.id}"/>
 </form>

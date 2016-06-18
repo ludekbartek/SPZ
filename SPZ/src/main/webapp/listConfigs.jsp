@@ -14,6 +14,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title><f:message key="confList"/><c:out value="${user.login}"/></title>
         <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/styles/dcb.css" />
+        <script type="text/javascript" src="scripts/support-scripts.js"></script>
     </head>
     <body>
         <div class="leftfloat">

@@ -11,7 +11,7 @@
 <link rel="stylesheet" href="styles/dcb.css"/>
 <div class="rightfloat">
     <form action="${pageContext.request.contextPath}/SPZServlet/editUser" method="post">
-        <input type="submit" value="<c:out value='${user.login} (${user.name})'/>"/>
+    <input type="submit" value="<c:out value='${user.login} (${user.name})'/>" class="linkbutton"/>
         <input type="hidden" name="userid" value="${user.id}"/>
     </form>
 </div>
@@ -19,8 +19,9 @@
 <div class="header"><f:message key="header"/></div>
 
 <div class="leftfloat">
-<form action="${pageContext.request.contextPath}/SPZServlet/listProjects" method="post" class="navigationform">
-    <input type="submit" value="<f:message key='projects'/>"/>
+<form id="projects" action="${pageContext.request.contextPath}/SPZServlet/listProjects" method="post" class="navigationform">
+   <!-- <input type="submit" value="<f:message key='projects'/>" class="linkbutton"/>-->
     <input type="hidden" name="userid" value="${user.id}"/>
+    <a href="javascript: doPost(projects)"><f:message key="projects"/></a>
 </form>
 </div>

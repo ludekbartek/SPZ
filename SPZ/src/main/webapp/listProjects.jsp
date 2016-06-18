@@ -14,6 +14,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title><f:message key="projectList"/>(<c:out value="${user.login}"/>)</title>
         <link rel="stylesheet" href="${pageContext.request.contextPath}/styles/dcb.css" type="text/css"/>
+        <script type="text/javascript" src="scripts/support-scripts.js"></script>
     </head>
     <body>
         <jsp:include page="header.jsp"/>

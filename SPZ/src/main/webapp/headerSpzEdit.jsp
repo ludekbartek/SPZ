@@ -12,5 +12,5 @@
 <form action="${pageContext.request.contextPath}/SPZServlet/editspz" method="post">
     <input type="hidden" name="spzid" value="${spz.id}"/>
     <input type="hidden" name="userid" value="${user.id}"/>
-    <input type="submit" value="${spz.id}"/>
+    <input type="submit" value="${spz.id}" class="linkbutton"/>
 </form>

@@ -105,14 +105,14 @@
                             <input type="hidden" name="configid" value="${config.id}"/>
                             <input type="hidden" name="projectid" value="${project.id}"/>
                             <input type="hidden" name="reqNumber" value="${item.reqNumber}"/>
-                            <input type="submit" value="${item.reqNumber}"/>
+                            <%-- <input type="submit" value="${item.reqNumber}"/>--%>
                             <input type="hidden" name="priority" value="${item.priority}"/>
                             <input type="hidden" name="requestType" value="${item.requestType}"/>
                             <input type="hidden" name="contactPerson" value="${item.contactPerson}"/>
                             <input type="hidden" name="issuedate" value="${item.issueDate}"/>
                             <input type="hidden" name="shortName" value="${item.shortName}"/>
                             <input type="hidden" name="implementationAcceptDate" value="${item.implementationAcceptDate}"/>
-                            <a href="${pageContext.request.contextPath}/SPZServlet/editspz" onclick="doPost(<c:out value='${formid}'/>);"><c:out value="${item.reqNumber}"/></a>
+                            <a href="javascript: doPost(${formid})"><c:out value="${item.reqNumber}"/></a>
                         </form>
                             
                     </td>
