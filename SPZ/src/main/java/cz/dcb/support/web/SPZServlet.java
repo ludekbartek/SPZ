@@ -113,6 +113,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import javax.persistence.NoResultException;
 
 /**
@@ -278,7 +279,8 @@ public class SPZServlet extends HttpServlet {
             return;
         }
         request.setAttribute("error", "Pouzita metoda get misto post.");
-        listProjects(request, response);
+        request.getRequestDispatcher(action).forward(request, response);
+        //listProjects(request, response);
     }
 
     /**
@@ -1012,7 +1014,13 @@ public class SPZServlet extends HttpServlet {
      */
     private void listSpz(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         SpzManager spzManager = new SpzJpaController(emf);
+        String strFilter = request.getParameter("filter");
+        
         List<Spz> spzs = spzManager.findSpzEntities();
+        if(strFilter!=null){
+            int filter = Integer.parseInt(strFilter);
+            spzs = filterSpzs(spzs,filter);
+        }
         List<SPZWebEntity> entities = spzToEntities(spzs);
         UserWebEntity user = requestToUserWebEntity(request);
         if(user==null){
@@ -1029,6 +1037,7 @@ public class SPZServlet extends HttpServlet {
         request.setAttribute("user", user);
         request.setAttribute("project", project);
         request.setAttribute("config", conf);
+        request.setAttribute("filter", strFilter);
         LOGGER.log(Level.INFO,String.format("userid: %d",user.getId()));
         request.setAttribute("spzs", entities);
         request.getRequestDispatcher("/listSPZ.jsp").forward(request, response);
@@ -3358,6 +3367,63 @@ public class SPZServlet extends HttpServlet {
         if(fileName1!=null && !fileName1.isEmpty()){
             
         }
+    }
+
+    private List<Spz> filterSpzs(List<Spz> spzs, int filter) {
+        for(Iterator<Spz> it = spzs.iterator();it.hasNext();){
+            Spz spz = it.next();
+            SpzStateManager stateMan = new SpzStateJpaController(emf);
+            Spzstate state = stateMan.getCurrentState(spz);
+            SpzStates currentState = SpzStates.valueOf(state.getCode());
+            Filter intFilter = Filter.values()[filter];
+            switch(intFilter){
+                case OPENED:
+                    if(currentState == SpzStates.INVOICED || 
+                       currentState == SpzStates.CANCELED){
+                        it.remove();
+                    }
+                    break;
+                case WAITING_CLIENT:
+                    if(currentState != SpzStates.SPECIFIED&&
+                       currentState != SpzStates.REFINE&&
+                       currentState != SpzStates.INSTALLED&&
+                       currentState != SpzStates.IMPLEMENTATION_REFINE){
+                        it.remove();
+                    }
+                    break;
+                case WAITING_IMPL:
+                    if((currentState != SpzStates.POSTED) && 
+                       (currentState != SpzStates.DCB_ACCEPTED) &&
+                       (currentState != SpzStates.ANALYSIS) &&
+                       (currentState != SpzStates.ACCEPTED) &&
+                       (currentState != SpzStates.RECLAIMED)){
+                        it.remove();
+                    }
+                    break;
+                case INSTALLED:
+                    if(currentState != SpzStates.INSTALLED){
+                        it.remove();
+                    }
+                    break;
+                case ACCEPTED: 
+                    if(currentState != SpzStates.CONFIRMED){
+                        it.remove();
+                    }
+                    break;
+                case SOLVED:
+                    if(currentState != SpzStates.CANCELED && 
+                       currentState != SpzStates.INVOICED){
+                        it.remove();
+                    }
+                    break;
+                case CANCELED:
+                    if(currentState != SpzStates.CANCELED){
+                        it.remove();
+                    }
+                    break;
+            }
+        }
+        return spzs;
     }
 
     
