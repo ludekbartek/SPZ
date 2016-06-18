@@ -9,3 +9,17 @@ function checkField(field,maxLen,whereError){
     }
 }
 
+function doPost(form){
+    console.log("doing " + form.method +" to " + form.action);
+    var method = form.method;
+    if(method.localeCompare("post")!==0){
+        form.method = "post";
+        console.log("setting method to post.");
+    }else{
+        console.log("Method was post.");
+    }
+    
+    //document.appendChild(form);
+    form.submit();
+}
+
