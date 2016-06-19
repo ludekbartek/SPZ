@@ -20,6 +20,7 @@
             <c:out value="${spz.id}"/>
         </title>
         <link rel="stylesheet" href="styles/dcb.css" type="text/css"/>
+        <script type="text/javascript" src="scripts/support-scripts.js"></script>
     </head>
     <body>
         <jsp:include page="headerspz.jsp"/>
