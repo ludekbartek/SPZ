@@ -15,9 +15,12 @@
         <title><f:message key="useredittitle"/></title>
     </head>
     <body>
-        <div id="heading">
-            <h1><f:message key="usereditheader"/></h1>
+        <div id="pageheader">
         <jsp:include page="header.jsp"/>
+        </div>
+        <div id="userheading">
+            <h1><f:message key="usereditheader"/></h1>
+        
         </div>
         <jsp:include page="usermenu.jsp"/>
         <c:choose>
