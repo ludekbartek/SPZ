@@ -14,6 +14,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title><f:message key="userListHeading"/></title>
         <link rel="stylesheet" href="styles/dcb.css"/>
+        <script type="text/javascript" src="scripts/support-scripts.js"></script>
     </head>
     <body>
         <div id="heading"><jsp:include page="header.jsp"/></div>
@@ -42,7 +43,7 @@
                 <c:forEach var="userItem" items="${users}">
                     <tr>
                         <td>
-                            <form action="${pageContext.request.contextPath}/SPZServlet/edituser" method="post">
+                            <form name="useredit${userItem.id}" action="${pageContext.request.contextPath}/SPZServlet/edituser" method="post">
                                 <input type="hidden" name="userid" value="${user.id}"/>
                                 <input type="hidden" name="editeduserid" value="${userItem.id}"/>
                                 <input type="hidden" name="source" value="${requestScope['javax.servlet.forward.path_info']}"/>

@@ -13,6 +13,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Informace os SPZ <c:out value="${spz.reqNumber}"/></title>
         <link rel="stylesheet" href="styles/dcb.css" type="text/css"/>
+        <script src="scripts/support-scripts.js" type="text/javascript"></script>
     </head>
     <body>
         <jsp:include page="headerspz.jsp"/>

@@ -11,10 +11,11 @@
 <%@taglib prefix="sql" uri="http://java.sun.com/jsp/jstl/sql" %>
 <jsp:include page="headerProject.jsp"/>
 &gt;&gt;
-<form action="${pageContext.request.contextPath}/SPZServlet/listspz" method="post" class="navigationform">
+<form id="editconfig" action="${pageContext.request.contextPath}/SPZServlet/listspz" method="post" class="navigationform">
     <input type="hidden" name="projectid" value="${project.id}"/>
     <input type="hidden" name="configid" value="${config.id}"/>
     <input type="hidden" name="spzid" value="${spz.id}"/>
-    <input type="submit" value="${config.code}" class="linkbutton"/>
+    <%--<input type="submit" value="${config.code}" class="linkbutton"/>--%>
+    <a href="javascript: doPost(editconfig)">${config.code}</a>
     <input type="hidden" name="userid" value="${user.id}"/>
 </form>

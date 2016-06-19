@@ -10,9 +10,10 @@
 <f:setBundle basename="headers"/>
 <link rel="stylesheet" href="styles/dcb.css"/>
 <div class="rightfloat">
-    <form action="${pageContext.request.contextPath}/SPZServlet/editUser" method="post">
-    <input type="submit" value="<c:out value='${user.login} (${user.name})'/>" class="linkbutton"/>
+    <form name="useraction" action="${pageContext.request.contextPath}/SPZServlet/editUser" method="post">
+    <%--<input type="submit" value="<c:out value='${user.login} (${user.name})'/>" class="linkbutton"/>--%>
         <input type="hidden" name="userid" value="${user.id}"/>
+        <a href="javascript: doPost(useraction);"><c:out value="${user.login} (${user.name})"/></a>  
     </form>
 </div>
 

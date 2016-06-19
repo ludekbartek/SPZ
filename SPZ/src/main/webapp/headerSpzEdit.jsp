@@ -9,8 +9,9 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <jsp:include page="headerspz.jsp"/>
 &gt;&gt;
-<form action="${pageContext.request.contextPath}/SPZServlet/editspz" method="post">
+<form id="spzactions" action="${pageContext.request.contextPath}/SPZServlet/editspz" method="post">
     <input type="hidden" name="spzid" value="${spz.id}"/>
     <input type="hidden" name="userid" value="${user.id}"/>
-    <input type="submit" value="${spz.id}" class="linkbutton"/>
+    <%--<input type="submit" value="${spz.id}" class="linkbutton"/>--%>
+    <a href="javascript: doPost(spzactions)">${spz.id}</a>
 </form>

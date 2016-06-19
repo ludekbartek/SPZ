@@ -31,8 +31,9 @@
                 <c:forEach var="project" items="${projects}">
                     <tr>
                         <td class="code">
-                            <form action="${pageContext.request.contextPath}/SPZServlet/listConfs" method="post">
-                                <input type="submit" value="${project.code}"/>
+                            <form id="listconfs" action="${pageContext.request.contextPath}/SPZServlet/listConfs" method="post">
+                                <%--<input type="submit" value="${project.code}"/>--%>
+                                <a href="javascript: doPost(listconfs)">${project.code}</a>
                                 <input type="hidden" name="userid" value="${user.id}"/>
                                 <input type="hidden" name="projectId" value="${project.id}"/>
                             </form>

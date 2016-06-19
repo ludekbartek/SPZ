@@ -25,16 +25,13 @@
                 <c:out value="${error}"/>
             </div>
         </c:if>
-        <div id="heading" style="width: 100%">
-<!--            <span class="actions" style="float:left;">-->
+        <div id="listspzheading" style="width: 100%">
                 <form id="spzlist" action="${pageContext.request.contextPath}/SPZServlet/listspz" method="post" style="leftfloat">
                     <input type="hidden" name="userid" value="${user.id}"/>
                     <input type="hidden" name="projectid" value="${project.id}"/>
                     <input type="hidden" name="configid" value="${config.id}"/>
                     <span class="filter" style="text-align: center;width:10%;float:left;">
-                        <span class="title">Filtr:</span>
-                        <span class="selector">
-                            Current filter: <c:out value="${filter}"/>
+                        <span class="title">Filtr:</span> <span>
                             <select name="filter" onchange="doPost(spzlist);">
                                 <option value="0" <c:if test="${filter == '0'}">SELECTED</c:if>>Všechny</option>
                                 <option value="1" <c:if test="${filter == '1'}">SELECTED</c:if>>Jen neuzavřené</option>
@@ -61,18 +58,20 @@
                     </span>
                     <input type="submit" value="<f:message key='hledej'/>"/>
                 </form>
-                <form action="${pageContext.request.contextPath}/SPZServlet/reports" method="post" class="leftfloat">    
+                <form id="reports" action="${pageContext.request.contextPath}/SPZServlet/reports" method="post" class="rightfloat">    
                     <input type="hidden" name="userid" value="${user.id}"/>
                     <input type="hidden" name="configid" value="${config.id}"/>
                     <input type="hidden" name="projectid" value="${project.id}"/>
-                    <input type="submit" value='<f:message key="reports"/>'/>
+                    <%--<input type="submit" value='<f:message key="reports"/>'/>--%>
+                    <a href="javascript: doPost(reports)"><f:message key="reports"/></a>
                 </form>
-                <form action="${pageContext.request.contextPath}/SPZServlet/addspz" method="post" class="rightfloat">
+                <form id="addspz" action="${pageContext.request.contextPath}/SPZServlet/addspz" method="post" class="rightfloat">
                     <!--<input type="hidden" name="action" value="/addspz"/>-->
                     <input type="hidden" name="userid" value="${user.id}"/>
                     <input type="hidden" name="configid" value="${config.id}"/>
                     <input type="hidden" name="projectid" value="${project.id}"/>
-                    <input type="submit" value='<f:message key="newSpz"/>'/>
+                    <%--<input type="submit" value='<f:message key="newSpz"/>'/>--%>
+                    <a href="javascript: doPost(addspz)"><f:message key="newSpz"/></a>
                 </form>
         </div>
         <br/>

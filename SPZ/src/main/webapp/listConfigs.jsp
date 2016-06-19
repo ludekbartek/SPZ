@@ -32,12 +32,13 @@
                 <c:forEach var="conf" items="${configs}">
                     <tr>
                         <td>
-                            <form action="${pageContext.request.contextPath}/SPZServlet/listspz" method="post">
+                            <form id="listspz" action="${pageContext.request.contextPath}/SPZServlet/listspz" method="post">
                                 <input type="hidden" name="projectid" value="${project.id}"/>
                                 <input type="hidden" name="configid" value="${conf.id}"/>
                                 <input type="hidden" name="userid" value="${user.id}"/>
-                                <input type="submit" value="${conf.code}"/>
-                                <%--<c:out value="${conf.code}"/> --%>
+                                <%--<input type="submit" value="${conf.code}"/>--%>
+                                <a href="javascript: doPost(listspz);">${conf.code}</a>
+                                <%--     <c:out value="${conf.code}"/>--%>
                             </form>
                         </td>
                         <td><c:out value="${conf.description}"/></td>

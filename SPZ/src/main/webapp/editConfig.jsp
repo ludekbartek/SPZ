@@ -15,6 +15,7 @@
         <link type="text/css" rel="stylesheet" href="styles/dcb.css"/>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title><f:message key="configTitle"/></title>
+        <script type="text/javascript" src="scripts/support-scripts.js"></script>
     </head>
     <body>
         <div id="left">
