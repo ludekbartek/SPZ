@@ -13,6 +13,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title><f:message key="useredittitle"/></title>
+        <script type="text/javascript" src="scripts/support-scripts.js"></script>
     </head>
     <body>
         <div id="pageheader">
