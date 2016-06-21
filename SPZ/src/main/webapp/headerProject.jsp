@@ -16,12 +16,13 @@
 --%>
 
 <jsp:include page="header.jsp"/>
-&gt;&gt;
+&gt;&gt;<a href="javascript: doPost(configs)"><c:out value="${project.name}"/></a>
+
 <form name="configs" action="${pageContext.request.contextPath}/SPZServlet/listConfigurations" method="post" class="navigationform">
     <input type="hidden" name="projectid" value="${project.id}"/>
     <input type="hidden" name="userid" value="${user.id}"/>
     <input type="hidden" name="spzid" value="${spz.id}"/>
    <%-- <input type="submit" value="${project.name}" class="linkbutton"/>--%>
-   <a href="javascript: doPost(configs)"><c:out value="${project.name}"/></a>
+   <%--<a href="javascript: doPost(configs)"><c:out value="${project.name}"/></a>--%>
 </form>
 
