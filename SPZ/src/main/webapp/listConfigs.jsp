@@ -12,14 +12,12 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title><f:message key="confList"/><c:out value="${user.login}"/></title>
+        <title><f:message key="confList"/> (<c:out value="${user.login}"/>)</title>
         <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/styles/dcb.css" />
         <script type="text/javascript" src="scripts/support-scripts.js"></script>
     </head>
     <body>
-        <div class="leftfloat">
-            <jsp:include page="headerProject.jsp"/>
-        </div>
+        <jsp:include page="headerProject.jsp"/>
         <h1><f:message key="availConfs"/></h1>
         <table class="fullwidthtable">
             <thead>
@@ -32,12 +30,12 @@
                 <c:forEach var="conf" items="${configs}">
                     <tr>
                         <td>
-                            <form id="listspz" action="${pageContext.request.contextPath}/SPZServlet/listspz" method="post">
+                            <form name="${conf.code}" action="${pageContext.request.contextPath}/SPZServlet/listspz" method="post">
                                 <input type="hidden" name="projectid" value="${project.id}"/>
                                 <input type="hidden" name="configid" value="${conf.id}"/>
                                 <input type="hidden" name="userid" value="${user.id}"/>
                                 <%--<input type="submit" value="${conf.code}"/>--%>
-                                <a href="javascript: doPost(listspz);">${conf.code}</a>
+                                <a href="javascript: doPost(${conf.code});">${conf.code}</a>
                                 <%--     <c:out value="${conf.code}"/>--%>
                             </form>
                         </td>
