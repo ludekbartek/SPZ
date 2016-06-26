@@ -21,7 +21,7 @@
         <jsp:include page="headerspz.jsp"/>
         <h1><f:message key="pageTitle"/></h1>
         <c:set var="jsp" value="./editSpec.jsp"/>
-        <table class="infotable">
+        <table class="border-fullwidthtable">
             <jsp:include page="editcommonspec.jsp"/>
             <%--<tr>
                 <td class="label"><f:message key="revisedReq"/>:</td>

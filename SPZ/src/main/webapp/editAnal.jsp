@@ -19,7 +19,7 @@
     <body>
     <jsp:include page="headerspz.jsp"/>
     <h1><f:message key="titleAnalysis"/></h1>
-    <table class="infotable">
+    <table class="border-fullwidthtable">
       <jsp:include page="editcommon.jsp"/>
     </table>
     <c:if test="${user.role!=0}">

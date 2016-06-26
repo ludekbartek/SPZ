@@ -19,7 +19,7 @@
     <body>
         <jsp:include page="headerspz.jsp"/>
         <h2><f:message key="pageTitle"/></h2>
-        <table>
+        <table class="border-fullwidthtable">
             <c:set var="jsp" value="./editNew.jsp"/>
             <%@include file="editcommon.jsp" %>
             <tr>

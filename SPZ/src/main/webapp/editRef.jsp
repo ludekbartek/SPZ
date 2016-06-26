@@ -31,7 +31,7 @@
             </c:choose> <c:out value="${spz.id}"/>
         </h1>
         
-        <table>
+        <table class="border-fullwidthtable">
         <jsp:include page="editcommon.jsp"/>
         <tr>
             <td class="label"><f:message key="revisedDesc"/>:</td>

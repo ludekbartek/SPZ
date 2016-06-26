@@ -20,7 +20,7 @@
         <jsp:include page="headerspz.jsp"/>
         <h2><f:message key="pageTitle" bundle="${loc}"/></h2>
         <c:set var="jsp" value="./editPost.jsp"/>
-        <table class="infotable">
+        <table class="border-fullwidthtable">
             <%@include file="editcommon.jsp" %>
         </table>
         <div class="controls">    

@@ -25,13 +25,14 @@
                 <c:out value="${error}"/>
             </div>
         </c:if>
-        <div id="listspzheading" style="width: 100%">
+        <div id="listspzheading" style="width: 98%">
                 <form id="spzlist" action="${pageContext.request.contextPath}/SPZServlet/listspz" method="post" style="leftfloat">
                     <input type="hidden" name="userid" value="${user.id}"/>
                     <input type="hidden" name="projectid" value="${project.id}"/>
                     <input type="hidden" name="configid" value="${config.id}"/>
-                    <span class="filter" style="text-align: center;width:10%;float:left;">
-                        <span class="title">Filtr:</span> <span>
+                    <span class="filter" style="text-align: center;width:20%;float:left;">
+                        <span class="title">Filtr:</span>
+                        <span class="filter-select">
                             <select name="filter" onchange="doPost(spzlist);">
                                 <option value="0" <c:if test="${filter == '0'}">SELECTED</c:if>>Všechny</option>
                                 <option value="1" <c:if test="${filter == '1'}">SELECTED</c:if>>Jen neuzavřené</option>
@@ -76,8 +77,8 @@
         </div>
         <br/>
         <div id="table">
-        <table style="float:left;">
-            <thead style="border-bottom: black solid;background-color: #cccccc">
+        <table class="fullwidthtable">
+            <thead>
                 <th><f:message key="reqid"/></th>
                 <th><f:message key="priority"/><!--Pri.--></th>
                 <th><f:message key="reqtype"/><!--Typ pozadavku--></th>

@@ -19,7 +19,7 @@
     <body>
         <jsp:include page="headerspz.jsp"/>
         <h1><f:message key="spzInfoHeader"/></h1>
-        <table>
+        <table class="fullwidthtable">
         <jsp:include page="editcommon.jsp"/>
         <tr>
             <td class="label"><f:message key="revised"/></td>

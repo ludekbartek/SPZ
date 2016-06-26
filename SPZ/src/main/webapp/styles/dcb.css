@@ -51,6 +51,7 @@ body{
 
 .rightfloat{
     float: right;
+    margin-left: 5px;
 }
 
 .doubleValueList{
@@ -71,6 +72,13 @@ body{
     font-weight: bold;
 }
 
+.filter-select{
+    margin-left: 2px;
+}
+
+.navigation{
+    text-align: center;
+}
 table{
     width: 100%;
 }
@@ -81,9 +89,17 @@ thead{
 }
 
 .fullwidthtable{
-    width: 100%;
+    width: 98%;
+    overflow: auto;
+    margin: 10px;
 }
 
+.border-fullwidthtable{
+    width: 98%;
+    border: black thin solid;
+    overflow: auto;
+    margin: 10px;
+}
 .code{
     width: 20%;
 }

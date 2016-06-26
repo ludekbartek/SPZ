@@ -8,10 +8,9 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%--<%@taglib prefix="f" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>--%>
-<%@taglib prefix="sql" uri="http://java.sun.com/jsp/jstl/sql" %>
 
-<jsp:include page="headerProject.jsp"/>&gt;&gt;<a href="javascript: doPost(editconfig)">${config.code}</a>
-
+<jsp:include page="headerProject.jsp"/>
+&gt;&gt;<a href="javascript: doPost(editconfig)">${config.code}</a>
 <form id="editconfig" action="${pageContext.request.contextPath}/SPZServlet/listspz" method="post" class="navigationform">
     <input type="hidden" name="projectid" value="${project.id}"/>
     <input type="hidden" name="configid" value="${config.id}"/>
