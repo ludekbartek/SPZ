@@ -1029,10 +1029,12 @@ public class SPZServlet extends HttpServlet {
         }
         Project project = getProjectFromRequest(request);
         Configuration conf = getConfigurationFromRequest(request);
-                
-        if(request.getParameter("spzid")!=null){
-            SPZWebEntity spz = spzToEntity(getSpzByParameter(request));
-            request.setAttribute("spz", spz);
+        String strSpzId = request.getParameter("spzid");
+        if(strSpzId!=null && !strSpzId.isEmpty()){
+            Integer spzId = Integer.parseInt(strSpzId);
+            Spz spz = spzManager.findSpz(spzId);
+            SPZWebEntity spzEnt = spzToEntity(spz);
+            request.setAttribute("spz", spzEnt);
         }
         request.setAttribute("user", user);
         request.setAttribute("project", project);
@@ -1261,8 +1263,10 @@ public class SPZServlet extends HttpServlet {
         List<SPZWebEntity> entities = new ArrayList<>();
         
         for(Spz spz:spzs){
-            SPZWebEntity entity = spzToEntity(spz);
-            entities.add(entity);
+            if(spz!=null){
+                SPZWebEntity entity = spzToEntity(spz);
+                entities.add(entity);
+            }
         }
         return entities;
     }
