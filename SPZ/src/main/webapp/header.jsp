@@ -22,7 +22,7 @@
 
 <div class="center">    
 <!--<div class="leftfloat">-->
-    <h3><f:message key="header"/></h3>
+<h3><f:message key="header"/></h3>
 <div class="navigation">
 <form id="projects" action="${pageContext.request.contextPath}/SPZServlet/listProjects" method="post" class="navigationform">
    <!-- <input type="submit" value="<f:message key='projects'/>" class="linkbutton"/>-->
