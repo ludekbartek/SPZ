@@ -29,6 +29,11 @@ body{
     width: 100%;
 }
 
+h1{
+    align-content: center;
+    text-align: center;
+}
+
 #navbutton{
     border: none;
     text-decoration: underline;
@@ -45,13 +50,18 @@ body{
     text-align: center;
 }
 
+.topheader{
+    font-style: italic;
+    color: graytext;
+}
 .leftfloat{
     float: left;
+    margin-left: 25px;
 }
 
 .rightfloat{
     float: right;
-    margin-left: 5px;
+    margin-right: 25px;
 }
 
 .doubleValueList{
@@ -118,4 +128,10 @@ thead{
 
 .debug{
     visibility: hidden;
+}
+
+.center{
+    align-content: center;
+    width: 80%;
+    text-align: center;
 }

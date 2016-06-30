@@ -17,6 +17,9 @@
     </head>
     <body>
         <jsp:include page="headerProject.jsp"/>
+        <div class="center">
+            <jsp:include page="navigationProject.jsp"/>
+        </div>
         <div id="left">
             <ul>
                 <c:forEach var="projectItem" items="${projects}">

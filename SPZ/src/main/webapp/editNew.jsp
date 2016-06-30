@@ -18,6 +18,9 @@
     </head>
     <body>
         <jsp:include page="headerspz.jsp"/>
+        <div class="center">
+            <jsp:include page="navigationSpz.jsp"/>
+        </div>
         <h2><f:message key="pageTitle"/></h2>
         <table class="border-fullwidthtable">
             <c:set var="jsp" value="./editNew.jsp"/>

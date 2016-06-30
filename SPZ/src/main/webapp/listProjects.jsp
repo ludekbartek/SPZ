@@ -18,7 +18,8 @@
     </head>
     <body>
         <jsp:include page="header.jsp"/>
-        <h1><f:message key="availProjects"/></h1>
+        <%--<div class="center"><jsp:include page="navigation.jsp"/></div>--%>
+        <h2 class="center"><f:message key="availProjects"/></h2>
         <table  class="fullwidthtable">
             <thead>
                 <tr>

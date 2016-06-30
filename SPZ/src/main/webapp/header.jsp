@@ -22,12 +22,13 @@
 
 <div class="center">    
 <!--<div class="leftfloat">-->
-<h3><f:message key="header"/></h3>
+<h2 class="topheader"><f:message key="header"/></h2>
 <div class="navigation">
 <form id="projects" action="${pageContext.request.contextPath}/SPZServlet/listProjects" method="post" class="navigationform">
-   <!-- <input type="submit" value="<f:message key='projects'/>" class="linkbutton"/>-->
+   <%-- <input type="submit" value="<f:message key='projects'/>" class="linkbutton"/>--%>
     <input type="hidden" name="userid" value="${user.id}"/>
-    <a href="javascript: doPost(projects)"><f:message key="projects"/></a>
+    <%--<a href="javascript: doPost(projects)"><f:message key="projects"/></a>--%>
 </form>
+<%--<jsp:include page="navigation.jsp"/>--%>
 </div>
 </div>

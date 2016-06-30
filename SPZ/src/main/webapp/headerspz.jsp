@@ -10,7 +10,7 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>--%>
 
 <jsp:include page="headerProject.jsp"/>
-&gt;&gt;<a href="javascript: doPost(editconfig)">${config.code}</a>
+<%--&gt;&gt;<a href="javascript: doPost(editconfig)">${config.code}</a>--%>
 <form id="editconfig" action="${pageContext.request.contextPath}/SPZServlet/listspz" method="post" class="navigationform">
     <input type="hidden" name="projectid" value="${project.id}"/>
     <input type="hidden" name="configid" value="${config.id}"/>

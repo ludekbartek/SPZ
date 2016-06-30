@@ -18,7 +18,10 @@
     </head>
     <body>
         <jsp:include page="headerProject.jsp"/>
-        <h1><f:message key="availConfs"/></h1>
+        <div class="center">
+            <jsp:include page="navigation.jsp"/>
+        </div>
+        <h2 class="center"><f:message key="availConfs"/></h1>
         <table class="fullwidthtable">
             <thead>
                 <tr>

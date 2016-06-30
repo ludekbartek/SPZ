@@ -18,6 +18,9 @@
     </head>
     <body>
         <jsp:include page="headerspz.jsp"/>
+        <div class="center">
+            <jsp:include page="navigationSpz.jsp"/>
+        </div>
         <h1>Systém servisní podpory</h1>
         <h1>Změna stavu</h1>
         Požadujete 'Zrušit' na SPZ:

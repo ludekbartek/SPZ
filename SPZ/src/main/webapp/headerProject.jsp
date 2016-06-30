@@ -16,7 +16,7 @@
 --%>
 
 <jsp:include page="header.jsp"/>
-&gt;&gt;<a href="javascript: doPost(configs)"><c:out value="${project.name}"/></a>
+<%--&gt;&gt;<a href="javascript: doPost(configs)"><c:out value="${project.name}"/></a>--%>
 
 <form name="configs" action="${pageContext.request.contextPath}/SPZServlet/listConfigurations" method="post" class="navigationform">
     <input type="hidden" name="projectid" value="${project.id}"/>
@@ -25,4 +25,5 @@
    <%-- <input type="submit" value="${project.name}" class="linkbutton"/>--%>
    <%--<a href="javascript: doPost(configs)"><c:out value="${project.name}"/></a>--%>
 </form>
+   <%--<jsp:include page="navigationProject.jsp"/>--%>
 

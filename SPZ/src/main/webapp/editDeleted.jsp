@@ -17,6 +17,9 @@
     </head>
     <body>
         <jsp:include page="headerspz.jsp"/>
+        <div class="center">
+            <jsp:include page="navigationSpz.jsp"/>
+        </div>
         <h1>Informace o SPZ</h1>
         <c:set var="jsp" value="./editDeleted.jsp"/>
         <jsp:include page="editcommon.jsp"/>

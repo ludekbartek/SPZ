@@ -20,6 +20,9 @@
         <script type="text/javascript" src="/SPZ/scripts/support-scripts.js">
         </script>
         <jsp:include page="headerspz.jsp"/>
+        <div class="center">
+            <jsp:include page="navigationProject.jsp"/>
+        </div>
         <c:if test="${! empty error}">
             <div id="erorr" style="background-color: yellow;border-color: red;">
                 <c:out value="${error}"/>

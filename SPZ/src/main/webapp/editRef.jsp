@@ -24,6 +24,9 @@
     </head>
     <body>
         <jsp:include page="headerspz.jsp"/>
+        <div class="center">
+            <jsp:include page="navigationSpz.jsp"/>
+        </div>
         <h1>
             <c:choose>
                 <c:when test="${empty change}"><f:message key="spzInfoHeader"/></c:when>
