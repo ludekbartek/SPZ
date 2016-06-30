@@ -110,6 +110,7 @@ import cz.dcb.support.web.entities.ProjectWebEntity;
 import java.io.FileInputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.time.Instant;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
@@ -1329,6 +1330,12 @@ public class SPZServlet extends HttpServlet {
         Spzstate current = statesManager.getCurrentState(spz);
         User user = null;
         List<Spzstate> statesHistory = statesManager.findSpzstates(spz);
+        Date issueDate = findSpzIssueDate(statesHistory);
+        if(issueDate!=null){
+            spz.setIssuedate(issueDate);
+        }
+        
+        
         
         history = spzStatesToSpzStateWebEntities(statesHistory);
         if(current!=null){
@@ -1341,6 +1348,10 @@ public class SPZServlet extends HttpServlet {
             }
             entity.setSolution(solution);
             entity.setRevised(current.getRevisedrequestdescription());
+            Date specDate = findSpzSpecDate(statesHistory);
+            if(specDate!=null){
+                entity.setSpecDate(specDate);
+            }
             Double mandays = spz.getManDays();
             if(mandays!=null)
                 entity.setWorkLoadReal(spz.getManDays());
@@ -1354,6 +1365,10 @@ public class SPZServlet extends HttpServlet {
             entity.setRelNotes(current.getReleasenotes());
         
         }
+        Date modifDate = findSpzModificationDate(statesHistory);
+        if(modifDate!=null){
+            entity.setDate(modifDate);
+        }
         entity.setIssuer((user!=null?user.getName():"Nenastaven"));
         
         entity.setHistory(history);
@@ -1366,7 +1381,7 @@ public class SPZServlet extends HttpServlet {
         
         entity.setRequestDescription(spz.getRequestdescription());
         entity.setKind(spz.getRequesttype());
-        entity.setDate(getLastChangeDate(spz.getId(),stateManager));
+//        entity.setDate(getLastChangeDate(spz.getId(),stateManager));
         entity.setCategory(spz.getCategory());
         entity.setPriority(spz.getPriority());
         return entity;
@@ -3428,6 +3443,41 @@ public class SPZServlet extends HttpServlet {
             }
         }
         return spzs;
+    }
+
+    private Date findSpzSpecDate(List<Spzstate> statesHistory) {
+        Date specDate = null;
+        for(Spzstate spzState:statesHistory){
+            if(spzState.getCode().equals(SpzStates.SPECIFIED.toString())){
+                specDate = Date.from(Instant.ofEpochMilli(spzState.getTs().longValue()));
+                break;
+            }
+        }
+        return specDate;
+    }
+
+    private Date findSpzIssueDate(List<Spzstate> statesHistory) {
+        Date issueDate = null;
+        for(Spzstate spzState:statesHistory){
+            if(spzState.getCode().equals(SpzStates.POSTED.toString())){
+                issueDate = Date.from(Instant.ofEpochMilli(spzState.getTs().longValue()));
+                break;
+            }
+        }
+        return issueDate;
+    }
+
+    private Date findSpzModificationDate(List<Spzstate> statesHistory) {
+        List<Spzstate> sortedByDate = new ArrayList<>(statesHistory);
+        Collections.sort(sortedByDate,new Comparator<Spzstate>() {
+            @Override
+            public int compare(Spzstate o1, Spzstate o2) {
+                return o1.getTs().compareTo(o2.getTs());
+            }
+        });
+        Spzstate last = sortedByDate.get(sortedByDate.size()-1);
+        Date modificationDate = Date.from(Instant.ofEpochMilli(last.getTs().longValue()));
+        return modificationDate;
     }
 
     

@@ -159,7 +159,8 @@
                         </c:choose>
                     </td>
                     <td>
-                        <f:formatDate value="${item.implementationAcceptDate}" pattern="dd.MM.yyyy"/>
+                        <%--<c:out value="${item.date}"/>--%>
+                        <f:formatDate value="${item.date}" pattern="dd.MM.yyyy"/>
                     </td>
                         
                 </tr>
