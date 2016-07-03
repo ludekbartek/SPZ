@@ -24,20 +24,6 @@ pri editaci pouze popisy (viz stara verze).
        </script>-->
       <script src="scripts/support-scripts.js"></script>
       <link rel="stylesheet" href="styles/dcb.css" type="text/css"/>
-       <style>
-            h1{
-                text-align: center;
-            }
-            form{
-                width:100%;
-            }
-            label{
-                width: 20%;
-            }
-            .formItem{
-                width: 80%;
-            }
-        </style>
     </head>
     
     <body>
@@ -58,26 +44,26 @@ pri editaci pouze popisy (viz stara verze).
                 <c:out value="${error}"/>
             </p>
         </c:if>
-        <div id="form" style="width: 100%;">
+        <div id="form">
             <form action="${pageContext.request.contextPath}/SPZServlet/addspz" method="post" enctype="multipart/form-data">
                 <input type="hidden" name="userid" value="${user.id}"/>
                 <input type="hidden" name="configid" value="${config.id}"/>
                 <input type="hidden" name="projectid" value="${project.id}"/>
                 <div class="formItem">
-                    <span class="label"><label class="label" for="shortname"><f:message key="label"/></label></span>
-                    <span class="input"><input type="text" name="shortname" maxlength="50" size="50" value="<c:if test="${!empty spz.reqnumber}">${spz.reqnumber}</c:if>"></span>
+                    <span class="label"><label for="shortname"><f:message key="label"/></label></span>
+                    <span class="input"><input type="text" name="shortname" maxlength="50" size="87" value="<c:if test="${!empty spz.reqnumber}">${spz.reqnumber}</c:if>"></span>
                     <!--<input type="hidden" name="shortname"/>-->
                 </div>
                 <div class="formItem">
                     <span class="label"><label for="contactperson"><f:message key="contactperson"/></label></span>
-                    <span class="input"><input type="text" name="contactperson" value="<c:if test="${!empty spz.contactperson}">${spz.contactperson}</c:if>"/></span>
+                <span class="input"><input type="text" name="contactperson" size="87" maxlength="32" value="<c:if test="${!empty spz.contactperson}">${spz.contactperson}</c:if>"/></span>
                 </div>
                 <div class="formItem">
                     <span class="label"><label class="label" for="requestdescription"><f:message key="requestdescription"/></label></span>
-                    <span class="input"><textarea name="requestdescription" rows="5" cols="80"></textarea></span>
+                <span class="input"><textarea name="requestdescription" rows="9" maxlength="9000" cols="100"></textarea></span>
                 </div>
                 <div class="formItem">
-                    <span class="label"><label for="reqtype"><f:message key="reqtype"/>:</label></span>
+                    <span class="label"><label for="reqtype"><f:message key="reqtype"/></label></span>
                     <span class="input">
                         <select name="reqtype">
                             <option value="placeny"><f:message key="placeny"/></option>
@@ -86,7 +72,7 @@ pri editaci pouze popisy (viz stara verze).
                     </span>
                 </div>
                 <div class="formItem">
-                    <span class="label"><f:message key="category"/>:</span>
+                    <span class="label"><f:message key="category"/></span>
                     <span class="input">
                         <select name="category">
                             <option value="1" selected><f:message key="standard"/></option>
@@ -110,26 +96,30 @@ pri editaci pouze popisy (viz stara verze).
                 <div class="formItem">
                     <span class="label"><label for="desc"><f:message key="desc"/></label></span>
                     <span class="input">
-                        <textarea name="desc" cols="80" rows="5"></textarea>
+                        <textarea name="desc" maxlength="8000" cols="100" rows="5"></textarea>
                     </span>
                 </div>
                 <div class="formItem">
-                    <input type="checkbox" id="ext" name="external" value="1"/>
-                    <label for="ext"><f:message key="ext"/></label>
+                    <span class="input"><input type="checkbox" id="ext" name="external" value="1"/></span>
+                    <span class="label"><label for="ext"><f:message key="ext"/></label></span>
                 </div>
-                <div class="file">
+                <div class="formItem">
+                <span class="file">
                     <span class="label"><label for="soubor1"><f:message key="file1"/></label></span>
                     <span class="input"><input type="file" name="soubor1"/></span>
-                </div>
-                <div class="file">
-                    <span class="label"><label for="soubor2"><f:message key="file2"/>:</label></span>
+                </span>
+                <span class="file">
+                    <span class="label"><label for="soubor2"><f:message key="file2"/></label></span>
                     <span class="input"><input type="file" name="soubor2"/></span>
-                </div>
-                <div class="file">
-                    <span class="label"><label for="soubor3"><f:message key="file3"/>:</label></span>
+                </span>
+                <span class="file">
+                    <span class="label"><label for="soubor3"><f:message key="file3"/></label></span>
                     <span class="input"><input type="file" name="soubor3"/></span>
+                </span>
                 </div>
-                <span class="formItem"><input type="submit" value="<f:message key="register"/>" onfocus="shortname.value = reqnumber.value;"/></span>
+                <div class="formItem">
+                    <span class="label"><input type="submit" value="<f:message key="register"/>" onfocus="shortname.value = reqnumber.value;"/></span>
+                </div>
             </form>
         </div>
     </body>
