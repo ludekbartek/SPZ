@@ -52,15 +52,14 @@ pri editaci pouze popisy (viz stara verze).
                 <div class="formItem">
                     <span class="label"><label for="shortname"><f:message key="label"/></label></span>
                     <span class="input"><input type="text" name="shortname" maxlength="50" size="87" value="<c:if test="${!empty spz.reqnumber}">${spz.reqnumber}</c:if>"></span>
-                    <!--<input type="hidden" name="shortname"/>-->
                 </div>
                 <div class="formItem">
                     <span class="label"><label for="contactperson"><f:message key="contactperson"/></label></span>
-                <span class="input"><input type="text" name="contactperson" size="87" maxlength="32" value="<c:if test="${!empty spz.contactperson}">${spz.contactperson}</c:if>"/></span>
+                    <span class="input"><input type="text" name="contactperson" size="87" maxlength="32" value="<c:if test="${!empty spz.contactperson}">${spz.contactperson}</c:if>"/></span>
                 </div>
                 <div class="formItem">
-                    <span class="label"><label class="label" for="requestdescription"><f:message key="requestdescription"/></label></span>
-                <span class="input"><textarea name="requestdescription" rows="9" maxlength="9000" cols="100"></textarea></span>
+                    <span class="textarealabel"><label class="textarealabel" for="requestdescription"><f:message key="requestdescription"/></label></span>
+                    <span class="input"><textarea name="requestdescription" rows="9" maxlength="9000" cols="100"></textarea></span>
                 </div>
                 <div class="formItem">
                     <span class="label"><label for="reqtype"><f:message key="reqtype"/></label></span>
