@@ -33,7 +33,6 @@ h1{
     align-content: center;
     text-align: center;
 }
-
 #navbutton{
     border: none;
     text-decoration: underline;
@@ -74,9 +73,6 @@ h1{
     border-color: black;
 }
 
-.label{
-    font-weight: bold;
-}
 
 .highlight-value{
     font-weight: bold;
@@ -134,4 +130,30 @@ thead{
     align-content: center;
     width: 80%;
     text-align: center;
+}
+
+.label{
+    vertical-align:central;
+    float: left;
+    width: 20%;
+}
+
+.textarealabel{
+    vertical-align: top;
+    float:left;
+    width:20%;
+}
+
+.formItem{
+    width: 80%;
+    margin: 20px;
+}
+.input{
+    float: right;
+    width: 80%;
+}
+
+.file{
+    float:left;
+    width:33%;
 }
