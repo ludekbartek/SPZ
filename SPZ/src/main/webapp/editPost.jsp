@@ -72,13 +72,18 @@
             
         </form>-->
         <jsp:include page="addNote.jsp"/>
-        <p style="text-align:right;"/>
+        <div class="updateSPZ">    
             <form action="${pageContext.request.contextPath}/SPZServlet/updateSPZ" method="post">
-                <input type="submit" value="<f:message key='changeSpz' bundle="${loc}"/>"/>
+                <div class="formItem">
+                    <span class="label">
+                        <input type="submit" value="<f:message key='changeSpz' bundle="${loc}"/>"/>
+                    </span>
+                </div>
                 <input type="hidden" name="spzid" value="${spz.id}"/>
                 <input type="hidden" name="userid" value="${user.id}"/>
                 <input type="hidden" name="projectid" value="${project.id}"/>
                 <input type="hidden" name="configid" value="${config.id}"/>
             </form>
+        </div>
     </body>
 </html>

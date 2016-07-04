@@ -28,6 +28,7 @@
                 <c:out value="${error}"/>
             </div>
         </c:if>
+            <h1><f:message key="spzList"/></h1>
         <div id="listspzheading" style="width: 98%">
                 <form id="spzlist" action="${pageContext.request.contextPath}/SPZServlet/listspz" method="post" style="leftfloat">
                     <input type="hidden" name="userid" value="${user.id}"/>
@@ -100,7 +101,7 @@
             <c:forEach items="${spzs}" var="item">
                 <tr>
                 
-                    <td>
+                    <td class="item">
                         <c:set var="formid" value="spz${item.reqNumber}"/>
                         <form name="${formid}" action="${pageContext.request.contextPath}/SPZServlet/editspz" method="post">
                             <input type="hidden" name="spzid" value="${item.id}"/>
@@ -119,50 +120,92 @@
                         </form>
                             
                     </td>
-                   <td>
+                   <td class="item">
                         <c:out value="${item.priority}"/>
                     </td>
-                    <td>
+                    <td class="item">
                         <f:message key="${item.requestType}"/>
                     </td>
-                    <td>
+                    <td class="item">
                         <c:out value="${item.issuer}"/>
                     </td>
-                    <td>
+                    <td class="item">
                         <c:out value="${item.contactPerson}"/>
                     </td>
-                    <td>
+                    <td class="item">
                         <f:formatDate pattern="dd.MM.yy" value="${item.issueDate}"/> 
                     </td>
-                    <td>
+                    <td class="item">
                         <c:out value="${item.shortName}"/>
                     </td>
-                    <td>
+                    <c:choose>
+                        <c:when test="${not empty item.specDate}">
+                            <td class="item">
+                        </c:when>
+                        <c:otherwise>
+                            <td>
+                        </c:otherwise>
+                    </c:choose>
                         <f:formatDate value="${item.specDate}" pattern="dd.MM. yyyy"/>
                     </td>
-                    <td>
-                        <f:formatNumber value="${item.workLoadEstimation}"/>
+                    <c:choose>
+                        <c:when test="${not empty item.workLoadEstimation}">
+                            <td class="item">
+                        </c:when>
+                        <c:otherwise>
+                            <td>
+                        </c:otherwise>
+                    </c:choose>
+                        <f:formatNumber value="${item.workLoadEstimation}"/> <f:message key="manhour"/>
                     </td>
-                    <td>
+                    <c:choose>
+                        <c:when test="${not empty item.installDate}">
+                            <td class="item">
+                        </c:when>
+                        <c:otherwise>
+                            <td>
+                        </c:otherwise>
+                    </c:choose>
                         <f:formatDate value="${item.installDate}" pattern="dd.MM. yyyy"/>
                     </td>
-                    <td>
-                        <f:formatNumber value="${item.workLoadReal}"/>
+                    <c:choose>
+                        <c:when test="${not empty item.workLoadReal}">
+                            <td class="item">
+                        </c:when>
+                        <c:otherwise>
+                            <td>
+                        </c:otherwise>        
+                    </c:choose>
+                        <f:formatNumber value="${item.workLoadReal}"/> <f:message key="manhour"/>
                     </td>
-                    <td>
+                    <c:choose>
+                        <c:when test="${not empty item.spzState}">
+                            <td class="item">
+                        </c:when>
+                        <c:otherwise>
+                            <td>
+                        </c:otherwise>
+                    </c:choose>
                         <f:message key="${item.spzState}"/>
                     </td>
-                    <td>
+                    <c:choose>
+                        <c:when test="${not empty item.category}">
+                            <td class="item">
+                        </c:when>
+                        <c:otherwise>
+                            <td>
+                        </c:otherwise>
+                    </c:choose>
+                    
                         <c:choose>
                             <c:when test="${item.category=='1'}"><f:message key="standard"/></c:when>
                             <c:otherwise><f:message key="nonstandard"/></c:otherwise>
                         </c:choose>
                     </td>
-                    <td>
+                    <td class="item">
                         <%--<c:out value="${item.date}"/>--%>
                         <f:formatDate value="${item.date}" pattern="dd.MM.yyyy"/>
                     </td>
-                        
                 </tr>
                 
             </c:forEach>

@@ -21,18 +21,18 @@
         <div class="center">
             <jsp:include page="navigation.jsp"/>
         </div>
-        <h2 class="center"><f:message key="availConfs"/></h1>
+        <h1 class="center"><f:message key="availConfs"/></h1>
         <table class="fullwidthtable">
             <thead>
                 <tr>
-                    <td style="width: 20%;"><f:message key="code"/></td>
-                    <td style="width: 80%;"><f:message key="desc"/></td>
+                    <td class="code" style="width: 20%;"><f:message key="code"/></td>
+                    <td class="desc" style="width: 80%;"><f:message key="desc"/></td>
                 </tr>
             </thead>
             <tbody>
                 <c:forEach var="conf" items="${configs}">
                     <tr>
-                        <td>
+                        <td  class="item">
                             <form name="${conf.code}" action="${pageContext.request.contextPath}/SPZServlet/listspz" method="post">
                                 <input type="hidden" name="projectid" value="${project.id}"/>
                                 <input type="hidden" name="configid" value="${conf.id}"/>
@@ -42,7 +42,7 @@
                                 <%--     <c:out value="${conf.code}"/>--%>
                             </form>
                         </td>
-                        <td><c:out value="${conf.description}"/></td>
+                        <td class="item"><c:out value="${conf.description}"/></td>
                     </tr>
                 </c:forEach>
             </tbody>

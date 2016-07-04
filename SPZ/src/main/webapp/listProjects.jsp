@@ -19,7 +19,7 @@
     <body>
         <jsp:include page="header.jsp"/>
         <%--<div class="center"><jsp:include page="navigation.jsp"/></div>--%>
-        <h2 class="center"><f:message key="availProjects"/></h2>
+        <h1 class="center"><f:message key="availProjects"/></h1>
         <table  class="fullwidthtable">
             <thead>
                 <tr>
@@ -35,7 +35,7 @@
             <tbody>
                 <c:forEach var="project" items="${projects}">
                     <tr>
-                        <td>
+                        <td  class="item">
                             <form name="prj${project.id}" action="${pageContext.request.contextPath}/SPZServlet/listconfigurations" method="post">
                                 <input type="hidden" name="projectid" value="${project.id}"/>
                                 <input type="hidden" name="userid" value="${user.id}"/>
@@ -43,7 +43,7 @@
                                 <a href="javascript: doPost(prj${project.id})">${project.name}</a>
                             </form>
                         </td>
-                        <td>
+                        <td  class="item">
                             <c:out value="${project.description}"/>
                         </td>
                         <%--Pouze pro admina --%>
