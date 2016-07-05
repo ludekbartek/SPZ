@@ -48,7 +48,7 @@ public class SPZWebEntity {
      private String solutionInfo;
      private Project project;
      private Configuration config;
-     private boolean isGreen;
+     private boolean canContinue;
      
      private List<SpzStateWebEntity> history;
 
@@ -279,12 +279,12 @@ public class SPZWebEntity {
         this.date = date;
     }
 
-    public boolean isIsGreen() {
-        return isGreen;
+    public boolean getCanContinue() {
+        return canContinue;
     }
 
-    public void setIsGreen(boolean isGreen) {
-        this.isGreen = isGreen;
+    public void setCanContinue(boolean canContinue) {
+        this.canContinue = canContinue;
     }
  
     @Override
