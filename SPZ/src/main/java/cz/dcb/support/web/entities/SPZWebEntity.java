@@ -48,6 +48,7 @@ public class SPZWebEntity {
      private String solutionInfo;
      private Project project;
      private Configuration config;
+     private boolean isGreen;
      
      private List<SpzStateWebEntity> history;
 
@@ -278,6 +279,14 @@ public class SPZWebEntity {
         this.date = date;
     }
 
+    public boolean isIsGreen() {
+        return isGreen;
+    }
+
+    public void setIsGreen(boolean isGreen) {
+        this.isGreen = isGreen;
+    }
+ 
     @Override
     public int hashCode() {
         int hash = 7;
