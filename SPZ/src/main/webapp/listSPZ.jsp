@@ -53,7 +53,7 @@
                         <span>Hledany text:</span>
                         <span><input type="text" size="18" maxlength="18" name="searched"/></span>
                     </span>
-                    <span class="where" style="float:left;">
+                    <span class="where" style="width: 30%;float:left;">
                         <span>V polich:</span>
                         <span>
                             <select name="fields">
@@ -149,14 +149,16 @@
                         <f:formatDate value="${item.specDate}" pattern="dd.MM. yyyy"/>
                     </td>
                     <c:choose>
-                        <c:when test="${not empty item.workLoadEstimation}">
+                        <c:when test="${not empty item.workLoadEstimation and item.workLoadEstimation gt 0}">
                             <td class="item">
                         </c:when>
                         <c:otherwise>
                             <td>
                         </c:otherwise>
                     </c:choose>
-                        <f:formatNumber value="${item.workLoadEstimation}"/> <f:message key="manhour"/>
+                        <c:if test="${item.workLoadEstimation gt 0}">
+                              <f:formatNumber value="${item.workLoadEstimation}"/> <f:message key="manhour"/>
+                        </c:if>
                     </td>
                     <c:choose>
                         <c:when test="${not empty item.installDate}">
@@ -169,18 +171,20 @@
                         <f:formatDate value="${item.installDate}" pattern="dd.MM. yyyy"/>
                     </td>
                     <c:choose>
-                        <c:when test="${not empty item.workLoadReal}">
+                        <c:when test="${not empty item.workLoadReal and item.workLoadReal gt 0}">
                             <td class="item">
                         </c:when>
                         <c:otherwise>
                             <td>
                         </c:otherwise>        
                     </c:choose>
-                        <f:formatNumber value="${item.workLoadReal}"/> <f:message key="manhour"/>
+                        <c:if test="${item.workLoadReal gt 0}">
+                            <f:formatNumber value="${item.workLoadReal}"/> <f:message key="manhour"/>
+                        </c:if>
                     </td>
                     <c:choose>
                         <c:when test="${not empty item.spzState}">
-                            <td class="item">
+                            <td class="item" <c:if test="${item.canContinue}">style="color: green"</c:if>>
                         </c:when>
                         <c:otherwise>
                             <td>
