@@ -138,6 +138,26 @@ public class SPZServlet extends HttpServlet {
         "Změněna", "Specifikována","Probíhá implementace","Přijata ze strany DCB",
         "Uvolněná","Instalovana", "Změna implementace", "Nová implementace", "Probíhá nová analýza",
         "Zamítnuntá", "Potvrzená", "Zrušená", "Fakturovaná"};
+    /*Roles = CLIENT, ANALYST, PROJECT_MANAGER, ADMIN */
+    private static final boolean COLORS[][]={{false,false,true,false}, //Posted
+                                             {true,true,true,false}, //New
+                                             {false,true,true,false}, //Analysis
+                                             {true,true,true,false}, //Refine
+                                             {true,false,true,false}, //Specified
+                                             {false,true,true,false}, //Implementation
+                                             {false,false,true,false}, //Accepted
+                                             {false,true,true,false}, //Dcb_accepted
+                                             {false,false,true,false}, //Released
+                                             {true,false,true,false}, //Installed
+                                             {true,true,true,false}, //Implementation_refine
+                                             {false,true,true,false}, //Reimplementation
+                                             {false,true,true,false}, //Reanalysis
+                                             {false,true,true,false}, //Reclaimed
+                                             {false,false,true,false}, //Confirmed
+                                             {false,false,false,false}, //Canceled
+                                             {false,false,false,false} //Invoiced
+                                            };
+            
     
     @Override
     public void init(){
@@ -1384,6 +1404,22 @@ public class SPZServlet extends HttpServlet {
 //        entity.setDate(getLastChangeDate(spz.getId(),stateManager));
         entity.setCategory(spz.getCategory());
         entity.setPriority(spz.getPriority());
+        User currentUser = autheticatedUsers.toArray(new User[0])[autheticatedUsers.size()-1];
+        List<Useraccess> roles = getUserRoles(currentUser.getId());
+        int roleId=0;
+        boolean isGreen = false;
+        int currentStateId = SpzStates.valueOf(current.getCode()).ordinal();
+        for(Useraccess access:roles){
+            roleId = Roles.valueOf(access.getRole()).ordinal();
+            isGreen = isGreen || COLORS[currentStateId][roleId];
+        }
+        if(roles.size()>0){
+            Useraccess access = roles.get(0);
+            
+        }
+        LOGGER.log(Level.INFO, "User roles: {0}", roles.toString());
+        LOGGER.log(Level.INFO, String.format("RoleId: %d\t COLORS[%d, %d] = %s",roleId, currentStateId,roleId,Boolean.toString(COLORS[currentStateId][roleId])));
+        entity.setCanContinue(isGreen);
         return entity;
     }
 
