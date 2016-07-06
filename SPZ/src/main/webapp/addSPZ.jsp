@@ -100,10 +100,20 @@ pri editaci pouze popisy (viz stara verze).
                         <textarea name="desc" maxlength="8000" cols="100" rows="5"></textarea>
                     </span>
                 </div>
+                <div class="debug">
+                    Role: <c:out value="${user.role}"/>
+                </div>
+            <c:choose> 
+                <c:when test="${user.role ne 0}">
                 <div class="formItem">
                     <span class="input"><input type="checkbox" id="ext" name="external" value="1"/></span>
                     <span class="label"><label for="ext"><f:message key="ext"/></label></span>
                 </div>
+                </c:when>
+                <c:otherwise>
+                    <span class="input"><input type="hidden" id="ext" name="external" value="1"/></span>
+                </c:otherwise>
+            </c:choose>
                 <div class="formItem">
                 <span class="file">
                     <span class="label"><label for="soubor1"><f:message key="file1"/></label></span>
