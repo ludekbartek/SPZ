@@ -24,10 +24,12 @@ pri editaci pouze popisy (viz stara verze).
        </script>-->
       <script src="scripts/support-scripts.js"></script>
       <link rel="stylesheet" href="styles/dcb.css" type="text/css"/>
+      <meta name="description" content="addSPZ.jsp"/>
     </head>
     
     <body>
         <jsp:include page="headerspz.jsp"/>
+        <div class="center"><jsp:include page="navigationSpz.jsp"/></div>
         <h1>
             <c:choose>
                     <c:when test="${action=='add'}">
