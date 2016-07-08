@@ -14,7 +14,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title><f:message key="pageTitle" bundle="${loc}"/> (${user.login})</title>
         <link rel="stylesheet" href="${pageContext.request.contextPath}/styles/dcb.css" type="text/css"/>
-        <script type="text/javascript" src="scripts/support-scripts.js"></script>
+       <%-- <script type="text/javascript" src="scripts/support-scripts.js"></script>--%>
     </head>
     <body>
         <jsp:include page="headerspz.jsp"/>
@@ -73,17 +73,20 @@
         </form>-->
         <jsp:include page="addNote.jsp"/>
         <div class="updateSPZ">    
-            <form action="${pageContext.request.contextPath}/SPZServlet/updateSPZ" method="post">
-                <div class="formItem">
+            <form id="changeSPZ" action="${pageContext.request.contextPath}/SPZServlet/updateSPZ" method="post">
+                <%--<div class="formItem">
                     <span class="label">
                         <input type="submit" value="<f:message key='changeSpz' bundle="${loc}"/>"/>
                     </span>
-                </div>
+                </div>--%>
                 <input type="hidden" name="spzid" value="${spz.id}"/>
                 <input type="hidden" name="userid" value="${user.id}"/>
                 <input type="hidden" name="projectid" value="${project.id}"/>
                 <input type="hidden" name="configid" value="${config.id}"/>
             </form>
+        </div>
+        <div class="rightfloat">
+            <a href="javascript:doPost(changeSPZ)"><f:message key="changeSpz" bundle="${loc}"/></a>
         </div>
     </body>
 </html>
