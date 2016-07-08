@@ -167,9 +167,13 @@ th{
     width: 80%;
 }
 
+.attachments{
+    margin: 10px;
+}
+
 .file{
     float:left;
-    width:33%;
+    width:25%;
 }
 
 .attachments{
