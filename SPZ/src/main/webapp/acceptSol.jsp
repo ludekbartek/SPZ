@@ -32,8 +32,10 @@
         </table>
         <h2><f:message key="reqInfo"/>:</h2>
         <form action='${pageContext.request.contextPath}/SPZServlet/editspz' method="post">
-            <label for='note'><f:message key="note"/>:</label>
-            <textarea name='note' cols='80' rows="5" maxlength="8000"></textarea>
+            <div class="formItem">
+                <span class="textarealabel"><label for='note'><f:message key="note"/>:</label></span>
+                <span class="areainput"><textarea name='note' cols='80' rows="5" maxlength="8000"></textarea></span>
+            </div>
             <input type='hidden' name='spzid' value='${spz.id}'/>
             <input type='hidden' name='userid' value='${user.id}'/>
             <input type='hidden' name="state" value='SPECIFIED'/>
