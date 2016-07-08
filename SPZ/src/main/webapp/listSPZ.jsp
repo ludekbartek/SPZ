@@ -14,7 +14,6 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title><f:message key="header"/></title>
         <link rel="stylesheet" href="/SPZ/styles/dcb.css" type="text/css"/>
-        
     </head>
     <body>
         <script type="text/javascript" src="/SPZ/scripts/support-scripts.js">
