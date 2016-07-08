@@ -114,6 +114,7 @@ pri editaci pouze popisy (viz stara verze).
                     <span class="input"><input type="hidden" id="ext" name="external" value="1"/></span>
                 </c:otherwise>
             </c:choose>
+                <div class="label"><f:message key="attachments"/></div>
                 <div class="formItem">
                 <span class="file">
                     <span class="label"><label for="soubor1"><f:message key="file1"/></label></span>
