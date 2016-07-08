@@ -67,12 +67,16 @@
         <div id="left">
             <form action="${pageContext.request.contextPath}/SPZServlet/addProject" method="post">
                 <div id="projectName">
-                    <label for="name"><f:message key="projectCode"/>: </label>
-                    <input type="text" name="name" value="" size="50"/>
+                    <span class="label"><label for="name"><f:message key="projectCode"/>: </label></span>
+                    <span class="input"><input type="text" name="name" value="" maxlength="32" size="56"/></span>
                 </div>
                 <div id="projectDesc">
+                    <div class="textarealabel">
                     <label for="description"><f:message key="projectDesc"/>: </label>
-                    <textarea name="description" cols="64" rows="4"></textarea>
+                    </div>
+                    <div class="areainput">
+                        <textarea id="description" name="description" cols="65" rows="4" maxlength="255"></textarea>
+                    </div>
                 </div>
                 <input type="hidden" name="userid" value="${user.id}"/>
                 <input type="submit" value="<f:message key='addProject'/>"/>
