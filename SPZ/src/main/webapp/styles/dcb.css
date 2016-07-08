@@ -168,7 +168,24 @@ th{
 }
 
 .attachments{
-    margin: 10px;
+    margin: 15px;
+    width: 100%;
+    float:left;
+    /*align-content: center;*/
+}
+
+.attachment{
+    width:25%;
+    float: left;
+}
+
+.attachlabel{
+    margin-bottom: 5px;
+}
+
+.attachinput{
+    float: left;
+    margin-left: 0px;
 }
 
 .file{
@@ -176,16 +193,18 @@ th{
     width:25%;
 }
 
-.attachments{
+/*.attachments{
     width: 100%;
     align-content: center;
-    margin: 50px;
-}
+    margin: 5px;
+}*/
 
 .updateSPZ{
     width: 100%;
+    float:right;
     align-content: center;
-    margin: 50px;
+    margin-left: 5px;
+    margin-top:50px;
 }
 
 .item{
