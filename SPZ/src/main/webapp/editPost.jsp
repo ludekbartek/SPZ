@@ -14,9 +14,19 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title><f:message key="pageTitle" bundle="${loc}"/> (${user.login})</title>
         <link rel="stylesheet" href="${pageContext.request.contextPath}/styles/dcb.css" type="text/css"/>
-       <%-- <script type="text/javascript" src="scripts/support-scripts.js"></script>--%>
+        <script type="text/javascript" src="scripts/support-scripts.js"></script>
     </head>
     <body>
+        <form id="doAccept" action="${pageContext.request.contextPath}/SPZServlet/acceptspzreq" method="post">
+        <!--            <input type="submit" value="<f:message key='submitAnal' bundle="${loc}"/>"/>
+                    <input type="submit" value="<f:message key='cancel' bundle='${loc}'/>" onclick="doSubmit(doCancel)"/>-->
+                    <input type="hidden" name="spzid" value="${spz.id}"/>
+                    <input type="hidden" name="state" value="POSTED"/>
+                    <input type="hidden" name="userid" value="${user.id}"/>
+                    <input type="hidden" name="newstate" value="ANALYSIS"/>
+                    <input type="hidden" name="projectid" value="${project.id}"/>
+                    <input type="hidden" name="configid" value="${config.id}"/>
+                </form>
         <jsp:include page="headerspz.jsp"/>
         <div class="center">
             <jsp:include page="navigationSpz.jsp"/>
@@ -26,21 +36,23 @@
         <table class="border-fullwidthtable">
             <%@include file="editcommon.jsp" %>
         </table>
-        <div class="controls">    
-        <c:if test="${user.role!='0'}">
-                <form action="${pageContext.request.contextPath}/SPZServlet/acceptspzreq" method="post">
-                    <input type="submit" value="<f:message key='submitAnal' bundle="${loc}"/>"/>
-                    <input type="hidden" name="spzid" value="${spz.id}"/>
-                    <input type="hidden" name="state" value="POSTED"/>
-                    <input type="hidden" name="userid" value="${user.id}"/>
-                    <input type="hidden" name="newstate" value="ANALYSIS"/>
-                    <input type="hidden" name="projectid" value="${project.id}"/>
-                    <input type="hidden" name="configid" value="${config.id}"/>
-                </form>
-        </c:if>    
-            <form action="${pageContext.request.contextPath}/SPZServlet/delete" method="post">    
+        <div class="controls">
+            <c:choose>
+                <c:when test="${user.role!='0'}">
+                    <form method="post">
+                        <input type="button" value="<f:message key='submitAnal' bundle="${loc}"/>" onclick="doPost(doAccept)"/>
+                        <input type="button" value="<f:message key='cancel' bundle='${loc}'/>" onclick="doPost(doCancel)"/>        
+                    </form>
+                </c:when>
+                <c:otherwise>
+                    <form> 
+                        <input type="button" value="<f:message key='cancel' bundle='${loc}'/>" onclick="doPost(doCancel)"/>        
+                    </form>
+                </c:otherwise>
+            </c:choose>
+            <form id="doCancel" action="${pageContext.request.contextPath}/SPZServlet/delete" method="post">    
                 <input type="hidden" name="spzid" value="${spz.id}"/>
-                <input type="submit" value="<f:message key='cancel' bundle="${loc}"/>"/>
+                <!--<input type="submit" value="<f:message key='cancel' bundle="${loc}"/>"/>-->
                 <input type="hidden" name="newstate" value="CANCELED"/>
                 <input type="hidden" name="state" value="POSTED"/>
                 <input type="hidden" name="userid" value="${user.id}"/>
