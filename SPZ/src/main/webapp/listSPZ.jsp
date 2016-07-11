@@ -132,7 +132,7 @@
                         <c:out value="${item.contactPerson}"/>
                     </td>
                     <td class="item">
-                        <f:formatDate pattern="dd.MM.yy" value="${item.issueDate}"/> 
+                        <f:formatDate pattern="d.M.yy" value="${item.issueDate}"/> 
                     </td>
                     <td class="item">
                         <c:out value="${item.shortName}"/>
@@ -145,7 +145,7 @@
                             <td>
                         </c:otherwise>
                     </c:choose>
-                        <f:formatDate value="${item.specDate}" pattern="dd.MM. yyyy"/>
+                        <f:formatDate value="${item.specDate}" pattern="d.M.yy"/>
                     </td>
                     <c:choose>
                         <c:when test="${not empty item.workLoadEstimation and item.workLoadEstimation gt 0}">
@@ -167,7 +167,7 @@
                             <td>
                         </c:otherwise>
                     </c:choose>
-                        <f:formatDate value="${item.installDate}" pattern="dd.MM. yyyy"/>
+                        <f:formatDate value="${item.installDate}" pattern="d.M.yy"/>
                     </td>
                     <c:choose>
                         <c:when test="${not empty item.workLoadReal and item.workLoadReal gt 0}">
@@ -207,7 +207,7 @@
                     </td>
                     <td class="item">
                         <%--<c:out value="${item.date}"/>--%>
-                        <f:formatDate value="${item.date}" pattern="dd.MM.yyyy"/>
+                        <f:formatDate value="${item.date}" pattern="d.M.yy"/>
                     </td>
                 </tr>
                 
