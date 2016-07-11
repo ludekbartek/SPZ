@@ -674,12 +674,14 @@ public class SPZServlet extends HttpServlet {
         SpzStateManager stateManager = new SpzStateJpaController(emf);
         Integer id = getSpzId(request.getParameterMap());
         Configuration conf = getConfigurationFromRequest(request);
+        List<Configuration> projectConfs = new ArrayList<>();
+        projectConfs.add(conf);
         Project proj = getProjectFromRequest(request);
         User user = getUserByParameter(request);
         UserWebEntity userWeb = userToEntity(user);
         request.setAttribute("user", userWeb);
-        request.setAttribute("config", conf);
-        request.setAttribute("project", proj);
+        request.setAttribute("config", configurationToEntity(conf));
+        request.setAttribute("project", projectToEntity(proj, projectConfs));
         spz = manager.findSpz(id);
         if(request.getParameterMap().containsKey("newstate")){
             
@@ -1050,6 +1052,8 @@ public class SPZServlet extends HttpServlet {
         }
         Project project = getProjectFromRequest(request);
         Configuration conf = getConfigurationFromRequest(request);
+        List<Configuration> confs = new ArrayList<>();
+        confs.add(conf);
         String strSpzId = request.getParameter("spzid");
         if(strSpzId!=null && !strSpzId.isEmpty()){
             Integer spzId = Integer.parseInt(strSpzId);
@@ -1058,8 +1062,8 @@ public class SPZServlet extends HttpServlet {
             request.setAttribute("spz", spzEnt);
         }
         request.setAttribute("user", user);
-        request.setAttribute("project", project);
-        request.setAttribute("config", conf);
+        request.setAttribute("project", projectToEntity(project, confs));
+        request.setAttribute("config", configurationToEntity(conf));
         request.setAttribute("filter", strFilter);
         LOGGER.log(Level.INFO,String.format("userid: %d",user.getId()));
         request.setAttribute("spzs", entities);
@@ -1354,8 +1358,10 @@ public class SPZServlet extends HttpServlet {
         if(issueDate!=null){
             spz.setIssuedate(issueDate);
         }
-        
-        
+        Date installDate = findInstallDate(statesHistory);
+        if(installDate!=null){
+            entity.setInstallDate(installDate);
+        }
         
         history = spzStatesToSpzStateWebEntities(statesHistory);
         if(current!=null){
@@ -1787,11 +1793,12 @@ public class SPZServlet extends HttpServlet {
      * @param request http request with required parameters
      * @param response http response
      */
-    private void deleteSpz(HttpServletRequest request, HttpServletResponse response) {
+    private void deleteSpz(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         SpzManager spzManager = new SpzJpaController(emf);
         SpzStateManager stateManager = new SpzStateJpaController(emf);
         SpzStatesManager statesManager = new SpzStatesJpaController(emf);
-        
+    
+        String canceled = request.getParameter("canceled");
         String strSpzId = request.getParameter("spzid");
         Integer spzId = null;
         try{
@@ -1806,6 +1813,30 @@ public class SPZServlet extends HttpServlet {
             }
         }
         Spz spz = spzManager.findSpz(spzId);
+        if(canceled==null){
+            Project project = getProject(request);
+            if(project==null){
+                try {
+                    dispError(request, response, "Missing project id");
+                    return;
+                } catch (ServletException | IOException ex) {
+                    Logger.getLogger(SPZServlet.class.getName()).log(Level.SEVERE, "error while deleting SPZ.", ex);
+                }
+            }
+            Configuration conf = getConfig(request);
+            User user = getUser(request);
+            List<Configuration> configs = new ArrayList<>();
+            configs.add(conf);
+            ProjectWebEntity projEnt = projectToEntity(project, configs);
+            request.setAttribute("project",projEnt);
+            request.setAttribute("config",configurationToEntity(conf));
+            request.setAttribute("user", userToEntity(user));
+            request.setAttribute("spz",spzToEntity(spz));
+            request.setAttribute("newState", getCurrentState(spz));
+            request.getRequestDispatcher("/changeStateCancel.jsp").forward(request, response);
+            return;
+        }
+        
         Spzstate currentState = stateManager.getCurrentState(spz);
         currentState.setCode(SpzStates.CANCELED.toString());
         try {
@@ -3514,6 +3545,47 @@ public class SPZServlet extends HttpServlet {
         Spzstate last = sortedByDate.get(sortedByDate.size()-1);
         Date modificationDate = Date.from(Instant.ofEpochMilli(last.getTs().longValue()));
         return modificationDate;
+    }
+
+    private Date findInstallDate(List<Spzstate> statesHistory) {
+        Date installDate = null;
+        for(Spzstate spzState:statesHistory){
+            if(spzState.getCode().equals(SpzStates.INSTALLED.toString())){
+                installDate = Date.from(Instant.ofEpochMilli(spzState.getTs().longValue()));
+                break;
+            }
+        }
+        return installDate;
+    }
+
+    private Project getProject(HttpServletRequest request) {
+        ProjectManager manager = new ProjectJpaController(emf);
+        String strProjectId = request.getParameter("projectid");
+        if(strProjectId!=null){
+            Integer projId = Integer.parseInt(strProjectId);
+            return manager.findProject(projId);
+        }
+        
+        return null;
+    }
+
+    private Configuration getConfig(HttpServletRequest request) {
+        ConfigurationManager manager = new ConfigurationJpaController(emf);
+        String strConfId = request.getParameter("configid");
+        if(strConfId!=null){
+            Integer confId = Integer.parseInt(strConfId);
+            return manager.findConfiguration(confId);
+        }
+        return null;
+    }
+
+    private User getUser(HttpServletRequest request) {
+        UserManager manager = new UserJpaController(emf);
+        Integer userId = getUserId(request);
+        if(userId!=null){
+            return manager.findUser(userId);
+        }
+        return null;
     }
 
     
