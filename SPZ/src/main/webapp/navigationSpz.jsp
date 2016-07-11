@@ -8,4 +8,4 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="f" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <f:setBundle basename="headers"/>
-<jsp:include page="navigationProject.jsp"/>>><a href="javascript:doPost(editconfig)">${config.code}</a>
+<jsp:include page="navigationProject.jsp"/>>><a href="javascript:doPost(editconfig)">${config.name}</a>
