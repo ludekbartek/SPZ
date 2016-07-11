@@ -28,9 +28,13 @@
         </table>
         <h2><f:message key="stateInfo"/> '<f:message key="${newState}"/>'</h2>
         <form action='${pageContext.request.contextPath}/SPZServlet/editspz' method="post">
-            <div class="areainput">
-                <label for="relnotes"><f:message key="relnotes"/></label>
-                <textarea name="relnotes" cols="80" rows="5" maxlength="9000"></textarea>
+            <div class="formItem">
+                <span class="textarealabel">
+                    <label for="relnotes"><f:message key="relnotes"/></label>
+                </span>
+                <span class="areainput">
+                    <textarea name="relnotes" cols="80" rows="5" maxlength="9000"></textarea>
+                </span>
             </div>
             <div class="textinput">
                 <label for="mandays"><f:message key="mandays"/></label>
