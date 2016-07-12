@@ -9,7 +9,9 @@
 <%@taglib prefix="f" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <f:setBundle basename="list"/>
-<h2>Historie SPZ</h2>
+<div id="history">
+    <h3><f:message key="spzHistory"/></h3>
+<hr>
 <span class="debug">Name:${user.name} (id:<c:out value="${user.id}"/>)<br/>Role:<c:out value="${user.role}"/></span>
 
 <c:forEach items="${spz.history}" var="item">
@@ -83,4 +85,4 @@
     </form>
  </c:if>
 
-   
+</div>   

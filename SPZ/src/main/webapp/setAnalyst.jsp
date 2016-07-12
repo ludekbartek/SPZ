@@ -22,15 +22,17 @@
             <jsp:include page="navigationSpzEdit.jsp"/>
         </div>
         <h1><f:message key="pagetitle"/></h1>
+        <div id="info">
         <table class="border-fullwidthtable">
             <jsp:include page="editcommon.jsp"/>
         </table>
+        <p>
             <form action="${pageContext.request.contextPath}/SPZServlet/editSpz" method="post">
             <div class="formItem">
                 <span class="textarealabel">
                     <label for="desc"><f:message key="descLabel"/></label>
                 </span>
-                <span class="are">
+                <span class="areainput">
                     <textarea id="desc" name="desc" cols="80" rows="5"></textarea>
                 </span>
             </div>
@@ -46,16 +48,23 @@
                 </select>
              </span>
             </div>
-            <div class="input">
+            <div class="noIndentFormItem">
                 <input type="checkbox" name="external"/> <label for="external"><f:message key="externalNote"/></label>
             </div>
-            <input type="submit" value="<f:message key='submit'/>"/>
+            <div class="formItem">
+            </div>
+            <div class="formItem">
+                <span class="noIndentInput">
+                    <input type="submit" value="<f:message key='submit'/>"/>
+                </span>
+            </div>
             <input type="hidden" name="newstate" value="${newState}"/>
             <input type="hidden" name="userid" value="${user.id}"/>
             <input type="hidden" name="spzid" value="${spz.id}"/>
             <input type="hidden" name="configid" value="${config.id}"/>
             <input type="hidden" name="projectid" value="${project.id}"/>
          </form>
+        </div>
         <jsp:include page="listHistory.jsp"/>
     </body>
 </html>
