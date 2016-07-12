@@ -27,35 +27,35 @@
     </table>
     <c:if test="${user.role!=0}">
         <c:set var="jsp" value="./editAnal.jsp"/>
-        <form action="${pageContext.request.contextPath}/SPZServlet/editspz" method="post">
+        <form id="editspz" action="${pageContext.request.contextPath}/SPZServlet/editspz" method="post">
             <input type="hidden" name="state" value="ANALYSIS"/>
             <input type="hidden" name="newstate" value="REFINE"/>
             <input type="hidden" name="spzid" value="${spz.id}"/>
             <input type="hidden" name="userid" value="${user.id}"/>
             <input type="hidden" name="configid" value="${config.id}"/>
             <input type="hidden" name="projectid" value="${project.id}"/>
-            <input type="submit" value="<f:message key='return'/>"/>
+            <!--<input type="submit" value="<f:message key='return'/>"/>-->
         </form>
-        <form action="${pageContext.request.contextPath}/SPZServlet/spzsolution" method="post">
+        <form id="proposesol" action="${pageContext.request.contextPath}/SPZServlet/spzsolution" method="post">
             <input type="hidden" name="state" value="ANALYSIS"/>
             <input type="hidden" name="newstate" value="ANALYSIS"/>
             <input type="hidden" name="spzid" value="${spz.id}"/>
             <input type="hidden" name="userid" value="${user.id}"/>
             <input type="hidden" name="configid" value="${config.id}"/>
             <input type="hidden" name="projectid" value="${project.id}"/>
-            <input type="submit" value="<f:message key='proposeSol'/>"/>
+            <!--<input type="submit" value="<f:message key='proposeSol'/>"/>-->
         </form>
-        <form action="${pageContext.request.contextPath}/SPZServlet/changeanalyst" method="post">
+        <form id="changeanalyst" action="${pageContext.request.contextPath}/SPZServlet/changeanalyst" method="post">
             <input type="hidden" name="state" value="ANALYSIS"/>
             <input type="hidden" name="newstate" value="ANALYSIS"/>
             <input type="hidden" name="spzid" value="${spz.id}"/>
             <input type="hidden" name="userid" value="${user.id}"/>
             <input type="hidden" name="configid" value="${config.id}"/>
             <input type="hidden" name="projectid" value="${project.id}"/>
-            <input type="submit" value="<f:message key='changeAnalyst'/>"/>
+            <!--<input type="submit" value="<f:message key='changeAnalyst'/>"/>-->
         </form>
-        <form action="${pageContext.request.contextPath}/SPZServlet/delete" method="post">
-            <input type="submit" value="<f:message key='cancel'/>"/>
+        <form id="deletespz" action="${pageContext.request.contextPath}/SPZServlet/delete" method="post">
+            <!--<input type="submit" value="<f:message key='cancel'/>"/>-->
             <input type="hidden" name="newstate" value="CANCELED"/>
             <input type="hidden" name="spzid" value="${spz.id}"/>
             <input type="hidden" name="userid" value="${user.id}"/>
@@ -63,6 +63,12 @@
             <input type="hidden" name="projectid" value="${project.id}"/>
             <input type="hidden" name="state" value="ANALYSIS"/>
         </form>
+            <form >
+                <input type="button" value="<f:message key='return'/>" onclick="doPost(editspz)"/>
+                <input type="button" value="<f:message key='proposeSol'/>" onclick="doPost(proposesol)"/>
+                <input type="button" value="<f:message key='changeAnalyst'/>" onclick="doPost(changeanalyst)"/>
+                <input type="button" value="<f:message key='cancel'/>" onclick="doPost(deletespz)"/>    
+            </form>
     </c:if>
     <jsp:include page="listHistory.jsp"/>
     </body>
