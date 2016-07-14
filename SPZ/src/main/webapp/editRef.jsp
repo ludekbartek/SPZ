@@ -38,7 +38,7 @@
         <jsp:include page="editcommon.jsp"/>
         <tr>
             <td class="label"><f:message key="revisedDesc"/>:</td>
-            <td><c:out value="${spz.revisedRequest}"/></td>
+            <td><c:out value="${spz.revised}"/></td>
         </tr>
         <tr>
             <td class="label"><f:message key="solution"/>:</td>
