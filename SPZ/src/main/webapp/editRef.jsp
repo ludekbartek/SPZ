@@ -33,7 +33,20 @@
                 <c:otherwise><f:message key="stateChangeHeader"/></c:otherwise>
             </c:choose> <c:out value="${spz.id}"/>
         </h1>
-        
+       <c:if test="${not empty change}">
+        <div class="highlighted">
+            <f:message key="request"/> 
+            <c:choose>
+                <c:when test="${not empty newState}">
+                    '<f:message key="${newState}"/>'
+                </c:when>
+                <c:otherwise>
+                    '<f:message key="refine"/>'
+                </c:otherwise>
+            </c:choose>
+            na SPZ:
+        </div>
+       </c:if>
         <table class="border-fullwidthtable">
         <jsp:include page="editcommon.jsp"/>
         <tr>
@@ -80,17 +93,30 @@
                 </form>
             </c:when>
             <c:otherwise>
-                <h2><f:message key="stateInfoHeader"/></h2>
+                <h3><f:message key="stateInfoHeader"/></h3>
                 <form action="${pageContext.request.contextPath}/SPZServlet/editspz" method="post">
                     <input type="hidden" name="spzid" value="${spz.id}"/>
                     <input type="hidden" name="userid" value="${user.id}"/>
                     <input type="hidden" name="state" value="REFINE"/>
                     <input type="hidden" name="newstate" value="ANALYSIS"/>
-                    <textarea name="desc" class="desc" cols="80" rows="5"></textarea>
-                    <input type="checkbox" name="external"/><label for="external"><f:message key="visible"/></label>
+                    <div class="formItem">
+                        <span class="label"><f:message key="note"/></span>
+                        <span class="input">
+                            <textarea name="desc" cols="80" rows="5" maxlength="8000"></textarea>
+                        </span>
+                    </div>
+                    <div class='noIndentFormItem'>
+                        <span class='noIndentInput'>
+                            <input type="checkbox" name="external"/><label for="external"><f:message key="visible"/></label>
+                        </span>
+                    </div>
                     <input type="hidden" name="configid" value="${config.id}"/>
                     <input type="hidden" name="projectid" value="${project.id}"/>
-                    <input type="submit" value="<f:message key='submit'/>"/>
+                    <div class='noIndentFormItem'>
+                        <span class='noIndentInput'>
+                            <input type="submit" value="<f:message key='submit'/>"/>
+                        </span>
+                    </div>
                 </form>
             </c:otherwise>
         </c:choose>
