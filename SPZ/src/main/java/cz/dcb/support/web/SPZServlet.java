@@ -326,7 +326,6 @@ public class SPZServlet extends HttpServlet {
             //String action = request.getParameter("action");
             switch(action.toLowerCase()){
                 case "/login":
-                              
                               try{
                                 authenticate(request,response);
                               }catch(NoResultException ex){
@@ -435,6 +434,9 @@ public class SPZServlet extends HttpServlet {
                             break;
                 case "/deleterole":
                             deleteRole(request,response);
+                            break;
+                case "/refinereq":
+                            getRedefinition(request,response);
                             break;
                 default:
                     StringBuilder errorMesg = new StringBuilder("Invalid action").append(action).append(". Using list instead.");
@@ -3460,57 +3462,63 @@ public class SPZServlet extends HttpServlet {
     }
 
     private List<Spz> filterSpzs(List<Spz> spzs, int filter) {
+        SpzStateManager stateMan = new SpzStateJpaController(emf);
+        Filter intFilter = Filter.values()[filter];
+        
         for(Iterator<Spz> it = spzs.iterator();it.hasNext();){
             Spz spz = it.next();
-            SpzStateManager stateMan = new SpzStateJpaController(emf);
+            SpzStates currentState = null;
             Spzstate state = stateMan.getCurrentState(spz);
-            SpzStates currentState = SpzStates.valueOf(state.getCode());
-            Filter intFilter = Filter.values()[filter];
-            switch(intFilter){
-                case OPENED:
-                    if(currentState == SpzStates.INVOICED || 
-                       currentState == SpzStates.CANCELED){
-                        it.remove();
-                    }
-                    break;
-                case WAITING_CLIENT:
-                    if(currentState != SpzStates.SPECIFIED&&
-                       currentState != SpzStates.REFINE&&
-                       currentState != SpzStates.INSTALLED&&
-                       currentState != SpzStates.IMPLEMENTATION_REFINE){
-                        it.remove();
-                    }
-                    break;
-                case WAITING_IMPL:
-                    if((currentState != SpzStates.POSTED) && 
-                       (currentState != SpzStates.DCB_ACCEPTED) &&
-                       (currentState != SpzStates.ANALYSIS) &&
-                       (currentState != SpzStates.ACCEPTED) &&
-                       (currentState != SpzStates.RECLAIMED)){
-                        it.remove();
-                    }
-                    break;
-                case INSTALLED:
-                    if(currentState != SpzStates.INSTALLED){
-                        it.remove();
-                    }
-                    break;
-                case ACCEPTED: 
-                    if(currentState != SpzStates.CONFIRMED){
-                        it.remove();
-                    }
-                    break;
-                case SOLVED:
-                    if(currentState != SpzStates.CANCELED && 
-                       currentState != SpzStates.INVOICED){
-                        it.remove();
-                    }
-                    break;
-                case CANCELED:
-                    if(currentState != SpzStates.CANCELED){
-                        it.remove();
-                    }
-                    break;
+            if(state!=null){
+                currentState = SpzStates.valueOf(state.getCode());
+            
+
+                switch(intFilter){
+                    case OPENED:
+                        if(currentState == SpzStates.INVOICED || 
+                           currentState == SpzStates.CANCELED){
+                            it.remove();
+                        }
+                        break;
+                    case WAITING_CLIENT:
+                        if(currentState != SpzStates.SPECIFIED&&
+                           currentState != SpzStates.REFINE&&
+                           currentState != SpzStates.INSTALLED&&
+                           currentState != SpzStates.IMPLEMENTATION_REFINE){
+                            it.remove();
+                        }
+                        break;
+                    case WAITING_IMPL:
+                        if((currentState != SpzStates.POSTED) && 
+                           (currentState != SpzStates.DCB_ACCEPTED) &&
+                           (currentState != SpzStates.ANALYSIS) &&
+                           (currentState != SpzStates.ACCEPTED) &&
+                           (currentState != SpzStates.RECLAIMED)){
+                            it.remove();
+                        }
+                        break;
+                    case INSTALLED:
+                        if(currentState != SpzStates.INSTALLED){
+                            it.remove();
+                        }
+                        break;
+                    case ACCEPTED: 
+                        if(currentState != SpzStates.CONFIRMED){
+                            it.remove();
+                        }
+                        break;
+                    case SOLVED:
+                        if(currentState != SpzStates.CANCELED && 
+                           currentState != SpzStates.INVOICED){
+                            it.remove();
+                        }
+                        break;
+                    case CANCELED:
+                        if(currentState != SpzStates.CANCELED){
+                            it.remove();
+                        }
+                        break;
+                }
             }
         }
         return spzs;
@@ -3590,6 +3598,11 @@ public class SPZServlet extends HttpServlet {
             return manager.findUser(userId);
         }
         return null;
+    }
+
+    private void getRedefinition(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.setAttribute("newState", "REFINE");
+        gotoJspWithSpzUserChange(request, response, "/changeState.jsp");
     }
 
     
