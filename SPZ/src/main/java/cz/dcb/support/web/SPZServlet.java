@@ -716,6 +716,13 @@ public class SPZServlet extends HttpServlet {
                 break;
             case "REFINE":
                 jspName = "/editRef.jsp";
+                if(request.getParameter("change")!=null){
+                    LOGGER.log(Level.INFO,"Removing change attribute.");
+                    request.getParameterMap().remove("change");
+                    if(request.getParameter("change")!=null){
+                        LOGGER.log(Level.INFO,"Change: {0}",request.getParameter("change"));
+                    }
+                }
                 break;
             case "SPECIFIED":
                 jspName = "/editSpec.jsp";
