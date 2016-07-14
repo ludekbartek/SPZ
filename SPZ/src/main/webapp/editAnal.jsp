@@ -27,7 +27,7 @@
     </table>
     <c:if test="${user.role!=0}">
         <c:set var="jsp" value="./editAnal.jsp"/>
-        <form id="editspz" action="${pageContext.request.contextPath}/SPZServlet/editspz" method="post">
+        <form id="editspz" action="${pageContext.request.contextPath}/SPZServlet/refinereq" method="post">
             <input type="hidden" name="state" value="ANALYSIS"/>
             <input type="hidden" name="newstate" value="REFINE"/>
             <input type="hidden" name="spzid" value="${spz.id}"/>
