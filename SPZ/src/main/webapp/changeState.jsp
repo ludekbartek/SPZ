@@ -25,7 +25,7 @@
         </div>
         <c:set var="jsp" value="./changeState.jsp"/>
         <c:set var="startStateLab[]" value="{'start'}"/>
-        <table>
+        <table class="border-fullwidthtable">
             <jsp:include page="editcommon.jsp"/>
             <c:if test="${spz.spzState=='IMPLEMENTATION' || spz.spzState=='DCB_ACCEPTED'}">
                 <tr>
