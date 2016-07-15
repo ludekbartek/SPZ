@@ -23,30 +23,42 @@
             <f:message key="request"/> '<f:message key="${newState}"/>' na SPZ:
         </div>
         <c:set var="jsp" value="./changeState.jsp"/>
-        <table>
+        <table class="border-fullwidthtable">
             <jsp:include page="editcommon.jsp"/>
         </table>
-        <h2><f:message key="stateInfo"/> '<f:message key="${newState}"/>'</h2>
+        <h3><f:message key="stateInfo"/> '<f:message key="${newState}"/>'</h3>
         <form action='${pageContext.request.contextPath}/SPZServlet/editspz' method="post">
             <div class="formItem">
                 <span class="textarealabel">
                     <label for="relnotes"><f:message key="relnotes"/></label>
                 </span>
                 <span class="areainput">
-                    <textarea name="relnotes" cols="80" rows="5" maxlength="9000"></textarea>
+                    <textarea name="relnotes" cols="80" rows="8" maxlength="9000"></textarea>
                 </span>
             </div>
-            <div class="textinput">
-                <label for="mandays"><f:message key="mandays"/></label>
-                <input type="text" name="mandays" value="${spz.workLoadEstimation}"/>
+            <div class="formItem">
+                <span class="label">
+                    <label for="mandays"><f:message key="mandays"/></label>
+                </span>
+                <span class="input">
+                    <input type="text" name="mandays" value="${spz.workLoadEstimation}"/>
+                </span>
             </div>
-            <div class="textinput">
-                <label for="outofdevel"><f:message key="outofdevel"/></label>
-                <input type="text" name="outofdevel" value="0.0"/>
+            <div class="formItem">
+                <span class="label">
+                    <label for="outofdevel"><f:message key="outofdevel"/></label>
+                </span>
+                <span class="input">
+                    <input type="text" name="outofdevel" value="0.0"/>
+                </span>
             </div>
-            <div class="areainput">
-                <label for='note'><f:message key="noteLabel"/></label>
-                <textarea name='note' cols='80' rows="5" maxlength="8000"></textarea>
+            <div class="formItem">
+                <span class="textarealabel">
+                    <label for='note'><f:message key="noteLabel"/></label>
+                </span>
+                <span class="areainput">
+                    <textarea name='note' cols='80' rows="5" maxlength="8000"></textarea>
+                </span>
             </div>
             <input type='hidden' name='spzid' value='${spz.id}'/>
             <input type='hidden' name='userid' value='${user.id}'/>
@@ -54,9 +66,16 @@
             <input type="hidden" name="newstate" value="${newState}"/>
             <input type="hidden" name="configid" value="${config.id}"/>
             <input type="hidden" name="projectid" value="${project.id}"/>
-            <input type="checkbox" name="external"/><label for="external"><f:message key="externalNote"/></label>
-            <br/>
-            <input type="submit" value="<f:message key='submit'/>"/>
+            <div class="formItem">
+                <span class="noIndentInput">
+                    <input type="checkbox" name="external"/><label for="external"><f:message key="externalNote"/></label>
+                </span>
+            </div>
+            <div class="formItem">
+            <span class="noIndentInput">
+                <input type="submit" value="<f:message key='submit'/>"/>
+            </span>
+            </div>
         </form>
         <jsp:include page="listHistory.jsp"/>
     </body>
