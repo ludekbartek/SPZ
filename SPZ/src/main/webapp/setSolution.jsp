@@ -33,19 +33,35 @@
             <input type="hidden" name="userid" value="${user.id}"/>
             <input type="hidden" name="configid" value="${config.id}"/>
             <input type="hidden" name="projectid" value="${project.id}"/>
-            <div class="areainput">
+            <div class="formItem">
+            <div class="textarealabel">
                 <f:message key="revLabel"/>:
-                <textarea name="revisedrequest"><c:if test="${not empty spz.requestDescription}"><c:out value="${spz.requestDescription}"/></c:if></textarea>
             </div>
             <div class="areainput">
-                <f:message key="solDesc"/>:
-                <textarea name="solutiondescription"></textarea>
+                <textarea name="revisedrequest" rows="5" cols="80" maxlength="8000"><c:if test="${not empty spz.requestDescription}"><c:out value="${spz.requestDescription}"/></c:if></textarea>
             </div>
-            <div class="singleareainput">
-                <f:message key="estWork"/>:
-                <input type="text" name="estimatedworkload" maxlength="5"/>
             </div>
-                <input type="submit" value="<f:message key='submit'/>"/>
+            <div class="formItem">
+                <span class="textarealabel">    
+                    <f:message key="solDesc"/>:
+                </span>
+                <span class="areainput">
+                    <textarea rows="5" cols="80" maxlength="8000" name="solutiondescription"></textarea>
+                </span>
+            </div>
+            <div class="formItem">
+                <span class="label">
+                    <f:message key="estWork"/>:
+                </span>
+                <span class="input">
+                    <input type="text" name="estimatedworkload"  maxlength="5" size="69"/>
+                </span>
+            </div>
+            <div class="formItem">
+                <div class="noIndentInput">
+                    <input type="submit" value="<f:message key='submit'/>"/>
+                </div>
+            </div>
         </form>
         <jsp:include page="addNote.jsp"/>
         <h1><f:message key="history"/></h1>
