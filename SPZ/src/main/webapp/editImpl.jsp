@@ -41,44 +41,50 @@
                 </td>
             </tr>
         </table>
-                <form action="${pageContext.request.contextPath}/SPZServlet/changeDevel" method="post">
+                <form id="develForm" action="${pageContext.request.contextPath}/SPZServlet/changeDevel" method="post">
                     <input type="hidden" name="spzid" value="${spz.id}"/>
                     <input type="hidden" name="userid" value="${user.id}"/>
                     <input type="hidden" name="state" value="IMPLEMENTATION"/>
                     <input type="hidden" name="newState" value="IMPLEMENTATION"/>
                     <input type="hidden" name="configid" value="${config.id}"/>
                     <input type="hidden" name="projectid" value="${project.id}"/>
-                    <input type="submit" value="<f:message key='changeDevBut'/>"/>
+                    <!--<input type="submit" value="<f:message key='changeDevBut'/>"/>-->
                 </form>
-                <form action="${pageContext.request.contextPath}/SPZServlet/refineImpl" method="post">
+                <form id="refineForm" action="${pageContext.request.contextPath}/SPZServlet/refineImpl" method="post">
                     <input type="hidden" name="spzid" value="${spz.id}"/>
                     <input type="hidden" name="userid" value="${user.id}"/>
                     <input type="hidden" name="state" value="IMPLEMENTATION"/>
                     <input type="hidden" name="newState" value="IMPLREFINE"/>
                     <input type="hidden" name="configid" value="${config.id}"/>
                     <input type="hidden" name="projectid" value="${project.id}"/>
-                    <input type="submit" value="<f:message key='refineBut'/>"/>
+                    <!--<input type="submit" value="<f:message key='refineBut'/>"/>-->
                 </form>
                 <c:if test="${user.role==1}">
-                    <form action="${pageContext.request.contextPath}/SPZServlet/releaseVersion" method="post">
+                    <form id="releaseForm" action="${pageContext.request.contextPath}/SPZServlet/releaseVersion" method="post">
                         <input type="hidden" name="spzid" value="${spz.id}"/>
                         <input type="hidden" name="userid" value="${user.id}"/>
                         <input type="hidden" name="state" value="IMPLEMENTATION"/>
                         <input type="hidden" name="newState" value="RELEASE"/>
                         <input type="hidden" name="configid" value="${config.id}"/>
                         <input type="hidden" name="projectid" value="${project.id}"/>
-                        <input type="submit" value="<f:message key='releaseBut'/>"/>
+                        <!--<input type="submit" value="<f:message key='releaseBut'/>"/>-->
                     </form>
                 </c:if>
-                <form action="${pageContext.request.contextPath}/SPZServlet/delete" method="post">
+                <form id="cancelForm" action="${pageContext.request.contextPath}/SPZServlet/delete" method="post">
                     <input type="hidden" name="spzid" value="${spz.id}"/>
                     <input type="hidden" name="userid" value="${user.id}"/>
                     <input type="hidden" name="state" value="IMPLEMENTATION"/>
                     <input type="hidden" name="newState" value="CANCELED"/>
                     <input type="hidden" name="configid" value="${config.id}"/>
                     <input type="hidden" name="projectid" value="${project.id}"/>
-                    <input type="submit" value="<f:message key='cancel'/>"/>
+                    <!--<input type="submit" value="<f:message key='cancel'/>"/>-->
                 </form>
-                    <jsp:include page="listHistory.jsp"/>
+                <form method="post">
+                    <input type="button" value="<f:message key='releaseBut'/>" onclick="doPost(releaseForm)"/>
+                    <input type="button" value="<f:message key='changeDevBut'/>" onclick="doPost(develForm)"/>
+                    <input type="button" value="<f:message key='refineBut'/>" onclick="doPost(refineForm)"/>
+                    <input type="button" value="<f:message key='cancel'/>" onclick="doPost(cancelForm)"/>
+                </form>
+                <jsp:include page="listHistory.jsp"/>
     </body>
 </html>
