@@ -67,12 +67,17 @@
             </c:choose>
             <br/>
             <c:if test="${!empty developers}">
-                <label for="developer"><f:message key="developer"/></label>
-                <select name="developer">
-                    <c:forEach var="developer" items="${developers}">
-                        <option value="${developer.login}"><c:out value="${developer.name}"/></option>
-                    </c:forEach>
-                </select>
+                <div class="formItem">
+                <span class="label">
+                    <label for="developer"><f:message key="developer"/></label>
+                </span>
+                <span class="input">
+                    <select name="developer">
+                        <c:forEach var="developer" items="${developers}">
+                            <option value="${developer.login}"><c:out value="${developer.name}"/></option>
+                        </c:forEach>
+                    </select>
+                </span>
             </c:if>
             <input type="submit" value="<f:message key='submit'/>"/>
         </form>

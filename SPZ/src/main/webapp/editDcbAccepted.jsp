@@ -25,16 +25,17 @@
         <table class="border-fullwidthtable">
             <jsp:include page="editcommon.jsp"/>
             <tr>
-                <td class="label"><f:message key="revised"/></td>
-                <td class="value" rowspan="3"><c:out value="${spz.revised}" escapeXml="true"/></td>
+                <td class="tablelabel"><f:message key="revised"/></td>
+                <td class="value" rowspan="3"><c:out value="${spz.revised}" escapeXml="false"/></td>
             </tr>
             <tr>
-                <td class="label"><f:message key="solution"/></td>
-                <td class="value"><c:out value="${spz.solution}" escapeXml="true"/></td>
+                <td class="tablelabel"><f:message key="solution"/></td>
+                <td colspan="3" class="value"><c:out value="${spz.solution}" escapeXml="false"/></td>
+                
             </tr>
             <tr>
-                <td class="label"><f:message key="estWorkLoad"/></td>
-                <td class="value">
+                <td class="tablelabel"><f:message key="estWorkLoad"/></td>
+                <td colspan="3" class="value">
                     <c:out value="${spz.workLoadEstimation}"/> <f:message key="manHours"/>
                     (<f:formatNumber maxFractionDigits="2" value="${spz.workLoadEstimation / 8.0}"/>
                     <f:message key="manDays"/>)
@@ -42,29 +43,34 @@
             </tr>
         </table>
                 <c:if test="${user.role!=0}">
-                    <form action="${pageContext.request.contextPath}/SPZServlet/releaseversion" method="post">
+                    <form id="releaseForm" action="${pageContext.request.contextPath}/SPZServlet/releaseversion" method="post">
                         <input type="hidden" name="spzid" value="${spz.id}"/>
                         <input type="hidden" name="userid" value="${user.id}"/>
                         <input type="hidden" name="change" value="true"/>
-                        <input type="submit" value="<f:message key='releaseButton'/>"/>
+                        <!--<input type="submit" value="<f:message key='releaseButton'/>"/>-->
                         <input type="hidden" name="configid" value="${config.id}"/>
                         <input type="hidden" name="projectid" value="${project.id}"/>
                     </form>
-                    <form action="${pageContext.request.contextPath}/SPZServlet/delete" method="post">
+                    <form id="deleteForm" action="${pageContext.request.contextPath}/SPZServlet/delete" method="post">
                         <input type="hidden" name="spzid" value="${spz.id}"/>
                         <input type="hidden" name="userid" value="${spz.id}"/>
                         <input type="hidden" name="state" value="DCB_ACCEPTED"/>
-                        <input type="button" value="<f:message key='cancelButton'/>"/>
+                        <!--<input type="button" value="<f:message key='cancelButton'/>"/>-->
                         <input type="hidden" name="configid" value="${config.id}"/>
                         <input type="hidden" name="projectid" value="${project.id}"/>
                     </form>
-                    <form action="${pageContext.request.contextPath}/SPZServlet/startimpl" method="post">
+                    <form id="startImplForm" action="${pageContext.request.contextPath}/SPZServlet/startimpl" method="post">
                         <input type="hidden" name="spzid" value="${spz.id}"/>
                         <input type="hidden" name="userid" value="${user.id}"/>
                         <input type="hidden" name="change" value="true"/>
-                        <input type="submit" value="<f:message key='startImplButton'/>"/>
+                        <!--<input type="submit" value="<f:message key='startImplButton'/>"/>-->
                         <input type="hidden" name="configid" value="${config.id}"/>
                         <input type="hidden" name="projectid" value="${project.id}"/>
+                    </form>
+                    <form method="post">
+                        <input type="button" value="<f:message key='startImplButton'/>" onclick="doPost(startImplForm)"/>
+                        <input type="button" value="<f:message key='releaseButton'/>" onclick="doPost(releaseForm)"/>
+                        <input type="button" value="<f:message key='cancelButton'/>" onclick="doPost(deleteForm)"/>
                     </form>
                 </c:if>
                 <jsp:include page="listHistory.jsp"/>

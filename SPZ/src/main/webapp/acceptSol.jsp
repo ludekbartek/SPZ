@@ -23,14 +23,14 @@
             <f:message key="request"/>:
         </div>
         <c:set var="jsp" value="./acceptSol.jsp"/>
-        <table>
+        <table class="border-fullwidthtable">
         <jsp:include page="editcommon.jsp"/>
         <tr>
             <td><f:message key="solutionInfo"/></td>
             <td colspan="3"><c:out escapeXml="false" value="${spz.solution}" /></td>
         </tr>
         </table>
-        <h2><f:message key="reqInfo"/>:</h2>
+        <h3><f:message key="reqInfo"/>:</h3>
         <form action='${pageContext.request.contextPath}/SPZServlet/editspz' method="post">
             <div class="formItem">
                 <span class="textarealabel"><label for='note'><f:message key="note"/>:</label></span>
@@ -38,9 +38,15 @@
             </div>
             <input type='hidden' name='spzid' value='${spz.id}'/>
             <input type='hidden' name='userid' value='${user.id}'/>
+            <input type="hidden" name="projectid" value="${project.id}"/>
+            <input type="hidden" name="configid" value="${config.id}"/>
             <input type='hidden' name="state" value='SPECIFIED'/>
             <input type="hidden" name="newstate" value="ACCEPTED"/>
-            <input type="submit" value="<f:message key='submit'/>"/>
+            <div class="formItem">
+                <span class="noIndentInput">
+                    <input type="submit" value="<f:message key='submit'/>"/>
+                </span>
+            </div>
         </form>
         <jsp:include page="listHistory.jsp"/>
     </body>

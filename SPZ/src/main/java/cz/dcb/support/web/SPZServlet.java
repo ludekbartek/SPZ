@@ -1427,6 +1427,7 @@ public class SPZServlet extends HttpServlet {
         for(Useraccess access:roles){
             roleId = Roles.valueOf(access.getRole()).ordinal();
             isGreen = isGreen || COLORS[currentStateId][roleId];
+            LOGGER.log(Level.INFO,String.format("Role id: %d, State id: %d, Is Green: %s",roleId,currentStateId,(isGreen?"true":"false")));
         }
         if(roles.size()>0){
             Useraccess access = roles.get(0);

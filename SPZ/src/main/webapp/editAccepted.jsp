@@ -22,15 +22,15 @@
             <jsp:include page="navigationSpz.jsp"/>
         </div>
         <h1><f:message key="spzInfoHeader"/></h1>
-        <table class="fullwidthtable">
+        <table class="border-fullwidthtable">
         <jsp:include page="editcommon.jsp"/>
         <tr>
             <td class="label"><f:message key="revised"/></td>
-            <td colspan="3"><c:out value="${spz.revised}" escapeXml="true"/></td>
+            <td colspan="3"><c:out value="${spz.revised}" escapeXml="false"/></td>
         </tr>
         <tr>
             <td class="label"><f:message key="solution"/></td>
-            <td colspan="3"><c:out value="${spz.solution}" escapeXml="true"/></td>
+            <td colspan="3"><c:out value="${spz.solution}" escapeXml="false"/></td>
         </tr>
         <tr>
             <td class="label"><f:message key="estWorkLoad"/></td>
@@ -40,24 +40,27 @@
             <c:choose>
         <c:when test="${empty change }">
             <c:if test="${user.role !=0}">
-            <form action="${pageContext.request.contextPath}/SPZServlet/acceptimpl" method="post">
+            <form id="acceptImpl" action="${pageContext.request.contextPath}/SPZServlet/acceptimpl" method="post">
                 <input type="hidden" name="spzid" value="${spz.id}"/>
                 <input type="hidden" name="userid" value="${user.id}"/>
                 <input type="hidden" name="configid" value="${config.id}"/>
                 <input type="hidden" name="projectid" value="${project.id}"/>
-                <input type="submit" value="<f:message key='acceptButton'/>"/>
+               <!-- <input type="submit" value="<f:message key='acceptButton'/>"/>-->
             </form>
             
-            <form action="${pageContext.request.contextPath}/SPZServlet/delete" method="post">
+            <form id="deleteSpz" action="${pageContext.request.contextPath}/SPZServlet/delete" method="post">
                 <input type="hidden" name="newstate" value="CANCELED"/>
                 <input type="hidden" name="spzid" value="${spz.id}"/>
                 <input type="hidden" name="userid" value="${user.id}"/>
                 <input type="hidden" name="state" value="ACCEPTED"/>
                 <input type="hidden" name="configid" value="${config.id}"/>
                 <input type="hidden" name="projectid" value="${project.id}"/>
-                <input type="submit" value="<f:message key='cancel'/>"/>
+                <!--<input type="submit" value="<f:message key='cancel'/>"/>-->
             </form>
-            
+            <form method="post">
+                <input type="button" value="<f:message key='acceptButton'/>" onclick="doPost(acceptImpl)"/>
+                <input type="button" value="<f:message key='cancel'/>" onclick="doPost(deleteSpz)"/>
+            </form>
             </c:if>
         </c:when>
             <c:otherwise>
@@ -68,9 +71,22 @@
                     <input type="hidden" name="newstate" value="DCB_ACCEPTED"/>
                     <input type="hidden" name="configid" value="${config.id}"/>
                     <input type="hidden" name="projectid" value="${project.id}"/>
-                    <textarea name="desc" cols="80" rows="8"></textarea>
-                    <input type="checkbox" name="external"/><label for="external"><f:message key="visible"/></label>
-                    <input type="submit" value="<f:message key='submit'/>"/>
+                    <div class="formItem">
+                        <span class="textarealabel"><f:message key="note"/></span>
+                        <span class="areainput">
+                            <textarea name="note" cols="80" rows="8" maxlength="8000"></textarea>
+                        </span>
+                    </div>
+                    <div class="formItem">
+                        <span class="noIndentinput">
+                            <input type="checkbox" name="external"/><label for="external"><f:message key="visible"/></label>
+                        </span>
+                    </div>
+                    <div class="formItem">
+                        <span class="noIndentInput">
+                            <input type="submit" value="<f:message key='submit'/>"/>
+                        </span>
+                    </div>
                 </form>
             </c:otherwise>
             </c:choose>

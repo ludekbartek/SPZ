@@ -210,6 +210,22 @@ th{
     float: left;
     width: 20%;
 }
+.tablelabel{
+    float: left;
+    width:25%;
+    font-weight: bold;
+}
+.value{
+    vertical-align: central;
+    float: left;
+    width: 25%;
+}
+
+.singlevalue{
+    vertical-align: central;
+    float:left;
+    width:50%;
+}
 
 .textarealabel{
     vertical-align: top;

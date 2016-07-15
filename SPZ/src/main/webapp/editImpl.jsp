@@ -26,11 +26,11 @@
             <jsp:include page="editcommon.jsp"/>
             <tr>
                 <td class="label"><f:message key="revised"/>:</td>
-                <td colspan="3"><c:out value="${spz.revised}" escapeXml="true"/></td>
+                <td colspan="3"><c:out value="${spz.revised}" escapeXml="false"/></td>
             </tr>
             <tr>
                 <td class="label"><f:message key="solution"/>:</td>
-                <td colspan="3"><c:out value="${spz.solution}" escapeXml="true"/></td>
+                <td colspan="3"><c:out value="${spz.solution}" escapeXml="false"/></td>
             </tr>
             <tr>
                 <td class="label"><f:message key="estWorkLoad"/>:</td>

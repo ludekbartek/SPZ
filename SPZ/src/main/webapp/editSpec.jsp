@@ -41,11 +41,8 @@
                     (<f:formatNumber minFractionDigits="2" maxFractionDigits="2" value="${spz.workLoadEstimation/8.0}"/> <f:message key="manDays"/>)</td>
             </tr>--%>
         </table>
-        <span class="debug">
-            User: <c:out value="${user.name}"/> (id:<c:out value="${user.id}"/>, role:<c:out value="${user.role}"/>)
-        </span>
-            <%-- <c:if test="${user.role!=0}">--%>
-            <form action="${pageContext.request.contextPath}/SPZServlet/delete" method="post">
+        <c:if test="${user.role!=0}">
+            <form id="cancel" action="${pageContext.request.contextPath}/SPZServlet/delete" method="post">
                 <input type="hidden" name="spzid" value="${spz.id}"/>
                 <input type="hidden" name="state" value="SPECIFIED"/>
                 <input type="hidden" name="userid" value="${user.id}"/>
@@ -54,26 +51,32 @@
                 <input type="hidden" name="projectid" value="${project.id}"/>
                 <input type="submit" value="<f:message key='cancel'/>"/>
             </form>
-        <%-- </c:if> --%>
+        </c:if>
         <c:if test="${user.role==0}">
-            <form action="${pageContext.request.contextPath}/SPZServlet/editspz" method="post">
+            <form id="returnSpz" action="${pageContext.request.contextPath}/SPZServlet/editspz" method="post">
                 <input type="hidden" name="spzid" value="${spz.id}"/>
                 <input type="hidden" name="userid" value="${user.id}"/>
                 <input type="hidden" name="state" value="SPECIFIED"/>
                 <input type="hidden" name="newState" value="RANALYSIS"/>
                 <input type="hidden" name="configid" value="${config.id}"/>
                 <input type="hidden" name="projectid" value="${project.id}"/>
-                <input type="submit" value="<f:message key='submit'/>"/>
+                <!--<input type="submit" value="<f:message key='submit'/>"/>-->
             </form>
-            <form action="${pageContext.request.contextPath}/SPZServlet/acceptsolution" method="post">
+            <form id="acceptSol" action="${pageContext.request.contextPath}/SPZServlet/acceptsolution" method="post">
                 <input type="hidden" name="spzid" value="${spz.id}"/>
                 <input type="hidden" name="userid" value="${user.id}"/>
                 <input type="hidden" name="state" value="SPECIFIED"/>
                 <input type="hidden" name="configid" value="${config.id}"/>
                 <input type="hidden" name="projectid" value="${project.id}"/>
-                <input type="submit" value="<f:message key='acceptSol'/>"/>
-            </form>    
+                <!--<input type="submit" value="<f:message key='acceptSol'/>"/>-->
+            </form>
+            <form method="post">
+                <input type="button" value="<f:message key='submit'/>" onclick="doPost(returnSpz)" />
+                <input type="button" value="<f:message key='acceptSol'/>" onclick="doPost(acceptSol)"/>
+            </form>
         </c:if>
+            
+        
         <jsp:include page="listHistory.jsp"/>
         <!--<h2>Pridej poznamku</h2>-->
         <jsp:include page="addNote.jsp"/>
