@@ -438,6 +438,12 @@ public class SPZServlet extends HttpServlet {
                 case "/refinereq":
                             getRedefinition(request,response);
                             break;
+                case "/reimpl":
+                            startReimplemetation(request,response);
+                            break;
+                case "/reclaim":
+                            reclaimSpz(request,response);
+                            break;
                 default:
                     StringBuilder errorMesg = new StringBuilder("Invalid action").append(action).append(". Using list instead.");
                     LOGGER.log(Level.INFO,errorMesg.toString());
@@ -685,12 +691,13 @@ public class SPZServlet extends HttpServlet {
         request.setAttribute("config", configurationToEntity(conf));
         request.setAttribute("project", projectToEntity(proj, projectConfs));
         spz = manager.findSpz(id);
-        if(request.getParameterMap().containsKey("newstate")){
+        Map<String,String[]> params = request.getParameterMap();
+        if(params.containsKey("newstate")){
             
-            if(request.getParameterMap().containsKey("analyst")){
+            if(params.containsKey("analyst")){
                 setAnalyst(spz, request.getParameter("analyst"));
             }
-            if(request.getParameterMap().containsKey("developer")){
+            if(params.containsKey("developer")){
                 setDeveloper(spz,request.getParameter("developer"));
             }
             changeState(spz,request,response);
@@ -3610,6 +3617,16 @@ public class SPZServlet extends HttpServlet {
 
     private void getRedefinition(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setAttribute("newState", "REFINE");
+        gotoJspWithSpzUserChange(request, response, "/changeState.jsp");
+    }
+
+    private void startReimplemetation(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.setAttribute("newState", "IMPLEMENTATION");
+        gotoJspWithSpzUserChange(request, response, "/changeState.jsp");
+    }
+
+    private void reclaimSpz(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.setAttribute("newState","RECLAIMED");
         gotoJspWithSpzUserChange(request, response, "/changeState.jsp");
     }
 
