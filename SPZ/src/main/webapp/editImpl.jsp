@@ -25,15 +25,15 @@
         <table class="border-fullwidthtable">
             <jsp:include page="editcommon.jsp"/>
             <tr>
-                <td class="label"><f:message key="revised"/>:</td>
+                <td class="tablelabel"><f:message key="revised"/>:</td>
                 <td colspan="3"><c:out value="${spz.revised}" escapeXml="false"/></td>
             </tr>
             <tr>
-                <td class="label"><f:message key="solution"/>:</td>
+                <td class="tablelabel"><f:message key="solution"/>:</td>
                 <td colspan="3"><c:out value="${spz.solution}" escapeXml="false"/></td>
             </tr>
             <tr>
-                <td class="label"><f:message key="estWorkLoad"/>:</td>
+                <td class="tablelabel"><f:message key="estWorkLoad"/>:</td>
                 <td>
                     <c:out value="${spz.workLoadEstimation}"/> <f:message key="manHours"/>
                     (<f:formatNumber maxFractionDigits="2" value="${spz.workLoadEstimation/8.0}"/>
@@ -80,9 +80,12 @@
                     <!--<input type="submit" value="<f:message key='cancel'/>"/>-->
                 </form>
                 <form method="post">
-                    <input type="button" value="<f:message key='releaseBut'/>" onclick="doPost(releaseForm)"/>
+                    <c:if test="${user.role==1}">
+                        <input type="button" value="<f:message key='releaseBut'/>" onclick="doPost(releaseForm)"/>
+                    </c:if>
                     <input type="button" value="<f:message key='changeDevBut'/>" onclick="doPost(develForm)"/>
                     <input type="button" value="<f:message key='refineBut'/>" onclick="doPost(refineForm)"/>
+                    
                     <input type="button" value="<f:message key='cancel'/>" onclick="doPost(cancelForm)"/>
                 </form>
                 <jsp:include page="listHistory.jsp"/>

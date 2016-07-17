@@ -26,23 +26,23 @@
         <table class="border-fullwidthtable">
             <jsp:include page="editcommon.jsp"/>
             <tr>
-                <td class="label"><f:message key="revised"/></td>
-                <td><c:out value="${spz.revised}"/></td>
+                <td class="tablelabel"><f:message key="revised"/></td>
+                <td><c:out value="${spz.revised}" escapeXml="false"/></td>
             </tr>
             <tr>
-                <td class="label"><f:message key="solution"/></td>
-                <td><c:out value="${spz.solution}"/></td>
+                <td class="tablelabel"><f:message key="solution"/></td>
+                <td><c:out value="${spz.solution}" escapeXml="false"/></td>
             </tr>
             <tr>
-                <td class="label"><f:message key="estWorkLoad"/></td>
+                <td class="tablelabel"><f:message key="estWorkLoad"/></td>
                 <td><c:out value="${spz.workLoadEstimation}"/></td>
             </tr>
             <tr>
-                <td class="label"><f:message key="solInfo"/></td>
-                <td><c:out value="${spz.relNotes}"/></td>
+                <td class="tablelabel"><f:message key="solInfo"/></td>
+                <td><c:out value="${spz.relNotes}" escapeXml="false"/></td>
             </tr>
             <tr>
-                <td class="label"><f:message key="realWorkLoad"/></td>
+                <td class="tablelabel"><f:message key="realWorkLoad"/></td>
                 <td>
                     <c:if test="${not empty spz.workLoadReal}"><c:out value="${spz.workLoadReal}"/></c:if>
                     <c:if test="${empty spz.workLoadReal}"><c:out value="${spz.workLoadEstimation}"/></c:if>
@@ -52,34 +52,41 @@
         </table>
         <c:choose>
             <c:when test="${user.role=='0'}">
-                <form action="${pageContext.request.contextPath}/SPZServlet/acceptSpz" method="post">
+                <form id="acceptForm" action="${pageContext.request.contextPath}/SPZServlet/acceptSpz" method="post">
                     <input type="hidden" name="state" value="${spz.spzState}"/>
                     <input type="hidden" name="newState" value="CONFIRMED"/>
                     <input type="hidden" name="spzid" value="${spz.id}"/>
                     <input type="hidden" name="userid" value="${user.id}"/>
                     <input type="hidden" name="configid" value="${config.id}"/>
                     <input type="hidden" name="projectid" value="${project.id}"/>
-                    <input type="submit" value="<f:message key='acceptBut'/>"/>
+                    <!--<input type="submit" value="<f:message key='acceptBut'/>"/>-->
                 </form>
-                <form action="${pageContext.request.contextPath}/SPZServlet/editspz" method="post">
+                <form id="reclaimedForm" action="${pageContext.request.contextPath}/SPZServlet/reclaim" method="post">
                     <input type="hidden" name="state" value="${spz.spzState}"/>
                     <input type="hidden" name="newState" value="RECLAIMED"/>
                     <input type="hidden" name="spzid" value="${spz.id}"/>
                     <input type="hidden" name="userid" value="${user.id}"/>
                     <input type="hidden" name="configid" value="${config.id}"/>
                     <input type="hidden" name="projectid" value="${project.id}"/>
-                    <input type="submit" value="<f:message key='reclaimBut'/>"/>
+                    <!--<input type="submit" value="<f:message key='reclaimBut'/>"/>-->
+                </form>
+                <form method="post">
+                    <input type="button" value="<f:message key='acceptBut'/>" onclick="doPost(acceptForm)"/>
+                    <input type="button" value="<f:message key='reclaimBut'/>" onclick="doPost(reclaimedForm)"/>
                 </form>
             </c:when>
             <c:otherwise>
-                <form action="${pageContext.request.contextPath}/SPZServlet/delete" method="post">
+                <form id="deleteForm" action="${pageContext.request.contextPath}/SPZServlet/delete" method="post">
                     <input type="hidden" name="state" value="${spz.spzState}"/>
                     <input type="hidden" name="newState" value="CANCELED"/>
                     <input type="hidden" name="spzid" value="${spz.id}"/>
                     <input type="hidden" name="userid" value="${user.id}"/>
                     <input type="hidden" name="configid" value="${config.id}"/>
                     <input type="hidden" name="projectid" value="${project.id}"/>
-                    <input type="submit" value="<f:message key='cancel'/>"/>
+                 <!--   <input type="submit" value="<f:message key='cancel'/>"/>-->
+                </form>
+                <form method="post">
+                    <input type="button" value="<f:message key='cancel'/>" onclick="doPost(deleteForm)"/>
                 </form>
             </c:otherwise>
         </c:choose>

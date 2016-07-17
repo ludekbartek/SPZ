@@ -38,9 +38,9 @@
             </tr>
         </table>
         <c:if test="${user.role == '2'}">
-            <form id="reimplForm" action="${pageContext.request.contextPath}/SPZServlet/editspz" method="post">
+            <form id="reimplForm" action="${pageContext.request.contextPath}/SPZServlet/reimpl" method="post">
                 <input type="hidden" name="state" value="RELEASED"/>
-                <input type="hidden" name="newState" value="DCB_ACCEPTED"/>
+                <input type="hidden" name="newstate" value="DCB_ACCEPTED"/>
                 <input type="hidden" name="spzid" value="${spz.id}"/>
                 <input type="hidden" name="userid" value="${user.id}"/>
                 <input type="hidden" name="configid" value="${config.id}"/>
@@ -57,7 +57,7 @@
             </form>
             <form id="deleteForm" action="${pageContext.request.contextPath}/SPZServlet/delete" method="post">
                 <input type="hidden" name="state" value="RELEASED"/>
-                <input type="hidden" name="newState" value="CANCELED"/>
+                <input type="hidden" name="newstate" value="CANCELED"/>
                 <input type="hidden" name="spzid" value="${spz.id}"/>
                 <input type="hidden" name="userid" value="${user.id}"/>
                 <input type="hidden" name="configid" value="${config.id}"/>
