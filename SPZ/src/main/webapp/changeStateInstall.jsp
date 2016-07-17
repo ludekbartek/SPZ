@@ -18,6 +18,9 @@
     </head>
     <body>
         <jsp:include page="headerSpzEdit.jsp"/>
+        <div class="center">
+            <jsp:include page="navigationSpzEdit.jsp"/>
+        </div>
         <h1><f:message key="stateChangeHeader"/></h1>
         <div class="highlighted">
             <f:message key="request"/> '<f:message key="${newState}"/>' na SPZ:

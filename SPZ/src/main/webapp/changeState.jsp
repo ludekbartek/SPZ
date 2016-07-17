@@ -19,6 +19,9 @@
     </head>
     <body>
         <jsp:include page="headerSpzEdit.jsp"/>
+        <div class="center">
+            <jsp:include page="navigationSpzEdit.jsp"/>
+        </div>
         <h1><f:message key="stateChangeHeader"/></h1>
         <div class="highlighted">
             <f:message key="request"/> '<f:message key="${newState}"/>' na SPZ:
@@ -30,7 +33,7 @@
             <c:if test="${spz.spzState=='IMPLEMENTATION' || spz.spzState=='DCB_ACCEPTED'}">
                 <tr>
                     <td><f:message key='solutionDesc'/>:</td>
-                    <td><c:out value="${spz.solution}"/></td>
+                    <td><c:out value="${spz.solution}" escapeXml="false"/></td>
                 </tr>
                 <tr>
                     <td><f:message key="workLoadEst"/>:</td>
@@ -41,7 +44,7 @@
                 </tr>
             </c:if>
         </table>
-        <h2><f:message key="stateInfoFor"/> '<f:message key='${newState}'/>'</h2>
+        <h3><f:message key="stateInfoFor"/> '<f:message key='${newState}'/>'</h3>
         <form action='${pageContext.request.contextPath}/SPZServlet/editspz' method="post">
             <div class="formItem">
                 <span class="textarealabel">

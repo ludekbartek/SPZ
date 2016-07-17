@@ -47,7 +47,7 @@
                 </tr>
             </c:if>
         </table>
-        <h2><f:message key="stateInfoFor"/> '<f:message key='CANCELED'/>'</h2>
+        <h3><f:message key="stateInfoFor"/> '<f:message key='CANCELED'/>'</h3>
         <form action='${pageContext.request.contextPath}/SPZServlet/delete' method="post">
             <div class="formItem">
             <span class="textarealabel">
