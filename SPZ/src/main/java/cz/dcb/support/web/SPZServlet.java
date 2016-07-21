@@ -3622,6 +3622,9 @@ public class SPZServlet extends HttpServlet {
 
     private void startReimplemetation(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setAttribute("newState", "IMPLEMENTATION");
+        SpzManager spzMan = new SpzJpaController(emf);
+        Spz spz = getSpzByParameter(request);
+        request.setAttribute("developers",getProjectDevelopers(spz));
         gotoJspWithSpzUserChange(request, response, "/changeState.jsp");
     }
 
