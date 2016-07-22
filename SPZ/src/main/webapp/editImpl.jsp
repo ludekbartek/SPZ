@@ -80,13 +80,22 @@
                     <!--<input type="submit" value="<f:message key='cancel'/>"/>-->
                 </form>
                 <form method="post">
-                    <c:if test="${user.role==1}">
-                        <input type="button" value="<f:message key='releaseBut'/>" onclick="doPost(releaseForm)"/>
+                    <c:if test="${user.role!=0}"><!--Uzivatel neni klient-->
+                        <c:choose>
+                        <c:when test="${user.role==1}"> <!-- Vyvojar-->
+                            <!-- Uvolnit novou verzi projektu -->
+                            <input type="button" value="<f:message key='releaseBut'/>" onclick="doPost(releaseForm)"/>
+                        </c:when>
+                        <c:when test="${user.role==2}"> <!--Projektovy manager -->
+                            <!-- Zmena vyvojare -->
+                            <input type="button" value="<f:message key='changeDevBut'/>" onclick="doPost(develForm)"/>
+                            <!-- Vraceni k reimplementaci -->
+                            <input type="button" value="<f:message key='refineBut'/>" onclick="doPost(refineForm)"/>
+                            <!-- Zruseni SPZ -->
+                            <input type="button" value="<f:message key='cancel'/>" onclick="doPost(cancelForm)"/>
+                        </c:when>
+                        </c:choose>
                     </c:if>
-                    <input type="button" value="<f:message key='changeDevBut'/>" onclick="doPost(develForm)"/>
-                    <input type="button" value="<f:message key='refineBut'/>" onclick="doPost(refineForm)"/>
-                    
-                    <input type="button" value="<f:message key='cancel'/>" onclick="doPost(cancelForm)"/>
                 </form>
                 <jsp:include page="listHistory.jsp"/>
     </body>
