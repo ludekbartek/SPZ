@@ -24,7 +24,7 @@
             <thead>
                 <tr>
                     <td class="code"><f:message key="code"/></td>
-                    <td class="desc"><f:message key="desc"/></td>
+                    <td class="desc"><f:message key="projectname"/></td>
                     
                     <c:if test="${user.classType==3}">
                         <td class="actions"><f:message key="projectActions"/></td>
