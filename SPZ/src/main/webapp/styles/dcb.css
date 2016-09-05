@@ -85,6 +85,10 @@ h3{
     margin-right: 15px;
 }
 
+td.topalign{
+    vertical-align: top;
+}
+
 .topheader{
     font-style: italic;
     color: graytext;
@@ -181,9 +185,9 @@ th{
     text-align: center;
 }
 
-.desc{
+/*.desc{
     width: 80%;
-}
+}*/
 
 .id{
     width: 20%;
@@ -233,8 +237,13 @@ th{
     width:20%;
 }
 
-.formItem{
+.textareainput{
+    float:right;
     width: 80%;
+}
+
+.formItem{
+    width: 100%;
     margin-left: 5px;
     margin: 20px;
 }
