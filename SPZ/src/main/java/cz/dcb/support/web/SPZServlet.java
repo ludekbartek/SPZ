@@ -178,12 +178,15 @@ public class SPZServlet extends HttpServlet {
         Connection con;
         boolean started = false;
         try {
+            Class.forName("org.apache.derby.jdbc.ClientDriver");
             con = DriverManager.getConnection(url);
             con.close();
             started=true;
             
         } catch (SQLException ex) {
             LOGGER.log(Level.SEVERE, "Server not running. Trying to start the new one.", ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(SPZServlet.class.getName()).log(Level.SEVERE, "Ovladac pro derby nenalezen.", ex);
         }
         NetworkServerControl serverControl = null;
         if(!started){
@@ -523,7 +526,7 @@ public class SPZServlet extends HttpServlet {
                 request.setAttribute("config", configurationToEntity(conf));
                 request.setAttribute("project", proj);
                 request.setAttribute("errror", "Chyba pri prevodu parametru na SPZ:" + ex);
-                request.getRequestDispatcher("./addSPZ.jsp").forward(request, response);
+                request.getRequestDispatcher("/addSPZ.jsp").forward(request, response);
                 return;
             }
             Spzstate state = new Spzstate();
@@ -579,6 +582,7 @@ public class SPZServlet extends HttpServlet {
                 request.setAttribute("user", user);
                 request.setAttribute("config", configurationToEntity(conf));
                 request.setAttribute("project", proj);
+                LOGGER.log(Level.INFO,"Seznam SPZ.");
             }catch(Exception ex){
                 try {
                     manager.destroy(spz.getId());
@@ -616,6 +620,8 @@ public class SPZServlet extends HttpServlet {
             if(spz!=null){
                 request.setAttribute("spz", spzToEntity(spz));
                 request.setAttribute("error", "Nektera polozka chybi nebo ma neplatnou hodnotu" );
+                dispError(request,response,"Neuplna nebo neplatna SPZ.");
+                return;
             }
             UserWebEntity user = requestToUserWebEntity(request);
             if(user==null){
@@ -628,7 +634,10 @@ public class SPZServlet extends HttpServlet {
             request.getRequestDispatcher("/addSPZ.jsp").forward(request,response);
             return;
         }
+        LOGGER.log(Level.INFO,"Calling last listSpz in addSpz.");
         listSpz(request, response);
+        //request.getRequestDispatcher("/listSPZ.jsp").forward(request,response);
+        return;
     }
 
     private boolean addSpzNote(HttpServletRequest request, HttpServletResponse response, Spz spz, Spzstate state) throws IOException, NumberFormatException, ServletException {
@@ -1084,6 +1093,7 @@ public class SPZServlet extends HttpServlet {
         LOGGER.log(Level.INFO,String.format("userid: %d",user.getId()));
         request.setAttribute("spzs", entities);
         request.getRequestDispatcher("/listSPZ.jsp").forward(request, response);
+        return;
     }
 
     /**
@@ -2203,6 +2213,7 @@ public class SPZServlet extends HttpServlet {
             request.setAttribute("user", user);
             request.setAttribute("config", configurationToEntity(conf));
             request.setAttribute("project", proj);
+            LOGGER.log(Level.INFO,"Pro pridani prilohy predavam na "+jsp);
             request.getRequestDispatcher(jsp).forward(request,response);
             return;
         }
@@ -2210,12 +2221,13 @@ public class SPZServlet extends HttpServlet {
         short external = (short)(externalStr!=null&&(externalStr.compareToIgnoreCase("on")==0||externalStr.compareTo("1")==0)?1:0);
         note.setExternalnote(external);
         if(noteText==null){
-            request.setAttribute("error", "Missing note description.");
-            request.setAttribute("user", user);
-            request.setAttribute("project", proj);
-            request.setAttribute("config", configurationToEntity(conf));
+            LOGGER.log(Level.SEVERE,"Missing note description.");
+//            request.setAttribute("error", "Missing note description.");
+//            request.setAttribute("user", user);
+//            request.setAttribute("project", proj);
+//            request.setAttribute("config", configurationToEntity(conf));
             //request.getRequestDispatcher("/editPost.jsp").forward(request, response);
-            editSpz(request, response);
+          //  editSpz(request, response);
             return;
         }
         note.setNotetext(noteText);
@@ -2242,7 +2254,8 @@ public class SPZServlet extends HttpServlet {
         request.setAttribute("user", user);
         request.setAttribute("project", proj);
         request.setAttribute("config", configurationToEntity(conf));
-        request.getRequestDispatcher("/editPost.jsp").forward(request, response);
+     //   request.getRequestDispatcher("/editPost.jsp").forward(request, response);
+        return;
         
     }
 
