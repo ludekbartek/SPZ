@@ -1,7 +1,7 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="f" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <f:setBundle basename="addNote"/>
-<h2><f:message key="addNoteHeading"/></h2>
+<h3><f:message key="addNoteHeading"/></h3>
 <div>
     <form action="${pageContext.request.contextPath}/SPZServlet/addNote" enctype="multipart/form-data" method="post">
         <div class="note">
