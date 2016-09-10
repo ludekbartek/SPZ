@@ -45,7 +45,7 @@
                 <td colspan="3">
                     <c:choose>
                         <c:when test="${!empty spz.analyst}"><c:out value="${spz.analyst}"/></c:when>
-                        <c:otherwise><c:out value="neprirazen"/></c:otherwise>
+                        <c:otherwise><f:message key="neprirazen"/></c:otherwise>
                     </c:choose>
                 </td>
             </tr>
