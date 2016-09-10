@@ -2199,6 +2199,18 @@ public class SPZServlet extends HttpServlet {
         HTMLTransformer transformer = new HTMLTransformer();
         String noteLower;
         String jsp;
+        
+        LOGGER.log(Level.INFO,"external ",externalStr);
+        if(externalStr!=null && (externalStr.compareToIgnoreCase("on")==0 || externalStr.compareToIgnoreCase("1")==0)){
+            note.setExternalnote((short)1);
+            LOGGER.log(Level.INFO,"Poznamka viditelna pro zakaznika");
+        }else{
+            note.setExternalnote((short)0);
+            LOGGER.log(Level.INFO,"Poznamka neviditelna pro zakaznika.");
+        }
+        short external = (short)(externalStr!=null&&(externalStr.compareToIgnoreCase("on")==0||externalStr.compareTo("1")==0)?1:0);
+        note.setExternalnote(external);
+       
         try {
             transformer.convert(noteText);
             noteLower = transformer.getResult();
@@ -2217,9 +2229,6 @@ public class SPZServlet extends HttpServlet {
             request.getRequestDispatcher(jsp).forward(request,response);
             return;
         }
-        LOGGER.log(Level.INFO,"external ",externalStr);
-        short external = (short)(externalStr!=null&&(externalStr.compareToIgnoreCase("on")==0||externalStr.compareTo("1")==0)?1:0);
-        note.setExternalnote(external);
         if(noteText==null){
             LOGGER.log(Level.SEVERE,"Missing note description.");
 //            request.setAttribute("error", "Missing note description.");
@@ -2254,6 +2263,7 @@ public class SPZServlet extends HttpServlet {
         request.setAttribute("user", user);
         request.setAttribute("project", proj);
         request.setAttribute("config", configurationToEntity(conf));
+        editSpz(request, response);
      //   request.getRequestDispatcher("/editPost.jsp").forward(request, response);
         return;
         
