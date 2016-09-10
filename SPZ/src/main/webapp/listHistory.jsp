@@ -27,28 +27,40 @@
                          <c:out value="${note.noteIssuer}"/>
                      </c:if>
                      (<f:formatDate type="both" dateStyle="LONG" timeStyle="SHORT" value="${note.noteDate}"/>)
+                     <!--<div>
+                         externi: <c:out value="${note.external}"/><br/>
+                         role: <c:out value="${user.role}"/><br/>
+                     </div>-->
                      <c:choose>
-                         <c:when test="${note.external==1 or user.role!=0}">
-                            <c:if test="${note.external==0}">
-                                <div class="note-header">
+                         <c:when test="${note.external==0}">
+                            <c:if test="${user.role!=0}">
                                      #########<f:message key="internal"/>#########
-                                </div>
+                                
                             </c:if>
                             <div class="notetext">
                                 <c:out value="${note.noteText}" escapeXml="false"/> 
                                 <c:if test="${fn:length(note.attachments) gt 0}">
                                       <c:forEach var="attachment" items="${note.attachments}">
-                                          <a href="${pageContext.request.contextPath}/SPZServlet/getattach?attachmentId=<c:out value='${attachment.id}'/>&userid=<c:out value='${user.id}'/>&projectid=<c:out value='${project.id}'/>"/><c:out value="${attachment.content}"/></a> 
+                                          (<a href="${pageContext.request.contextPath}/SPZServlet/getattach?attachmentId=<c:out value='${attachment.id}'/>&userid=<c:out value='${user.id}'/>&projectid=<c:out value='${project.id}'/>"/><c:out value="${attachment.content}"/></a>)
                                       </c:forEach>
                                 </c:if>
                             </div>
                          </c:when>
+                         <c:otherwise>
+                             <div class="notetext">
+                                 <c:out value="${note.noteText}" escapeXml="false"/> 
+                                <c:if test="${fn:length(note.attachments) gt 0}">
+                                      <c:forEach var="attachment" items="${note.attachments}">
+                                          (<a href="${pageContext.request.contextPath}/SPZServlet/getattach?attachmentId=<c:out value='${attachment.id}'/>&userid=<c:out value='${user.id}'/>&projectid=<c:out value='${project.id}'/>"/><c:out value="${attachment.content}"/></a>) 
+                                      </c:forEach>
+                                </c:if>
+                             </div>
+                         </c:otherwise>
                      </c:choose>
                      
                  </div>
             </c:forEach>
-             
-            <c:if test="${not empty spz.workLoadEstimation}">
+                 <c:if test="${not empty spz.workLoadEstimation and spz.workLoadEstimation gt 0}">
                  <div class="state-item">
                     <f:message key="estwork"/>: 
                     <f:formatNumber minFractionDigits="1" maxFractionDigits="1" value="${spz.workLoadEstimation}"/>
