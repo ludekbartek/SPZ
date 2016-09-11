@@ -71,5 +71,7 @@
             </form>
     </c:if>
     <jsp:include page="listHistory.jsp"/>
+    <div style="margin-top:10px;height: 20px;"/>
+    <jsp:include page='addNote.jsp'/>
     </body>
 </html>
