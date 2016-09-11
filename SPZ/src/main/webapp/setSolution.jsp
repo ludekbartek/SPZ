@@ -11,6 +11,7 @@
 
 <html>
     <f:setBundle basename="setsolution"/>
+    <f:setBundle basename="addNote" var="addNote"/>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title><f:message key="stateChange"/> <c:out value="${spz.id}"/></title>
@@ -20,11 +21,11 @@
     <body>
         <jsp:include page="headerSpzEdit.jsp"/>
         <h1><f:message key="stateChange"/></h1>
-        <div><f:message key="stateChangeHeader"/></div>
+        <div class="highlighted"><f:message key="stateChangeHeader"/></div>
         <table class="infotable">
             <jsp:include page="editcommon.jsp"/>
         </table>
-        <div class="text"><f:message key="infoState"/>:</div>
+        <h3><f:message key="infoState"/>:</h3>
         <form action="${pageContext.request.contextPath}/SPZServlet/editspz" method="post">
             <input type="hidden" name="state" value="ANALYSIS"/>
             <input type="hidden" name="newstate" value="SPECIFIED"/>
@@ -58,13 +59,31 @@
                 </span>
             </div>
             <div class="formItem">
+                <span class="textarealabel">
+                    <f:message key="note"/>
+                </span>
+                <span class="textareainput">
+                    <textarea rows="5" cols="80" maxlenght="8000" name="desc"></textarea>
+                </span>
+            </div>
+            <c:if test="${user.role!=0}">
+                <div class="formItem">
+                    <span class="noIndentInput">
+                        <input type="checkbox" name="external"/><label for="external"><f:message key="extNote" bundle="${addNote}"/></label>
+                    </span>
+                </div>
+            </c:if>
+            <div class="formItem">
                 <div class="noIndentInput">
                     <input type="submit" value="<f:message key='submit'/>"/>
                 </div>
             </div>
+            
         </form>
-        <jsp:include page="addNote.jsp"/>
-        <h1><f:message key="history"/></h1>
+        <%--<jsp:include page="addNote.jsp"/>--%>
+        <div>
+        <!--<h1><f:message key="history"/></h1>-->
         <jsp:include page="listHistory.jsp"/>
+        </div>
     </body>
 </html>
