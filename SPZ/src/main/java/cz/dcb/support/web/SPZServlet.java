@@ -572,7 +572,20 @@ public class SPZServlet extends HttpServlet {
                     spzStateNote.setStateid(state.getId());
                     stateNoteMan.create(spzStateNote);
                     if(hasAttachment(request)){
-                        addNote(request, response, spz.getId());
+                        Part part1 = request.getPart("soubor1"),
+                             part2 = request.getPart("soubor2"),
+                             part3 = request.getPart("soubor3");
+                        Attachment attach1 = null,attach2 = null, attach3 = null;
+                        if(part1!=null){
+                            attach1 = partToAttachment(part1,request,response);
+                        }
+                        if(part2!=null){
+                            attach2 = partToAttachment(part2,request,response);
+                        }
+                        if(part3!=null){
+                            attach3 = partToAttachment(part3,request,response);
+                        }
+                        addAttachments(note, attach1, attach2, attach3);
                     }
 
                 }
@@ -2127,7 +2140,8 @@ public class SPZServlet extends HttpServlet {
                 Logger.getLogger(SPZServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        if(part1 != null && part1.getSubmittedFileName()!=null && !part1.getSubmittedFileName().isEmpty()){
+        attach1 = partToAttachment(part1,request,response);
+    /*    if(part1 != null && part1.getSubmittedFileName()!=null && !part1.getSubmittedFileName().isEmpty()){
             try{
                 in = part1.getInputStream();
                 fileName = new StringBuilder(attachDir.toString()).append("/").append(part1.getSubmittedFileName()).toString();
@@ -2145,9 +2159,9 @@ public class SPZServlet extends HttpServlet {
             }catch(IOException ex){
                 Logger.getLogger(SPZServlet.class.getName()).log(Level.SEVERE, null,ex);
             }
-        }
-        
-        if(part2!=null && part2.getSubmittedFileName()!=null && !part2.getSubmittedFileName().isEmpty()){
+        }*/
+        attach2 = partToAttachment(part2, request, response);
+        /*if(part2!=null && part2.getSubmittedFileName()!=null && !part2.getSubmittedFileName().isEmpty()){
             fileName = new StringBuilder(attachDir.toString()).append("/").append(part2.getSubmittedFileName()).toString();
             
             try{
@@ -2163,8 +2177,9 @@ public class SPZServlet extends HttpServlet {
                 return;
             }
         }
-        
-        if(part3!=null && part3.getSubmittedFileName()!=null && !part3.getSubmittedFileName().isEmpty()){
+        */
+        attach3 = partToAttachment(part3, request, response);
+        /*if(part3!=null && part3.getSubmittedFileName()!=null && !part3.getSubmittedFileName().isEmpty()){
             
             try{
                 in = part3.getInputStream();
@@ -2180,7 +2195,7 @@ public class SPZServlet extends HttpServlet {
                 return;
             }
             
-        }
+        }*/
         SpzManager spzManager = new SpzJpaController(emf);
         SpzStateNoteManager stateNoteManager = new SpzStateNoteJpaController(emf);
         SpzStateManager stateManager = new SpzStateJpaController(emf);
@@ -2697,6 +2712,16 @@ public class SPZServlet extends HttpServlet {
             } catch (Exception ex) {
                 Logger.getLogger(SPZServlet.class.getName()).log(Level.SEVERE, "Error updating SPZ: ", ex);
             }
+        }
+        if(params.containsKey("desc")){
+            Spznote note = new Spznote();
+            SpzNoteManager spzNoteMan = new SpzNoteJpaController(emf);
+            spzNoteMan.create(note);
+            SpzStateNoteManager spzStateNoteMan = new SpzStateNoteJpaController(emf);
+            Spzstatenote stateNote = new Spzstatenote();
+            stateNote.setNoteid(note.getId());
+            stateNote.setStateid(curr.getId());
+            spzStateNoteMan.create(stateNote);
         }
         if(change){
             try {
@@ -3654,6 +3679,32 @@ public class SPZServlet extends HttpServlet {
     private void reclaimSpz(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setAttribute("newState","RECLAIMED");
         gotoJspWithSpzUserChange(request, response, "/changeState.jsp");
+    }
+
+    private Attachment partToAttachment(Part part,HttpServletRequest request, HttpServletResponse response) throws ServletException {
+        Attachment attach = null;
+        if(part != null && part.getSubmittedFileName()!=null && !part.getSubmittedFileName().isEmpty()){
+            try{
+                InputStream in = part.getInputStream();
+                String fileName = new StringBuilder(attachDir.toString()).append("/").append(part.getSubmittedFileName()).toString();
+                try{
+                    uploadFile(request, response, fileName, in);
+                    attach = new Attachment();
+                    attach.setLocation(fileName);
+                    attach.setContent(part.getSubmittedFileName());
+                    attach.setType(Files.probeContentType(new File(fileName).toPath()));
+                    Calendar cal = new GregorianCalendar();
+                    Date date = cal.getTime();
+                    attach.setDate(date);
+                }catch(IOException ex){
+                    displayError(request, fileName, ex, response);
+                    return null;
+                }
+            }catch(IOException ex){
+                Logger.getLogger(SPZServlet.class.getName()).log(Level.SEVERE, null,ex);
+            }
+        }
+        return attach;
     }
 
     
