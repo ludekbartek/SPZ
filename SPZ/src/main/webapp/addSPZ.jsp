@@ -157,7 +157,7 @@ pri editaci pouze popisy (viz stara verze).
                     <tr>    
                         <td colspan="2">
                         <div class="formItem">
-                            <span class="label"><input type="submit" value="<f:message key="register"/>" onfocus="shortname.value = reqnumber.value;"/></span>
+                            <span class="noIndentFormItem"><input type="submit" value="<f:message key="register"/>" onfocus="shortname.value = reqnumber.value;"/></span>
                         </div>
                         </td>
                     </tr>
