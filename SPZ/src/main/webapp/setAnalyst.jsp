@@ -8,6 +8,7 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="f" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <f:setBundle basename="editAnalyst"/>
+<f:setBundle basename="changeState" var="change"/>
 <!DOCTYPE html>
 <html>
     <head>
@@ -21,7 +22,11 @@
         <div class="center">
             <jsp:include page="navigationSpzEdit.jsp"/>
         </div>
-        <h1><f:message key="pagetitle"/></h1>
+        <!--<h1><f:message key="pagetitle"/></h1>-->
+            <h1><f:message key="stateChangeHeader"/></h1>
+        <div class="highlighted">
+            <f:message key="request" bundle="${change}"/> '<f:message key="${newState}" bundle="${change}"/>' na SPZ:
+        </div>
         <div id="info">
         <table class="border-fullwidthtable">
             <jsp:include page="editcommon.jsp"/>
@@ -36,6 +41,10 @@
                     <textarea id="desc" name="desc" cols="80" rows="5"></textarea>
                 </span>
             </div>
+            <div class="noIndentFormItem">
+                <input type="checkbox" name="external"/> <label for="external"><f:message key="externalNote"/></label>
+            </div>
+           
             <div class="formItem">
              <span class="label">
                  <label for="analyst"><f:message key="analystLabel"/></label>
@@ -47,11 +56,6 @@
                     </c:forEach>
                 </select>
              </span>
-            </div>
-            <div class="noIndentFormItem">
-                <input type="checkbox" name="external"/> <label for="external"><f:message key="externalNote"/></label>
-            </div>
-            <div class="formItem">
             </div>
             <div class="formItem">
                 <span class="noIndentInput">
