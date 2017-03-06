@@ -137,69 +137,26 @@
                     <td class="item">
                         <c:out value="${item.shortName}"/>
                     </td>
-                    <c:choose>
-                        <c:when test="${not empty item.specDate}">
-                            <td class="item">
-                        </c:when>
-                        <c:otherwise>
-                            <td>
-                        </c:otherwise>
-                    </c:choose>
-                        <f:formatDate value="${item.specDate}" pattern="d.M.yy"/>
+                    <td class="item">
+                       <f:formatDate value="${item.specDate}" pattern="d.M.yy"/>
                     </td>
-                    <c:choose>
-                        <c:when test="${not empty item.workLoadEstimation and item.workLoadEstimation gt 0}">
-                            <td class="item">
-                        </c:when>
-                        <c:otherwise>
-                            <td>
-                        </c:otherwise>
-                    </c:choose>
-                        <c:if test="${item.workLoadEstimation gt 0}">
-                              <f:formatNumber value="${item.workLoadEstimation}"/> <f:message key="manhour"/>
+                    <td class="item">
+                       <c:if test="${item.workLoadEstimation gt 0}">
+                          <f:formatNumber value="${item.workLoadEstimation}"/> <f:message key="manhour"/>
                         </c:if>
                     </td>
-                    <c:choose>
-                        <c:when test="${not empty item.installDate}">
-                            <td class="item">
-                        </c:when>
-                        <c:otherwise>
-                            <td>
-                        </c:otherwise>
-                    </c:choose>
+                    <td class="item">
                         <f:formatDate value="${item.installDate}" pattern="d.M.yy"/>
                     </td>
-                    <c:choose>
-                        <c:when test="${not empty item.workLoadReal and item.workLoadReal gt 0}">
-                            <td class="item">
-                        </c:when>
-                        <c:otherwise>
-                            <td>
-                        </c:otherwise>        
-                    </c:choose>
+                    <td class="item">
                         <c:if test="${item.workLoadReal gt 0}">
                             <f:formatNumber value="${item.workLoadReal}"/> <f:message key="manhour"/>
                         </c:if>
                     </td>
-                    <c:choose>
-                        <c:when test="${not empty item.spzState}">
-                            <td class="item" <c:if test="${item.canContinue}">style="color: green"</c:if>>
-                        </c:when>
-                        <c:otherwise>
-                            <td>
-                        </c:otherwise>
-                    </c:choose>
+                    <td class="item" <c:if test="${item.canContinue}">style="color: green"</c:if>>
                         <f:message key="${item.spzState}"/>
                     </td>
-                    <c:choose>
-                        <c:when test="${not empty item.category}">
-                            <td class="item">
-                        </c:when>
-                        <c:otherwise>
-                            <td>
-                        </c:otherwise>
-                    </c:choose>
-                    
+                    <td class="item">
                         <c:choose>
                             <c:when test="${item.category=='1'}"><f:message key="standard"/></c:when>
                             <c:otherwise><f:message key="nonstandard"/></c:otherwise>
