@@ -31,6 +31,6 @@
    </security-constraint>-->
     <login-config>
         <auth-method>BASIC</auth-method>
-        <realm-name>MemoryRealm</realm-name>
+        <realm-name>JDBCRealm</realm-name>
     </login-config>
 </web-app>
