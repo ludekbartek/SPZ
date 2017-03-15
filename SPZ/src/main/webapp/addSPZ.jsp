@@ -122,11 +122,14 @@ pri editaci pouze popisy (viz stara verze).
                         Role: <c:out value="${user.role}"/>
                     </div>
                 <c:choose> 
-                    <c:when test="${user.role ne 0}">
+                    <c:when test="${user.role ne 0}"> <!-- kdyz se nejedna o klienta -->
                         <tr>
                         <div class="formItem">
-                            <td colspan="2"><span class="input"><input type="checkbox" id="ext" name="external" value="1"/></span></td>
-                        <span class="label"><label for="ext"><f:message key="ext"/></label></span>
+                            <td/>
+                            <td>
+                                <span class="input"><input type="checkbox" id="ext" name="external" value="1"/><label for="ext"><f:message key="ext"/></span>
+                                            
+                            </td>
                     </div>
                     </tr>
                     </c:when>
