@@ -53,15 +53,18 @@ pri editaci pouze popisy (viz stara verze).
                 <input type="hidden" name="projectid" value="${project.id}"/>
                 <div class="formItem">
                         <span class="label"><label for="shortname"><f:message key="label"/></label></span>
-                        <span class="input"><input type="text" id="shortname" name="shortname" maxlength="50" size="87" value="<c:if test="${!empty spz.reqnumber}">${spz.reqnumber}</c:if>"></span>
+                        <span class="input"><input type="text" id="shortname" name="shortname" maxlength="50" class="textinput" value="<c:if test="${!empty spz.reqnumber}">${spz.reqnumber}</c:if>"></span>
                 </div>
                 <div class="formItem">
                     <span class="label"><label for="contactperson"><f:message key="contactperson"/></label></span>
-                    <span class="input"><input type="text" id="contactperson" name="contactperson" size="87" maxlength="32" value="<c:if test="${!empty spz.contactperson}">${spz.contactperson}</c:if>"/></span>
+                    <span class="input"><input type="text" id="contactperson" name="contactperson" class="textinput" maxlength="32" value="<c:if test="${!empty spz.contactperson}">${spz.contactperson}</c:if>"/></span>
                 </div>
                 <div class="formItem">
-                    <span class="textarealabel"><label class="textarealabel" for="requestdescription"><f:message key="requestdescription"/></label></span>
-                    <span class="textareainput"><textarea class="desc" id="requestdescription" name="requestdescription" rows="9" maxlength="9000" cols="100"></textarea></span>
+                    <span class="label"><label class="textarealabel" for="requestdescription"><f:message key="requestdescription"/></label></span>
+                    <span class="input">
+                        <textarea class="textareainput" id="requestdescription" name="requestdescription" rows="9" maxlength="9000" <%--cols="100-"--%>>
+                        </textarea>
+                    </span>
                 </div>
                 <div class="formItem">
                     <span class="label"><label for="reqtype"><f:message key="reqtype"/></label></span>
@@ -84,7 +87,7 @@ pri editaci pouze popisy (viz stara verze).
                 <div class="formItem">
                         <span class="label"><label for="priority"><f:message key="priority"/></label></span>
                         <span class="input">
-                            <select name="priority" id="priority" multiple>
+                            <select name="priority" id="priority">
                                 <option value="1" <c:if test="${priority=='1'}">selected</c:if>>1</option>
                                 <option value="2" <c:if test="${priority=='2'}">selected</c:if>>2</option>
                                 <option value="3" <c:if test="${priority=='3' or empty priority}">selected</c:if>>3</option>
@@ -97,7 +100,7 @@ pri editaci pouze popisy (viz stara verze).
                     <div class="formItem">
                         <span class="label"><label for="desc"><f:message key="desc"/></label></span>
                         <span class="input">
-                            <textarea class="desc" name="desc" id="desc" maxlength="8000" cols="100" rows="5"></textarea>
+                            <textarea class="textareainput" name="desc" id="desc" maxlength="8000" rows="5"></textarea>
                         </span>
                     </div>
                     <div class="debug">
@@ -114,24 +117,25 @@ pri editaci pouze popisy (viz stara verze).
                         <span class="input"><input type="hidden" id="ext" name="external" value="1"/></span>
                     </c:otherwise>
                 </c:choose>
-                        <div class="label"><f:message key="attachments"/></div>
-                        <div class="formItem">
-                        <span class="file">
-                            <span class="label"><label for="soubor1"><f:message key="file1"/></label></span>
-                            <span class="input"><input id="soubor1" type="file" name="soubor1"/></span>
-                        </span>
-                        <span class="file">
-                            <span class="label"><label for="soubor2"><f:message key="file2"/></label></span>
-                            <span class="input"><input id="soubor2" type="file" name="soubor2"/></span>
-                        </span>
-                        <span class="file">
-                            <span class="label"><label for="soubor3"><f:message key="file3"/></label></span>
-                            <span class="input"><input id="soubor3" type="file" name="soubor3"/></span>
-                        </span>
-                        </div>
-                        <div class="formItem">
-                            <span class="noIndentFormItem"><input type="submit" value="<f:message key="register"/>" onfocus="shortname.value = reqnumber.value;"/></span>
-                        </div>
+                    <div class="label"><f:message key="attachments"/></div>
+                    <div class="formItem">
+                    <span class="file">
+                        <span class="filelabel"><label for="soubor1"><f:message key="file1"/></label></span>
+                        <span class="fileinput"><input id="soubor1" type="file" name="soubor1"/></span>
+                    </span>
+                    <span class="file">
+                        <span class="filelabel"><label for="soubor2"><f:message key="file2"/></label></span>
+                        <span class="fileinput"><input id="soubor2" type="file" name="soubor2"/></span>
+                    </span>
+                    <span class="file">
+                        <span class="filelabel"><label for="soubor3"><f:message key="file3"/></label></span>
+                        <span class="fileinput"><input id="soubor3" type="file" name="soubor3"/></span>
+                    </span>
+                    </div>
+
+                    <div class="formItem">
+                        <span class="input"><input type="submit" value="<f:message key="register"/>" onfocus="shortname.value = reqnumber.value;"/></span>
+                    </div>
             </form>
         </div>
     </body>

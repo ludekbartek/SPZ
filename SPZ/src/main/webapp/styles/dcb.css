@@ -216,7 +216,6 @@ table.fullwidthtable{
 }
 
 .label{
-    vertical-align:central;
     float: left;
     width: 10%;
 }
@@ -245,27 +244,29 @@ table.fullwidthtable{
 
 
 .textareainput{
-    float:right;
-    width: 80%;
+    float:left;
+    width: 90%;
 }
 
 .formItem{
     width: 100%;
+    height: 30px;
     margin: 20px 20px 20px 20px;
 }
 
 .noIndentFormItem{
+    width: 100%;
     margin-left:20px;
     margin-top:5px;
     margin-bottom:5px;
 }
 
 .input{
-    float: right;
-    width: 100%;
+    float: left;
+    width: 90%;
 }
 .noIndentInput{
-    float:right;
+    float:left;
     width:100%;
 }
 .attachments{
@@ -281,6 +282,7 @@ table.fullwidthtable{
 }
 
 .attachlabel{
+    float:left;
     margin-bottom: 5px;
 }
 
@@ -289,9 +291,24 @@ table.fullwidthtable{
     margin-left: 0px;
 }
 
+.filelabel{
+	float:left;
+	
+}
+
+.fileinput{
+	float:left;
+	width:50%;
+}
+
+.textinput{
+	width:90%;
+}
+
+
 .file{
     float:left;
-    width:25%;
+    width:33%;
 }
 
 /*.attachments{
