@@ -10,7 +10,7 @@
                     <f:message key="note"/>:
                 </div>
                 <div>
-                    <textarea class="areainput" name="desc" cols="100" rows="9" maxlength="8000"><c:if test="${!empty desc}"><c:out value="${desc}"/></c:if></textarea>
+                    <textarea class="textareainput" name="desc" cols="100" rows="9" maxlength="8000"><c:if test="${!empty desc}"><c:out value="${desc}"/></c:if></textarea>
                 </div>
             </div>
             <input type="hidden" name="spzid" value="${spz.id}"/>

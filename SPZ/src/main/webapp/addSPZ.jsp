@@ -51,54 +51,40 @@ pri editaci pouze popisy (viz stara verze).
                 <input type="hidden" name="userid" value="${user.id}"/>
                 <input type="hidden" name="configid" value="${config.id}"/>
                 <input type="hidden" name="projectid" value="${project.id}"/>
-                <table class="fullwidthtable">
-                    <tr>
-                    <div class="formItem">
-                        <td><span class="label"><label for="shortname"><f:message key="label"/></label></span></td>
-                        <td><span class="input"><input type="text" name="shortname" maxlength="50" size="87" value="<c:if test="${!empty spz.reqnumber}">${spz.reqnumber}</c:if>"></span></td>
-                    </div>
-                    </tr>
-                    <tr>
-                    <div class="formItem">
-                        <td><span class="label"><label for="contactperson"><f:message key="contactperson"/></label></span></td>
-                        <td><span class="input"><input type="text" name="contactperson" size="87" maxlength="32" value="<c:if test="${!empty spz.contactperson}">${spz.contactperson}</c:if>"/></span></td>
-                    </div>
-                    </tr>
-                    <tr>
-                    <div class="formItem">
-                        <td class="topalign"><span class="textarealabel"><label class="textarealabel" for="requestdescription"><f:message key="requestdescription"/></label></span></td>
-                        <td><span class="textareainput"><textarea name="requestdescription" rows="9" maxlength="9000" cols="100"></textarea></span></td>
-                    </div>
-                    </tr>
-                    <tr>
-                    <div class="formItem">
-                        <td><span class="label"><label for="reqtype"><f:message key="reqtype"/></label></span></td>
-                        <td><span class="input">
-                            <select name="reqtype">
-                                <option value="placeny"><f:message key="placeny"/></option>
-                                <option value="neplaceny"><f:message key="neplaceny"/></option>
-                            </select>
-                            </span>
-                        </td>
-                    </div>
-                    </tr>
-                    <tr>
-                    <div class="formItem">
-                        <td><span class="label"><label for="category"><f:message key="category"/></label></span></td>
-                        <td><span class="input">
-                            <select name="category">
-                                <option value="1" selected><f:message key="standard"/></option>
-                                <option value="0"><f:message key="nonstandard"/></option>
-                            </select>
-                        </span>
-                        </td>
-                    </div>
-                    </tr>
-                    <tr>
-                    <div class="formItem">
-                        <td><span class="label"><label for="priority"><f:message key="priority"/></label></span></td>
-                        <td><span class="input">
-                            <select name="priority">
+                <div class="formItem">
+                        <span class="label"><label for="shortname"><f:message key="label"/></label></span>
+                        <span class="input"><input type="text" id="shortname" name="shortname" maxlength="50" size="87" value="<c:if test="${!empty spz.reqnumber}">${spz.reqnumber}</c:if>"></span>
+                </div>
+                <div class="formItem">
+                    <span class="label"><label for="contactperson"><f:message key="contactperson"/></label></span>
+                    <span class="input"><input type="text" id="contactperson" name="contactperson" size="87" maxlength="32" value="<c:if test="${!empty spz.contactperson}">${spz.contactperson}</c:if>"/></span>
+                </div>
+                <div class="formItem">
+                    <span class="textarealabel"><label class="textarealabel" for="requestdescription"><f:message key="requestdescription"/></label></span>
+                    <span class="textareainput"><textarea class="desc" id="requestdescription" name="requestdescription" rows="9" maxlength="9000" cols="100"></textarea></span>
+                </div>
+                <div class="formItem">
+                    <span class="label"><label for="reqtype"><f:message key="reqtype"/></label></span>
+                    <span class="input">
+                        <select name="reqtype" id="reqtype">
+                            <option value="placeny"><f:message key="placeny"/></option>
+                            <option value="neplaceny"><f:message key="neplaceny"/></option>
+                        </select>
+                    </span>
+                </div>
+                <div class="formItem">
+                    <span class="label"><label for="category"><f:message key="category"/></label></span>
+                    <span class="input">
+                        <select name="category" id="category">
+                            <option value="1" selected><f:message key="standard"/></option>
+                            <option value="0"><f:message key="nonstandard"/></option>
+                        </select>
+                    </span>
+                </div>
+                <div class="formItem">
+                        <span class="label"><label for="priority"><f:message key="priority"/></label></span>
+                        <span class="input">
+                            <select name="priority" id="priority" multiple>
                                 <option value="1" <c:if test="${priority=='1'}">selected</c:if>>1</option>
                                 <option value="2" <c:if test="${priority=='2'}">selected</c:if>>2</option>
                                 <option value="3" <c:if test="${priority=='3' or empty priority}">selected</c:if>>3</option>
@@ -106,65 +92,46 @@ pri editaci pouze popisy (viz stara verze).
                                 <option value="5" <c:if test="${priority=='5'}">selected</c:if>>5</option>
                             </select>
                         </span>
-                        </td>
+                        
                     </div>
-                    </tr>    
-                    <tr>
                     <div class="formItem">
-                        <td> <span class="label"><label for="desc"><f:message key="desc"/></label></span></td>
-                        <td><span class="input">
-                            <textarea name="desc" maxlength="8000" cols="100" rows="5"></textarea>
+                        <span class="label"><label for="desc"><f:message key="desc"/></label></span>
+                        <span class="input">
+                            <textarea class="desc" name="desc" id="desc" maxlength="8000" cols="100" rows="5"></textarea>
                         </span>
-                        </td>
                     </div>
-                    </tr>
                     <div class="debug">
                         Role: <c:out value="${user.role}"/>
                     </div>
                 <c:choose> 
                     <c:when test="${user.role ne 0}"> <!-- kdyz se nejedna o klienta -->
-                        <tr>
                         <div class="formItem">
-                            <td/>
-                            <td>
-                                <span class="input"><input type="checkbox" id="ext" name="external" value="1"/><label for="ext"><f:message key="ext"/></span>
+                            <span class="input"><input type="checkbox" id="extnote" name="external" value="1"/><label for="extnote"><f:message key="ext"/></label></span>
                                             
-                            </td>
-                    </div>
-                    </tr>
+                        </div>
                     </c:when>
                     <c:otherwise>
                         <span class="input"><input type="hidden" id="ext" name="external" value="1"/></span>
                     </c:otherwise>
                 </c:choose>
-                    <tr>
-                        <td><div class="label"><f:message key="attachments"/></div></td>
-                        <td>
+                        <div class="label"><f:message key="attachments"/></div>
                         <div class="formItem">
                         <span class="file">
                             <span class="label"><label for="soubor1"><f:message key="file1"/></label></span>
-                            <span class="input"><input type="file" name="soubor1"/></span>
+                            <span class="input"><input id="soubor1" type="file" name="soubor1"/></span>
                         </span>
                         <span class="file">
                             <span class="label"><label for="soubor2"><f:message key="file2"/></label></span>
-                            <span class="input"><input type="file" name="soubor2"/></span>
+                            <span class="input"><input id="soubor2" type="file" name="soubor2"/></span>
                         </span>
                         <span class="file">
                             <span class="label"><label for="soubor3"><f:message key="file3"/></label></span>
-                            <span class="input"><input type="file" name="soubor3"/></span>
+                            <span class="input"><input id="soubor3" type="file" name="soubor3"/></span>
                         </span>
                         </div>
-                        </td>
-
-                    </tr>                    
-                    <tr>    
-                        <td colspan="2">
                         <div class="formItem">
                             <span class="noIndentFormItem"><input type="submit" value="<f:message key="register"/>" onfocus="shortname.value = reqnumber.value;"/></span>
                         </div>
-                        </td>
-                    </tr>
-                </table>
             </form>
         </div>
     </body>
