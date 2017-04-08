@@ -102,24 +102,37 @@ pri editaci pouze popisy (viz stara verze).
                         <span class="input">
                             <textarea class="textareainput" name="desc" id="desc" maxlength="8000" rows="5"></textarea>
                         </span>
-                    </div>
-                    <div class="debug">
+                    
+                    
+                    <%--<div class="debug">
                         Role: <c:out value="${user.role}"/>
+                    </div>
+                    --%>
                     </div>
                 <c:choose> 
                     <c:when test="${user.role ne 0}"> <!-- kdyz se nejedna o klienta -->
-                        <div class="formItem">
-                            <span class="input"><input type="checkbox" id="extnote" name="external" value="1"/><label for="extnote"><f:message key="ext"/></label></span>
-                                            
-                        </div>
+                        <%--<div class="formItem">
+                           <%-- <span class="label"> </span>--%>
+                            <%--<span class="input">--%>
+                            <div class="formItem">
+                                <span class="noteInput">
+                                <input type="checkbox" id="extnote" name="external" value="1"/><label for="extnote"><f:message key="ext"/></label>
+                                </span>
+                            </div>
+                            <%--/span>--%>
+                        <%--</div>--%>
                     </c:when>
                     <c:otherwise>
                         <span class="input"><input type="hidden" id="ext" name="external" value="1"/></span>
                     </c:otherwise>
                 </c:choose>
-                    <div class="label"><f:message key="attachments"/></div>
+                        
+                    
+                    <div class="attachments">
+                    <h3 class="label"><f:message key="attachments"/></h3>
                     <div class="formItem">
-                    <span class="file">
+                        
+                        <span class="file">
                         <span class="filelabel"><label for="soubor1"><f:message key="file1"/></label></span>
                         <span class="fileinput"><input id="soubor1" type="file" name="soubor1"/></span>
                     </span>
@@ -132,9 +145,9 @@ pri editaci pouze popisy (viz stara verze).
                         <span class="fileinput"><input id="soubor3" type="file" name="soubor3"/></span>
                     </span>
                     </div>
-
                     <div class="formItem">
                         <span class="input"><input type="submit" value="<f:message key="register"/>" onfocus="shortname.value = reqnumber.value;"/></span>
+                    </div>
                     </div>
             </form>
         </div>

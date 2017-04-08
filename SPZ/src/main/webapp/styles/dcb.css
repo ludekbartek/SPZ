@@ -44,7 +44,6 @@ h2{
 
 h3{
     margin-top: 10px;
-    align-content: left;
     text-align: left;
 }
 
@@ -265,6 +264,11 @@ table.fullwidthtable{
     float: left;
     width: 90%;
 }
+
+.noteInput{
+    float:left;
+    padding-left:10%;
+}
 .noIndentInput{
     float:left;
     width:100%;
@@ -293,7 +297,7 @@ table.fullwidthtable{
 
 .filelabel{
 	float:left;
-	
+	width:20%;
 }
 
 .fileinput{
@@ -308,7 +312,7 @@ table.fullwidthtable{
 
 .file{
     float:left;
-    width:33%;
+    width:25%;
 }
 
 /*.attachments{
