@@ -38,16 +38,16 @@
             <div class="textarealabel">
                 <f:message key="revLabel"/>:
             </div>
-            <div class="areainput">
-                <textarea name="revisedrequest" rows="5" cols="80" maxlength="8000"><c:if test="${not empty spz.requestDescription}"><c:out value="${spz.requestDescription}"/></c:if></textarea>
+            <div class="textareainput">
+                <textarea name="revisedrequest" rows="5" maxlength="8000"><c:if test="${not empty spz.requestDescription}"><c:out value="${spz.requestDescription}"/></c:if></textarea>
             </div>
             </div>
             <div class="formItem">
                 <span class="textarealabel">    
                     <f:message key="solDesc"/>:
                 </span>
-                <span class="areainput">
-                    <textarea rows="5" cols="80" maxlength="8000" name="solutiondescription"></textarea>
+                <span class="textareainput">
+                    <textarea rows="5" maxlength="8000" name="solutiondescription"></textarea>
                 </span>
             </div>
             <div class="formItem">
@@ -63,7 +63,7 @@
                     <f:message key="note"/>
                 </span>
                 <span class="textareainput">
-                    <textarea rows="5" cols="80" maxlenght="8000" name="desc"></textarea>
+                    <textarea rows="5" maxlength="8000" name="desc"/>
                 </span>
             </div>
             <c:if test="${user.role!=0}">

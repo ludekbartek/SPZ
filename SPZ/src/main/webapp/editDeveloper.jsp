@@ -26,15 +26,31 @@
             <jsp:include page="editcommon.jsp"/>
         </table>
             <form action="${pageContext.request.contextPath}/SPZServlet/changeDevel" method="post">
-            <label for="desc"><f:message key="descLabel"/></label>
-            <textarea name="desc" cols="80" rows="5"></textarea>
-            <label for="developer"><f:message key="developerLabel"/></label>
-            <select name="developer">
-                <c:forEach var="developer" items="${developers}">
-                    <option value="<c:out value='${developer.id}'/>"><c:out value="${developer.name}"/></option>
-                </c:forEach>
-            </select>
-            <input type="checkbox" name="external"/><label for="external"><f:message key="externalNote"/></label>
+            <div class="formItem">
+                <span class="textarealabel">
+                <label for="desc"><f:message key="descLabel"/></label>
+                </span>
+                <span class="textareainput">
+                <textarea name="desc" cols="80" rows="5"></textarea>
+                </span>
+            </div>
+            <div class="formItem">
+                <span class="label">
+                    <label for="developer"><f:message key="developerLabel"/></label>
+                </span>
+                <span class="input">
+                    <select name="developer">
+                        <c:forEach var="developer" items="${developers}">
+                            <option value="<c:out value='${developer.id}'/>"><c:out value="${developer.name}"/></option>
+                        </c:forEach>
+                    </select>
+                </span>
+            </div>
+            <div class="formItem">
+                <span class="input">
+                    <input type="checkbox" name="external"/><label for="external"><f:message key="externalNote"/></label>
+                </span>
+            </div>
             <input type="submit" value="<f:message key='submit'/>"/>
             <input type="hidden" name="userid" value="${user.id}"/>
             <input type="hidden" name="spzid" value="${spz.id}"/>

@@ -26,13 +26,15 @@
                     <li><form action="${pageContext.request.contextPath}/SPZServlet/editProject" method="post">
                             <input type="hidden" name="projectid" value="${projectItem.id}"/>
                             <input type="hidden" name="userid" value="${user.id}"/>
-                            <div class="id">
-                                <label for="name"><f:message key="projectCode"/></label>
-                                <input type="text" name="name" value="<c:if test='${not empty $project}'>${project.name}</c:if>"/>
+                            <div class="formItem">
+                                <span class="label"><label for="name"><f:message key="projectCode"/></label></span>
+                                <span class="input"><input type="text" name="name" value="<c:if test='${not empty $project}'>${project.name}</c:if>"/></span>
                             </div>
-                            <div id="desc">
-                                <label for="description"><f:message key="projectDesc"/></label>
-                                <textarea name="description" cols="64" rows="4"><c:if test="${not empty $project}"><c:out value="${project.description}"/></c:if></textarea>
+                            <div id="formItem">
+                                <span class="textarealabel"><label for="description"><f:message key="projectDesc"/></label></span>
+                                <span class="textareainput">
+                                    <textarea name="description" rows="4"><c:if test="${not empty $project}"><c:out value="${project.description}"/></c:if></textarea>
+                                </span>
                             </div>
                             <input type="submit" value="${projectItem.name}"/>
                         </form>

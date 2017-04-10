@@ -35,7 +35,7 @@
                 <span class="textarealabel">
                     <label for="relnotes"><f:message key="relnotes"/></label>
                 </span>
-                <span class="areainput">
+                <span class="textareainput">
                     <textarea name="relnotes" cols="80" rows="8" maxlength="9000"></textarea>
                 </span>
             </div>

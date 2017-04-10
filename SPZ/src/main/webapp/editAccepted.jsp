@@ -73,7 +73,7 @@
                     <input type="hidden" name="projectid" value="${project.id}"/>
                     <div class="formItem">
                         <span class="textarealabel"><f:message key="note"/></span>
-                        <span class="areainput">
+                        <span class="textareainput">
                             <textarea name="note" cols="80" rows="8" maxlength="8000"></textarea>
                         </span>
                     </div>

@@ -6,12 +6,12 @@
     <form action="${pageContext.request.contextPath}/SPZServlet/addNote" enctype="multipart/form-data" method="post">
         <div class="note">
             <div class="formItem">
-                <div>
+                <span class="label">
                     <f:message key="note"/>:
-                </div>
-                <div>
+                </span>
+                <span class="input">
                     <textarea class="textareainput" name="desc" cols="100" rows="9" maxlength="8000"><c:if test="${!empty desc}"><c:out value="${desc}"/></c:if></textarea>
-                </div>
+                </span>
             </div>
             <input type="hidden" name="spzid" value="${spz.id}"/>
             <input type="hidden" name="jsp" value="${jsp}"/>
@@ -20,7 +20,7 @@
             <input type="hidden" name="projectid" value="${project.id}"/>
             <c:choose>
                 <c:when test='${user.role!=0}'>
-                    <div class="formItem">
+                    <div class="noteInput">
                         <input type="checkbox" name="external" id="ext" <c:if test="${!empty ext and ext=='true'}">checked</c:if>/><label for="ext"><f:message key="extNote"/></label>
                     </div>
                 </c:when>
@@ -29,7 +29,7 @@
                 </c:otherwise>
             </c:choose>
             <div class="formItem">
-                <span class="label">
+                <span class="input">
                     <input type="submit" value="<f:message key="saveNote"/>"/>
                 </span>
             </div>

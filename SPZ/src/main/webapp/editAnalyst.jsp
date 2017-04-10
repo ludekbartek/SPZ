@@ -26,8 +26,14 @@
             <jsp:include page="editcommon.jsp"/>
         </table>
             <form action="${pageContext.request.contextPath}/SPZServlet/changeAnalyst" method="post">
-            <label for="desc"><f:message key="descLabel"/></label>
-            <textarea name="desc" cols="80" rows="5"></textarea>
+            <div class="formItem">
+                <span class="textarealabel">
+                <label for="desc"><f:message key="descLabel"/></label>
+                </span>
+                <span class="textareainput">
+                <textarea name="desc" cols="80" rows="5"></textarea>
+                </span>
+            </div>
             <label for="analyst"><f:message key="analystLabel"/></label>
             <select name="analyst">
                 <c:forEach var="analyst" items="${analysts}">

@@ -50,8 +50,8 @@
                 <span class="textarealabel">
                     <label for='note'><f:message key="noteLabel"/></label>
                 </span>
-                <span class="areainput">
-                    <textarea name='note' cols='80' rows="5" maxlength="8000"></textarea>
+                <span class="textareainput">
+                    <textarea name='note'  rows="5" maxlength="8000"></textarea>
                 </span>
             </div>
             <input type='hidden' name='spzid' value='${spz.id}'/>

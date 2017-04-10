@@ -37,8 +37,8 @@
                 <span class="textarealabel">
                     <label for="desc"><f:message key="descLabel"/></label>
                 </span>
-                <span class="areainput">
-                    <textarea id="desc" name="desc" cols="80" rows="5"></textarea>
+                <span class="textareainput">
+                    <textarea id="desc" name="desc" rows="5"></textarea>
                 </span>
             </div>
             <div class="noIndentFormItem">

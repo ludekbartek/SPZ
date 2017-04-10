@@ -53,10 +53,10 @@
                     <input type="hidden" name="projectid" value="${project.id}"/>
                     <input type="hidden" name="configid" value="${config.id}"/>
                     <div class="input">
-                        <div class="desc">
+                        <div class="textarealabel">
                             <label for="description"><f:message key="desc"/>:</label>
                         </div>
-                        <div class="input">
+                        <div class="textareainput">
                         <textarea cols="128" rows="4" name="description"><c:out value="${config.description}"/></textarea>
                         </div>
                     </div>
