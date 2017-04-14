@@ -1453,10 +1453,15 @@ public class SPZServlet extends HttpServlet {
         List<Useraccess> roles = getUserRoles(currentUser.getId());
         int roleId=0;
         boolean isGreen = false;
-        int currentStateId = SpzStates.valueOf(current.getCode()).ordinal();
+        int currentStateId=-1;
+        if(current!=null){
+            currentStateId = SpzStates.valueOf(current.getCode()).ordinal();
+        }
         for(Useraccess access:roles){
             roleId = Roles.valueOf(access.getRole()).ordinal();
-            isGreen = isGreen || COLORS[currentStateId][roleId];
+            if(roleId>-1 && currentStateId>-1){
+                isGreen = isGreen || COLORS[currentStateId][roleId];
+            }
             LOGGER.log(Level.INFO,String.format("Role id: %d, State id: %d, Is Green: %s",roleId,currentStateId,(isGreen?"true":"false")));
         }
         if(roles.size()>0){
@@ -1464,7 +1469,7 @@ public class SPZServlet extends HttpServlet {
             
         }
         LOGGER.log(Level.INFO, "User roles: {0}", roles.toString());
-        LOGGER.log(Level.INFO, String.format("RoleId: %d\t COLORS[%d, %d] = %s",roleId, currentStateId,roleId,Boolean.toString(COLORS[currentStateId][roleId])));
+        LOGGER.log(Level.INFO, String.format("RoleId: %d\t COLORS[%d, %d] = %s",roleId, currentStateId,roleId,(currentStateId >-1 && roleId>-1?Boolean.toString(COLORS[currentStateId][roleId]):"undefined")));
         entity.setCanContinue(isGreen);
         return entity;
     }
@@ -1596,24 +1601,68 @@ public class SPZServlet extends HttpServlet {
      */
     private void updateSPZ(HttpServletRequest request, HttpServletResponse response) throws IOException,ServletException {
         Spz spz = null;
-        try{
-            spz = requestParamsToSpz(request.getParameterMap());
-        }catch(SPZException ex){
-            request.setAttribute("error", "Zadane parametry nelze prevest na SPZ:" + ex);
-            request.getRequestDispatcher("/listSPZ.jsp").forward(request, response);
-            return;
-        }
+        Map<String,String[]> paramsMap = request.getParameterMap();
         SpzManager manager = new SpzJpaController(emf);
-        try {
-            manager.edit(spz);
-        } catch (Exception ex) {
-            LOGGER.log(Level.SEVERE,"Error editing SPZ: ",ex);
-            request.setAttribute("error", "Chyba pri uprave SPZ. Vice viz log.");
-            List<SPZWebEntity> spzs = spzToEntities(manager.findSpzEntities());
-            request.setAttribute("spzs", spzs);
-            request.getRequestDispatcher("/listSPZ.jsp").forward(request, response);
-            
+        if(!paramsMap.containsKey("changed")){
+            updateSpzInfo(request, manager, response);
+            return;
+        }else{
+            try{
+                spz = requestParamsToSpz(request.getParameterMap());
+            }catch(SPZException ex){
+                request.setAttribute("error", "Zadane parametry nelze prevest na SPZ:" + ex);
+                request.getRequestDispatcher("/listSPZ.jsp").forward(request, response);
+                return;
+            }
+
+            try {
+                
+                if(spz.getId()==null){
+                    Integer spzId;
+                    spzId = getSpzId(paramsMap);
+                    spz.setId(spzId);
+                }
+                if(spz.getReqnumber()==null){
+                    spz.setReqnumber(spz.getId().toString());
+                }
+                manager.edit(spz);
+                editSpz(request, response);
+            } catch (Exception ex) {
+                LOGGER.log(Level.SEVERE,"Error editing SPZ: ",ex);
+                request.setAttribute("error", "Chyba pri uprave SPZ. Vice viz log.");
+                List<SPZWebEntity> spzs = spzToEntities(manager.findSpzEntities());
+                request.setAttribute("spzs", spzs);
+                request.getRequestDispatcher("/listSPZ.jsp").forward(request, response);
+
+            }    
         }
+        
+    }
+
+    private void updateSpzInfo(HttpServletRequest request, SpzManager manager, HttpServletResponse response) throws NumberFormatException, IOException, ServletException {
+        Spz spz;
+        spz = getSpzFromRequest(request, manager);
+        Project proj = getProjectFromRequest(request);
+        List<Configuration> configs = getConfigsForProject(proj);
+        Configuration conf= getConfigurationFromRequest(request);
+        ConfigurationWebEntity confEntity = configurationToEntity(conf);
+        ProjectWebEntity projEntity = projectToEntity(proj, configs);
+        SPZWebEntity spzEntity = spzToEntity(spz);
+        UserWebEntity user = requestToUserWebEntity(request);
+        request.setAttribute("spz", spzEntity);
+        request.setAttribute("project", projEntity);
+        request.setAttribute("config", confEntity);
+        request.setAttribute("user", user);
+        request.getRequestDispatcher("/editSPZ.jsp").forward(request, response);
+        return;
+    }
+
+    private Spz getSpzFromRequest(HttpServletRequest request, SpzManager manager) throws NumberFormatException {
+        Spz spz;
+        String strId = request.getParameter("spzid");
+        Integer id =  Integer.parseInt(strId);
+        spz = manager.findSpz(id);
+        return spz;
     }
 
     /**
@@ -3617,8 +3666,14 @@ public class SPZServlet extends HttpServlet {
                 return o1.getTs().compareTo(o2.getTs());
             }
         });
-        Spzstate last = sortedByDate.get(sortedByDate.size()-1);
-        Date modificationDate = Date.from(Instant.ofEpochMilli(last.getTs().longValue()));
+        int sortedByDateSize = sortedByDate.size();
+        Spzstate last = null;
+        Date modificationDate = null;
+        if(sortedByDateSize>0){
+            last = sortedByDate.get(sortedByDate.size()-1);
+            modificationDate = Date.from(Instant.ofEpochMilli(last.getTs().longValue()));
+        }
+        
         return modificationDate;
     }
 
@@ -3705,6 +3760,13 @@ public class SPZServlet extends HttpServlet {
             }
         }
         return attach;
+    }
+
+    private List<Configuration> getConfigsForProject(Project proj) {
+        ProjectConfigurationManager projConfMan = new ProjectConfigurationJpaController(emf);
+        List<Configuration> configs = projConfMan.getProjectConfigurations(proj.getId());
+        return configs;
+                
     }
 
     

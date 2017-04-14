@@ -84,6 +84,8 @@
             
         </form>-->
         <jsp:include page="addNote.jsp"/>
+        <%-- Muze pouze Projektovy manazer a admin --%>
+        <c:if test="${user.role>=2}">
         <div class="updateSPZ">    
             <form id="changeSPZ" action="${pageContext.request.contextPath}/SPZServlet/updateSPZ" method="post">
                 <%--<div class="formItem">
@@ -97,8 +99,10 @@
                 <input type="hidden" name="configid" value="${config.id}"/>
             </form>
         </div>
+            
         <div class="rightfloat">
             <a href="javascript:doPost(changeSPZ)"><f:message key="changeSpz" bundle="${loc}"/></a>
         </div>
+        </c:if>
     </body>
 </html>
