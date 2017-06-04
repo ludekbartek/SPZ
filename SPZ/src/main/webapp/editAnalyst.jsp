@@ -31,7 +31,7 @@
                 <label for="desc"><f:message key="descLabel"/></label>
                 </span>
                 <span class="textareainput">
-                <textarea name="desc" cols="80" rows="5"></textarea>
+                    <textarea name="desc" <%--cols="80"--%> rows="5"></textarea>
                 </span>
             </div>
             <label for="analyst"><f:message key="analystLabel"/></label>

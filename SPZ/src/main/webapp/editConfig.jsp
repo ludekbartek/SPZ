@@ -57,7 +57,7 @@
                             <label for="description"><f:message key="desc"/>:</label>
                         </div>
                         <div class="textareainput">
-                        <textarea cols="128" rows="4" name="description"><c:out value="${config.description}"/></textarea>
+                        <textarea <%--cols="128" --%>rows="4" name="description"><c:out value="${config.description}"/></textarea>
                         </div>
                     </div>
                     <div class="submit">

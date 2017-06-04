@@ -67,7 +67,7 @@
                 </div>
                 <div id="desc">
                     <label for="description"><f:message key="projectDesc"/></label>
-                    <textarea name="description" cols="64" rows="4"><c:if test="${not empty project}"><c:out value="${project.description}"/></c:if></textarea>
+                    <textarea name="description" <%--cols="64"--%> rows="4"><c:if test="${not empty project}"><c:out value="${project.description}"/></c:if></textarea>
                 </div>
                 <input type="submit" value="<f:message key='changeDesc'/>"/>
             </form>
@@ -113,9 +113,9 @@
                     <label for="confName"><f:message key="code"/>: </label>
                     <input type="text" name="confName" size="22"/>
                 </div>
-                <div class="confDesc">
+                <div class="textarealabel">
                     <label for="confDesc"><f:message key="desc"/>: </label>
-                    <textarea name="confDesc" rows="4" cols="64"></textarea>
+                    <textarea class="textareainput" name="confDesc" rows="4" <%--cols="64"--%>></textarea>
                 </div>   
                 <input type="submit" value="<f:message key='newConfig'/>"/>    
             </form>

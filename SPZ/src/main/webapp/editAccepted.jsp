@@ -74,7 +74,7 @@
                     <div class="formItem">
                         <span class="textarealabel"><f:message key="note"/></span>
                         <span class="textareainput">
-                            <textarea name="note" cols="80" rows="8" maxlength="8000"></textarea>
+                            <textarea name="note" <%--cols="80"--%> rows="8" maxlength="8000"></textarea>
                         </span>
                     </div>
                     <div class="formItem">

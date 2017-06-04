@@ -74,8 +74,8 @@
                     <div class="textarealabel">
                     <label for="description"><f:message key="projectDesc"/>: </label>
                     </div>
-                    <div class="areainput">
-                        <textarea id="description" name="description" cols="65" rows="4" maxlength="255"></textarea>
+                    <div class="textareainput">
+                        <textarea id="description" name="description" <%--cols="65"--%> rows="4" maxlength="255"></textarea>
                     </div>
                 </div>
                 <input type="hidden" name="userid" value="${user.id}"/>

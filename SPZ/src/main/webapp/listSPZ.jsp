@@ -169,7 +169,7 @@
                 </tr>
                 
             </c:forEach>
-              <!--  <tr>
+              <%--  <tr>
                 <form action="${pageContext.request.contextPath}/SPZServlet/addSPZ" method="post">
                     <td>
                         
@@ -259,7 +259,7 @@
                         <input type="submit" value="Pridat"/>
                     </td>
                 </form>
-                </tr>-->
+                </tr>--%>
         </table>
         </div>
     </body>
