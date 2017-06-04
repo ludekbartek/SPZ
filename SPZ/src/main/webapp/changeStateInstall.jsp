@@ -32,11 +32,11 @@
         <h3><f:message key="stateInfo"/> '<f:message key="${newState}"/>'</h3>
         <form action='${pageContext.request.contextPath}/SPZServlet/editspz' method="post">
             <div class="formItem">
-                <span class="textarealabel">
-                    <label for="relnotes"><f:message key="relnotes"/></label>
+                <span class="label">
+                    <label class="textarealabel" for="relnotes"><f:message key="relnotes"/></label>
                 </span>
-                <span class="textareainput">
-                    <textarea name="relnotes" <%--cols="80"--%> rows="8" maxlength="9000"></textarea>
+                <span class="input">
+                    <textarea class="textareainput" name="relnotes" <%--cols="80"--%> rows="8" maxlength="9000"></textarea>
                 </span>
             </div>
             <div class="formItem">
@@ -56,11 +56,11 @@
                 </span>
             </div>
             <div class="formItem">
-                <span class="textarealabel">
-                    <label for='note'><f:message key="noteLabel"/></label>
+                <span class="label">
+                    <label class="textarealabel" for='note'><f:message key="noteLabel"/></label>
                 </span>
-                <span class="textareainput">
-                    <textarea name='note' <%--cols='80'--%> rows="5" maxlength="8000"></textarea>
+                <span class="input">
+                    <textarea class="textareainput" name='note' <%--cols='80'--%> rows="5" maxlength="8000"></textarea>
                 </span>
             </div>
             <input type='hidden' name='spzid' value='${spz.id}'/>

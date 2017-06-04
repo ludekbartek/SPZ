@@ -72,9 +72,9 @@
                     <input type="hidden" name="configid" value="${config.id}"/>
                     <input type="hidden" name="projectid" value="${project.id}"/>
                     <div class="formItem">
-                        <span class="textarealabel"><f:message key="note"/></span>
-                        <span class="textareainput">
-                            <textarea name="note" <%--cols="80"--%> rows="8" maxlength="8000"></textarea>
+                        <span class="label"><label for="note" class="textarealabel"><f:message key="note"/></label></span>
+                        <span class="input">
+                            <textarea class="textareainput" name="note" <%--cols="80"--%> rows="8" maxlength="8000"></textarea>
                         </span>
                     </div>
                     <div class="formItem">

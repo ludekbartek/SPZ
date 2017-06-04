@@ -52,7 +52,7 @@
                 </span>
             </div>
             <div class="formItem">
-                <span class="textarealabel"><f:message key="requestdescription"/></span>
+                <span class="label"><label for="requestdescription" class="textarealabel"><f:message key="requestdescription"/></span>
                 <span class="input">
                     <textarea class="textareainput" name="requestdescription" rows="9" maxlength="9000" <%--cols="100-"--%>>
                         <c:out value="${spz.requestDescription}"/>

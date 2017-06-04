@@ -27,11 +27,11 @@
         </table>
             <form action="${pageContext.request.contextPath}/SPZServlet/changeDevel" method="post">
             <div class="formItem">
-                <span class="textarealabel">
-                <label for="desc"><f:message key="descLabel"/></label>
+                <span class="label">
+                <label class="textarealabel" for="desc"><f:message key="descLabel"/></label>
                 </span>
-                <span class="textareainput">
-                <textarea name="desc" <%--cols="80"--%> rows="5"></textarea>
+                <span class="input">
+                <textarea class="textareainput" name="desc" <%--cols="80"--%> rows="5"></textarea>
                 </span>
             </div>
             <div class="formItem">

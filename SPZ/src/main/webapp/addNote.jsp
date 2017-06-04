@@ -6,11 +6,11 @@
     <form action="${pageContext.request.contextPath}/SPZServlet/addNote" enctype="multipart/form-data" method="post">
         <div class="note">
             <div class="formItem">
-                <span class="textarealabel">
-                    <f:message key="note"/>:
+                <span class="label">
+                    <label for="desc" class="textarealabel"><f:message key="note"/>:</label>
                 </span>
-                <span class="textareainput">
-                    <textarea name="desc" <%--cols="100"--%> rows="9" maxlength="8000"><c:if test="${!empty desc}"><c:out value="${desc}"/></c:if></textarea>
+                <span class="input">
+                    <textarea class="textareainput" name="desc" <%--cols="100"--%> rows="9" maxlength="8000"><c:if test="${!empty desc}"><c:out value="${desc}"/></c:if></textarea>
                 </span>
             </div>
             <input type="hidden" name="spzid" value="${spz.id}"/>

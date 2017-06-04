@@ -71,12 +71,12 @@
                     <span class="input"><input type="text" name="name" value="" maxlength="32" size="56"/></span>
                 </div>
                 <div id="projectDesc">
-                    <div class="textarealabel">
-                    <label for="description"><f:message key="projectDesc"/>: </label>
-                    </div>
-                    <div class="textareainput">
-                        <textarea id="description" name="description" <%--cols="65"--%> rows="4" maxlength="255"></textarea>
-                    </div>
+                    <span class="label">
+                    <label class="textarealabel" for="description"><f:message key="projectDesc"/>: </label>
+                    </span>
+                    <span class="input">
+                        <textarea class="textareainput" id="description" name="description" <%--cols="65"--%> rows="4" maxlength="255"></textarea>
+                    </span>
                 </div>
                 <input type="hidden" name="userid" value="${user.id}"/>
                 <input type="submit" value="<f:message key='addProject'/>"/>

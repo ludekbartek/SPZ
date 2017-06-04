@@ -50,11 +50,11 @@
         <h3><f:message key="stateInfoFor"/> '<f:message key='CANCELED'/>'</h3>
         <form action='${pageContext.request.contextPath}/SPZServlet/delete' method="post">
             <div class="formItem">
-            <span class="textarealabel">
-                <label for='note'><f:message key="noteLabel"/></label>
+            <span class="label">
+                <label class="textarealabel" for='note'><f:message key="noteLabel"/></label>
             </span>
-            <span class="textareainput">
-            <textarea name='note' rows="5" maxlength="8000"></textarea>
+            <span class="input">
+            <textarea class="textareainput" name='note' rows="5" maxlength="8000"></textarea>
             </span>
             </div>
             <input type="hidden" name="canceled" value="1"/>

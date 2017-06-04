@@ -100,9 +100,9 @@
                     <input type="hidden" name="state" value="REFINE"/>
                     <input type="hidden" name="newstate" value="ANALYSIS"/>
                     <div class="formItem">
-                        <span class="textarealabel"><f:message key="note"/></span>
-                        <span class="textareainput">
-                            <textarea name="desc" rows="5" maxlength="8000"></textarea>
+                        <span class="label"><label for="desc" class="textarealabel"><f:message key="note"/></span>
+                        <span class="input">
+                            <textarea class="textareainput" name="desc" rows="5" maxlength="8000"></textarea>
                         </span>
                     </div>
                     <div class='noIndentFormItem'>

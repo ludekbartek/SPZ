@@ -52,12 +52,12 @@
                     <input type="hidden" name="userid" value="${user.id}"/>
                     <input type="hidden" name="projectid" value="${project.id}"/>
                     <input type="hidden" name="configid" value="${config.id}"/>
-                    <div class="input">
-                        <div class="textarealabel">
-                            <label for="description"><f:message key="desc"/>:</label>
-                        </div>
-                        <div class="textareainput">
-                        <textarea <%--cols="128" --%>rows="4" name="description"><c:out value="${config.description}"/></textarea>
+                    <div class="formItem">
+                        <span class="label">
+                            <label class="textarealabel" for="description"><f:message key="desc"/>:</label>
+                        </span>
+                        <div class="input">
+                        <textarea class="textareainput" <%--cols="128" --%>rows="4" name="description"><c:out value="${config.description}"/></textarea>
                         </div>
                     </div>
                     <div class="submit">

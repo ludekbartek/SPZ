@@ -34,10 +34,10 @@
         <p>
             <form action="${pageContext.request.contextPath}/SPZServlet/editSpz" method="post">
             <div class="formItem">
-                <span class="textarealabel">
-                    <label for="desc"><f:message key="descLabel"/></label>
+                <span class="label">
+                    <label class="textarealabel" for="desc"><f:message key="descLabel"/></label>
                 </span>
-                <span class="textareainput">
+                <span class="input">
                     <textarea id="desc" class="textareainput" name="desc" rows="5"></textarea>
                 </span>
             </div>

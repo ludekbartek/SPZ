@@ -31,9 +31,9 @@
                                 <span class="input"><input type="text" name="name" value="<c:if test='${not empty $project}'>${project.name}</c:if>"/></span>
                             </div>
                             <div id="formItem">
-                                <span class="textarealabel"><label for="description"><f:message key="projectDesc"/></label></span>
-                                <span class="textareainput">
-                                    <textarea name="description" rows="4"><c:if test="${not empty $project}"><c:out value="${project.description}"/></c:if></textarea>
+                                <span class="label"><label class="textarealabel" for="description"><f:message key="projectDesc"/></label></span>
+                                <span class="input">
+                                    <textarea class="textareainput" name="description" rows="4"><c:if test="${not empty $project}"><c:out value="${project.description}"/></c:if></textarea>
                                 </span>
                             </div>
                             <input type="submit" value="${projectItem.name}"/>
@@ -109,13 +109,13 @@
             <form action="${pageContext.request.contextPath}/SPZServlet/addConfig" method="post">
                 <input type="hidden" name="userid" value="${user.id}"/>
                 <input type="hidden" name="projectid" value="${project.id}"/>
-                <div class="confName">
-                    <label for="confName"><f:message key="code"/>: </label>
-                    <input type="text" name="confName" size="22"/>
+                <div class="formItem">
+                    <span class="label"><label for="confName"><f:message key="code"/>: </label></span>
+                    <span class="input"><input class="textinput" type="text" name="confName" size="22"/></span>
                 </div>
-                <div class="textarealabel">
-                    <label for="confDesc"><f:message key="desc"/>: </label>
-                    <textarea class="textareainput" name="confDesc" rows="4" <%--cols="64"--%>></textarea>
+                <div class="formItem">
+                    <span class="label"><label class="textarealabel" for="confDesc"><f:message key="desc"/>: </label></span>
+                    <span class="input"><textarea class="textareainput" name="confDesc" rows="4" <%--cols="64"--%>></textarea></span>
                 </div>   
                 <input type="submit" value="<f:message key='newConfig'/>"/>    
             </form>
