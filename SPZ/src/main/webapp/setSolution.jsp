@@ -35,19 +35,19 @@
             <input type="hidden" name="configid" value="${config.id}"/>
             <input type="hidden" name="projectid" value="${project.id}"/>
             <div class="formItem">
-            <div class="textarealabel">
+            <span class="textarealabel">
                 <f:message key="revLabel"/>:
-            </div>
-            <div class="textareainput">
-                <textarea name="revisedrequest" rows="5" maxlength="8000"><c:if test="${not empty spz.requestDescription}"><c:out value="${spz.requestDescription}"/></c:if></textarea>
-            </div>
+            </span>
+            <span class="textareainput">
+                <textarea class="textareainput" name="revisedrequest" rows="5" maxlength="8000"><c:if test="${not empty spz.requestDescription}"><c:out value="${spz.requestDescription}"/></c:if></textarea>
+            </span>
             </div>
             <div class="formItem">
                 <span class="textarealabel">    
                     <f:message key="solDesc"/>:
                 </span>
                 <span class="textareainput">
-                    <textarea rows="5" maxlength="8000" name="solutiondescription"></textarea>
+                    <textarea class="textareainput" rows="5" maxlength="8000" name="solutiondescription"></textarea>
                 </span>
             </div>
             <div class="formItem">
