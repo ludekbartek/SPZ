@@ -276,10 +276,12 @@ table.fullwidthtable{
     float:left;
     padding-left:10%;
 }
+
 .noIndentInput{
     float:left;
     width:100%;
 }
+
 .attachments{
     margin: 15px;
     width: 100%;
