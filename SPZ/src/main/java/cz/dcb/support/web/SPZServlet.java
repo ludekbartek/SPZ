@@ -327,131 +327,138 @@ public class SPZServlet extends HttpServlet {
             String action = request.getPathInfo();
             LOGGER.log(Level.INFO,"Performing {0} with parameters {1}",new Object[]{action,request.getParameterNames().toString()});
             //String action = request.getParameter("action");
-            switch(action.toLowerCase()){
-                case "/login":
-                              try{
-                                authenticate(request,response);
-                              }catch(NoResultException ex){
-                                dispError(request, response, "Chyba autentizace: "+ex);
-                              }
-                              listProjects(request, response);
-                            break;
-                case "/acceptspzreq":
-                            acceptSpz(request,response);
-                            break;
-                case "/addspz":
-                            addSpz(request,response);
-                            break;
-                case "/listspz":
-                            listSpz(request,response);
-                            break;
-                case "/editspz":
-                            editSpz(request,response);
-                            break;
-                case "/spzsolution":
-                            getSpzSolution(request,response);
-                            break;
-                case "/updatespz":
-                            updateSPZ(request,response);
-                            break;
-                case "/adduser":
-                            addUser(request,response);
-                            break;
-                case "/addnote":
-                            addNote(request,response);
-                            break;
-                case "/edituser":
-                            editUser(request,response);
-                            break;
-                case "/addattachment":
-                            addAttachment(request,response);
-                            break;
-                case "/editattachment":
-                            editAttachment(request,response);
-                            break;
-                case "/addproject":
-                            addProject(request,response);
-                            break;
-                case "/editproject":
-                            editProject(request,response);
-                            break;
-                case "/delete":
-                            deleteSpz(request,response);
-                            break;
-                case "/removestate":
-                            deleteSpzState(request,response);
-                            break;
-                case "/changeanalyst":
-                            changeAnalyst(request,response);
-                            break;
-                case "/changedevel":
-                            changeDeveloper(request,response);
-                            break;
-                case "/acceptsolution":
-                            acceptSolution(request,response);
-                            break;
-                case "/editref":
-                            refineSolution(request,response);
-                            break;
-                case "/acceptimpl":
-                            acceptImpl(request,response);
-                            break;
-                case "/releaseversion":
-                            releaseVersion(request,response);
-                            break;
-                case "/startimpl":
-                            startImplementation(request,response);
-                            break;
-                case "/install":
-                            install(request,response);
-                            break;
-                case "/acceptspz":
-                            confirm(request,response);
-                            break;
-                case "/invoicespz":
-                            invoice(request,response);
-                            break;
-                case "/listconfigurations":
-                            listConfigs(request,response);
-                            break;
-                case "/listprojects":
-                            listProjects(request,response);
-                            break;
-                case "/editroles":
-                            editRoles(request,response);
-                            break;
-                case "/listusers":
-                            listUsers(request,response);
-                            break;
-                case "/addconfig":
-                            addConfig(request,response);
-                            break;
-                case "/deleteconfig":
-                            removeConfig(request,response);
-                            break;
-                case "/editconfig":
-                            editConfig(request,response);
-                            break;
-                case "/addrole":
-                            addRole(request,response);
-                            break;
-                case "/deleterole":
-                            deleteRole(request,response);
-                            break;
-                case "/refinereq":
-                            getRedefinition(request,response);
-                            break;
-                case "/reimpl":
-                            startReimplemetation(request,response);
-                            break;
-                case "/reclaim":
-                            reclaimSpz(request,response);
-                            break;
-                default:
-                    StringBuilder errorMesg = new StringBuilder("Invalid action").append(action).append(". Using list instead.");
-                    LOGGER.log(Level.INFO,errorMesg.toString());
-                    dispError(request, response, "Neplatna akce: " + action);
-                    
+            try{
+                switch(action.toLowerCase()){
+                    case "/login":
+                                  try{
+                                    authenticate(request,response);
+                                  }catch(NoResultException ex){
+                                    dispError(request, response, "Chyba autentizace: "+ex);
+                                  }
+                                  listProjects(request, response);
+                                break;
+                    case "/acceptspzreq":
+                                acceptSpz(request,response);
+                                break;
+                    case "/addspz":
+                                addSpz(request,response);
+                                break;
+                    case "/listspz":
+                                listSpz(request,response);
+                                break;
+                    case "/editspz":
+                                editSpz(request,response);
+                                break;
+                    case "/spzsolution":
+                                getSpzSolution(request,response);
+                                break;
+                    case "/updatespz":
+                                updateSPZ(request,response);
+                                break;
+                    case "/adduser":
+                                addUser(request,response);
+                                break;
+                    case "/addnote":
+                                addNote(request,response);
+                                break;
+                    case "/edituser":
+                                editUser(request,response);
+                                break;
+                    case "/addattachment":
+                                addAttachment(request,response);
+                                break;
+                    case "/editattachment":
+                                editAttachment(request,response);
+                                break;
+                    case "/addproject":
+                                addProject(request,response);
+                                break;
+                    case "/editproject":
+                                editProject(request,response);
+                                break;
+                    case "/delete":
+                                deleteSpz(request,response);
+                                break;
+                    case "/removestate":
+                                deleteSpzState(request,response);
+                                break;
+                    case "/changeanalyst":
+                                changeAnalyst(request,response);
+                                break;
+                    case "/changedevel":
+                                changeDeveloper(request,response);
+                                break;
+                    case "/acceptsolution":
+                                acceptSolution(request,response);
+                                break;
+                    case "/editref":
+                                refineSolution(request,response);
+                                break;
+                    case "/acceptimpl":
+                                acceptImpl(request,response);
+                                break;
+                    case "/releaseversion":
+                                releaseVersion(request,response);
+                                break;
+                    case "/startimpl":
+                                startImplementation(request,response);
+                                break;
+                    case "/install":
+                                install(request,response);
+                                break;
+                    case "/acceptspz":
+                                confirm(request,response);
+                                break;
+                    case "/invoicespz":
+                                invoice(request,response);
+                                break;
+                    case "/listconfigurations":
+                                listConfigs(request,response);
+                                break;
+                    case "/listprojects":
+                                listProjects(request,response);
+                                break;
+                    case "/editroles":
+                                editRoles(request,response);
+                                break;
+                    case "/listusers":
+                                listUsers(request,response);
+                                break;
+                    case "/addconfig":
+                                addConfig(request,response);
+                                break;
+                    case "/deleteconfig":
+                                removeConfig(request,response);
+                                break;
+                    case "/editconfig":
+                                editConfig(request,response);
+                                break;
+                    case "/addrole":
+                                addRole(request,response);
+                                break;
+                    case "/deleterole":
+                                deleteRole(request,response);
+                                break;
+                    case "/refinereq":
+                                getRedefinition(request,response);
+                                break;
+                    case "/reimpl":
+                                startReimplemetation(request,response);
+                                break;
+                    case "/reclaim":
+                                reclaimSpz(request,response);
+                                break;
+                    default:
+                        StringBuilder errorMesg = new StringBuilder("Invalid action").append(action).append(". Using list instead.");
+                        LOGGER.log(Level.INFO,errorMesg.toString());
+                        dispError(request, response, "Neplatna akce: " + action);
+
+                }
+            }
+            catch(Exception ex){
+                String errorMsg= String.format("Chyba pri zapracovani akce %s v servletu %s s pricinou %s.", action,ex,ex.getCause());
+                LOGGER.log(Level.SEVERE, errorMsg);
+                dispError(request,response,errorMsg);
             }
             
     }
@@ -1611,6 +1618,11 @@ public class SPZServlet extends HttpServlet {
                 spz = requestParamsToSpz(request.getParameterMap());
             }catch(SPZException ex){
                 request.setAttribute("error", "Zadane parametry nelze prevest na SPZ:" + ex);
+                request.setAttribute("user",userToEntity(getUser(request)));
+                Project project = getProject(request);
+                ProjectWebEntity projWeb = projectToEntity(project,getConfigsForProject(project));
+                request.setAttribute("project", projWeb);
+                request.setAttribute("config",configurationToEntity(getConfigurationFromRequest(request)));
                 request.getRequestDispatcher("/listSPZ.jsp").forward(request, response);
                 return;
             }
@@ -2136,6 +2148,9 @@ public class SPZServlet extends HttpServlet {
     }
 
     private SpzNoteEntity spzStateNoteToWebEntity(Spznote note){
+        if(note==null){
+            return null;
+        }
         SpzNoteEntity entity = new SpzNoteEntity();
         entity.setNoteDate(note.getNotedate());
         entity.setNoteText(note.getNotetext());
@@ -2517,7 +2532,9 @@ public class SPZServlet extends HttpServlet {
 
     private UserWebEntity userToEntity(User user) {
         UserWebEntity entity = new UserWebEntity();
-        
+        if(user==null){
+            return null;
+        }
         entity.setId(user.getId());
         entity.setLogin(user.getLogin());
         entity.setName(user.getName());
@@ -2763,14 +2780,7 @@ public class SPZServlet extends HttpServlet {
             }
         }
         if(params.containsKey("desc")){
-            Spznote note = new Spznote();
-            SpzNoteManager spzNoteMan = new SpzNoteJpaController(emf);
-            spzNoteMan.create(note);
-            SpzStateNoteManager spzStateNoteMan = new SpzStateNoteJpaController(emf);
-            Spzstatenote stateNote = new Spzstatenote();
-            stateNote.setNoteid(note.getId());
-            stateNote.setStateid(curr.getId());
-            spzStateNoteMan.create(stateNote);
+            addNoteToSpzstate(params, request, curr);
         }
         if(change){
             try {
@@ -2779,6 +2789,26 @@ public class SPZServlet extends HttpServlet {
                 Logger.getLogger(SPZServlet.class.getName()).log(Level.SEVERE, "Error updating current state.", ex);
             }
         }
+    }
+
+    private void addNoteToSpzstate(Map<String, String[]> params, HttpServletRequest request, Spzstate curr) {
+        Spznote note = new Spznote();
+        SpzNoteManager spzNoteMan = new SpzNoteJpaController(emf);
+        if(params.containsKey("external")){
+            note.setExternalnote((short)(request.getParameter("external").equalsIgnoreCase("on")?1:0));
+        }
+        note.setNotetext(request.getParameter("desc"));
+        User user=getUser(request);
+        note.setIssuer(user.getName());
+        Date date = new Date();
+        note.setNotedate(date);
+        note.setTs(BigInteger.valueOf(System.currentTimeMillis()));
+        spzNoteMan.create(note);
+        SpzStateNoteManager spzStateNoteMan = new SpzStateNoteJpaController(emf);
+        Spzstatenote stateNote = new Spzstatenote();
+        stateNote.setNoteid(note.getId());
+        stateNote.setStateid(curr.getId());
+        spzStateNoteMan.create(stateNote);
     }
 
     private void changeDeveloper(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -3198,6 +3228,9 @@ public class SPZServlet extends HttpServlet {
 
     private ProjectWebEntity projectToEntity(Project project, List<Configuration> configs) {
         ProjectWebEntity proj = new ProjectWebEntity();
+        if(project==null){
+            return null;
+        }
         proj.setId(project.getId());
         proj.setName(project.getName());
         proj.setDescription(project.getDescription());
@@ -3215,6 +3248,9 @@ public class SPZServlet extends HttpServlet {
     }
 
     private ConfigurationWebEntity configurationToEntity(Configuration conf) {
+        if(conf==null){
+            return null;
+        }
         ConfigurationWebEntity webEnt = new ConfigurationWebEntity();
         webEnt.setId(conf.getId());
         webEnt.setName(conf.getCode());
