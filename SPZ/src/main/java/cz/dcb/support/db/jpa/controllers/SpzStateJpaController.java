@@ -175,7 +175,11 @@ public class SpzStateJpaController implements Serializable, SpzStateManager {
             em.getTransaction().begin();
             Query query=em.createQuery("select spzst from Spzstate spzst where spzst.currentstate=1 and spzst.id in (select spzsts.stateid from Spzstates spzsts where spzsts.spzid = :spzid)");
             query.setParameter("spzid", spz.getId());
-            state = (Spzstate)query.getSingleResult();
+            List<Spzstate> states = (List<Spzstate>)query.getResultList();
+            if(!states.isEmpty()){
+                state = (Spzstate)query.getResultList().get(0);
+            }
+            
             em.getTransaction().commit();
         }catch(Exception ex){
             Logger.getAnonymousLogger().log(Level.SEVERE,"Error selecting current state: ",ex);
