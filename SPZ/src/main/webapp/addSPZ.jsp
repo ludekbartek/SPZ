@@ -62,8 +62,7 @@ pri editaci pouze popisy (viz stara verze).
                 <div class="formItem">
                     <span class="label"><label class="textarealabel" for="requestdescription"><f:message key="requestdescription"/></label></span>
                     <span class="input">
-                        <textarea class="textareainput" id="requestdescription" name="requestdescription" rows="9" maxlength="9000" <%--cols="100-"--%>>
-                        </textarea>
+                        <textarea class="textareainput" id="requestdescription" name="requestdescription" rows="9" maxlength="9000" <%--cols="100-"--%>></textarea>
                     </span>
                 </div>
                 <div class="formItem">
