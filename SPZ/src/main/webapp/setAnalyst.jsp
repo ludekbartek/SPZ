@@ -38,13 +38,14 @@
                     <label for="desc"><f:message key="descLabel"/></label>
                 </span>
                 <span class="textareainput">
-                    <textarea id="desc" name="desc" rows="5"></textarea>
+                    <textarea id="desc" class="textareainput" name="desc" rows="5"></textarea>
                 </span>
             </div>
-            <div class="noIndentFormItem">
-                <input type="checkbox" name="external"/> <label for="external"><f:message key="externalNote"/></label>
+           <div class="formItem">
+               <span class="noteInput">
+                    <input type="checkbox" name="external"/> <label for="external"><f:message key="externalNote"/></label>
+                </span>
             </div>
-           
             <div class="formItem">
              <span class="label">
                  <label for="analyst"><f:message key="analystLabel"/></label>
