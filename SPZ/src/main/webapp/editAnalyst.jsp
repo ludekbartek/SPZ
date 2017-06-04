@@ -27,20 +27,30 @@
         </table>
             <form action="${pageContext.request.contextPath}/SPZServlet/changeAnalyst" method="post">
             <div class="formItem">
-                <span class="textarealabel">
-                <label for="desc"><f:message key="descLabel"/></label>
+                <span class="label">
+                <label class="textarealabel" for="desc"><f:message key="descLabel"/></label>
                 </span>
-                <span class="textareainput">
-                    <textarea name="desc" <%--cols="80"--%> rows="5"></textarea>
+                <span class="input">
+                    <textarea class="textareainput" name="desc" <%--cols="80"--%> rows="5"></textarea>
                 </span>
             </div>
-            <label for="analyst"><f:message key="analystLabel"/></label>
-            <select name="analyst">
-                <c:forEach var="analyst" items="${analysts}">
-                    <option value="<c:out value='${analyst.id}'/>"><c:out value="${analyst.name}"/></option>
-                </c:forEach>
-            </select>
-            <input type="checkbox" name="external"/><label for="external"><f:message key="externalNote"/></label>
+            <div class="formItem">
+                <span class="label">&nbsp;</span>
+                <span class="input">
+                    <input type="checkbox" name="external"/><label for="external"><f:message key="externalNote"/></label>
+                </span>
+            </div>
+            <div class="formItem">
+                <span class="label"><label for="analyst"><f:message key="analystLabel"/></label></span>
+                <span class="input">
+                    <select name="analyst">
+                        <c:forEach var="analyst" items="${analysts}">
+                            <option value="<c:out value='${analyst.id}'/>"><c:out value="${analyst.name}"/></option>
+                        </c:forEach>
+                    </select>
+                </span>
+            </div>
+            
             <input type="submit" value="<f:message key='submit'/>"/>
             <input type="hidden" name="userid" value="${user.id}"/>
             <input type="hidden" name="spzid" value="${spz.id}"/>

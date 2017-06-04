@@ -20,6 +20,9 @@
     </head>
     <body>
         <jsp:include page="headerSpzEdit.jsp"/>
+        <div class="center">
+            <jsp:include page="navigationSpzEdit.jsp"/>
+        </div>
         <h1><f:message key="stateChange"/></h1>
         <div class="highlighted"><f:message key="stateChangeHeader"/></div>
         <table class="infotable">
@@ -35,40 +38,45 @@
             <input type="hidden" name="configid" value="${config.id}"/>
             <input type="hidden" name="projectid" value="${project.id}"/>
             <div class="formItem">
-            <span class="textarealabel">
-                <f:message key="revLabel"/>:
+            <span class="label">
+                <label for="revisedrequest" class="textarealabel"><f:message key="revLabel"/>:</label>
             </span>
-            <span class="textareainput">
+            <span class="input">
                 <textarea class="textareainput" name="revisedrequest" rows="5" maxlength="8000"><c:if test="${not empty spz.requestDescription}"><c:out value="${spz.requestDescription}"/></c:if></textarea>
             </span>
             </div>
             <div class="formItem">
-                <span class="textarealabel">    
-                    <f:message key="solDesc"/>:
+                <span class="label">    
+                    <label for="solutiondescription" class="textareainput"><f:message key="solDesc"/>:</label>
                 </span>
-                <span class="textareainput">
+                <span class="input">
                     <textarea class="textareainput" rows="5" maxlength="8000" name="solutiondescription"></textarea>
                 </span>
             </div>
+                
             <div class="formItem">
                 <span class="label">
                     <f:message key="estWork"/>:
                 </span>
-                <span class="input">
-                    <input type="text" name="estimatedworkload"  maxlength="5" size="69"/>
+                <span class="textinput">
+                    <input class="textinput" type="text" name="estimatedworkload"  maxlength="5" size="69"/>
                 </span>
             </div>
+            
             <div class="formItem">
-                <span class="textarealabel">
-                    <f:message key="note"/>
+                <span class="label">
+                    <label for="desc"><f:message key="note"/>:</label>
                 </span>
-                <span class="textareainput">
-                    <textarea rows="5" maxlength="8000" name="desc"/>
+                <span class="input">
+                    <textarea class="textareainput" rows="5" maxlength="8000" name="desc"></textarea>
                 </span>
             </div>
             <c:if test="${user.role!=0}">
                 <div class="formItem">
-                    <span class="noIndentInput">
+                    <span class="label">
+                        &nbsp;
+                    </span>
+                    <span class="input">
                         <input type="checkbox" name="external"/><label for="external"><f:message key="extNote" bundle="${addNote}"/></label>
                     </span>
                 </div>
