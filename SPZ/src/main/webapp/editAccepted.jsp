@@ -78,7 +78,8 @@
                         </span>
                     </div>
                     <div class="formItem">
-                        <span class="noIndentinput">
+                        <span class="label">&nbsp;</span>
+                        <span class="input">
                             <input type="checkbox" name="external"/><label for="external"><f:message key="visible"/></label>
                         </span>
                     </div>

@@ -25,11 +25,12 @@
                  <div class="note">
                      <c:if test="${not empty note.noteIssuer}">
                          <c:out value="${note.noteIssuer}"/>
-                     </c:if>
+                     </c:if>xt
                      (<f:formatDate type="both" dateStyle="LONG" timeStyle="SHORT" value="${note.noteDate}"/>)
                      <!--<div>
                          externi: <c:out value="${note.external}"/><br/>
                          role: <c:out value="${user.role}"/><br/>
+                         text: <c:out value="${note.noteText}"/><br/>
                      </div>-->
                      <c:choose>
                          <c:when test="${note.external==0}">

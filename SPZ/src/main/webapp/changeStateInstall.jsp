@@ -70,7 +70,8 @@
             <input type="hidden" name="configid" value="${config.id}"/>
             <input type="hidden" name="projectid" value="${project.id}"/>
             <div class="formItem">
-                <span class="noIndentInput">
+                <span class="label">&nbsp;</span>
+                <span class="input">
                     <input type="checkbox" name="external"/><label for="external"><f:message key="externalNote"/></label>
                 </span>
             </div>
