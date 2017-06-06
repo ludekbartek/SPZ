@@ -60,17 +60,17 @@
             <input type="hidden" name="newstate" value="${newState}"/>
             <input type="hidden" name="configid" value="${config.id}"/>
             <input type="hidden" name="projectid" value="${project.id}"/>
+            <div class="formItem">
             <c:choose>
                 <c:when test="${user.role!=0}">
-                    <div class="formItem">
-                        <span class="input"><input type="checkbox" name="external"/><label for="external"><f:message key="externalNote"/></label></span>
-                    </div>
+                    <span class="label">&nbsp;</span>
+                    <span class="input"><input type="checkbox" name="external"/><label for="external"><f:message key="externalNote"/></label></span>
                 </c:when>
                 <c:otherwise>
                     <input type="hidden" name="external" value="1"/>
                 </c:otherwise>
             </c:choose>
-            <br/>
+            </div>
             <c:if test="${!empty developers}">
                 <div class="formItem">
                 <span class="label">
