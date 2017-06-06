@@ -65,7 +65,7 @@
             
             <div class="formItem">
                 <span class="label">
-                    <label for="desc"><f:message key="note"/>:</label>
+                    <label class="textarealabel" for="desc"><f:message key="note"/>:</label>
                 </span>
                 <span class="input">
                     <textarea class="textareainput" rows="5" maxlength="8000" name="desc"></textarea>
