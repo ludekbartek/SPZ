@@ -25,7 +25,7 @@
                  <div class="note">
                      <c:if test="${not empty note.noteIssuer}">
                          <c:out value="${note.noteIssuer}"/>
-                     </c:if>xt
+                     </c:if>
                      (<f:formatDate type="both" dateStyle="LONG" timeStyle="SHORT" value="${note.noteDate}"/>)
                      <!--<div>
                          externi: <c:out value="${note.external}"/><br/>
@@ -88,7 +88,7 @@
              <hr/>
 </c:forEach>
 <c:if test="${item.code!='Registrovaná'}">
-    <form action="${pageContext.request.contextPath}/SPZServlet/removeState" method="post">
+    <form action="${pageContext.request.contextPath}/SPZServlet/removestate" method="post">
      <input type="hidden" name="spzstateid" value="${item.id}"/>
      <input type="hidden" name="spzid" value="${spz.id}"/>
      <input type="hidden" name="userid" value="${user.id}"/>
