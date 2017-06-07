@@ -10,7 +10,7 @@
 <f:setBundle basename="headers"/>
 <link rel="stylesheet" href="styles/dcb.css"/>
 <div class="leftfloat">
-    <span id="logo"><img id="logo" src="images/DCB_3.jpg" alt="Logo DCB s.r.o."/></span>
+    <span><img id="logo" src="images/DCB_3.jpg" alt="Logo DCB s.r.o."/></span>
 </div>
 <div class="rightfloat">
     <form name="useraction" action="${pageContext.request.contextPath}/SPZServlet/editUser" method="post">
