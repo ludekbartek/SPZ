@@ -56,7 +56,11 @@
                         <span>V polich:</span>
                         <span>
                             <select name="fields">
-                                <option></option>
+                                <option value="" SELECTED>Bez omezení</option>
+                                <option value="name" >Název SPZ</option>
+                                <option value="desc" >Zadání SPZ</option>
+                                <option value="rdesc" >Revidované zadání</option>
+                                <option value="solution" >Řešení SPZ</option>
                             </select>
                         </span>
                     </span>
