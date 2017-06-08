@@ -57,10 +57,10 @@
             </div>
             <div class="formItem">
                 <span class="label">
-                    <label class="textarealabel" for='note'><f:message key="noteLabel"/></label>
+                    <label class="textarealabel" for='desc'><f:message key="noteLabel"/></label>
                 </span>
                 <span class="input">
-                    <textarea class="textareainput" name='note' <%--cols='80'--%> rows="5" maxlength="8000"></textarea>
+                    <textarea class="textareainput" name='desc' <%--cols='80'--%> rows="5" maxlength="8000"></textarea>
                 </span>
             </div>
             <input type='hidden' name='spzid' value='${spz.id}'/>
@@ -72,7 +72,7 @@
             <div class="formItem">
                 <span class="label">&nbsp;</span>
                 <span class="input">
-                    <input type="checkbox" name="external"/><label for="external"><f:message key="externalNote"/></label>
+                    <input type="checkbox" name="external" value=""/><label for="external"><f:message key="externalNote"/></label>
                 </span>
             </div>
             <div class="formItem">
