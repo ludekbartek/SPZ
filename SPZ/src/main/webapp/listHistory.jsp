@@ -23,21 +23,19 @@
 (<f:formatDate type="both" dateStyle="LONG" timeStyle="SHORT" value="${item.issueDate}"/>)--%>
              <c:forEach items="${item.notes}" var="note">
                  <div class="note">
-                     <c:if test="${not empty note.noteIssuer}">
-                         <c:out value="${note.noteIssuer}"/>
-                     </c:if>
-                     (<f:formatDate type="both" dateStyle="LONG" timeStyle="SHORT" value="${note.noteDate}"/>)
                      <!--<div>
                          externi: <c:out value="${note.external}"/><br/>
                          role: <c:out value="${user.role}"/><br/>
                          text: <c:out value="${note.noteText}"/><br/>
                      </div>-->
+                     <c:if test="${not empty note.noteIssuer}">
+                         <c:out value="${note.noteIssuer}"/>
+                     </c:if>
+                     (<f:formatDate type="both" dateStyle="LONG" timeStyle="SHORT" value="${note.noteDate}"/>)
+                     
                      <c:choose>
-                         <c:when test="${note.external==0}">
-                            <c:if test="${user.role!=0}">
-                                     #########<f:message key="internal"/>#########
-                                
-                            </c:if>
+                         <c:when test="${note.external==0 and user.role!=0}">
+                            #########<f:message key="internal"/>#########
                             <div class="notetext">
                                 <c:out value="${note.noteText}" escapeXml="false"/> 
                                 <c:if test="${fn:length(note.attachments) gt 0}">
@@ -47,7 +45,7 @@
                                 </c:if>
                             </div>
                          </c:when>
-                         <c:otherwise>
+                         <c:when test="${note.external==1}">
                              <div class="notetext">
                                  <c:out value="${note.noteText}" escapeXml="false"/> 
                                 <c:if test="${fn:length(note.attachments) gt 0}">
@@ -56,7 +54,7 @@
                                       </c:forEach>
                                 </c:if>
                              </div>
-                         </c:otherwise>
+                         </c:when>
                      </c:choose>
                      
                  </div>
