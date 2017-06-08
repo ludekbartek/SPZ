@@ -51,10 +51,10 @@
         <form action='${pageContext.request.contextPath}/SPZServlet/delete' method="post">
             <div class="formItem">
             <span class="label">
-                <label class="textarealabel" for='note'><f:message key="noteLabel"/></label>
+                <label class="textarealabel" for='desc'><f:message key="noteLabel"/></label>
             </span>
             <span class="input">
-            <textarea class="textareainput" name='note' rows="5" maxlength="8000"></textarea>
+            <textarea class="textareainput" name='desc' rows="5" maxlength="8000"></textarea>
             </span>
             </div>
             <input type="hidden" name="canceled" value="1"/>
@@ -66,10 +66,10 @@
             <input type="hidden" name="projectid" value="${project.id}"/>
             <c:choose>
                 <c:when test="${user.role!=0}">
-                    <input type="checkbox" name="external"/><label for="external"><f:message key="externalNote"/></label>
+                    <input type="checkbox" name="external" value=""/><label for="external"><f:message key="externalNote"/></label>
                 </c:when>
                 <c:otherwise>
-                    <input type="hidden" name="external" value="1"/>
+                    <input type="hidden" name="external" value="on"/>
                 </c:otherwise>
             </c:choose>
             <br/>
