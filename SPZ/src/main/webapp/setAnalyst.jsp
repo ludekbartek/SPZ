@@ -43,9 +43,10 @@
             </div>
            <div class="formItem">
                <span class="noteInput">
-                    <input type="checkbox" name="external"/> <label for="external"><f:message key="externalNote"/></label>
+                    <input class="noteInput" type="checkbox" name="external"/> <label for="external"><f:message key="externalNote"/></label>
                 </span>
             </div>
+            <div>&nbsp;</div>
             <div class="formItem">
              <span class="label">
                  <label for="analyst"><f:message key="analystLabel"/></label>
