@@ -25,7 +25,7 @@
                     </div>
                 </c:when>
                 <c:otherwise>
-                    <input type="hidden" name="external" value="true"/>
+                    <input type="hidden" name="external" value="on"/>
                 </c:otherwise>
             </c:choose>
             <div class="formItem">
