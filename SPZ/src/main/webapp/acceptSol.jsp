@@ -37,7 +37,7 @@
         <form action='${pageContext.request.contextPath}/SPZServlet/editspz' method="post">
             <div class="formItem">
                 <span class="label"><label for='note'><f:message key="note"/>:</label></span>
-                <span class="input"><textarea class="textareainput" name='note' rows="5" maxlength="8000"></textarea></span>
+                <span class="input"><textarea class="textareainput" name='desc' rows="5" maxlength="8000"></textarea></span>
             </div>
             <input type='hidden' name='spzid' value='${spz.id}'/>
             <input type='hidden' name='userid' value='${user.id}'/>
@@ -45,6 +45,7 @@
             <input type="hidden" name="configid" value="${config.id}"/>
             <input type='hidden' name="state" value='SPECIFIED'/>
             <input type="hidden" name="newstate" value="ACCEPTED"/>
+            <input type="hidden" name="external" value="on"/>
             <div class="formItem">
                 <span class="noIndentInput">
                     <input type="submit" value="<f:message key='submit'/>"/>
