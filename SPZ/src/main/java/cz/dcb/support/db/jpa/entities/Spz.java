@@ -230,7 +230,7 @@ public class Spz implements Serializable {
 
     @Override
     public String toString() {
-        return "cz.dcb.support.db.jpa.entities.Spz[ id=" + id + " ]";
+        return "Spz{" + "id=" + id + ", reqnumber=" + reqnumber + ", priority=" + priority + ", issuedate=" + issuedate + ", contactperson=" + contactperson + ", requesttype=" + requesttype + ", shortName=" + shortName + ", requestdescription=" + requestdescription + ", implementationacceptdate=" + implementationacceptdate + ", ts=" + ts + ", category=" + category + ", manDays=" + manDays + ", assumedManDays=" + assumedManDays + ", developerId=" + developerId + '}';
     }
-    
+
 }

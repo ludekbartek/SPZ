@@ -94,7 +94,9 @@ public class Noteissuer implements Serializable {
 
     @Override
     public String toString() {
-        return "cz.dcb.support.db.jpa.entities.Noteissuer[ id=" + id + " ]";
+        return "Noteissuer{" + "id=" + id + ", noteid=" + noteid + ", userid=" + userid + '}';
     }
+
+    
     
 }

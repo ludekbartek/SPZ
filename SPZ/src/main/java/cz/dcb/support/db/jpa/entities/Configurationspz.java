@@ -98,7 +98,9 @@ public class Configurationspz implements Serializable {
 
     @Override
     public String toString() {
-        return "cz.dcb.support.db.jpa.entities.Configurationspz[ id=" + id + " ]";
+        return "Configurationspz{" + "id=" + id + ", configurationid=" + configurationid + ", spzid=" + spzid + '}';
     }
+
+    
     
 }

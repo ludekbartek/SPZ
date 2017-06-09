@@ -133,7 +133,6 @@ public class Spznote implements Serializable {
 
     @Override
     public String toString() {
-        return "cz.dcb.support.db.jpa.entities.Spznote[ id=" + id + " ]";
+        return "Spznote{" + "id=" + id + ", externalnote=" + externalnote + ", notedate=" + notedate + ", notetext=" + notetext + ", ts=" + ts + ", issuer=" + issuer + '}';
     }
-    
 }

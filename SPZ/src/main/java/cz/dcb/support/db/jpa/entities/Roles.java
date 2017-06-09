@@ -96,7 +96,9 @@ public class Roles implements Serializable {
 
     @Override
     public String toString() {
-        return "cz.dcb.support.db.jpa.entities.Roles[ id=" + id + " ]";
+        return "Roles{" + "id=" + id + ", userid=" + userid + ", role=" + role + '}';
     }
+
+    
     
 }

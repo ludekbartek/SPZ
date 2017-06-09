@@ -119,7 +119,7 @@ public class Useraccess implements Serializable {
 
     @Override
     public String toString() {
-        return "cz.dcb.support.db.jpa.entities.Useraccess[ id=" + id + " ]";
+        return "Useraccess{" + "id=" + id + ", role=" + role + ", ts=" + ts + ", userid=" + userid + ", configurationid=" + configurationid + '}';
     }
-    
+
 }

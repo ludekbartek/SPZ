@@ -94,7 +94,9 @@ public class Spzanalyst implements Serializable {
 
     @Override
     public String toString() {
-        return "cz.dcb.support.db.jpa.entities.Spzanalyst[ id=" + id + " ]";
+        return "Spzanalyst{" + "id=" + id + ", spzid=" + spzid + ", userid=" + userid + '}';
     }
+
+    
     
 }

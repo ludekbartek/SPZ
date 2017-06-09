@@ -94,7 +94,9 @@ public class Attachmentnote implements Serializable {
 
     @Override
     public String toString() {
-        return "cz.dcb.support.db.jpa.entities.Attachmentnote[ id=" + id + " ]";
+        return "Attachmentnote{" + "id=" + id + ", attachmentid=" + attachmentid + ", spznoteid=" + spznoteid + '}';
     }
+
+   
     
 }

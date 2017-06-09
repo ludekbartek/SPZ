@@ -94,7 +94,9 @@ public class Projectconfiguration implements Serializable {
 
     @Override
     public String toString() {
-        return "cz.dcb.support.db.jpa.entities.Projectconfiguration[ id=" + id + " ]";
+        return "Projectconfiguration{" + "id=" + id + ", projectid=" + projectid + ", configurationid=" + configurationid + '}';
     }
+
+    
     
 }

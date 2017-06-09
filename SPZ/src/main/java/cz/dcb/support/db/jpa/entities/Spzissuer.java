@@ -94,7 +94,9 @@ public class Spzissuer implements Serializable {
 
     @Override
     public String toString() {
-        return "cz.dcb.support.db.jpa.entities.Spzissuer[ id=" + id + " ]";
+        return "Spzissuer{" + "id=" + id + ", spzid=" + spzid + ", userid=" + userid + '}';
     }
+
+    
     
 }

@@ -136,7 +136,9 @@ public class Attachment implements Serializable {
 
     @Override
     public String toString() {
-        return "Attachment[ id=" + id + ", content="+content +"]";
+        return "Attachment{" + "id=" + id + ", date=" + date + ", content=" + content + ", location=" + location + ", type=" + type + ", ts=" + ts + '}';
     }
+
+    
     
 }

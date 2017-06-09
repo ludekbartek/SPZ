@@ -190,6 +190,6 @@ public class Spzstate implements Serializable {
 
     @Override
     public String toString() {
-        return "cz.dcb.support.db.jpa.entities.Spzstate[ id=" + id + " ]";
+        return "Spzstate{" + "id=" + id + ", code=" + code + ", ts=" + ts + ", issuerLogin=" + issuerLogin + ", revisedrequestdescription=" + revisedrequestdescription + ", solutiondescription=" + solutiondescription + ", releasenotes=" + releasenotes + ", classtype=" + classtype + ", idate=" + idate + ", currentstate=" + currentstate + '}';
     }
 }

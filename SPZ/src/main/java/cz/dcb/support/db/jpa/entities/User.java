@@ -182,7 +182,6 @@ public class User implements Serializable {
 
     @Override
     public String toString() {
-        return "cz.dcb.support.db.jpa.entities.User[ id=" + id + " ]";
+        return "User{" + "id=" + id + ", login=" + login + ", name=" + name + ", password=" + password + ", email=" + email + ", company=" + company + ", tel=" + tel + ", fax=" + fax + ", classType=" + classType + ", ts=" + ts + '}';
     }
-    
 }

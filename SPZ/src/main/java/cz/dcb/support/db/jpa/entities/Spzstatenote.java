@@ -94,7 +94,6 @@ public class Spzstatenote implements Serializable {
 
     @Override
     public String toString() {
-        return "cz.dcb.support.db.jpa.entities.Spzstatenote[ id=" + id + " ]";
+        return "Spzstatenote{" + "id=" + id + ", noteid=" + noteid + ", stateid=" + stateid + '}';
     }
-    
 }
