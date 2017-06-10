@@ -457,8 +457,14 @@ public class SPZServlet extends HttpServlet {
             }
             catch(Exception ex){
                 String errorMsg= String.format("Chyba pri zapracovani akce %s v servletu %s s pricinou %s.", action,ex,ex.getCause());
-                LOGGER.log(Level.SEVERE, errorMsg);
+                LOGGER.log(Level.SEVERE, errorMsg+"\n"+ex);
+                StringBuilder errorLog= new StringBuilder("Stack trace:");
+                for(StackTraceElement element:ex.getStackTrace()){
+                    errorLog.append(element.toString()).append("\n");
+                }
+                LOGGER.log(Level.SEVERE,errorLog.toString());
                 dispError(request,response,errorMsg);
+                throw ex;
             }
             
     }
@@ -2387,7 +2393,7 @@ public class SPZServlet extends HttpServlet {
             List<SPZWebEntity> spzEntities = spzToEntities(spzs);
             request.setAttribute("spz", spzEntities);
             request.setAttribute("user", user);
-             request.setAttribute("project", proj);
+            request.setAttribute("project", proj);
             request.setAttribute("config", configurationToEntity(conf));
             listSpz(request,response);
         }
@@ -2794,11 +2800,26 @@ public class SPZServlet extends HttpServlet {
     private void addNoteToSpzstate(Map<String, String[]> params, HttpServletRequest request, Spzstate curr) {
         Spznote note = new Spznote();
         SpzNoteManager spzNoteMan = new SpzNoteJpaController(emf);
+        User user=getUser(request);
+        List<Useraccess> roles = getUserRoles(user.getId());
+        Roles role = null;
+        Configuration conf = getConfig(request);
+        for(Useraccess access:roles){
+            if(access.getConfigurationid().equals(conf.getId())){
+                role = Roles.valueOf(access.getRole());
+            }
+        }
         if(params.containsKey("external")){
             note.setExternalnote((short)(request.getParameter("external").equalsIgnoreCase("on")?1:0));
+        }else{
+            if(role == Roles.CLIENT){
+                note.setExternalnote((short)1);
+            }else{
+                note.setExternalnote((short)0);
+            }
         }
         note.setNotetext(request.getParameter("desc"));
-        User user=getUser(request);
+        
         note.setIssuer(user.getName());
         Date date = new Date();
         note.setNotedate(date);
