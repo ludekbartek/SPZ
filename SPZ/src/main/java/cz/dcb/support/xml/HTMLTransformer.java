@@ -46,7 +46,9 @@ public class HTMLTransformer extends DefaultHandler{
             throw new SPZException("Chyba pri konverzi html popisu.", ex);
         } catch (SAXException ex) {
             Logger.getLogger(HTMLTransformer.class.getName()).log(Level.INFO,"Popis je nejspis plain-text.");
-            result.append(html);
+            if(result.length()==0){
+                result.append(html);
+            }
         }
         
 
@@ -82,6 +84,7 @@ public class HTMLTransformer extends DefaultHandler{
         result.append("</");
         result.append(qName.toLowerCase());
         result.append(">");
+        elementStack.remove(elementStack.size()-1);
     }
     
     public String getResult(){
