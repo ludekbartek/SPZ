@@ -48,10 +48,10 @@
         <form action='${pageContext.request.contextPath}/SPZServlet/editspz' method="post">
             <div class="formItem">
                 <span class="label">
-                    <label class="textarealabel" for='note'><f:message key="noteLabel"/></label>
+                    <label class="textarealabel" for='desc'><f:message key="noteLabel"/></label>
                 </span>
                 <span class="input">
-                    <textarea class="textareainput" name='note'  rows="5" maxlength="8000"></textarea>
+                    <textarea class="textareainput" name='desc'  rows="5" maxlength="8000"></textarea>
                 </span>
             </div>
             <input type='hidden' name='spzid' value='${spz.id}'/>
@@ -62,12 +62,12 @@
             <input type="hidden" name="projectid" value="${project.id}"/>
             <div class="formItem">
             <c:choose>
-                <c:when test="${user.role!=0}">
+                <c:when test="${user.role!='0'}">
                     <span class="label">&nbsp;</span>
-                    <span class="input"><input type="checkbox" name="external"/><label for="external"><f:message key="externalNote"/></label></span>
+                    <span class="input"><input type="checkbox" id="ext" name="external" value="off"/><label for="external"><f:message key="externalNote"/></label></span>
                 </c:when>
                 <c:otherwise>
-                    <input type="hidden" name="external" value="1"/>
+                    <input type="hidden" name="external" id="ext" value="on"/>
                 </c:otherwise>
             </c:choose>
             </div>
