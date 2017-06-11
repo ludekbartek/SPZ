@@ -64,7 +64,7 @@
             <c:choose>
                 <c:when test="${user.role!='0'}">
                     <span class="label">&nbsp;</span>
-                    <span class="input"><input type="checkbox" id="ext" name="external" value="off"/><label for="external"><f:message key="externalNote"/></label></span>
+                    <span class="input"><input type="checkbox" id="ext" name="external"/><label for="external"><f:message key="externalNote"/></label></span>
                 </c:when>
                 <c:otherwise>
                     <input type="hidden" name="external" id="ext" value="on"/>
