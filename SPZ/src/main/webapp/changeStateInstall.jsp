@@ -72,7 +72,7 @@
             <div class="formItem">
                 <span class="label">&nbsp;</span>
                 <span class="input">
-                    <input type="checkbox" name="external" value=""/><label for="external"><f:message key="externalNote"/></label>
+                    <input type="checkbox" name="external"/><label for="external"><f:message key="externalNote"/></label>
                 </span>
             </div>
             <div class="formItem">
