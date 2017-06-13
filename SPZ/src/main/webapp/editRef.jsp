@@ -101,15 +101,19 @@
                     <input type="hidden" name="newstate" value="ANALYSIS"/>
                     <div class="formItem">
                         <span class="label"><label for="desc" class="textarealabel"><f:message key="note"/></span>
+                        
                         <span class="input">
                             <textarea class="textareainput" name="desc" rows="5" maxlength="8000"></textarea>
                         </span>
                     </div>
-                    <div class='noIndentFormItem'>
-                        <span class='noIndentInput'>
-                            <input type="checkbox" name="external"/><label for="external"><f:message key="visible"/></label>
-                        </span>
-                    </div>
+                    <c:if test="${user.role!=0}">`
+                        <div class='FormItem'>
+                            <span class="label">&nbsp;</span>
+                            <span class='input'>
+                                <input type="checkbox" name="external"/><label for="external"><f:message key="visible"/></label>
+                            </span>
+                        </div>
+                    </c:if>
                     <input type="hidden" name="configid" value="${config.id}"/>
                     <input type="hidden" name="projectid" value="${project.id}"/>
                     <div class='noIndentFormItem'>

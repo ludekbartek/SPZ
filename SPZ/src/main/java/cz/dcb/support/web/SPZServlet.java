@@ -785,7 +785,7 @@ public class SPZServlet extends HttpServlet {
                 jspName ="/reImpl.jsp";
                 break;
             case "RE_ANALYSIS":
-                jspName = "/reAnal.jsp";
+                jspName = "/editAnal.jsp";
                 break;
             case "RECLAIMED":
                 jspName = "/editRecl.jsp";

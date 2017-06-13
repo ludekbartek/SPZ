@@ -38,7 +38,7 @@
         </table>
         <div class="controls">
             <c:choose>
-                <c:when test="${user.role!='0'}">
+                <c:when test="${user.role=='2'}">
                     <form method="post">
                         <input type="button" value="<f:message key='submitAnal' bundle="${loc}"/>" onclick="doPost(doAccept)"/>
                         <input type="button" value="<f:message key='cancel' bundle='${loc}'/>" onclick="doPost(doCancel)"/>        

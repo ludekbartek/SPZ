@@ -55,7 +55,7 @@
             <!--<input type="submit" value="<f:message key='changeAnalyst'/>"/>-->
         </form>
         <form id="deletespz" action="${pageContext.request.contextPath}/SPZServlet/delete" method="post">
-            <!--<input type="submit" value="<f:message key='cancel'/>"/>-->
+        <!--<input type="submit" value="<f:message key='cancel'/>"/>-->
             <input type="hidden" name="newstate" value="CANCELED"/>
             <input type="hidden" name="spzid" value="${spz.id}"/>
             <input type="hidden" name="userid" value="${user.id}"/>
@@ -63,15 +63,16 @@
             <input type="hidden" name="projectid" value="${project.id}"/>
             <input type="hidden" name="state" value="ANALYSIS"/>
         </form>
-            <form >
-                <input type="button" value="<f:message key='return'/>" onclick="doPost(editspz)"/>
-                <input type="button" value="<f:message key='proposeSol'/>" onclick="doPost(proposesol)"/>
-                <input type="button" value="<f:message key='changeAnalyst'/>" onclick="doPost(changeanalyst)"/>
-                <input type="button" value="<f:message key='cancel'/>" onclick="doPost(deletespz)"/>    
-            </form>
+        <form >
+            <input type="button" value="<f:message key='return'/>" onclick="doPost(editspz)"/>
+            <input type="button" value="<f:message key='proposeSol'/>" onclick="doPost(proposesol)"/>
+            <input type="button" value="<f:message key='changeAnalyst'/>" onclick="doPost(changeanalyst)"/>
+            <input type="button" value="<f:message key='cancel'/>" onclick="doPost(deletespz)"/>    
+        </form>
     </c:if>
     <jsp:include page="listHistory.jsp"/>
-    <div style="margin-top:10px;height: 20px;"/>
+    <div style="margin-top:10px;height: 20px;">
     <jsp:include page='addNote.jsp'/>
+    </div>
     </body>
 </html>

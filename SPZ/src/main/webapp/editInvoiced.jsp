@@ -26,11 +26,11 @@
             <jsp:include page="editcommon.jsp"/>
             <tr>
                 <td class="label"><f:message key="revised"/></td>
-                <td colspan="3"><c:out value="${spz.revised}"/></td>
+                <td colspan="3"><c:out value="${spz.revised}" escapeXml="true"/></td>
             </tr>
             <tr>
                 <td class="label"><f:message key="solution"/></td>
-                <td colspan="3"><c:out value="${spz.solution}"/></td>
+                <td colspan="3"><c:out value="${spz.solution}" escapeXml="true"/></td>
             </tr>
             <tr>
                 <td class="label"><f:message key="estWorkLoad"/></td>
@@ -38,7 +38,7 @@
             </tr>
             <tr>
                 <td class="label"><f:message key="solInfo"/></td>
-                <td colspan="3"><c:out value="${spz.solutionInfo}"/></td>
+                <td colspan="3"><c:out value="${spz.solutionInfo}" escapeXml="true"/></td>
             </tr>
             <tr>
                 <td class="label"><f:message key="realWorkLoad"/></td>
