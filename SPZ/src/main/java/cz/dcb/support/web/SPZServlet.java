@@ -2424,22 +2424,25 @@ public class SPZServlet extends HttpServlet {
         user.setName(userEnt.getName());
         List<Useraccess> roles = accMan.findUseraccessEntities(userEnt.getId());
         if(!roles.isEmpty()){
-            switch(roles.get(0).getRole().toLowerCase()){
-                case "client":
-                    user.setRole(Roles.CLIENT.ordinal());
-                    break;
-                case "developer":;
-                case "analyst":
-                    user.setRole(Roles.ANALYST.ordinal());
-                    break;
-                case "admin":
-                    user.setRole(Roles.ADMIN.ordinal());
-                default:
-                    user.setRole(Roles.PROJECT_MANAGER.ordinal());
+            for(Useraccess role:roles)
+            {
+                switch(role.getRole().toLowerCase()){
+                    case "client":
+                        user.addRole(Roles.CLIENT.ordinal());
+                        break;
+                    case "developer":;
+                    case "analyst":
+                        user.addRole(Roles.ANALYST.ordinal());
+                        break;
+                    case "admin":
+                        user.addRole(Roles.ADMIN.ordinal());
+                    default:
+                        user.addRole(Roles.PROJECT_MANAGER.ordinal());
+                }
             }
             
         }else{
-            user.setRole(Roles.CLIENT.ordinal());
+            user.addRole(Roles.CLIENT.ordinal());
         }
 
         
@@ -2558,18 +2561,21 @@ public class SPZServlet extends HttpServlet {
         List<Useraccess> roles = getUserRoles(user.getId());
         if(!roles.isEmpty()){
             if(user.getLogin().equalsIgnoreCase("admin")){
-                entity.setRole(Roles.ADMIN.ordinal());
+                entity.addRole(Roles.ADMIN.ordinal());
                 return entity;
             }
-            switch(roles.get(0).getRole().toLowerCase()){
-                case "client":entity.setRole(Roles.CLIENT.ordinal());
-                              break;
-                case "analyst":
-                case "developer":entity.setRole(Roles.ANALYST.ordinal());
-                              break;
-                case "admin":
-                    entity.setRole(Roles.ADMIN.ordinal());
-                default:entity.setRole(Roles.PROJECT_MANAGER.ordinal());
+            for(Useraccess role:roles)
+            {
+                switch(role.getRole().toLowerCase()){
+                    case "client":entity.addRole(Roles.CLIENT.ordinal());
+                                  break;
+                    case "analyst":
+                    case "developer":entity.addRole(Roles.ANALYST.ordinal());
+                                  break;
+                    case "admin":
+                        entity.addRole(Roles.ADMIN.ordinal());
+                    default:entity.addRole(Roles.PROJECT_MANAGER.ordinal());
+                }
             }
         }
         return entity;    
