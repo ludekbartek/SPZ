@@ -4,7 +4,9 @@
  * and open the template in the editor.
  */
 package cz.dcb.support.web.entities;
-
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 /**
  *
  * @author bar
@@ -17,7 +19,7 @@ public class UserWebEntity {
    private String phone;
    private String fax;
    private String email;
-   private int role;
+   private Set<Integer> roles = new HashSet<>();
    private int classType;
 
     public long getId() {
@@ -44,12 +46,32 @@ public class UserWebEntity {
         this.login = login;
     }
 
-    public int getRole() {
-        return role;
+    public Set<Integer> getRoles() {
+        return Collections.unmodifiableSet(roles);
     }
 
-    public void setRole(int role) {
-        this.role = role;
+    public boolean getIsUser(){
+        return roles.contains(Roles.CLIENT.ordinal());
+    }
+    
+    public boolean getIsAnalyst(){
+        return roles.contains(Roles.ANALYST.ordinal());
+    }
+    
+    public boolean getIsManager(){
+        return roles.contains(Roles.PROJECT_MANAGER.ordinal());
+    }
+    
+    public boolean getIsAdmin(){
+        return roles.contains(Roles.ADMIN.ordinal());
+    }
+    
+    public void addRole(Integer role){
+        roles.add(role);
+    }
+    
+    public void setRoles(Set<Integer> roles) {
+        this.roles = roles;
     }
 
     public String getCompany() {
