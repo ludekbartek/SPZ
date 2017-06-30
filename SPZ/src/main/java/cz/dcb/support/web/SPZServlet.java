@@ -1090,6 +1090,8 @@ public class SPZServlet extends HttpServlet {
         SpzManager spzManager = new SpzJpaController(emf);
         String strFilter = request.getParameter("filter");
         
+        response.setHeader("Pragma","no-cache");
+        response.setHeader("Cache-Control","private, no-store, no-cache, must-revalidate");
         List<Spz> spzs = spzManager.findSpzEntities();
         if(strFilter!=null){
             int filter = Integer.parseInt(strFilter);
