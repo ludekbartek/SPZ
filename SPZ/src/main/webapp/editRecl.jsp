@@ -41,7 +41,7 @@
                 <td colspan="3"><c:out value="${spz.workLoadReal}"/> <f:message key="manHours"/> (<f:formatNumber value="${spz.workLoadReal/8.0}" maxFractionDigits="2"/> <f:message key="manDays"/>)</td> 
             </tr>
         </table>
-        <c:if test="${user.role == '2'}">
+        <c:if test="${user.isManager}">
             <form id="reimplForm" action="${pageContext.request.contextPath}/SPZServlet/reimpl" method="post">
                 <input type="hidden" name="state" value="RECLAIMED"/>
                 <input type="hidden" name="newstate" value="IMPLEMENTATION"/>

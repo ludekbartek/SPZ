@@ -25,7 +25,7 @@
     <table class="border-fullwidthtable">
       <jsp:include page="editcommon.jsp"/>
     </table>
-    <c:if test="${user.role!=0}">
+    <c:if test="${!user.isUser}">
         <c:set var="jsp" value="./editAnal.jsp"/>
         <form id="editspz" action="${pageContext.request.contextPath}/SPZServlet/refinereq" method="post">
             <input type="hidden" name="state" value="ANALYSIS"/>
@@ -64,10 +64,14 @@
             <input type="hidden" name="state" value="ANALYSIS"/>
         </form>
         <form >
-            <input type="button" value="<f:message key='return'/>" onclick="doPost(editspz)"/>
-            <input type="button" value="<f:message key='proposeSol'/>" onclick="doPost(proposesol)"/>
-            <input type="button" value="<f:message key='changeAnalyst'/>" onclick="doPost(changeanalyst)"/>
-            <input type="button" value="<f:message key='cancel'/>" onclick="doPost(deletespz)"/>    
+            <c:if test="${user.isAnalyst}">
+                <input type="button" value="<f:message key='return'/>" onclick="doPost(editspz)"/>
+                <input type="button" value="<f:message key='proposeSol'/>" onclick="doPost(proposesol)"/>
+            </c:if>
+            <c:if test="${user.isManager}">
+                <input type="button" value="<f:message key='changeAnalyst'/>" onclick="doPost(changeanalyst)"/>
+                <input type="button" value="<f:message key='cancel'/>" onclick="doPost(deletespz)"/> 
+            </c:if>
         </form>
     </c:if>
     <jsp:include page="listHistory.jsp"/>

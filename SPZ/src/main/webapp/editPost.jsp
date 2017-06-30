@@ -38,7 +38,7 @@
         </table>
         <div class="controls">
             <c:choose>
-                <c:when test="${user.role=='2'}">
+                <c:when test="${user.isManager or user.isAnalyst}">
                     <form method="post">
                         <input type="button" value="<f:message key='submitAnal' bundle="${loc}"/>" onclick="doPost(doAccept)"/>
                         <input type="button" value="<f:message key='cancel' bundle='${loc}'/>" onclick="doPost(doCancel)"/>        
@@ -85,7 +85,7 @@
         </form>-->
         <jsp:include page="addNote.jsp"/>
         <%-- Muze pouze Projektovy manazer a admin --%>
-        <c:if test="${user.role>=2}">
+        <c:if test="${user.isManager} or ${user.isAdmin}">
         <div class="updateSPZ">    
             <form id="changeSPZ" action="${pageContext.request.contextPath}/SPZServlet/updateSPZ" method="post">
                 <%--<div class="formItem">

@@ -51,7 +51,7 @@
             
         </table>
         <c:choose>
-            <c:when test="${user.role=='0'}">
+            <c:when test="${user.isUser}">
                 <form id="acceptForm" action="${pageContext.request.contextPath}/SPZServlet/acceptSpz" method="post">
                     <input type="hidden" name="state" value="${spz.spzState}"/>
                     <input type="hidden" name="newState" value="CONFIRMED"/>

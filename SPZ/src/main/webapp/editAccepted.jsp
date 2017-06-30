@@ -39,7 +39,7 @@
         </table>
             <c:choose>
         <c:when test="${empty change }">
-            <c:if test="${user.role !=0}">
+            <c:if test="${!user.isUser}">
             <form id="acceptImpl" action="${pageContext.request.contextPath}/SPZServlet/acceptimpl" method="post">
                 <input type="hidden" name="spzid" value="${spz.id}"/>
                 <input type="hidden" name="userid" value="${user.id}"/>

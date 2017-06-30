@@ -19,7 +19,7 @@
             <input type="hidden" name="configid" value="${config.id}"/>
             <input type="hidden" name="projectid" value="${project.id}"/>
             <c:choose>
-                <c:when test='${user.role!=0}'>
+                <c:when test='${!user.isUser}'>
                     <div class="noteInput">
                         <input type="checkbox" name="external" id="ext" <c:if test="${!empty ext and ext=='true'}">checked</c:if>/><label for="ext"><f:message key="extNote"/></label>
                     </div>

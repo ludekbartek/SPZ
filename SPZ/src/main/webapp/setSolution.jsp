@@ -71,7 +71,7 @@
                     <textarea class="textareainput" rows="5" maxlength="8000" name="desc"></textarea>
                 </span>
             </div>
-            <c:if test="${user.role!=0}">
+            <c:if test="${!user.isUser}">
                 <div class="formItem">
                     <span class="label">
                         &nbsp;

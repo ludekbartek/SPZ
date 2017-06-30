@@ -59,7 +59,7 @@
                     <input type="hidden" name="projectid" value="${project.id}"/>
                     <!--<input type="submit" value="<f:message key='refineBut'/>"/>-->
                 </form>
-                <c:if test="${user.role==1}">
+                <c:if test="${user.isAnalyst}">
                     <form id="releaseForm" action="${pageContext.request.contextPath}/SPZServlet/releaseVersion" method="post">
                         <input type="hidden" name="spzid" value="${spz.id}"/>
                         <input type="hidden" name="userid" value="${user.id}"/>
@@ -80,13 +80,13 @@
                     <!--<input type="submit" value="<f:message key='cancel'/>"/>-->
                 </form>
                 <form method="post">
-                    <c:if test="${user.role!=0}"><!--Uzivatel neni klient-->
+                    <c:if test="${!user.isUser}"><!--Uzivatel neni klient-->
                         <c:choose>
-                        <c:when test="${user.role==1}"> <!-- Vyvojar-->
+                        <c:when test="${user.isAnalyst}"> <!-- Vyvojar-->
                             <!-- Uvolnit novou verzi projektu -->
                             <input type="button" value="<f:message key='releaseBut'/>" onclick="doPost(releaseForm)"/>
                         </c:when>
-                        <c:when test="${user.role==2}"> <!--Projektovy manager -->
+                        <c:when test="${user.isManager}"> <!--Projektovy manager -->
                             <!-- Zmena vyvojare -->
                             <input type="button" value="<f:message key='changeDevBut'/>" onclick="doPost(develForm)"/>
                             <!-- Vraceni k reimplementaci -->

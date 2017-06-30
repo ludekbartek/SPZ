@@ -12,7 +12,10 @@
 <div id="history">
     <h3><f:message key="spzHistory"/></h3>
 <hr>
-<span class="debug">Name:${user.name} (id:<c:out value="${user.id}"/>)<br/>Role:<c:out value="${user.role}"/></span>
+<span class="debug">Name:${user.name} (id:<c:out value="${user.id}"/>)<br/>
+    Role:
+    <c:forEach var="role" items="${user.roles}"><c:out value="${role}"/>,</c:forEach>
+</span>
 
 <c:forEach items="${spz.history}" var="item">
     <div class="state-header"><c:out value="${item.code}"/> <f:formatDate type="both" dateStyle="LONG" timeStyle="short" value="${item.issueDate}"/>
@@ -24,11 +27,11 @@
              <c:forEach items="${item.notes}" var="note">
                      
                  <c:choose>
-                     <c:when test="${note.external==0 and user.role!=0}">
+                     <c:when test="${note.external==0 and !user.isUser}">
                          <div class="note">
                              <!--<div>
                                  externi: <c:out value="${note.external}"/><br/>
-                                 role: <c:out value="${user.role}"/><br/>
+                                 <%--role: <c:out value="${user.role}"/><br/>--%>
                                  text: <c:out value="${note.noteText}"/><br/>
                              </div>-->
                              <c:if test="${not empty note.noteIssuer}">
@@ -51,7 +54,7 @@
                     <div class="note">
                      <!--<div>
                          externi: <c:out value="${note.external}"/><br/>
-                         role: <c:out value="${user.role}"/><br/>
+                         <%--role: <c:out value="${user.role}"/><br/>--%>
                          text: <c:out value="${note.noteText}"/><br/>
                      </div>-->
              
@@ -95,7 +98,7 @@
          </div>--%>
              <hr/>
 </c:forEach>
-<c:if test="${item.code!='Registrovaná'}">
+<c:if test="${item.code!='Registrovaná' and user.isManager}">
     <form action="${pageContext.request.contextPath}/SPZServlet/removestate" method="post">
      <input type="hidden" name="spzstateid" value="${item.id}"/>
      <input type="hidden" name="spzid" value="${spz.id}"/>

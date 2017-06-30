@@ -42,7 +42,7 @@
                 </td>
             </tr>
         </table>
-                <c:if test="${user.role!=0}">
+                <c:if test="${!user.isUser}">
                     <form id="releaseForm" action="${pageContext.request.contextPath}/SPZServlet/releaseversion" method="post">
                         <input type="hidden" name="spzid" value="${spz.id}"/>
                         <input type="hidden" name="userid" value="${user.id}"/>

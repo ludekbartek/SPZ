@@ -45,7 +45,7 @@
                 <td colspan="3"><c:out value="${spz.workLoadReal}"/></td>
             </tr>
         </table>
-        <c:if test="${user.role!=0}">
+        <c:if test="${!user.isUser}">
             <form action="${pageContext.request.contextPath}/SPZServlet/invoiceSPZ" method="post">
                 <input type="hidden" name="spzid" value="${spz.id}"/>
                 <input type="hidden" name="userid" value="${user.id}"/>

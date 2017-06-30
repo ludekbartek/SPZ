@@ -37,7 +37,7 @@
                 <td colspan="3"><c:out value="${spz.workLoadEstimation}"/></td>
             </tr>
         </table>
-        <c:if test="${user.role == '2'}">
+        <c:if test="${user.isManager}">
             <form id="reimplForm" action="${pageContext.request.contextPath}/SPZServlet/reimpl" method="post">
                 <input type="hidden" name="state" value="RELEASED"/>
                 <input type="hidden" name="newstate" value="DCB_ACCEPTED"/>

@@ -65,7 +65,7 @@
             <input type="hidden" name="configid" value="${config.id}"/>
             <input type="hidden" name="projectid" value="${project.id}"/>
             <c:choose>
-                <c:when test="${user.role!=0}">
+                <c:when test="${!user.isUser}">
                     <input type="checkbox" name="external" value=""/><label for="external"><f:message key="externalNote"/></label>
                 </c:when>
                 <c:otherwise>

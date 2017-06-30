@@ -62,7 +62,7 @@
             <input type="hidden" name="projectid" value="${project.id}"/>
             <div class="formItem">
             <c:choose>
-                <c:when test="${user.role!='0'}">
+                <c:when test="${!user.isUser}">
                     <span class="label">&nbsp;</span>
                     <span class="input"><input type="checkbox" id="ext" name="external"/><label for="external"><f:message key="externalNote"/></label></span>
                 </c:when>

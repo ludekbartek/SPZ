@@ -67,7 +67,7 @@
         </table>
             <c:choose>
                 <c:when test="${empty change}">
-                <c:if test="${user.role==1}">
+                <c:if test="${user.isAnalyst}">
                     <form action="${pageContext.request.contextPath}/SPZServlet/delete" method="post">
                         <input type="submit" value="<f:message key='cancelButton'/>"/>
                         <input type="hidden" name="spzid" value="${spz.id}"/>
@@ -83,7 +83,7 @@
                     <input type="hidden" name="configid" value="${config.id}"/>
                     <input type="hidden" name="projectid" value="${project.id}"/>
                     <c:choose>
-                        <c:when test="${user.role==0}">
+                        <c:when test="${user.isUser}">
                             <input type="submit" value="<f:message key='submitRefineUserButton'/>"/>
                         </c:when>
                         <c:otherwise>
@@ -106,7 +106,7 @@
                             <textarea class="textareainput" name="desc" rows="5" maxlength="8000"></textarea>
                         </span>
                     </div>
-                    <c:if test="${user.role!=0}">`
+                    <c:if test="${!user.isUser}">`
                         <div class='FormItem'>
                             <span class="label">&nbsp;</span>
                             <span class='input'>

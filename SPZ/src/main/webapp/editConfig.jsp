@@ -109,11 +109,11 @@
                             <tr>
                                 <td><c:out value="${currentUser.login}"/></td>
                                 <td><c:out value="${currentUser.name}"/></td>
-                                <td><f:message key="role${currentUser.role}"/></td>
+                                <td><f:message key="role${currentUser.roles}"/></td>
                                 <td>
                                     <form action="${pageContext.request.contextPath}/SPZServlet/deleteRole" method="post">
                                         <input type="hidden" name="roleuserid" value="${currentUser.id}"/>
-                                        <input type="hidden" name="role" value="${currentUser.role}"/>
+                                        <input type="hidden" name="role" value="${currentUser.roles}"/>
                                         <input type="hidden" name="projectid" value="${project.id}"/>
                                         <input type="hidden" name="configid" value="${config.id}"/>
                                         <input type="hidden" name="userid" value="${user.id}"/>

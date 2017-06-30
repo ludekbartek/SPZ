@@ -109,7 +109,7 @@ pri editaci pouze popisy (viz stara verze).
                     --%>
                     </div>
                 <c:choose> 
-                    <c:when test="${user.role ne 0}"> <!-- kdyz se nejedna o klienta -->
+                    <c:when test="${!user.isUser}"> <!-- kdyz se nejedna o klienta -->
                         <%--<div class="formItem">
                            <%-- <span class="label"> </span>--%>
                             <%--<span class="input">--%>
