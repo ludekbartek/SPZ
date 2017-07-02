@@ -81,20 +81,16 @@
                 </form>
                 <form method="post">
                     <c:if test="${!user.isUser}"><!--Uzivatel neni klient-->
-                        <c:choose>
-                        <c:when test="${user.isAnalyst}"> <!-- Vyvojar-->
+                        <c:if test="${user.isAnalyst or user.isManager}"> <!-- Vyvojar-->
                             <!-- Uvolnit novou verzi projektu -->
                             <input type="button" value="<f:message key='releaseBut'/>" onclick="doPost(releaseForm)"/>
-                        </c:when>
-                        <c:when test="${user.isManager}"> <!--Projektovy manager -->
                             <!-- Zmena vyvojare -->
                             <input type="button" value="<f:message key='changeDevBut'/>" onclick="doPost(develForm)"/>
                             <!-- Vraceni k reimplementaci -->
                             <input type="button" value="<f:message key='refineBut'/>" onclick="doPost(refineForm)"/>
                             <!-- Zruseni SPZ -->
                             <input type="button" value="<f:message key='cancel'/>" onclick="doPost(cancelForm)"/>
-                        </c:when>
-                        </c:choose>
+                        </c:if>
                     </c:if>
                 </form>
                 <jsp:include page="listHistory.jsp"/>
