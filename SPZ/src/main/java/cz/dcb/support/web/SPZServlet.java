@@ -145,7 +145,7 @@ public class SPZServlet extends HttpServlet {
                                              {true,true,true,false}, //Refine
                                              {true,false,true,false}, //Specified
                                              {false,true,true,false}, //Implementation
-                                             {false,false,true,false}, //Accepted
+                                             {false,true,true,false}, //Accepted
                                              {false,true,true,false}, //Dcb_accepted
                                              {false,false,true,false}, //Released
                                              {true,false,true,false}, //Installed
