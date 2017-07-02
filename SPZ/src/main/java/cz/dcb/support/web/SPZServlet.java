@@ -263,6 +263,10 @@ public class SPZServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
+        response.setHeader("Pragma","no-cache");
+        response.setHeader("Cache-Control","private, no-store, no-cache, must-revalidate");
+        
         String action = request.getPathInfo();
         if(action.compareToIgnoreCase("/getattach")==0){
             String strUserId = request.getParameter("userid");
@@ -319,6 +323,9 @@ public class SPZServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
             
+            response.setHeader("Pragma","no-cache");
+            response.setHeader("Cache-Control","private, no-store, no-cache, must-revalidate");
+        
             Map<String,String[]> params = request.getParameterMap();
             for(String key:params.keySet()){
                 System.out.println(key+": "+params.get(key)[0]);
@@ -1090,8 +1097,6 @@ public class SPZServlet extends HttpServlet {
         SpzManager spzManager = new SpzJpaController(emf);
         String strFilter = request.getParameter("filter");
         
-        response.setHeader("Pragma","no-cache");
-        response.setHeader("Cache-Control","private, no-store, no-cache, must-revalidate");
         List<Spz> spzs = spzManager.findSpzEntities();
         if(strFilter!=null){
             int filter = Integer.parseInt(strFilter);
