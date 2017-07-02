@@ -153,7 +153,7 @@ public class SPZServlet extends HttpServlet {
                                              {false,true,true,false}, //Reimplementation
                                              {false,true,true,false}, //Reanalysis
                                              {false,true,true,false}, //Reclaimed
-                                             {false,false,true,false}, //Confirmed
+                                             {false,true,true,false}, //Confirmed
                                              {false,false,false,false}, //Canceled
                                              {false,false,false,false} //Invoiced
                                             };
