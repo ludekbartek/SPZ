@@ -62,7 +62,7 @@
             </tbody>
         </table>
     <%-- Pouze pro admina --%>
-    <c:if test="${user.classType==3}">           
+    <c:if test="${user.isAdmin}">           
         <h1><f:message key="newProject"/></h1>
         <div id="left">
             <form action="${pageContext.request.contextPath}/SPZServlet/addProject" method="post">

@@ -67,7 +67,9 @@
             <form method="post">
                 <input type="button" value="<f:message key='back'/>" onclick="doPost(reimplForm)"/>
                 <input type="button" value="<f:message key='install'/>" onclick="doPost(installForm)"/>
-                <input type="button" value="<f:message key='cancel'/>" onclick="doPost(deleteForm)"/>
+                <c:if test="${user.isManager}">
+                    <input type="button" value="<f:message key='cancel'/>" onclick="doPost(deleteForm)"/>
+                </c:if>
             </form>
         </c:if>
         <jsp:include page="listHistory.jsp"/>

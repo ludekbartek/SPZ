@@ -139,7 +139,7 @@ public class SPZServlet extends HttpServlet {
         "Uvolněná","Instalovana", "Změna implementace", "Nová implementace", "Probíhá nová analýza",
         "Zamítnuntá", "Potvrzená", "Zrušená", "Fakturovaná"};
     /*Roles = CLIENT, ANALYST, PROJECT_MANAGER, ADMIN */
-    private static final boolean COLORS[][]={{false,false,true,false}, //Posted
+    private static final boolean COLORS[][]={{false,true,true,false}, //Posted
                                              {true,true,true,false}, //New
                                              {false,true,true,false}, //Analysis
                                              {true,true,true,false}, //Refine

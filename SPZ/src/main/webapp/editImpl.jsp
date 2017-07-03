@@ -59,8 +59,7 @@
                     <input type="hidden" name="projectid" value="${project.id}"/>
                     <!--<input type="submit" value="<f:message key='refineBut'/>"/>-->
                 </form>
-                <c:if test="${user.isAnalyst}">
-                    <form id="releaseForm" action="${pageContext.request.contextPath}/SPZServlet/releaseVersion" method="post">
+                <form id="releaseForm" action="${pageContext.request.contextPath}/SPZServlet/releaseVersion" method="post">
                         <input type="hidden" name="spzid" value="${spz.id}"/>
                         <input type="hidden" name="userid" value="${user.id}"/>
                         <input type="hidden" name="state" value="IMPLEMENTATION"/>
@@ -68,8 +67,7 @@
                         <input type="hidden" name="configid" value="${config.id}"/>
                         <input type="hidden" name="projectid" value="${project.id}"/>
                         <!--<input type="submit" value="<f:message key='releaseBut'/>"/>-->
-                    </form>
-                </c:if>
+                </form>
                 <form id="cancelForm" action="${pageContext.request.contextPath}/SPZServlet/delete" method="post">
                     <input type="hidden" name="spzid" value="${spz.id}"/>
                     <input type="hidden" name="userid" value="${user.id}"/>
@@ -88,8 +86,10 @@
                             <input type="button" value="<f:message key='changeDevBut'/>" onclick="doPost(develForm)"/>
                             <!-- Vraceni k reimplementaci -->
                             <input type="button" value="<f:message key='refineBut'/>" onclick="doPost(refineForm)"/>
+                            <c:if test="${user.isManager}">
                             <!-- Zruseni SPZ -->
-                            <input type="button" value="<f:message key='cancel'/>" onclick="doPost(cancelForm)"/>
+                           `<input type="button" value="<f:message key='cancel'/>" onclick="doPost(cancelForm)"/>
+                            </c:if>
                         </c:if>
                     </c:if>
                 </form>
