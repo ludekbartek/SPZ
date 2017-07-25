@@ -50,6 +50,7 @@ CREATE TABLE "SUSER"."CONFIGURATION" ("ID" INTEGER NOT NULL GENERATED ALWAYS AS 
 
 CREATE TABLE "SUSER"."PROJECT" ("ID" INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1), "NAME" VARCHAR(32), "DESCRIPTION" VARCHAR(255), "TS" BIGINT);
 
+CREATE TABLE "SUSER"."TOMCAT_ROLES" ("login" varchar(32) not null,   role_ varchar(32) not null, primary key (login, role_));
 -- ----------------------------------------------
 -- DDL Statements for keys
 -- ----------------------------------------------
