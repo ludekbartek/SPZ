@@ -14,11 +14,12 @@
         
         <!-- Pouze pro testovaci ucely. V budoucnu odstranit.-->
        <!--<meta http-equiv="Refresh" content="0; URL=${pageContext.request.contextPath}/SPZServlet/listSPZ">-->
+        <meta http-equiv="Refresh" content="0; URL=https://${pageContext.request.serverName}:8443/SPZ/SPZServlet"/>
         <title>Login</title>
         <link rel="stylesheet" type="text/css" href="styles/dcb.css">
     </head>
     <body>
-        <form action="${pageContext.request.contextPath}/SPZServlet/login" method="post">
+        <!--<form action="${pageContext.request.contextPath}/SPZServlet/login" method="post">
             <label for="login">Uživatelské jméno:</label>
             <input type="hidden" name="action" value="login"/>
             <input type="text" size="15"  maxlength="15" name="j_username"/>
@@ -28,6 +29,6 @@
             <br/>
             <input type="submit" value="Přihlásit"/>
         </form>
-        <p/>
+        <p/>-->
     </body>
 </html>

@@ -87,6 +87,9 @@
                 <jpa:column name="ID" unique="false" nullable="false" insertable="true" updatable="true" table="USERACCESS"/>
                 <jpa:generated-value strategy="AUTO"/>
             </jpa:id>
+            <jpa:one-to-one name="user" fetch="LAZY">
+                <jpa:join-column name="LOGIN"/>
+            </jpa:one-to-one>
         </jpa:attributes>
         <jpa:table name="USERACCESS"/>
     </jpa:entity>
