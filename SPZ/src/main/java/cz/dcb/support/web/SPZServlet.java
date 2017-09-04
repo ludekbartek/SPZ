@@ -110,12 +110,15 @@ import cz.dcb.support.web.entities.ProjectWebEntity;
 import java.io.FileInputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.sql.Driver;
 import java.time.Instant;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
 import javax.persistence.NoResultException;
+import javax.servlet.ServletRequest;
 
 /**
  *
@@ -158,7 +161,19 @@ public class SPZServlet extends HttpServlet {
                                              {false,false,false,false} //Invoiced
                                             };
             
-    
+    private void displayHeaders(ServletRequest request) {
+        HttpServletRequest httpRequest = (request instanceof HttpServletRequest)?(HttpServletRequest)request:null;
+        if(httpRequest!=null){
+            Enumeration headers = httpRequest.getHeaderNames();
+            while(headers.hasMoreElements()){
+                String name = (String)headers.nextElement();
+                log("Header name: "+ name + "\theader value"+httpRequest.getHeader(name));
+                
+            }
+            
+        }
+    }
+
     @Override
     public void init(){
         Properties props = new Properties();
@@ -235,7 +250,22 @@ public class SPZServlet extends HttpServlet {
             createAccess(config,Roles.CLIENT,client);
             createAccess(config, Roles.ADMIN, admin);
         }
+        
             
+    }
+    
+    @Override
+    public void destroy(){
+        //Unload db driveru
+        Enumeration<Driver> driversEnum = DriverManager.getDrivers();
+        while(driversEnum.hasMoreElements()){
+            try {
+                Driver driver = driversEnum.nextElement();
+                DriverManager.deregisterDriver(driver);
+            } catch (SQLException ex) {
+                Logger.getLogger(SPZServlet.class.getName()).log(Level.SEVERE, "Error unregistering db driver.", ex);
+            }
+        }
     }
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -326,6 +356,8 @@ public class SPZServlet extends HttpServlet {
             response.setHeader("Pragma","no-cache");
             response.setHeader("Cache-Control","private, no-store, no-cache, must-revalidate");
         
+            displayHeaders(request);
+             
             Map<String,String[]> params = request.getParameterMap();
             for(String key:params.keySet()){
                 System.out.println(key+": "+params.get(key)[0]);
