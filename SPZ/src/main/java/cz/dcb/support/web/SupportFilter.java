@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.Enumeration;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -16,6 +17,7 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  *
@@ -40,6 +42,7 @@ public class SupportFilter implements Filter {
             log("SupportFilter:DoBeforeProcessing");
         }
 
+        
 	// Write code here to process the request and/or response before
         // the rest of the filter chain is invoked.
 	// For example, a logging filter might log items on the request object,
@@ -103,7 +106,7 @@ public class SupportFilter implements Filter {
         if (debug) {
             log("SupportFilter:doFilter()");
         }
-        
+        displayHeaders(request);
         doBeforeProcessing(request, response);
         
         Throwable problem = null;
@@ -131,6 +134,19 @@ public class SupportFilter implements Filter {
                 throw (IOException) problem;
             }
             sendProcessingError(problem, response);
+        }
+    }
+
+    private void displayHeaders(ServletRequest request) {
+        HttpServletRequest httpRequest = (request instanceof HttpServletRequest)?(HttpServletRequest)request:null;
+        if(httpRequest!=null){
+            Enumeration headers = httpRequest.getHeaderNames();
+            while(headers.hasMoreElements()){
+                String name = (String)headers.nextElement();
+                log("Header name: "+ name + "\theader value: "+httpRequest.getHeader(name));
+                
+            }
+            
         }
     }
 
