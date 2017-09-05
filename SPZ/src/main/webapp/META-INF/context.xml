@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Context antiJARLocking="true" path="/SPZ">
-  <Resource auth="Container" driverClassName="org.apache.derby.jdbc.ClientDriver" maxTotal="20" maxIdle="10" maxWaitMilis="-1" name="jdbc/derby-support" password="suser" type="javax.sql.DataSource" url="jdbc:derby://localhost:1527/support" username="suser"/>
+  <Resource auth="Container" driverClassName="org.apache.derby.jdbc.ClientDriver" maxIdle="10" maxTotal="20" maxWaitMilis="-1" name="jdbc/derby-support" password="suser" type="javax.sql.DataSource" url="jdbc:derby://localhost:1527/support" username="suser"/>
   <!--<Resource auth="Container" driverClassName="org.apache.derby.jdbc.EmbeddedDriver" maxTotal="20" maxIdle="10" maxWaitMilis="-1" name="support" password="suser" type="javax.sql.DataSource" url="jdbc:derby:support;create=true" username="suser"/>-->
   <Realm className="org.apache.catalina.realm.JDBCRealm" connectionName="suser" connectionPassword="suser" connectionURL="jdbc:derby://localhost:1527/support" driverName="org.apache.derby.jdbc.ClientDriver" roleNameCol="ROLE_" userCredCol="PASSWORD" userNameCol="LOGIN" userRoleTable="SUSER.TOMCAT_ROLES" userTable="SUSER.USER_"/>
 </Context>
