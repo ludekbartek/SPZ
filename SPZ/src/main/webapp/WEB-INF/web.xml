@@ -13,12 +13,8 @@
            </description>-->
             <web-resource-name>DCB Client support app</web-resource-name>
             <description/>
-            <url-pattern>/*</url-pattern>
-        </web-resource-collection>
-        <web-resource-collection>
-            <web-resource-name>Servlet Actions</web-resource-name>
-            <description/>
-            <url-pattern>/SPZServlet/*</url-pattern>
+            <url-pattern>/SPZ/*</url-pattern>
+            <url-pattern>/SPZ/SPZServlet/*</url-pattern>
         </web-resource-collection>
         <auth-constraint>
             <description>AllAuthen</description>
