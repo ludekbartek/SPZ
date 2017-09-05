@@ -13,8 +13,8 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         
         <!-- Pouze pro testovaci ucely. V budoucnu odstranit.-->
-       <!--<meta http-equiv="Refresh" content="0; URL=${pageContext.request.contextPath}/SPZServlet/listSPZ">-->
-        <meta http-equiv="Refresh" content="0; URL=https://${pageContext.request.serverName}:8443/SPZ/SPZServlet"/>
+        <meta http-equiv="Refresh" content="0; URL=https://localhost:8443/${pageContext.request.contextPath}/SPZServlet/listSPZ">
+        <%--<meta http-equiv="Refresh" content="0; URL=https://${pageContext.request.serverName}:8443/SPZ/SPZServlet/listspz"/>--%>
         <title>Login</title>
         <link rel="stylesheet" type="text/css" href="styles/dcb.css">
     </head>
