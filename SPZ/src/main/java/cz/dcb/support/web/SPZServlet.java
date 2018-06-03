@@ -2586,6 +2586,7 @@ public class SPZServlet extends HttpServlet {
             }
         }else{
             user = getUserFromHttpHeader(request);
+            authenticatedUsers.add(user);
             if(user == null){
                 
             }
