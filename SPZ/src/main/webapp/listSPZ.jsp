@@ -14,7 +14,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title><f:message key="header"/></title>
         <link rel="stylesheet" href="${pageContext.request.contextPath}/styles/dcb.css" type="text/css"/>
-        <script type="text/javascript" src="${pageContext.request.contextPath}/scripts/support-scripts.js"/>
+        <script type="text/javascript" src="${pageContext.request.contextPath}/scripts/support-scripts.js"></script>
     </head>
     <body>
         <jsp:include page="headerspz.jsp"/>
