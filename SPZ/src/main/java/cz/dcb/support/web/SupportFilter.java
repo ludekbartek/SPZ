@@ -10,6 +10,8 @@ import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.Enumeration;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -99,6 +101,7 @@ public class SupportFilter implements Filter {
      * @exception IOException if an input/output error occurs
      * @exception ServletException if a servlet error occurs
      */
+    @Override
     public void doFilter(ServletRequest request, ServletResponse response,
             FilterChain chain)
             throws IOException, ServletException {
@@ -107,19 +110,22 @@ public class SupportFilter implements Filter {
             log("SupportFilter:doFilter()");
         }
         displayHeaders(request);
-        doBeforeProcessing(request, response);
+      //  doBeforeProcessing(request, response);
         
         Throwable problem = null;
         try {
-            request.setCharacterEncoding("UTF-8");
-            response.setCharacterEncoding("UTF-8");
+            if(request.getCharacterEncoding()==null){
+                request.setCharacterEncoding("UTF-8");
+            }
+            //response.setCharacterEncoding("UTF-8");
             chain.doFilter(request, response);
-        } catch (Throwable t) {
+        } catch (IOException | ServletException t) {
 	    // If an exception is thrown somewhere down the filter chain,
             // we still want to execute our after processing, and then
             // rethrow the problem after that.
             problem = t;
             t.printStackTrace();
+            Logger.getAnonymousLogger(SupportFilter.class.getName()).log(Level.SEVERE,"Exception filtering request:",problem);
         }
         
         doAfterProcessing(request, response);
