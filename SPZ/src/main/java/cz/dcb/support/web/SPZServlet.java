@@ -119,6 +119,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import javax.persistence.NoResultException;
 import javax.servlet.ServletRequest;
+import org.apache.tomcat.util.codec.binary.Base64;
 
 /**
  *
@@ -337,8 +338,8 @@ public class SPZServlet extends HttpServlet {
             return;
         }
         request.setAttribute("error", "Pouzita metoda get misto post.");
-        request.getRequestDispatcher(action).forward(request, response);
-        //listProjects(request, response);
+        //request.getRequestDispatcher(action).forward(request, response);
+        listProjects(request, response);
     }
 
     /**
@@ -2564,17 +2565,31 @@ public class SPZServlet extends HttpServlet {
         return spz;
     }
 
+    /**
+     * ToDo upravit ziskani uzivatele v pripade, ze jsou udaje v http-hlavicce 
+     * authorization.
+     * @param request
+     * @return 
+     */
     private User getUserByParameter(HttpServletRequest request) {
         String userIdStr = request.getParameter("userid");
         UserManager userMan = new UserJpaController(emf);
         User user;
-        try{
-            int userId = Integer.parseInt(userIdStr);
-            user = userMan.findUser(userId);
-        }catch(NumberFormatException nfe){
-            user = userMan.findUserByLogin(request.getParameter("login"));
+        if(userIdStr!=null){
+            
+            
+            try{
+                int userId = Integer.parseInt(userIdStr);
+                user = userMan.findUser(userId);
+            }catch(NumberFormatException nfe){
+                user = userMan.findUserByLogin(request.getParameter("login"));
+            }
+        }else{
+            user = getUserFromHttpHeader(request);
+            if(user == null){
+                
+            }
         }
-        
         return user;
     }
 
@@ -2755,6 +2770,9 @@ public class SPZServlet extends HttpServlet {
 
     private void listProjects(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         User user = getUserByParameter(request);
+        if(user == null){
+            user = getUserFromHttpHeader(request);
+        }
         UserAccessManager accessMan = new UserAccessJpaController(emf);
         ProjectConfigurationManager projConfMan = new ProjectConfigurationJpaController(emf);
         ProjectManager projMan = new ProjectJpaController(emf);
@@ -3869,6 +3887,19 @@ public class SPZServlet extends HttpServlet {
         List<Configuration> configs = projConfMan.getProjectConfigurations(proj.getId());
         return configs;
                 
+    }
+
+    private User getUserFromHttpHeader(HttpServletRequest request) {
+        String enc = request.getHeader("authorization");
+        if(enc==null){
+            return null;
+        }
+        String[] splited = enc.split(" ");
+        String userName = new String(Base64.decodeBase64(splited[1]));
+        UserManager userMan = new UserJpaController(emf);
+        String[] authFields = userName.split(":");
+        User user = userMan.findUserByLogin(authFields[0]);
+        return user;
     }
 
     
