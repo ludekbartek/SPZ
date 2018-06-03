@@ -135,7 +135,7 @@ import org.apache.tomcat.util.codec.binary.Base64;
 public class SPZServlet extends HttpServlet {
     private static final Logger LOGGER = Logger.getLogger(SPZServlet.class.getName());
     private final EntityManagerFactory emf = Persistence.createEntityManagerFactory("support_JPA");
-    private static final Set<User> autheticatedUsers = new HashSet<>();
+    private static final Set<User> authenticatedUsers = new HashSet<>();
     private static Path attachDir; 
     private String token;
     private static final String STATES[] ={"Registrovaná","Nová","Probíhá analýza",
@@ -528,7 +528,7 @@ public class SPZServlet extends HttpServlet {
             User user = getUserByLogin(login);
             UserWebEntity userWeb = userToEntity(user);
             request.setAttribute("userid",userWeb.getId());
-            SPZServlet.autheticatedUsers.add(user);
+            SPZServlet.authenticatedUsers.add(user);
             //request.getRequestDispatcher("/SPZServlet/listspz").forward(request, response);
             return;
         }
@@ -872,14 +872,14 @@ public class SPZServlet extends HttpServlet {
         if(!params.containsKey("login")){
             User user = userMan.findUser(id);
             UserWebEntity userEnt = userToEntity(user);
-            SPZServlet.autheticatedUsers.add(user);
+            SPZServlet.authenticatedUsers.add(user);
             request.setAttribute("user", user);
             request.getRequestDispatcher("/userAdd.jsp").forward(request,response);
             return;
         }
         if(!checkUserParameters(request)){
             User newUser = requestParamsToUser(request,false);
-            SPZServlet.autheticatedUsers.add(newUser);
+            SPZServlet.authenticatedUsers.add(newUser);
             User user = userMan.findUser(id);
             UserWebEntity userEnt = userToEntity(newUser);
             UserWebEntity currentUser = userToEntity(user);
@@ -940,7 +940,7 @@ public class SPZServlet extends HttpServlet {
             String strEdId = request.getParameter("editeduserid");
             User edited,user=man.findUser(userId);
             
-            SPZServlet.autheticatedUsers.add(user);
+            SPZServlet.authenticatedUsers.add(user);
             
             if(strEdId!=null){
                int editedUserId = Integer.parseInt(strEdId);
@@ -950,7 +950,7 @@ public class SPZServlet extends HttpServlet {
                edited = man.findUser(userId);
               // user=edited;
             }
-            SPZServlet.autheticatedUsers.remove(user);
+            SPZServlet.authenticatedUsers.remove(user);
             
             request.setAttribute("editeduser", userToEntity(edited));
             UserWebEntity userWeb = userToEntity(user);
@@ -973,7 +973,7 @@ public class SPZServlet extends HttpServlet {
             }else{
                 authenticated = user;
             }
-            SPZServlet.autheticatedUsers.add(authenticated);
+            SPZServlet.authenticatedUsers.add(authenticated);
             
             if(passwd.compareTo(passwdRe)!=0){
                 UserWebEntity userWeb = userToEntity(user);
@@ -1502,7 +1502,7 @@ public class SPZServlet extends HttpServlet {
 //        entity.setDate(getLastChangeDate(spz.getId(),stateManager));
         entity.setCategory(spz.getCategory());
         entity.setPriority(spz.getPriority());
-        User currentUser = autheticatedUsers.toArray(new User[0])[autheticatedUsers.size()-1];
+        User currentUser = authenticatedUsers.toArray(new User[0])[authenticatedUsers.size()-1];
         List<Useraccess> roles = getUserRoles(currentUser.getId());
         int roleId=0;
         boolean isGreen = false;
@@ -3090,7 +3090,7 @@ public class SPZServlet extends HttpServlet {
             }  
         int id = Integer.parseInt(strId);
         user = userMan.findUser(id);
-        if(SPZServlet.autheticatedUsers.contains(user)){
+        if(SPZServlet.authenticatedUsers.contains(user)){
                 return true;
         }
         String login = request.getParameter("login");
@@ -3116,7 +3116,7 @@ public class SPZServlet extends HttpServlet {
             auth = user.getPassword().equals(oldPasswd);
         }
         if(auth){
-            SPZServlet.autheticatedUsers.add(user);
+            SPZServlet.authenticatedUsers.add(user);
         }
         return auth;
     }
@@ -3244,7 +3244,7 @@ public class SPZServlet extends HttpServlet {
             }
         }
         if(user!=null){
-            SPZServlet.autheticatedUsers.add(user);
+            SPZServlet.authenticatedUsers.add(user);
         }
         listProjects(request, response);
         
@@ -3274,7 +3274,7 @@ public class SPZServlet extends HttpServlet {
         if(request.getParameterMap().containsKey("userid")){
             Integer currentId = Integer.parseInt(request.getParameter("userid"));
             User current = userMan.findUser(currentId);
-            SPZServlet.autheticatedUsers.add(current);
+            SPZServlet.authenticatedUsers.add(current);
             UserWebEntity curEnt = userToEntity(user);
             request.setAttribute("users", userEntities);
             request.setAttribute("user", curEnt);
