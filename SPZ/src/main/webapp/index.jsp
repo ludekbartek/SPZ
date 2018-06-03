@@ -9,12 +9,11 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <c:if test="${empty user}">
             <meta http-equiv="Refresh" content="0; URL=/SPZ/login.jsp"/>
-        </c:if>
-        <meta http-equiv="Refresh" content="0; URL=https://localhost:8443${pageContext.request.contextPath}/SPZServlet/listSPZ"/>
+        
+        <%--<meta http-equiv="Refresh" content="0; URL=/${pageContext.request.contextPath}/login.jsp"/>
         <link rel="stylesheet" type="text/css" href="styles/dcb.css"/>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>--%>
         <title>JSP Page</title>
     </head>
     <body>

@@ -13,8 +13,8 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title><f:message key="pageTitle"/> <c:out value="${spz.id}"/></title>
-        <link rel="stylesheet" href="styles/dcb.css" type="text/css"/>
-        <script type="text/javascript" src="scripts/support-scripts.js"></script>
+        <link rel="stylesheet" href="/SPZ/styles/dcb.css" type="text/css"/>
+        <script type="text/javascript" src="/SPZ/scripts/support-scripts.js"></script>
     </head>
     <body>
         <jsp:include page="headerspz.jsp"/>

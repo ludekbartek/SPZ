@@ -14,7 +14,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title><f:message key="confHeader"/>(${user.login})</title>
         <link rel="stylesheet" href="styles/dcb.css" type="text/css"/>
-        <script type="text/javascript" src="scripts/support-scripts.js">
+        <script type="text/javascript" src="/SPZ/scripts/support-scripts.js">
         <c:if test="${cfgs.length<=1}">
             <meta http-equiv="Refresh" content="0; URL=${pageContext.request.contextPath}/SPZServlet/listspz"/>
         </c:if>

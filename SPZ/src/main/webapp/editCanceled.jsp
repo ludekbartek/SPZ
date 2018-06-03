@@ -14,7 +14,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Změna stavu SPZ</title>
         <link rel="stylesheet" href="styles/dcb.css" type="text/css"/>
-        <script src="scripts/support-scripts.js" type="text/javascript"></script>
+        <script src="/SPZ/scripts/support-scripts.js" type="text/javascript"></script>
     </head>
     <body>
         <jsp:include page="headerspz.jsp"/>

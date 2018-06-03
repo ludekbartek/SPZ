@@ -14,7 +14,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title><f:message key="titleAnalysis"/> <c:out value="${spz.id}"/><c:if test="${not empty spz.issuer}">(${spz.issuer})</c:if></title>
         <link rel="stylesheet" href="${pageContext.request.contextPath}/styles/dcb.css" type="text/css"/>
-        <script type="text/javascript" src="scripts/support-scripts.js"></script>
+        <script type="text/javascript" src="/SPZ/scripts/support-scripts.js"></script>
     </head>
     <body>
     <jsp:include page="headerspz.jsp"/>

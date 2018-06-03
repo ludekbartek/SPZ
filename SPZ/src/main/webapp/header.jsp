@@ -8,9 +8,9 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="f" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <f:setBundle basename="headers"/>
-<link rel="stylesheet" href="styles/dcb.css"/>
+<link rel="stylesheet" href="/SPZ/styles/dcb.css"/>
 <div class="leftfloat">
-    <span><img id="logo" src="images/DCB_3.jpg" alt="Logo DCB s.r.o."/></span>
+    <span><img id="logo" src="/SPZ/images/DCB_3.jpg" alt="Logo DCB s.r.o."/></span>
 </div>
 <div class="rightfloat">
     <form name="useraction" action="${pageContext.request.contextPath}/SPZServlet/editUser" method="post">

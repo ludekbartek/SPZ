@@ -22,7 +22,7 @@ pri editaci pouze popisy (viz stara verze).
                shortname.value=reqnumber.value;
            }
        </script>-->
-      <script src="scripts/support-scripts.js"></script>
+      <script src="/SPZ/scripts/support-scripts.js"></script>
       <link rel="stylesheet" href="styles/dcb.css" type="text/css"/>
       <meta name="description" content="addSPZ.jsp"/>
     </head>
