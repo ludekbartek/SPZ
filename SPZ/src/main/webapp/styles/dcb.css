@@ -150,6 +150,13 @@ td.topalign{
     border-style: solid;
 }
 
+.tablehighlightlabel{
+    float: left;
+    width:15%;
+    font-weight: bold;
+    background: lightblue;
+}
+
 .navigation{
     text-align: center;
 }

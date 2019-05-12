@@ -50,7 +50,7 @@
                     </c:choose>
                 <table class="bordless">
                     <tr>
-                        <td class="highlighted">
+                        <td class="tablehighlightlabel">
                             <f:message key="userlogin"/>:
                         </td>
                         <td>
@@ -59,7 +59,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td class="highlighted">
+                        <td class="tablehighlightlabel">
                             <f:message key="fullname"/>:
                         </td>
                         <td>
@@ -67,7 +67,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td class="highlighted">
+                        <td class="tablehighlightlabel">
                             <f:message key="email"/>:
                         </td>
                         <td>
@@ -75,7 +75,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td class="highlighted">
+                        <td class="tablehighlightlabel">
                             <f:message key="company"/>:
                         </td>
                         <td>
@@ -83,7 +83,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td class="highlighted">
+                        <td class="tablehighlightlabel">
                             <f:message key="phone"/>:
                         </td>
                         <td>
@@ -91,7 +91,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td class="highlighted">
+                        <td class="tablehighlightlabel">
                             <f:message key="fax"/>:
                         </td>
                         <td>
@@ -99,7 +99,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td class="highlighted">
+                        <td class="tablehighlightlabel">
                             <f:message key="oldpassword"/> '<c:out value="${user.login}"/>':
                         </td>
                         <td>
@@ -107,7 +107,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td class="highlighted">
+                        <td class="tablehighlightlabel">
                             <f:message key="newPasswd"/>:
                         </td>
                         <td>
@@ -115,7 +115,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td class="highlighted">
+                        <td class="tablehighlightlabel">
                             <f:message key="newPasswdRe"/>:
                         </td>
                         <td>
@@ -149,7 +149,7 @@
                     <br/>-->
                     <table>
                         <tr>
-                            <td class="highlighted">
+                            <td class="tablehighlightlabel">
                                 <f:message key="userlogin"/>:
                             </td>
                             <td>
@@ -157,7 +157,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <td class="highlighted">
+                            <td class="tablehighlightlabel">
                                 <f:message key="oldpassword"/>:
                             </td>
                             <td>
@@ -165,7 +165,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <td class="highlighted">
+                            <td class="tablehighlightlabel">
                                 <f:message key="superUser"/>:
                             </td>
                             <td>
@@ -176,7 +176,7 @@
                                      3 - administrator
                                 -->
                                 <br/>
-                                Role: <c:out value="${usr.classType}"/>
+                                <!--Role: <c:out value="${usr.classType}"/>-->
                                 <br/>
                                 <input type="radio" name="superuser" value="yes" <c:if test='${usr.classType=="3"}'>checked</c:if>/><f:message key="yes"/>
                                 &nbsp;
@@ -184,7 +184,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <td class="highlighted">
+                            <td class="tablehighlightlabel">
                                 <f:message key="regularuser"/>:
                             </td>
                             <td>

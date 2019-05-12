@@ -10,8 +10,6 @@ import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.Enumeration;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -125,7 +123,7 @@ public class SupportFilter implements Filter {
             // rethrow the problem after that.
             problem = t;
             t.printStackTrace();
-            Logger.getAnonymousLogger(SupportFilter.class.getName()).log(Level.SEVERE,"Exception filtering request:",problem);
+            log("Exception filtering request: "+problem);
         }
         
         doAfterProcessing(request, response);
@@ -198,7 +196,7 @@ public class SupportFilter implements Filter {
         if (filterConfig == null) {
             return ("SupportFilter()");
         }
-        StringBuffer sb = new StringBuffer("SupportFilter(");
+        StringBuilder sb = new StringBuilder("SupportFilter(");
         sb.append(filterConfig);
         sb.append(")");
         return (sb.toString());
